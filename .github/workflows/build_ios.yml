@@ -1,0 +1,71 @@
+name: iOS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build and distribute
+    runs-on: macOS-latest
+    steps:
+
+    # several actions use checkout 
+    - name: Install checkout
+      uses: actions/checkout@v2
+    
+    ##############################################
+    # flutter-action
+    ##############################################
+    # the flutter-action action seems to need java
+    - name: Install Java, for building Flutter tool
+      uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    # use flutter-action configured with flutter channel
+    - name: Install Flutter tool
+      uses: subosito/flutter-action@v1
+      with:
+        channel: 'dev' # or: 'stable' or 'beta'
+    
+    ##############################################
+    # setup-gcloud
+    ##############################################
+    # the setup-gcloud action seems to need python
+    - name: Install python, for building gcloud
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    # use setup-gcloud configured with auth credentials 
+    - name: Install gcloud and use gsutil to download credentials
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '270.0.0'
+        service_account_email: ${{ secrets.GCS_EMAIL }}
+        service_account_key: ${{ secrets.GCS_KEY }}
+
+    - run: gsutil cp gs://crowdleague-ci-credentials/gc_keys.json ./ios/gc_keys.json
+    - run: flutter packages get
+    - run: flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+
+    ##############################################
+    # run fastlane to build and sign app 
+    ##############################################
+    - name: Build and Sign with Fastlane 
+      uses: maierj/fastlane-action@v1.4.0
+      env:
+        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+      with:
+        lane: 'build_and_sign_firebase'
+        subdirectory: 'ios'
+
+    ##############################################
+    # Firebase App Distribution
+    ##############################################
+    - name: Deploy to Firebase App Distribution
+      uses: w9jds/firebase-action@master
+      with:
+        args: appdistribution:distribute ios/Runner.ipa --app 1:1085919333383:ios:dc81b5a8522cf24a132ea2
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
