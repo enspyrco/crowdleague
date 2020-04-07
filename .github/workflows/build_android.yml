@@ -13,7 +13,7 @@ jobs:
 
     # several actions use checkout 
     - name: Install checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     
     ##############################################
     # flutter-action
@@ -42,13 +42,13 @@ jobs:
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '270.0.0'
-        service_account_email: ${{ secrets.GCS_EMAIL }}
-        service_account_key: ${{ secrets.GCS_KEY }}
+        service_account_email: ${{ secrets.GSUTIL_SERVICE_ACC_EMAIL }}
+        service_account_key: ${{ secrets.GSUTIL_SERVICE_ACC_PASSWORD }}
 
-    - run: gsutil cp gs://crowdleague-ci-credentials/EnspyrKeystore ./android/EnspyrKeystore
-    - run: gsutil cp gs://crowdleague-ci-credentials/key.properties ./android/key.properties
-    - run: gsutil cp gs://crowdleague-ci-credentials/api-6095168526928626772-298708-d02eb03add02.json ./android/fastlane/api-6095168526928626772-298708-d02eb03add02.json
-
+    - run: gsutil cp gs://crowdleague-credentials/google-services.json ./android/app/google-services.json
+    - run: gsutil cp gs://crowdleague-credentials/keystore.jks ./android/app/keystore.jks
+    - run: gsutil cp gs://crowdleague-credentials/keystore.config ./android/app/keystore.config
+    
     - run: flutter pub get
     - run: flutter test
     - run: flutter build appbundle --build-number=$GITHUB_RUN_NUMBER
