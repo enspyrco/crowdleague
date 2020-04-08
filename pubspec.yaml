@@ -1,7 +1,7 @@
 name: crowdleague
 description: A new Flutter project.
 
-version: 1.0.0+1
+version: 0.0.1+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -36,12 +36,11 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: maticons
+    - family: maticons # workaround to get full set of material icons
       fonts:
         - asset: assets/fonts/maticon.ttf
 
-# "launcher_icon" 
-
+# for auto generating the app launcher icons
 flutter_icons:
   android: true
   ios: true

@@ -58,3 +58,5 @@ android/app/keystore.jks
 android/app/keystore.config
 # fastlane match service acc json key 
 ios/gc_keys.json
+# fastlane android service acc json key 
+android/crowdleague-fastlane-manager.json

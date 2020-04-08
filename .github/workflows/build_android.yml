@@ -48,25 +48,16 @@ jobs:
     - run: gsutil cp gs://crowdleague-credentials/google-services.json ./android/app/google-services.json
     - run: gsutil cp gs://crowdleague-credentials/keystore.jks ./android/app/keystore.jks
     - run: gsutil cp gs://crowdleague-credentials/keystore.config ./android/app/keystore.config
+    - run: gsutil cp gs://crowdleague-credentials/crowdleague-fastlane-manager.json ./android/crowdleague-fastlane-manager.json
     
     - run: flutter pub get
     - run: flutter test
     - run: flutter build appbundle --build-number=$GITHUB_RUN_NUMBER
 
-    ##############################################
-    # runs fastlane to deploy to play store 
-    ##############################################
-    # - uses: maierj/fastlane-action@v1.4.0
-    #   with:
-    #     lane: 'deploy_to_play_store'
-    #     subdirectory: 'android'
-
-    ##############################################
-    # Firebase App Distribution
-    ##############################################
-    - name: Deploy to Firebase App Distribution
-      uses: w9jds/firebase-action@master
+    #############################################
+    ## runs fastlane to deploy to play store 
+    #############################################
+    - uses: maierj/fastlane-action@v1.4.0
       with:
-        args: appdistribution:distribute build/app/outputs/bundle/release/app-release.aab --app 1:1085919333383:android:d90b1f1799381a8c132ea2
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        lane: 'deploy_internal'
+        subdirectory: 'android'

@@ -2,13 +2,9 @@
 
 CrowdLeague is a platform for crowd sourcing sports leagues. Be in a league of your own...
 
-[Issues · nickmeinhold/crowdleague_public](https://github.com/nickmeinhold/crowdleague_public/issues)
+[github](https://github.com/nickmeinhold/crowdleague_public) | [firebase console](https://console.firebase.google.com/u/0/project/crowdleague1/overview)
 
-[CrowdLeague – CrowdLeague – Firebase console](https://console.firebase.google.com/u/0/project/crowdleague1/overview)
-
-[Dashboard - CrowdLeague - Google Play Console](https://play.google.com/apps/publish/?account=6095168526928626772#AppDashboardPlace:p=tmp.06172670794154685202.1586081744174.6623537&appid=4973683335528364155)
-
-[App Store Connect](https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1506440961)
+[Google Play Console](https://play.google.com/apps/publish/?account=6095168526928626772#AppDashboardPlace:p=tmp.06172670794154685202.1586081744174.6623537&appid=4973683335528364155) | [App Store Connect](https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1506440961)
 
 ## Common Commands 
 
@@ -16,7 +12,14 @@ CrowdLeague is a platform for crowd sourcing sports leagues. Be in a league of y
 flutter pub run build_runner build
 ```
 
-## Redux RemoteDevTools (RDT) 
+## Get Credential Files
+
+```sh
+chmod 755 ./get-credentials.sh
+./get-credentials.sh
+```
+
+## Redux RemoteDevTools (RDT)
 
 - find the IP address of the computer 
 - use one of the strings in `utilities/mock.dart` or make a new one 
@@ -30,7 +33,7 @@ remotedev --port 8000
 - open a web page with url:
 
 ```
-http://localhost:8000/
+http://localhost:8000
 ```
 
 ## Code gen with built_value 
