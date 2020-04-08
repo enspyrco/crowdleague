@@ -47,26 +47,17 @@ jobs:
 
     - run: gsutil cp gs://crowdleague-credentials/GoogleService-Info.plist ./ios/Runner/GoogleService-Info.plist
     - run: gsutil cp gs://crowdleague-credentials/gc_keys.json ./ios/gc_keys.json
-    - run: flutter packages get
+    - run: flutter pub get
+    - run: flutter pub run build_runner build
     - run: flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
 
     ##############################################
     # run fastlane to build and sign app 
     ##############################################
-    - name: Build and Sign with Fastlane 
+    - name: Second build with Fastlane for signing, then deploy to App Store
       uses: maierj/fastlane-action@v1.4.0
       env:
         FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       with:
-        lane: 'build_and_sign_firebase'
+        lane: 'deploy_internal'
         subdirectory: 'ios'
-
-    # ##############################################
-    # # Firebase App Distribution
-    # ##############################################
-    # - name: Deploy to Firebase App Distribution
-    #   uses: w9jds/firebase-action@master
-    #   with:
-    #     args: appdistribution:distribute ios/Runner.ipa --app 1:1085919333383:ios:dc81b5a8522cf24a132ea2
-    #   env:
-    #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

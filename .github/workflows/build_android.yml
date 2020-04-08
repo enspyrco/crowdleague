@@ -51,13 +51,15 @@ jobs:
     - run: gsutil cp gs://crowdleague-credentials/crowdleague-fastlane-manager.json ./android/crowdleague-fastlane-manager.json
     
     - run: flutter pub get
+    - run: flutter pub run build_runner build
     - run: flutter test
     - run: flutter build appbundle --build-number=$GITHUB_RUN_NUMBER
 
     #############################################
     ## runs fastlane to deploy to play store 
     #############################################
-    - uses: maierj/fastlane-action@v1.4.0
+    - name: Install fastlane and deploy to Play Store 
+      uses: maierj/fastlane-action@v1.4.0
       with:
         lane: 'deploy_internal'
         subdirectory: 'android'

@@ -16,9 +16,19 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Push a new beta build to TestFlight"
-  lane :beta do
-    build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
-    upload_to_testflight
+  desc "Deploy a new beta build to TestFlight"
+  lane :deploy_internal do
+    match(type: "appstore", readonly: true)
+    build_app(
+        workspace: "Runner.xcworkspace", 
+        scheme: "Runner", 
+        export_options: {
+          method: "app-store"
+        }
+    )
+    upload_to_testflight(
+      skip_submission: true,
+      skip_waiting_for_build_processing: true
+    )
   end
 end
