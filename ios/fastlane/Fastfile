@@ -26,6 +26,7 @@ platform :ios do
           method: "app-store"
         }
     )
+    ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
     upload_to_testflight(
       skip_submission: true,
       skip_waiting_for_build_processing: true
