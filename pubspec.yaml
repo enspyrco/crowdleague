@@ -21,8 +21,10 @@ dependencies:
   google_sign_in:
   apple_sign_in:
   flutter_auth_buttons:
-  google_maps_flutter:
+
   cloud_firestore:
+  firebase_messaging:
+  google_maps_flutter:
 
 dev_dependencies:
   flutter_test:
