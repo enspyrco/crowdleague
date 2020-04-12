@@ -16,8 +16,8 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Deploy a new beta build to TestFlight"
-  lane :deploy_internal do
+  desc "Build a signed app"
+  lane :build_signed do
     match(type: "appstore", readonly: true)
     build_app(
         workspace: "Runner.xcworkspace", 
@@ -26,7 +26,31 @@ platform :ios do
           method: "app-store"
         }
     )
-    ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
+  end
+
+  desc "Deploy latest build to TestFlight"
+  lane :deploy_internal do
+    # force WebDAV publishing to avoid firewall issues (still having same issue though)
+    # ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
+    upload_to_testflight(
+      skip_submission: true,
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  # combination of the above two lanes 
+  desc "Build signed app and deploy to TestFlight"
+  lane :build_signed_and_deploy_internal do
+    match(type: "appstore", readonly: true)
+    build_app(
+        workspace: "Runner.xcworkspace", 
+        scheme: "Runner", 
+        export_options: {
+          method: "app-store"
+        }
+    )
+    # force WebDAV publishing to avoid firewall issues (still having same issue though)
+    # ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
     upload_to_testflight(
       skip_submission: true,
       skip_waiting_for_build_processing: true

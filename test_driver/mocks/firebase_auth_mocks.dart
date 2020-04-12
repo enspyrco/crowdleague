@@ -12,6 +12,8 @@ class FakeFirebaseAuthPeriodic extends Fake implements FirebaseAuth {
       });
 }
 
+// emits a FirebaseUser with null members then a FirebaseUser with random
+// values (this follows the pattern when a user is signed in and starts the app)
 class FakeFirebaseAuth1 extends Fake implements FirebaseAuth {
   @override
   Stream<FirebaseUser> get onAuthStateChanged =>
@@ -35,6 +37,7 @@ class FakeFirebaseAuthOpen extends Fake implements FirebaseAuth {
   }
 }
 
+// a FirebaseUser with all null members
 class FakeFirebaseUserNull extends Fake implements FirebaseUser {
   @override
   String get uid => null;

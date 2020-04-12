@@ -19,6 +19,20 @@ chmod 755 ./get-credentials.sh
 ./get-credentials.sh
 ```
 
+## Screenshots 
+
+To setup, follow the instructions in [screenshots | Dart Package](https://pub.dev/packages/screenshots) 
+
+The configuration file is `screenshots.yaml`
+
+You will need appropriately named emulators and the emulators may (shouldn't but may) need to be open.
+
+From the project dir, run: 
+
+```sh
+screeenshots
+```
+
 ## Redux RemoteDevTools (RDT)
 
 - find the IP address of the computer 

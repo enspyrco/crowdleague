@@ -13,12 +13,7 @@ class MainPage extends StatelessWidget {
       builder: (context, selectedIndex) {
         return Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.account_circle, size: 50),
-              onPressed: () {
-                StoreProvider.of<AppState>(context).dispatch(SignOutUser());
-              },
-            ),
+            leading: AccountButton(),
             title: Text('CrowdLeague'),
           ),
           body: Center(child: Text('Main Page')),
@@ -59,5 +54,24 @@ class MainPage extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     StoreProvider.of<AppState>(context)
         .dispatch(StoreNavIndex((b) => b..index = index));
+  }
+}
+
+class AccountButton extends StatelessWidget {
+  const AccountButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        Icons.account_circle,
+        size: 50,
+      ),
+      onPressed: () {
+        StoreProvider.of<AppState>(context).dispatch(SignOutUser());
+      },
+    );
   }
 }

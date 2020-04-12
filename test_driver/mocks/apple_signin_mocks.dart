@@ -2,7 +2,7 @@ import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:mockito/mockito.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
 
-class FakeAppleSignIn extends Fake implements AppleSignInObject {
+class FakeAppleSignInObject extends Fake implements AppleSignInObject {
   @override
   Future<AuthorizationResult> startAuth() {
     final result = AuthorizationResult(
