@@ -124,5 +124,9 @@ class AuthService {
     } catch (error, trace) {
       return AddProblemFuture.from(error, trace, ProblemTypeEnum.signOut);
     }
+
+    // we let the AuthStateObserver dispatch a ClearUserData action when it
+    // observes the relevant event
+    return null;
   }
 }
