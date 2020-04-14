@@ -64,7 +64,15 @@ jobs:
     # get screenshots 
     - run: brew install imagemagick
     - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
-    - run: ~/hostedtoolcache/flutter/1.18.0-dev.5.0-dev/x64/.pub-cache/bin/screenshots
+
+    ##############################################
+    # setup android emulator with android-emulator-runner 
+    ##############################################
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        profile: Nexus 6
+        script: pub global run screenshots:screenshots
 
     ##############################################
     # run fastlane to build and sign apps and deploy 
