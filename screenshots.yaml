@@ -13,6 +13,9 @@ locales:
 
 # A map of devices to emulate
 devices:
+  ios:
+    iPhone 11 Pro Max:
+      frame: false
   android:
-    Pixel 3a: # API 28
+    Android Emulator:
       frame: false
