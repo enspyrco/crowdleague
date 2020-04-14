@@ -53,7 +53,11 @@ jobs:
     - run: flutter pub get
     - run: flutter pub run build_runner build
     - run: flutter test
-    - run: flutter build appbundle --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
+    
+    - run: brew install imagemagick
+    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+
 
     #############################################
     ## runs fastlane to deploy to play store 
