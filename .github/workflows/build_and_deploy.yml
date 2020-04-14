@@ -61,23 +61,24 @@ jobs:
     - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
     - run: flutter build ios -t lib/app/main.dart --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
 
-    # get screenshots 
+    # setup and install screenshots package
     - run: brew install imagemagick
     - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
 
     ##############################################
     # setup android emulator with android-emulator-runner 
     ##############################################
-    - name: run tests
+    - name: Add Android emulator and run screenshots
       uses: reactivecircus/android-emulator-runner@v2
       with:
+        api-level: 28
         profile: Nexus 6
         script: pub global run screenshots:screenshots
 
     ##############################################
     # run fastlane to build and sign apps and deploy 
     ##############################################
-    - name: Install Fastlane to perform second build for signing, then deploy to App Store
+    - name: Install Fastlane to build for signing, then deploy to App Store
       uses: maierj/fastlane-action@v1.4.0
       env:
         FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
