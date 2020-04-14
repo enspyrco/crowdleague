@@ -45,11 +45,19 @@ jobs:
         service_account_email: ${{ secrets.GSUTIL_SERVICE_ACC_EMAIL }}
         service_account_key: ${{ secrets.GSUTIL_SERVICE_ACC_PASSWORD }}
 
+    # download credential files
     - run: gsutil cp gs://crowdleague-credentials/GoogleService-Info.plist ./ios/Runner/GoogleService-Info.plist
     - run: gsutil cp gs://crowdleague-credentials/gc_keys.json ./ios/gc_keys.json
+
+    # build app
     - run: flutter pub get
     - run: flutter pub run build_runner build
-    - run: flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter build ios -t lib/app/main.dart --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+
+    # get screenshots 
+    - run: brew install imagemagick
+    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    - run: screenshots -c screenshots_ios.yaml
 
     ##############################################
     # run fastlane to build and sign app 
