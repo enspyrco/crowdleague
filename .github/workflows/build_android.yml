@@ -54,10 +54,16 @@ jobs:
     - run: flutter pub run build_runner build
     - run: flutter test
     - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
-    
-    - run: brew install imagemagick
-    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
 
+    # get screenshots
+    - run: sudo apt-get install imagemagick
+    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    - name: Fire up emulator and get screenshots
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        profile: Pixel 3a
+        api-level: 29
+        script: screenshots -c screenshots_android.yaml
 
     #############################################
     ## runs fastlane to deploy to play store 

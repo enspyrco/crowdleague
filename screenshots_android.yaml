@@ -14,5 +14,5 @@ locales:
 # A map of devices to emulate
 devices:
   android:
-    Pixel 3a API 28:
+    Pixel 3a: # API 28
       frame: false
