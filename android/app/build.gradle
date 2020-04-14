@@ -40,7 +40,7 @@ android {
         applicationId "co.enspyr.crowdleague1"
         minSdkVersion 21
         targetSdkVersion 28
-        ndkVersion "21.0.6113669"
+        ndkVersion "18.1.5063045"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
