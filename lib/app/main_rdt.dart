@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:crowdleague/middleware/middleware.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
+import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/utils/rdt_ips.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:crowdleague/models/app_state.dart';
@@ -27,6 +29,7 @@ void main() async {
           GoogleSignIn(scopes: <String>['email']),
           AppleSignInObject(),
         ),
+        notificationsService: NotificationsService(FirebaseMessaging()),
       ),
     ],
   );

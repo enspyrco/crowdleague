@@ -8,6 +8,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
 
 import 'mocks/auth_service_mocks.dart';
+import 'mocks/notifications_service_mocks.dart';
 
 void main() {
   WidgetsApp.debugAllowBannerOverride =
@@ -20,7 +21,9 @@ void main() {
     appReducer,
     initialState: AppState.init(),
     middleware: [
-      ...createMiddleware(authService: FakeAuthService()),
+      ...createMiddleware(
+          authService: FakeAuthService(),
+          notificationsService: FakeNotificationsService()),
       LoggingMiddleware.printer(),
     ],
   );

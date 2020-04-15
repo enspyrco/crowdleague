@@ -26,7 +26,7 @@ void main() {
       }
     });
 
-    test('starts at 0', () async {
+    test('Take screenshots', () async {
       final config = Config();
       await screenshot(driver, config, 'myscreenshot1');
       await driver.waitFor(buttonFinder);
