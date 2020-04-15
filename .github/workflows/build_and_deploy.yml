@@ -59,7 +59,7 @@ jobs:
     - run: flutter pub run build_runner build
     - run: flutter test
     - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
-    # - run: flutter build ios -t lib/app/main.dart --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter build ios -t lib/app/main.dart --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
 
     # setup and install screenshots package
     - run: brew install imagemagick
@@ -72,19 +72,18 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 28
-        profile: Nexus 6
         script: flutter pub global run screenshots:main
 
     ##############################################
     # run fastlane to build and sign apps and deploy 
     ##############################################
-    # - name: Install Fastlane to build for signing, then deploy to App Store
-    #   uses: maierj/fastlane-action@v1.4.0
-    #   env:
-    #     FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-    #   with:
-    #     lane: 'build_signed_and_deploy_internal'
-    #     subdirectory: 'ios'
+    - name: Install Fastlane to build for signing, then deploy to App Store
+      uses: maierj/fastlane-action@v1.4.0
+      env:
+        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+      with:
+        lane: 'build_signed_and_deploy_internal'
+        subdirectory: 'ios'
     - name: Use fastlane to deploy to Play Store 
       uses: maierj/fastlane-action@v1.4.0
       with:
