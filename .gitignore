@@ -60,3 +60,5 @@ android/app/keystore.config
 ios/gc_keys.json
 # fastlane android service acc json key 
 android/crowdleague-fastlane-manager.json
+# Flutter/Dart/Pub related
+ios/Flutter/.last_build_id
