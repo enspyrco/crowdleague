@@ -17,5 +17,5 @@ devices:
   #   iPhone 11 Pro Max:
   #     frame: false
   android:
-    Nexus 6:
+    test:
       frame: false
