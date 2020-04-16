@@ -61,7 +61,7 @@ jobs:
     - run: flutter pub run build_runner build
     - run: flutter test
     - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
-    - run: flutter build ios -t lib/app/main.dart --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
 
     # setup and install screenshots package
     - run: brew install imagemagick
