@@ -69,15 +69,17 @@ jobs:
     # setup and install screenshots package
     - run: brew install imagemagick
     - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
-
+    
     ############################################################
     # setup android emulator with android-emulator-runner 
     ############################################################
-    - name: Add Android emulator and run screenshots
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 28
-        script: flutter pub global run screenshots:main
+    # - name: Add Android emulator and run screenshots
+    #   uses: reactivecircus/android-emulator-runner@v2
+    #   with:
+    #     api-level: 28
+    #     script: flutter pub global run screenshots:main
+
+    - run: flutter pub global run screenshots:main
 
     ##############################################
     # use fastlane to deploy apps 
