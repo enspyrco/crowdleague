@@ -16,11 +16,21 @@ or alternatively using `brew cask install fastlane`
 
 # Available Actions
 ## iOS
+### ios build_signed
+```
+fastlane ios build_signed
+```
+Build a signed app
 ### ios deploy_internal
 ```
 fastlane ios deploy_internal
 ```
-Deploy a new beta build to TestFlight
+Deploy latest build to TestFlight
+### ios build_signed_and_deploy_internal
+```
+fastlane ios build_signed_and_deploy_internal
+```
+Build signed app and deploy to TestFlight
 
 ----
 

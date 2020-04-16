@@ -9,6 +9,8 @@ jobs:
   build:
     name: Build and distribute
     runs-on: macOS-latest
+    env:
+      FASTLANE_PASSWORD: secrets.FASTLANE_PASSWORD
     steps:
 
     - run: echo "build-number=$GITHUB_RUN_NUMBER"
@@ -64,30 +66,21 @@ jobs:
     - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
 
     # setup and install screenshots package
-    - run: brew install imagemagick
-    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    # - run: brew install imagemagick
+    # - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
 
     ##############################################
     # setup android emulator with android-emulator-runner 
     ##############################################
-    - name: Add Android emulator and run screenshots
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 28
-        script: flutter pub global run screenshots:main
+    # - name: Add Android emulator and run screenshots
+    #   uses: reactivecircus/android-emulator-runner@v2
+    #   with:
+    #     api-level: 28
+    #     script: flutter pub global run screenshots:main
 
-    ##############################################
-    # run fastlane to build and sign apps and deploy 
-    ##############################################
-    - name: Install Fastlane to build for signing, then deploy to App Store
-      uses: maierj/fastlane-action@v1.4.0
-      env:
-        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-      with:
-        lane: 'build_signed_and_deploy_internal'
-        subdirectory: 'ios'
-    - name: Use fastlane to deploy to Play Store 
-      uses: maierj/fastlane-action@v1.4.0
-      with:
-        lane: 'deploy_internal'
-        subdirectory: 'android'
+    - name: Build & sign iOS app, then deploy to App Store
+      run: fastlane build_signed_and_deploy_internal
+      working-directory: ./ios
+    - name: Deploy Android app to Play Store
+      run: fastlane deploy_internal
+      working-directory: ./android
