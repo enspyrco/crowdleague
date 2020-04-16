@@ -13,9 +13,9 @@ locales:
 
 # A map of devices to emulate
 devices:
-  ios:
-    iPhone 11 Pro Max:
-      frame: false
   android:
     test:
+      frame: false
+  ios:
+    iPhone 11 Pro Max:
       frame: false
