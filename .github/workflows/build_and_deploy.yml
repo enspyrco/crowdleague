@@ -67,8 +67,8 @@ jobs:
     - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
 
     # setup and install screenshots package
-    - run: brew install imagemagick
-    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    # - run: brew install imagemagick
+    # - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
     
     ############################################################
     # setup android emulator with android-emulator-runner 
@@ -82,7 +82,7 @@ jobs:
     ##############################################
     # use fastlane to deploy apps 
     ##############################################
-    - name: Build & sign iOS app, then deploy to App Store
+    - name: Build & sign iOS app
       run: fastlane build_signed
       working-directory: ./ios
 
