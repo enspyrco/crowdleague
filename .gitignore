@@ -62,3 +62,5 @@ ios/gc_keys.json
 android/crowdleague-fastlane-manager.json
 # Flutter/Dart/Pub related
 ios/Flutter/.last_build_id
+# Fastlane reports
+ios/fastlane/report.xml
