@@ -79,8 +79,6 @@ jobs:
     #     api-level: 28
     #     script: flutter pub global run screenshots:main
 
-    - run: flutter pub global run screenshots:main
-
     ##############################################
     # use fastlane to deploy apps 
     ##############################################
