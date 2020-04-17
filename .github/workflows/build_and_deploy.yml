@@ -30,7 +30,7 @@ jobs:
         java-version: '12.x'
     # use flutter-action configured with flutter channel
     # - name: Install Flutter tool
-      uses: subosito/flutter-action@v1
+    - uses: subosito/flutter-action@v1
       with:
         channel: 'dev' # or: 'stable' or 'beta'
     
@@ -44,7 +44,7 @@ jobs:
         python-version: '3.x'
     # use setup-gcloud configured with auth credentials 
     # - name: Install gcloud and use gsutil to download credentials
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '270.0.0'
         service_account_email: ${{ secrets.GSUTIL_SERVICE_ACC_EMAIL }}
