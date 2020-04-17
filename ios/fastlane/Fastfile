@@ -18,9 +18,10 @@ default_platform(:ios)
 platform :ios do
   desc "Build a signed app"
   lane :build_signed do
+    # we create an unlocked keychain to avoid password prompt freeze
     create_keychain(
-        name: "actiontest_keychain",
-        password: "meow",
+        name: "unlocked_keychain",
+        password: "doesntmatter",
         default_keychain: true,
         unlock: true,
         timeout: 3600,
@@ -28,8 +29,8 @@ platform :ios do
     )
     match(type: "appstore", 
           readonly: true, 
-          keychain_name: "actiontest_keychain",
-          keychain_password: "meow")
+          keychain_name: "unlocked_keychain",
+          keychain_password: "doesntmatter")
     build_app(
         workspace: "Runner.xcworkspace", 
         scheme: "Runner", 
