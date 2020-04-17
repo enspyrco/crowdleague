@@ -13,10 +13,11 @@ jobs:
       FASTLANE_PASSWORD: secrets.FASTLANE_PASSWORD
     steps:
 
+    # output the build number used in this job
     - name: Output Build Number
       run: echo "build-number=$GITHUB_RUN_NUMBER"
 
-    # several actions use checkout 
+    # several actions use checkout
     - name: Install checkout
       uses: actions/checkout@v2
     
@@ -24,13 +25,13 @@ jobs:
     # flutter-action
     ##############################################
     # the flutter-action action seems to need java
-    - name: Install Flutter tool
+    - name: Install Java for Flutter tool
       uses: actions/setup-java@v1
       with:
         java-version: '12.x'
     # use flutter-action configured with flutter channel
-    # - name: Install Flutter tool
-    - uses: subosito/flutter-action@v1
+    - name: Install Flutter tool
+      uses: subosito/flutter-action@v1
       with:
         channel: 'dev' # or: 'stable' or 'beta'
     
@@ -38,13 +39,13 @@ jobs:
     # setup-gcloud
     ##############################################
     # the setup-gcloud action seems to need python
-    - name: Install gcloud/gsutil
+    - name: Install python for gcloud/gsutil
       uses: actions/setup-python@v1
       with:
         python-version: '3.x'
     # use setup-gcloud configured with auth credentials 
-    # - name: Install gcloud and use gsutil to download credentials
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+    - name: Install gcloud/gsutil
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '270.0.0'
         service_account_email: ${{ secrets.GSUTIL_SERVICE_ACC_EMAIL }}
@@ -74,8 +75,9 @@ jobs:
     - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
 
     # setup and install screenshots package
-    # - run: brew install imagemagick
-    # - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    - run: brew install imagemagick
+    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    - run: flutter pub global run screenshots:main
     
     ############################################################
     # setup android emulator with android-emulator-runner 
