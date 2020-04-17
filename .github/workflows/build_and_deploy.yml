@@ -14,7 +14,7 @@ jobs:
     steps:
 
     - name: Output Build Number
-    - run: echo "build-number=$GITHUB_RUN_NUMBER"
+      run: echo "build-number=$GITHUB_RUN_NUMBER"
 
     # several actions use checkout 
     - name: Install checkout
