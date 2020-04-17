@@ -18,7 +18,18 @@ default_platform(:ios)
 platform :ios do
   desc "Build a signed app"
   lane :build_signed do
-    match(type: "appstore", readonly: true)
+    create_keychain(
+        name: "actiontest_keychain",
+        password: "meow",
+        default_keychain: true,
+        unlock: true,
+        timeout: 3600,
+        lock_when_sleeps: false
+    )
+    match(type: "appstore", 
+          readonly: true, 
+          keychain_name: "actiontest_keychain",
+          keychain_password: "meow")
     build_app(
         workspace: "Runner.xcworkspace", 
         scheme: "Runner", 
