@@ -24,26 +24,26 @@ jobs:
     # flutter-action
     ##############################################
     # the flutter-action action seems to need java
-    # - name: Install Java, for building Flutter tool
-    #   uses: actions/setup-java@v1
-    #   with:
-    #     java-version: '12.x'
-    # # use flutter-action configured with flutter channel
+    - name: Install Flutter tool
+      uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    # use flutter-action configured with flutter channel
     # - name: Install Flutter tool
-    #   uses: subosito/flutter-action@v1
-    #   with:
-    #     channel: 'dev' # or: 'stable' or 'beta'
+      uses: subosito/flutter-action@v1
+      with:
+        channel: 'dev' # or: 'stable' or 'beta'
     
     ##############################################
     # setup-gcloud
     ##############################################
     # the setup-gcloud action seems to need python
-    - name: Install python, for building gcloud
+    - name: Install gcloud/gsutil
       uses: actions/setup-python@v1
       with:
         python-version: '3.x'
     # use setup-gcloud configured with auth credentials 
-    - name: Install gcloud and use gsutil to download credentials
+    # - name: Install gcloud and use gsutil to download credentials
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '270.0.0'
@@ -53,27 +53,25 @@ jobs:
     ############################################
     # download credential files for ios 
     ############################################
-    # - run: gsutil cp gs://crowdleague-credentials/GoogleService-Info.plist ./ios/Runner/GoogleService-Info.plist
-    # - run: gsutil cp gs://crowdleague-credentials/gc_keys.json ./ios/gc_keys.json
+    - run: gsutil cp gs://crowdleague-credentials/GoogleService-Info.plist ./ios/Runner/GoogleService-Info.plist
+    - run: gsutil cp gs://crowdleague-credentials/gc_keys.json ./ios/gc_keys.json
 
-    - run: gsutil cp gs://crowdleague-credentials/Runner.ipa ./ios/Runner.ipa
-   
     ############################################
     # download credential files for android
     ############################################
-    # - run: gsutil cp gs://crowdleague-credentials/google-services.json ./android/app/google-services.json
-    # - run: gsutil cp gs://crowdleague-credentials/keystore.jks ./android/app/keystore.jks
-    # - run: gsutil cp gs://crowdleague-credentials/keystore.config ./android/app/keystore.config
-    # - run: gsutil cp gs://crowdleague-credentials/crowdleague-fastlane-manager.json ./android/crowdleague-fastlane-manager.json
+    - run: gsutil cp gs://crowdleague-credentials/google-services.json ./android/app/google-services.json
+    - run: gsutil cp gs://crowdleague-credentials/keystore.jks ./android/app/keystore.jks
+    - run: gsutil cp gs://crowdleague-credentials/keystore.config ./android/app/keystore.config
+    - run: gsutil cp gs://crowdleague-credentials/crowdleague-fastlane-manager.json ./android/crowdleague-fastlane-manager.json
 
     ############################################
     # build ios app and android app
     ############################################
-    # - run: flutter pub get
-    # - run: flutter pub run build_runner build
-    # - run: flutter test
-    # - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
-    # - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter pub get
+    - run: flutter pub run build_runner build
+    - run: flutter test
+    - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
 
     # setup and install screenshots package
     # - run: brew install imagemagick
@@ -91,9 +89,9 @@ jobs:
     ##############################################
     # use fastlane to deploy apps 
     ##############################################
-    # - name: Build & sign iOS app
-    #   run: fastlane build_signed --verbose
-    #   working-directory: ./ios
+    - name: Build & sign iOS app
+      run: fastlane build_signed --verbose
+      working-directory: ./ios
 
     - name: Deploy to App Store Connect
       env:
