@@ -11,9 +11,9 @@ jobs:
     runs-on: macOS-latest
     env:
       FASTLANE_PASSWORD: secrets.FASTLANE_PASSWORD
-      DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS: -t DAV
     steps:
 
+    - name: Output Build Number
     - run: echo "build-number=$GITHUB_RUN_NUMBER"
 
     # several actions use checkout 
@@ -63,7 +63,7 @@ jobs:
     - run: flutter pub get
     - run: flutter pub run build_runner build
     - run: flutter test
-    - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
+    # - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
     - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
 
     # setup and install screenshots package
@@ -86,13 +86,13 @@ jobs:
       run: fastlane build_signed --verbose
       working-directory: ./ios
 
-    # - name: Deploy to App Store Connect
-    #   run: fastlane deploy_internal --verbose
-    #   working-directory: ./ios
-
-    - name: Deploy iOS app to App Store Connect
-      run: xcrun altool --upload-app --file "./ios/Runner.ipa" --username "cicd@crowdleague.app" --password "${{ secrets.FASTLANE_PASSWORD }}" --verbose
-
-    - name: Deploy Android app to Play Store
+    - name: Deploy to App Store Connect
       run: fastlane deploy_internal --verbose
-      working-directory: ./android
+      working-directory: ./ios
+
+    # - name: Deploy iOS app to App Store Connect
+    #   run: xcrun altool --upload-app --file "./ios/Runner.ipa" --username "cicd@crowdleague.app" --password "${{ secrets.FASTLANE_PASSWORD }}" --verbose
+
+    # - name: Deploy Android app to Play Store
+    #   run: fastlane deploy_internal --verbose
+    #   working-directory: ./android
