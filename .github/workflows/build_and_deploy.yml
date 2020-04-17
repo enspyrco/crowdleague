@@ -9,8 +9,6 @@ jobs:
   build:
     name: Build and distribute
     runs-on: macOS-latest
-    env:
-      FASTLANE_PASSWORD: secrets.FASTLANE_PASSWORD
     steps:
 
     # output the build number used in this job
@@ -73,11 +71,6 @@ jobs:
     - run: flutter test
     - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
     - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
-
-    # setup and install screenshots package
-    - run: brew install imagemagick
-    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
-    - run: flutter pub global run screenshots:main
     
     ############################################################
     # setup android emulator with android-emulator-runner 
@@ -89,15 +82,25 @@ jobs:
     #     script: flutter pub global run screenshots:main
 
     ##############################################
-    # use fastlane to deploy apps 
+    # use fastlane to build ios app 
     ##############################################
     - name: Build & sign iOS app
       run: fastlane build_signed --verbose
       working-directory: ./ios
 
+    ##############################################
+    # setup and install screenshots package
+    ##############################################
+    - run: brew install imagemagick
+    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    - run: flutter pub global run screenshots:main
+
+    ##############################################
+    # use fastlane to deploy ios app 
+    ##############################################
     - name: Deploy to App Store Connect
       env:
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       run: fastlane deploy_internal --verbose
       working-directory: ./ios
 

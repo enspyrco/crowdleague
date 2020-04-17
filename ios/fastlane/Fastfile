@@ -41,8 +41,6 @@ platform :ios do
 
   desc "Deploy latest build to TestFlight"
   lane :deploy_internal do
-    # force WebDAV publishing to avoid firewall issues (still having same issue though)
-    # ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
     upload_to_testflight(
       skip_submission: true,
       skip_waiting_for_build_processing: true
@@ -52,7 +50,18 @@ platform :ios do
   # combination of the above two lanes 
   desc "Build signed app and deploy to TestFlight"
   lane :build_signed_and_deploy_internal do
-    match(type: "appstore", readonly: true)
+    # we create an unlocked keychain to avoid password prompt freeze
+    create_keychain(
+        name: "unlocked_keychain",
+        password: "doesntmatter",
+        unlock: true,
+        timeout: 3600,
+        lock_when_sleeps: false
+    )
+    match(type: "appstore", 
+          readonly: true, 
+          keychain_name: "unlocked_keychain",
+          keychain_password: "doesntmatter")
     build_app(
         workspace: "Runner.xcworkspace", 
         scheme: "Runner", 
@@ -60,8 +69,6 @@ platform :ios do
           method: "app-store"
         }
     )
-    # force WebDAV publishing to avoid firewall issues (still having same issue though)
-    # ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
     upload_to_testflight(
       skip_submission: true,
       skip_waiting_for_build_processing: true
