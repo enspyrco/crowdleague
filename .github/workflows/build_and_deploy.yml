@@ -71,15 +71,6 @@ jobs:
     - run: flutter test
     - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
     - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
-    
-    ############################################################
-    # setup android emulator with android-emulator-runner 
-    ############################################################
-    # - name: Add Android emulator and run screenshots
-    #   uses: reactivecircus/android-emulator-runner@v2
-    #   with:
-    #     api-level: 28
-    #     script: flutter pub global run screenshots:main
 
     ##############################################
     # use fastlane to build ios app 
@@ -93,7 +84,15 @@ jobs:
     ##############################################
     - run: brew install imagemagick
     - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
-    - run: flutter pub global run screenshots:main
+
+    ############################################################
+    # setup android emulator with android-emulator-runner 
+    ############################################################
+    - name: Add Android emulator and run screenshots
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 28
+        script: flutter pub global run screenshots:main
 
     ##############################################
     # use fastlane to deploy ios app 
