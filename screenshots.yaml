@@ -9,13 +9,13 @@ staging: /tmp/screenshots
 
 # A list of locales supported by the app
 locales:
-  - en-US
+  - en-AU
 
 # A map of devices to emulate
 devices:
-  # android:
-  #   test:
-  #     frame: false
+  android:
+    test:
+      frame: false
   ios:
     iPhone 11 Pro Max:
       frame: false
