@@ -1,26 +1,21 @@
 name: iOS and Android
 
 on:
+  # Trigger the workflow on push or pull request, 
+  # for dev and master branch
   push:
     branches:
+      - dev
+      - master
+  pull_request:
+    branches:
+      - dev
       - master
 
 jobs:
   build:
     name: Build and distribute
     runs-on: macOS-latest
-    
-    on:
-      # Trigger the workflow on push or pull request, 
-      # for dev and master branch
-      push:
-        branches:
-          - dev
-          - master
-      pull_request:
-        branches:
-          - dev
-          - master
     
     steps:
 
@@ -103,7 +98,7 @@ jobs:
     # ##############################################
     # # use fastlane to deploy ios app 
     # ##############################################
-    # - name: Deploy to App Store Connect
+    # - name: Deploy to App Store
     #   env:
     #     FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
     #   run: fastlane deploy_internal --verbose
@@ -112,6 +107,6 @@ jobs:
     # ##############################################
     # # use fastlane to deploy android app 
     # ##############################################
-    # - name: Deploy Android app to Play Store
+    # - name: Deploy to Play Store
     #   run: fastlane deploy_internal --verbose
     #   working-directory: ./android
