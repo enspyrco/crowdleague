@@ -21,92 +21,100 @@ jobs:
 
     # output the build number used in this job
     - name: Output Run Info
-      run: echo "build-number=$GITHUB_RUN_NUMBER \nevent = ${{ github.event_name }} \nbranch = ${{ github.ref }} \ntarget = ${{ github.base_ref }}"
+      run: echo "build-number=$GITHUB_RUN_NUMBER, event = ${{ github.event_name }}, branch = ${{ github.ref }}, target = ${{ github.base_ref }}"
 
-    # # several actions use checkout
-    # - name: Install checkout
-    #   uses: actions/checkout@v2
+    # several actions use checkout
+    - name: Install checkout
+      uses: actions/checkout@v2
     
-    # ##############################################
-    # # flutter-action
-    # ##############################################
-    # # the flutter-action action seems to need java
-    # - name: Install Java for Flutter tool
-    #   uses: actions/setup-java@v1
-    #   with:
-    #     java-version: '12.x'
-    # # use flutter-action configured with flutter channel
-    # - name: Install Flutter tool
-    #   uses: subosito/flutter-action@v1
-    #   with:
-    #     channel: 'dev' # or: 'stable' or 'beta'
+    ##############################################
+    # flutter-action
+    ##############################################
+    # the flutter-action action seems to need java
+    - name: Install Java for Flutter tool
+      uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    # use flutter-action configured with flutter channel
+    - name: Install Flutter tool
+      uses: subosito/flutter-action@v1
+      with:
+        channel: 'dev' # or: 'stable' or 'beta'
     
-    # ##############################################
-    # # setup-gcloud
-    # ##############################################
-    # # the setup-gcloud action seems to need python
-    # - name: Install python for gcloud/gsutil
-    #   uses: actions/setup-python@v1
-    #   with:
-    #     python-version: '3.x'
-    # # use setup-gcloud configured with auth credentials 
-    # - name: Install gcloud/gsutil
-    #   uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-    #   with:
-    #     version: '270.0.0'
-    #     service_account_email: ${{ secrets.GSUTIL_SERVICE_ACC_EMAIL }}
-    #     service_account_key: ${{ secrets.GSUTIL_SERVICE_ACC_PASSWORD }}
+    ##############################################
+    # setup-gcloud
+    ##############################################
+    # the setup-gcloud action seems to need python
+    - name: Install python for gcloud/gsutil
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    # use setup-gcloud configured with auth credentials 
+    - name: Install gcloud/gsutil
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '270.0.0'
+        service_account_email: ${{ secrets.GSUTIL_SERVICE_ACC_EMAIL }}
+        service_account_key: ${{ secrets.GSUTIL_SERVICE_ACC_PASSWORD }}
     
-    # ############################################
-    # # download credential files 
-    # ############################################
-    # - name: Download credential files
-    #   run: ./get-credentials.sh
+    ############################################
+    # download credential files 
+    ############################################
+    - name: Download credential files
+      run: ./get-credentials.sh
 
-    # ############################################
-    # # build ios app and android app
-    # ############################################
-    # - run: flutter pub get
-    # - run: flutter pub run build_runner build
-    # - run: flutter test
-    # - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
-    # - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
+    ############################################
+    # build ios app and android app
+    ############################################
+    - run: flutter pub get
+    - run: flutter pub run build_runner build
+    - run: flutter test
+    - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
 
-    # ##############################################
-    # # use fastlane to build ios app 
-    # ##############################################
-    # - name: Build & sign iOS app
-    #   if: github.base_ref == dev
-    #   run: fastlane build_signed --verbose
-    #   working-directory: ./ios
+    ##############################################
+    # use fastlane to build ios app 
+    ##############################################
+    - name: Build & sign iOS app
+      if: github.base_ref == refs/heads/master
+      run: fastlane build_signed --verbose
+      working-directory: ./ios
 
     # ##############################################
     # # setup and install screenshots package
     # ##############################################
-    # - run: brew install imagemagick
-    # - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    - name: Install ImageMagick for screenshots
+      if: github.base_ref == refs/heads/master
+      run: brew install imagemagick
+
+    - name: Install screenshots package 
+      if: github.base_ref == refs/heads/master
+      run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
 
     # ############################################################
     # # setup android emulator with android-emulator-runner 
     # ############################################################
-    # - name: Add Android emulator and run screenshots
-    #   uses: reactivecircus/android-emulator-runner@v2
-    #   with:
-    #     api-level: 28
-    #     script: flutter pub global run screenshots:main
+    - name: Add Android emulator and run screenshots
+      if: github.base_ref == refs/heads/master
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 28
+        script: flutter pub global run screenshots:main
 
     # ##############################################
     # # use fastlane to deploy ios app 
     # ##############################################
-    # - name: Deploy to App Store
-    #   env:
-    #     FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-    #   run: fastlane deploy_internal --verbose
-    #   working-directory: ./ios
+    - name: Deploy to App Store
+      if: github.base_ref == refs/heads/master && github.event_name == push
+      env:
+        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+      run: fastlane deploy_internal --verbose
+      working-directory: ./ios
 
     # ##############################################
     # # use fastlane to deploy android app 
     # ##############################################
-    # - name: Deploy to Play Store
-    #   run: fastlane deploy_internal --verbose
-    #   working-directory: ./android
+    - name: Deploy to Play Store
+      if: github.base_ref == refs/heads/master && github.event_name == push
+      run: fastlane deploy_internal --verbose
+      working-directory: ./android
