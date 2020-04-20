@@ -35,7 +35,8 @@ platform :ios do
 
     update_project_provisioning(
           profile: ENV["sigh_co.enspyr.crowdleague1_appstore_profile-path"],
-          build_configuration: "Release"
+          build_configuration: "Release",
+          code_signing_identity: "iOS Distribution"
     )
 
     build_app(
@@ -75,7 +76,8 @@ platform :ios do
     
     update_project_provisioning(
           profile: ENV["sigh_co.enspyr.crowdleague1_appstore_profile-path"],
-          build_configuration: "Release"
+          build_configuration: "Release",
+          code_signing_identity: "iOS Distribution"
     )
 
     build_app(
