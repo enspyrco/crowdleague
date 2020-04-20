@@ -19,6 +19,31 @@ chmod 755 ./get-credentials.sh
 ./get-credentials.sh
 ```
 
+### iOS Signing with Match
+
+We use [match](https://docs.fastlane.tools/actions/match/) to manage Provisioning Profiles and Certificates. Match uses `gc_keys.json` to authenticate, which was downloaded in the previous step.
+
+To install the required Provisioning Profiles and Certificates:
+
+```sh
+cd ios; fastlane match development
+```
+
+## Cloud Functions
+
+We use Cloud Functions for Firebase to automatically run backend code in response to events triggered by Firebase features, such as:
+
+- Initial Sign In
+- Changes to Firestore that should send an FCM
+
+The relevant code is all in `functions/`
+
+After making changes to `functions/src/index.ts`
+
+```sh
+firebase deploy --only functions
+```
+
 ## Screenshots 
 
 To setup, follow the instructions in [screenshots | Dart Package](https://pub.dev/packages/screenshots) 

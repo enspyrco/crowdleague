@@ -8,3 +8,4 @@ gsutil cp gs://crowdleague-credentials/google-services.json ./android/app/google
 gsutil cp gs://crowdleague-credentials/keystore.jks ./android/app/keystore.jks
 gsutil cp gs://crowdleague-credentials/keystore.config ./android/app/keystore.config
 gsutil cp gs://crowdleague-credentials/crowdleague-fastlane-manager.json ./android/crowdleague-fastlane-manager.json
+gsutil cp gs://crowdleague-credentials/firebase-functions-admin-key.json ./functions/firebase-functions-admin-key.json
