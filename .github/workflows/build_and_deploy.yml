@@ -1,19 +1,27 @@
 name: iOS and Android
 
 on:
+  # Trigger the workflow on push or pull request, 
+  # for dev and master branch
   push:
     branches:
+      - dev
+      - master
+  pull_request:
+    branches:
+      - dev
       - master
 
 jobs:
   build:
     name: Build and distribute
     runs-on: macOS-latest
+    
     steps:
 
     # output the build number used in this job
-    - name: Output Build Number
-      run: echo "build-number=$GITHUB_RUN_NUMBER"
+    - name: Output Run Info
+      run: echo "build-number=$GITHUB_RUN_NUMBER, event = ${{ github.event_name }}, branch = ${{ github.ref }}, target = ${{ github.base_ref }}"
 
     # several actions use checkout
     - name: Install checkout
@@ -68,36 +76,45 @@ jobs:
     # use fastlane to build ios app 
     ##############################################
     - name: Build & sign iOS app
+      if: github.ref == 'refs/heads/master'
       run: fastlane build_signed --verbose
       working-directory: ./ios
 
-    ##############################################
-    # setup and install screenshots package
-    ##############################################
-    - run: brew install imagemagick
-    - run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+    # ##############################################
+    # # setup and install screenshots package
+    # ##############################################
+    - name: Install ImageMagick for screenshots
+      if: github.ref == 'refs/heads/master'
+      run: brew install imagemagick
 
-    ############################################################
-    # setup android emulator with android-emulator-runner 
-    ############################################################
+    - name: Install screenshots package 
+      if: github.ref == 'refs/heads/master'
+      run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+
+    # ############################################################
+    # # setup android emulator with android-emulator-runner 
+    # ############################################################
     - name: Add Android emulator and run screenshots
+      if: github.ref == 'refs/heads/master'
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 28
         script: flutter pub global run screenshots:main
 
-    ##############################################
-    # use fastlane to deploy ios app 
-    ##############################################
-    - name: Deploy to App Store Connect
+    # ##############################################
+    # # use fastlane to deploy ios app 
+    # ##############################################
+    - name: Deploy to App Store
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       env:
         FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       run: fastlane deploy_internal --verbose
       working-directory: ./ios
 
-    ##############################################
-    # use fastlane to deploy android app 
-    ##############################################
-    - name: Deploy Android app to Play Store
+    # ##############################################
+    # # use fastlane to deploy android app 
+    # ##############################################
+    - name: Deploy to Play Store
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: fastlane deploy_internal --verbose
       working-directory: ./android
