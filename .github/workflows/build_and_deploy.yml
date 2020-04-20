@@ -76,7 +76,7 @@ jobs:
     # use fastlane to build ios app 
     ##############################################
     - name: Build & sign iOS app
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' || github.base_ref == 'refs/heads/master'
       run: fastlane build_signed --verbose
       working-directory: ./ios
 
@@ -84,18 +84,18 @@ jobs:
     # # setup and install screenshots package
     # ##############################################
     - name: Install ImageMagick for screenshots
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' || github.base_ref == 'refs/heads/master'
       run: brew install imagemagick
 
     - name: Install screenshots package 
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' || github.base_ref == 'refs/heads/master'
       run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
 
     # ############################################################
     # # setup android emulator with android-emulator-runner 
     # ############################################################
     - name: Add Android emulator and run screenshots
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' || github.base_ref == 'refs/heads/master'
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 28
@@ -105,7 +105,7 @@ jobs:
     # # use fastlane to deploy ios app 
     # ##############################################
     - name: Deploy to App Store
-      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/master'
       env:
         FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       run: fastlane deploy_internal --verbose
@@ -115,6 +115,6 @@ jobs:
     # # use fastlane to deploy android app 
     # ##############################################
     - name: Deploy to Play Store
-      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/master'
       run: fastlane deploy_internal --verbose
       working-directory: ./android

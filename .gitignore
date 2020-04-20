@@ -64,3 +64,8 @@ android/crowdleague-fastlane-manager.json
 ios/Flutter/.last_build_id
 # Fastlane reports
 ios/fastlane/report.xml
+
+##### Added ignores 
+
+# credential for admin SDK to use when running functions locally for testing
+functions/firebase-functions-admin-key.json
