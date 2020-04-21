@@ -29,8 +29,35 @@ class _AuthPageState extends State<AuthPage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CrowdLeagueLogo(),
+                    Text(
+                      'CROWDLEAGUE',
+                      style: TextStyle(fontSize: 40),
+                    ),
                     SizedBox(height: 20),
+                    Text(
+                      'A PLATFORM',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      'FOR CROWD SOURCING',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      'SPORTS LEAGUES',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 50),
+                    CrowdLeagueLogo(),
+                    SizedBox(height: 50),
+                    Text(
+                      'BE IN A LEAGUE',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      'OF YOUR OWN',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 100),
                     PlatformSignInButton(),
                     SizedBox(height: 20),
                     OtherOptionsButton(),
@@ -52,6 +79,18 @@ class _AuthPageState extends State<AuthPage> {
             ),
           );
         });
+  }
+}
+
+class CrowdLeagueLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Image(
+      image: AssetImage('assets/images/logo-300-greyscale.png'),
+      colorBlendMode: BlendMode.darken,
+      width: 150,
+      height: 150,
+    );
   }
 }
 
@@ -102,16 +141,6 @@ class OtherOptionsButton extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CrowdLeagueLogo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Image(
-      image: AssetImage('assets/images/logo-1024-white-bg-greyscale.png'),
-      colorBlendMode: BlendMode.darken,
     );
   }
 }
