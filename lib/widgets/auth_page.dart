@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -27,17 +29,11 @@ class _AuthPageState extends State<AuthPage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    if (supportsAppleSignIn)
-                      AppleSignInButton(
-                          style: AppleButtonStyle.black,
-                          onPressed: () => StoreProvider.of<AppState>(context)
-                              .dispatch(SignInWithApple())),
-                    SizedBox(height: 50),
-                    GoogleSignInButton(
-                      onPressed: () => StoreProvider.of<AppState>(context)
-                          .dispatch(SignInWithGoogle()),
-                      darkMode: true, // default: false
-                    )
+                    CrowdLeagueLogo(),
+                    SizedBox(height: 20),
+                    PlatformSignInButton(),
+                    SizedBox(height: 20),
+                    OtherOptionsButton(),
                   ],
                 ),
                 Column(
@@ -56,5 +52,66 @@ class _AuthPageState extends State<AuthPage> {
             ),
           );
         });
+  }
+}
+
+class PlatformSignInButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return (Platform.isIOS || Platform.isMacOS)
+        ? AppleSignInButton(
+            style: AppleButtonStyle.black,
+            onPressed: () => StoreProvider.of<AppState>(context).dispatch(
+              SignInWithApple(),
+            ),
+          )
+        : GoogleSignInButton(
+            onPressed: () => StoreProvider.of<AppState>(context)
+                .dispatch(SignInWithGoogle()),
+            darkMode: true, // default: false
+          );
+  }
+}
+
+class OtherOptionsButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ButtonTheme(
+      height: 40.0,
+      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(3.0),
+        side: BorderSide(
+          color: Colors.black,
+        ),
+      ),
+      child: RaisedButton(
+        onPressed: () {},
+        color: Colors.white,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Other Sign in Options',
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "SF Pro",
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CrowdLeagueLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Image(
+      image: AssetImage('assets/images/app-icon-large-white.png'),
+      colorBlendMode: BlendMode.darken,
+    );
   }
 }
