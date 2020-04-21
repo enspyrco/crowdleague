@@ -110,7 +110,7 @@ class CrowdLeagueLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
-      image: AssetImage('assets/images/app-icon-large-white.png'),
+      image: AssetImage('assets/images/logo-1024-white-bg-greyscale.png'),
       colorBlendMode: BlendMode.darken,
     );
   }
