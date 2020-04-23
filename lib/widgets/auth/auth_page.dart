@@ -29,34 +29,11 @@ class _AuthPageState extends State<AuthPage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      'CROWDLEAGUE',
-                      style: TextStyle(fontSize: 40),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'A PLATFORM',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Text(
-                      'FOR CROWD SOURCING',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Text(
-                      'SPORTS LEAGUES',
-                      style: TextStyle(fontSize: 20),
-                    ),
+                    ExplanationText(),
                     SizedBox(height: 50),
                     CrowdLeagueLogo(),
                     SizedBox(height: 50),
-                    Text(
-                      'BE IN A LEAGUE',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Text(
-                      'OF YOUR OWN',
-                      style: TextStyle(fontSize: 20),
-                    ),
+                    TaglineText(),
                     SizedBox(height: 100),
                     PlatformSignInButton(),
                     SizedBox(height: 20),
@@ -82,6 +59,33 @@ class _AuthPageState extends State<AuthPage> {
   }
 }
 
+class ExplanationText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'CROWDLEAGUE',
+          style: TextStyle(fontSize: 40),
+        ),
+        SizedBox(height: 20),
+        Text(
+          'A PLATFORM',
+          style: TextStyle(fontSize: 20),
+        ),
+        Text(
+          'FOR CROWD SOURCING',
+          style: TextStyle(fontSize: 20),
+        ),
+        Text(
+          'SPORTS LEAGUES',
+          style: TextStyle(fontSize: 20),
+        ),
+      ],
+    );
+  }
+}
+
 class CrowdLeagueLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -90,6 +94,24 @@ class CrowdLeagueLogo extends StatelessWidget {
       colorBlendMode: BlendMode.darken,
       width: 150,
       height: 150,
+    );
+  }
+}
+
+class TaglineText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'BE IN A LEAGUE',
+          style: TextStyle(fontSize: 20),
+        ),
+        Text(
+          'OF YOUR OWN',
+          style: TextStyle(fontSize: 20),
+        ),
+      ],
     );
   }
 }
@@ -125,7 +147,7 @@ class OtherOptionsButton extends StatelessWidget {
         ),
       ),
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () => Navigator.pushNamed(context, '/other_auth_options'),
         color: Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.min,

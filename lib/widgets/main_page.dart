@@ -14,7 +14,6 @@ class MainPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             leading: AccountButton(),
-            title: Text('CrowdLeague'),
           ),
           body: Center(child: Text('Main Page')),
           bottomNavigationBar: BottomNavigationBar(
