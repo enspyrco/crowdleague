@@ -21,15 +21,23 @@ class OtherAuthOptionsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [EmailSignInChip(true), EmailSignUpChip(false)],
             ),
-            TextField(
-              decoration: InputDecoration(
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+              child: TextField(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter a search term'),
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  labelText: 'Email',
+                ),
+              ),
             ),
+            SizedBox(height: 20),
             OtherPlatformSignInButton()
           ],
         ),
