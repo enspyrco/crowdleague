@@ -27,21 +27,104 @@ class OtherAuthOptionsPage extends StatelessWidget {
               children: [EmailSignInChip(true), EmailSignUpChip(false)],
             ),
             SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  labelText: 'Email',
-                ),
-              ),
-            ),
+            EmailTextField(),
             SizedBox(height: 20),
+            PasswordTextField(),
+            SizedBox(height: 20),
+            RepeatPasswordTextField(),
+            SizedBox(height: 20),
+            SignInButton(),
+            CreateAccountButton(),
+            SizedBox(height: 20),
+            Divider(color: Colors.black),
+            SizedBox(height: 50),
+            Text(
+              'OR',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 50),
             OtherPlatformSignInButton()
           ],
         ),
       ),
+    );
+  }
+}
+
+class EmailTextField extends StatelessWidget {
+  const EmailTextField({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+      child: TextField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+          labelText: 'Email',
+        ),
+      ),
+    );
+  }
+}
+
+class PasswordTextField extends StatelessWidget {
+  const PasswordTextField({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+      child: TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+          suffixIcon: ShowTextSuffixIcon(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+          labelText: 'Password',
+        ),
+      ),
+    );
+  }
+}
+
+class RepeatPasswordTextField extends StatelessWidget {
+  const RepeatPasswordTextField({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+      child: TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+          suffixIcon: ShowTextSuffixIcon(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+          labelText: 'Repeat Password',
+        ),
+      ),
+    );
+  }
+}
+
+class ShowTextSuffixIcon extends StatelessWidget {
+  const ShowTextSuffixIcon({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(end: 12.0),
+      child: Icon(Icons.remove_red_eye), // myIcon is a 48px-wide widget.
     );
   }
 }
@@ -89,5 +172,71 @@ class EmailSignUpChip extends StatelessWidget {
         label: Text('CREATE AN ACCOUNT'),
         selected: _selected,
         onSelected: (bool selected) {});
+  }
+}
+
+class SignInButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ButtonTheme(
+      height: 40.0,
+      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(3.0),
+        side: BorderSide(
+          color: Colors.black,
+        ),
+      ),
+      child: RaisedButton(
+        onPressed: () {},
+        color: Colors.white,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'SIGN IN',
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "SF Pro",
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CreateAccountButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ButtonTheme(
+      height: 40.0,
+      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(3.0),
+        side: BorderSide(
+          color: Colors.black,
+        ),
+      ),
+      child: RaisedButton(
+        onPressed: () {},
+        color: Colors.white,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'CREATE ACCOUNT',
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "SF Pro",
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
