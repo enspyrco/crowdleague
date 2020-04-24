@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:crowdleague/middleware/middleware.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/services/notifications_service.dart';
-import 'package:crowdleague/utils/rdt_ips.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,9 @@ import 'package:redux/redux.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
 void main() async {
-  final remoteDevtools = RemoteDevToolsMiddleware(imac22);
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final remoteDevtools = RemoteDevToolsMiddleware('192.168.0.29:8000');
 
   final store = Store<AppState>(
     appReducer,

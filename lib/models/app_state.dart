@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:crowdleague/models/enums/email_auth_mode.dart';
+import 'package:crowdleague/models/other_auth_options_view_model.dart';
 import 'package:crowdleague/models/problem.dart';
 import 'package:crowdleague/models/user.dart';
 import 'package:crowdleague/models/serializers.dart';
@@ -13,11 +15,12 @@ part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   BuiltList<Problem> get problems;
+  @nullable
+  User get user;
   int get authStep;
   int get themeMode;
   int get navIndex;
-  @nullable
-  User get user;
+  OtherAuthOptionsViewModel get otherAuthOptions;
 
   AppState._();
 
@@ -25,7 +28,9 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
     ..problems = ListBuilder<Problem>()
     ..authStep = 0
     ..navIndex = 0
-    ..themeMode = 2);
+    ..themeMode = 2
+    ..otherAuthOptions.mode = EmailAuthMode.signIn
+    ..otherAuthOptions.passwordVisible = false);
 
   factory AppState([void Function(AppStateBuilder) updates]) = _$AppState;
 

@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart' hide Action;
-import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/actions/sign_in_with_apple.dart';
 import 'package:crowdleague/models/actions/sign_in_with_google.dart';
 import 'package:crowdleague/models/app_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -122,13 +123,12 @@ class PlatformSignInButton extends StatelessWidget {
     return (Platform.isIOS || Platform.isMacOS)
         ? AppleSignInButton(
             style: AppleButtonStyle.black,
-            onPressed: () => StoreProvider.of<AppState>(context).dispatch(
+            onPressed: () => context.dispatch(
               SignInWithApple(),
             ),
           )
         : GoogleSignInButton(
-            onPressed: () => StoreProvider.of<AppState>(context)
-                .dispatch(SignInWithGoogle()),
+            onPressed: () => context.dispatch(SignInWithGoogle()),
             darkMode: true, // default: false
           );
   }

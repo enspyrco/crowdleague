@@ -1,8 +1,12 @@
 import 'dart:io';
 
-import 'package:crowdleague/models/actions/sign_in_with_apple.dart';
+import 'package:crowdleague/extensions/extensions.dart';
+import 'package:crowdleague/models/actions/set_email_auth_mode.dart';
+import 'package:crowdleague/models/actions/set_password_visibility.dart';
 import 'package:crowdleague/models/actions/sign_in_with_google.dart';
 import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/enums/email_auth_mode.dart';
+import 'package:crowdleague/models/other_auth_options_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -11,43 +15,61 @@ class OtherAuthOptionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
         ),
-      ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [EmailSignInChip(true), EmailSignUpChip(false)],
-            ),
-            SizedBox(height: 20),
-            EmailTextField(),
-            SizedBox(height: 20),
-            PasswordTextField(),
-            SizedBox(height: 20),
-            RepeatPasswordTextField(),
-            SizedBox(height: 20),
-            SignInButton(),
-            CreateAccountButton(),
-            SizedBox(height: 20),
-            Divider(color: Colors.black),
-            SizedBox(height: 50),
-            Text(
-              'OR',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 50),
-            OtherPlatformSignInButton()
-          ],
-        ),
-      ),
-    );
+        body: StoreConnector<AppState, OtherAuthOptionsViewModel>(
+          distinct: true,
+          converter: (store) => store.state.otherAuthOptions,
+          builder: (context, vm) {
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      EmailSignInChip(vm.mode == EmailAuthMode.signIn),
+                      EmailSignUpChip(vm.mode == EmailAuthMode.signUp)
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  EmailTextField(),
+                  SizedBox(height: 20),
+                  PasswordTextField(
+                    visible: vm.passwordVisible,
+                  ),
+                  SizedBox(height: 20),
+                  if (vm.mode == EmailAuthMode.signUp)
+                    RepeatPasswordTextField(
+                      visible: vm.passwordVisible,
+                    ),
+                  if (vm.mode == EmailAuthMode.signUp) SizedBox(height: 20),
+                  IndexedStack(
+                    index: vm.mode.index,
+                    children: [
+                      Center(child: SignInButton()),
+                      Center(child: CreateAccountButton()),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Divider(color: Colors.black),
+                  SizedBox(height: 50),
+                  Text(
+                    'OR',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(height: 50),
+                  OtherPlatformSignInButton()
+                ],
+              ),
+            );
+          },
+        ));
   }
 }
 
@@ -72,8 +94,11 @@ class EmailTextField extends StatelessWidget {
 }
 
 class PasswordTextField extends StatelessWidget {
+  final bool visible;
+
   const PasswordTextField({
     Key key,
+    this.visible,
   }) : super(key: key);
 
   @override
@@ -81,9 +106,11 @@ class PasswordTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
-        obscureText: true,
+        obscureText: !visible,
         decoration: InputDecoration(
-          suffixIcon: ShowTextSuffixIcon(),
+          suffixIcon: PasswordSuffixIconButton(
+            visible: visible,
+          ),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           labelText: 'Password',
@@ -94,8 +121,11 @@ class PasswordTextField extends StatelessWidget {
 }
 
 class RepeatPasswordTextField extends StatelessWidget {
+  final bool visible;
+
   const RepeatPasswordTextField({
     Key key,
+    this.visible,
   }) : super(key: key);
 
   @override
@@ -103,9 +133,11 @@ class RepeatPasswordTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
-        obscureText: true,
+        obscureText: !visible,
         decoration: InputDecoration(
-          suffixIcon: ShowTextSuffixIcon(),
+          suffixIcon: PasswordSuffixIconButton(
+            visible: visible,
+          ),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           labelText: 'Repeat Password',
@@ -115,16 +147,21 @@ class RepeatPasswordTextField extends StatelessWidget {
   }
 }
 
-class ShowTextSuffixIcon extends StatelessWidget {
-  const ShowTextSuffixIcon({
-    Key key,
-  }) : super(key: key);
+class PasswordSuffixIconButton extends StatelessWidget {
+  final bool visible;
+
+  const PasswordSuffixIconButton({Key key, this.visible}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsetsDirectional.only(end: 12.0),
-      child: Icon(Icons.remove_red_eye), // myIcon is a 48px-wide widget.
+      child: IconButton(
+        icon: (visible) ? Icon(Icons.close) : Icon(Icons.remove_red_eye),
+        onPressed: () {
+          context.dispatch(SetPasswordVisibility((b) => b..visible = !visible));
+        },
+      ),
     );
   }
 }
@@ -134,16 +171,42 @@ class OtherPlatformSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return (Platform.isIOS || Platform.isMacOS)
         ? GoogleSignInButton(
-            onPressed: () => StoreProvider.of<AppState>(context)
-                .dispatch(SignInWithGoogle()),
+            onPressed: () => context.dispatch(SignInWithGoogle()),
             darkMode: true, // default: false
           )
         : AppleSignInButton(
             style: AppleButtonStyle.black,
-            onPressed: () => StoreProvider.of<AppState>(context).dispatch(
-              SignInWithApple(),
+            onPressed: () {
+              _notImplemented(context);
+            });
+  }
+
+  Future<void> _notImplemented(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Not ready yet"),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text("Sorry! This hasn't been implemented yet."),
+                Text("If you have previously signed in on iOS you could link"),
+                Text("your google account there then use Google Sign In here."),
+              ],
             ),
-          );
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -157,7 +220,10 @@ class EmailSignInChip extends StatelessWidget {
     return ChoiceChip(
         label: Text('SIGN IN WITH EMAIL'),
         selected: _selected,
-        onSelected: (bool selected) {});
+        onSelected: (bool selected) {
+          context.dispatch(
+              SetEmailAuthMode((b) => b..mode = EmailAuthMode.signIn));
+        });
   }
 }
 
@@ -171,7 +237,10 @@ class EmailSignUpChip extends StatelessWidget {
     return ChoiceChip(
         label: Text('CREATE AN ACCOUNT'),
         selected: _selected,
-        onSelected: (bool selected) {});
+        onSelected: (bool selected) {
+          context.dispatch(
+              SetEmailAuthMode((b) => b..mode = EmailAuthMode.signUp));
+        });
   }
 }
 
