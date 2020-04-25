@@ -27,44 +27,60 @@ class OtherAuthOptionsPage extends StatelessWidget {
           builder: (context, vm) {
             return Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      EmailSignInChip(vm.mode == EmailAuthMode.signIn),
-                      EmailSignUpChip(vm.mode == EmailAuthMode.signUp)
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  EmailTextField(),
-                  SizedBox(height: 20),
-                  PasswordTextField(
-                    visible: vm.passwordVisible,
-                  ),
-                  SizedBox(height: 20),
-                  if (vm.mode == EmailAuthMode.signUp)
-                    RepeatPasswordTextField(
-                      visible: vm.passwordVisible,
+                  Flexible(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            EmailSignInChip(vm.mode == EmailAuthMode.signIn),
+                            EmailSignUpChip(vm.mode == EmailAuthMode.signUp)
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        EmailTextField(),
+                        SizedBox(height: 20),
+                        PasswordTextField(
+                          visible: vm.passwordVisible,
+                        ),
+                        SizedBox(height: 20),
+                        if (vm.mode == EmailAuthMode.signUp)
+                          RepeatPasswordTextField(
+                            visible: vm.passwordVisible,
+                          ),
+                        if (vm.mode == EmailAuthMode.signUp)
+                          SizedBox(height: 50),
+                        IndexedStack(
+                          index: vm.mode.index,
+                          children: [
+                            Center(child: SignInButton()),
+                            Center(child: CreateAccountButton()),
+                          ],
+                        ),
+                      ],
                     ),
-                  if (vm.mode == EmailAuthMode.signUp) SizedBox(height: 20),
-                  IndexedStack(
-                    index: vm.mode.index,
-                    children: [
-                      Center(child: SignInButton()),
-                      Center(child: CreateAccountButton()),
-                    ],
                   ),
-                  SizedBox(height: 20),
-                  Divider(color: Colors.black),
-                  SizedBox(height: 50),
-                  Text(
-                    'OR',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(height: 50),
-                  OtherPlatformSignInButton()
+                  Flexible(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 20),
+                        Divider(color: Colors.black),
+                        SizedBox(height: 50),
+                        Text(
+                          'OR',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        SizedBox(height: 50),
+                        OtherPlatformSignInButton()
+                      ],
+                    ),
+                  )
                 ],
               ),
             );
