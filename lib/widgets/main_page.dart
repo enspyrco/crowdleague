@@ -1,8 +1,9 @@
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/actions/sign_out_user.dart';
 import 'package:crowdleague/models/actions/store_nav_index.dart';
+import 'package:crowdleague/models/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:crowdleague/models/app_state.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -14,7 +15,6 @@ class MainPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             leading: AccountButton(),
-            title: Text('CrowdLeague'),
           ),
           body: Center(child: Text('Main Page')),
           bottomNavigationBar: BottomNavigationBar(
@@ -52,8 +52,7 @@ class MainPage extends StatelessWidget {
   }
 
   void _onItemTapped(BuildContext context, int index) {
-    StoreProvider.of<AppState>(context)
-        .dispatch(StoreNavIndex((b) => b..index = index));
+    context.dispatch(StoreNavIndex((b) => b..index = index));
   }
 }
 
@@ -70,7 +69,7 @@ class AccountButton extends StatelessWidget {
         size: 50,
       ),
       onPressed: () {
-        StoreProvider.of<AppState>(context).dispatch(SignOutUser());
+        context.dispatch(SignOutUser());
       },
     );
   }

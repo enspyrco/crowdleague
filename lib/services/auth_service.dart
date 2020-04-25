@@ -3,7 +3,7 @@ import 'package:crowdleague/models/actions/clear_user_data.dart';
 import 'package:crowdleague/models/actions/redux_action.dart';
 import 'package:crowdleague/models/actions/store_auth_step.dart';
 import 'package:crowdleague/models/actions/store_user.dart';
-import 'package:crowdleague/models/problem.dart';
+import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -65,7 +65,7 @@ class AuthService {
       // errors with code kSignInCanceledError are swallowed by the
       // GoogleSignIn.signIn() method so we can assume anything caught here
       // is a problem and send to the store for display
-      yield AddProblemObject.from(error, trace, ProblemTypeEnum.googleSignIn);
+      yield AddProblemObject.from(error, trace, ProblemType.googleSignIn);
     }
   }
 
@@ -111,7 +111,7 @@ class AuthService {
       yield StoreAuthStep((b) => b..step = 0);
       // any specific errors are caught and dealt with so we can assume
       // anything caught here is a problem and send to the store for display
-      yield AddProblemObject.from(error, trace, ProblemTypeEnum.appleSignIn);
+      yield AddProblemObject.from(error, trace, ProblemType.appleSignIn);
     }
   }
 
@@ -122,7 +122,7 @@ class AuthService {
       // TODO: add sign out for sign in with apple provider
       // see Issue #6 https://github.com/nickmeinhold/crowdleague_public/issues/6
     } catch (error, trace) {
-      return AddProblemFuture.from(error, trace, ProblemTypeEnum.signOut);
+      return AddProblemFuture.from(error, trace, ProblemType.signOut);
     }
 
     // we let the AuthStateObserver dispatch a ClearUserData action when it

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:crowdleague/models/enums/problem_type.dart';
 
 import './redux_action.dart';
 import '../problem.dart';
@@ -20,7 +21,7 @@ abstract class AddProblem extends Object
 
   factory AddProblem([void Function(AddProblemBuilder) updates]) = _$AddProblem;
   factory AddProblem.createFrom(
-      String message, String traceString, ProblemTypeEnum type) {
+      String message, String traceString, ProblemType type) {
     return AddProblem(
       (b) => b
         ..problem.replace(Problem((b) => b

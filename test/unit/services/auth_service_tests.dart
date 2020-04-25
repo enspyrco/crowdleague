@@ -1,7 +1,7 @@
 import 'package:crowdleague/models/actions/add_problem.dart';
 import 'package:crowdleague/models/actions/store_auth_step.dart';
 import 'package:crowdleague/models/actions/store_user.dart';
-import 'package:crowdleague/models/problem.dart';
+import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:test/test.dart';
 
@@ -69,8 +69,7 @@ void main() {
             TypeMatcher<StoreAuthStep>()..having((a) => a.step, 'step', 1),
             TypeMatcher<StoreAuthStep>()..having((a) => a.step, 'step', 0),
             TypeMatcher<AddProblem>()
-              ..having(
-                  (p) => p.problem.type, 'type', ProblemTypeEnum.googleSignIn)
+              ..having((p) => p.problem.type, 'type', ProblemType.googleSignIn)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: GoogleSignIn.signIn')),
             emitsDone,
@@ -125,8 +124,7 @@ void main() {
             TypeMatcher<StoreAuthStep>()..having((a) => a.step, 'step', 1),
             TypeMatcher<StoreAuthStep>()..having((a) => a.step, 'step', 0),
             TypeMatcher<AddProblem>()
-              ..having(
-                  (p) => p.problem.type, 'type', ProblemTypeEnum.appleSignIn)
+              ..having((p) => p.problem.type, 'type', ProblemType.appleSignIn)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: AppleSignIn.signIn')),
             emitsDone,

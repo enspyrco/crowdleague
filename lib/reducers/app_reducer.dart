@@ -1,5 +1,7 @@
 import 'package:crowdleague/models/actions/add_problem.dart';
 import 'package:crowdleague/models/actions/clear_user_data.dart';
+import 'package:crowdleague/models/actions/set_email_auth_mode.dart';
+import 'package:crowdleague/models/actions/set_password_visibility.dart';
 import 'package:crowdleague/models/actions/store_auth_step.dart';
 import 'package:crowdleague/models/actions/store_nav_index.dart';
 import 'package:crowdleague/models/actions/store_user.dart';
@@ -16,6 +18,8 @@ final appReducer = combineReducers<AppState>([
   TypedReducer<AppState, StoreUser>(_storeUser),
   TypedReducer<AppState, StoreAuthStep>(_storeAuthStep),
   TypedReducer<AppState, StoreNavIndex>(_storeNavIndex),
+  TypedReducer<AppState, SetEmailAuthMode>(_storeEmailAuthMode),
+  TypedReducer<AppState, SetPasswordVisibility>(_storePasswordVisibility),
 
   // ...userReducers,
 ]);
@@ -44,4 +48,14 @@ AppState _storeAuthStep(AppState state, StoreAuthStep action) {
 
 AppState _storeNavIndex(AppState state, StoreNavIndex action) {
   return state.rebuild((b) => b..navIndex = action.index);
+}
+
+AppState _storeEmailAuthMode(AppState state, SetEmailAuthMode action) {
+  return state.rebuild((b) => b..otherAuthOptions.mode = action.mode);
+}
+
+AppState _storePasswordVisibility(
+    AppState state, SetPasswordVisibility action) {
+  return state
+      .rebuild((b) => b..otherAuthOptions.passwordVisible = action.visible);
 }
