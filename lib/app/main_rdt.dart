@@ -17,7 +17,7 @@ import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final remoteDevtools = RemoteDevToolsMiddleware('192.168.0.29:8000');
+  final remoteDevtools = RemoteDevToolsMiddleware('192.168.0.6:8000');
 
   final store = Store<AppState>(
     appReducer,

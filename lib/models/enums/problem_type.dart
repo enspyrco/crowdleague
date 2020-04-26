@@ -10,6 +10,8 @@ class ProblemType extends EnumClass {
 
   static const ProblemType googleSignIn = _$googleSignIn;
   static const ProblemType appleSignIn = _$appleSignIn;
+  static const ProblemType emailSignIn = _$emailSignIn;
+  static const ProblemType emailSignUp = _$emailSignUp;
   static const ProblemType signOut = _$signOut;
 
   const ProblemType._(String name) : super(name);

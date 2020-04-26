@@ -1,9 +1,12 @@
 import 'package:crowdleague/models/actions/observe_auth_state.dart';
 import 'package:crowdleague/models/actions/print_fcm_token.dart';
 import 'package:crowdleague/models/actions/request_fcm_permissions.dart';
+import 'package:crowdleague/models/actions/sign_in_with_email.dart';
 import 'package:crowdleague/models/actions/sign_in_with_apple.dart';
 import 'package:crowdleague/models/actions/sign_in_with_google.dart';
 import 'package:crowdleague/models/actions/sign_out_user.dart';
+import 'package:crowdleague/models/actions/sign_up_with_email.dart';
+import 'package:crowdleague/models/actions/update_other_auth_options.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app_state.dart';
@@ -29,6 +32,12 @@ List<Middleware<AppState>> createMiddleware(
     ),
     TypedMiddleware<AppState, SignInWithApple>(
       _signInWithApple(authService),
+    ),
+    TypedMiddleware<AppState, SignInWithEmail>(
+      _signInWithEmail(authService),
+    ),
+    TypedMiddleware<AppState, SignUpWithEmail>(
+      _signUpWithEmail(authService),
     ),
     TypedMiddleware<AppState, SignOutUser>(
       _signOutUser(authService),
@@ -76,6 +85,39 @@ void Function(
 
     // sign in and listen to the stream and dispatch actions
     authService.appleSignInStream.listen(store.dispatch);
+  };
+}
+
+void Function(
+        Store<AppState> store, SignInWithEmail action, NextDispatcher next)
+    _signInWithEmail(AuthService authService) {
+  return (Store<AppState> store, SignInWithEmail action,
+      NextDispatcher next) async {
+    next(action);
+
+    // set the UI to waiting
+    store.dispatch(UpdateOtherAuthOptions((b) => b..waiting = true));
+
+    // attempt sign in then dispatch resulting action
+    authService
+        .signInWithEmail(store.state.otherAuthOptions.email,
+            store.state.otherAuthOptions.password)
+        .then(store.dispatch);
+  };
+}
+
+void Function(
+        Store<AppState> store, SignUpWithEmail action, NextDispatcher next)
+    _signUpWithEmail(AuthService authService) {
+  return (Store<AppState> store, SignUpWithEmail action,
+      NextDispatcher next) async {
+    next(action);
+
+    // attempt sign up then dispatch resulting action
+    authService
+        .signUpWithEmail(store.state.otherAuthOptions.email,
+            store.state.otherAuthOptions.password)
+        .then(store.dispatch);
   };
 }
 

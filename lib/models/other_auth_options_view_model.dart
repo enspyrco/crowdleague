@@ -13,13 +13,27 @@ abstract class OtherAuthOptionsViewModel
     implements
         Built<OtherAuthOptionsViewModel, OtherAuthOptionsViewModelBuilder> {
   EmailAuthMode get mode;
-  bool get passwordVisible;
+  bool get showPassword;
+  bool get waiting;
+  String get email;
+  String get password;
+  String get repeatPassword;
 
   OtherAuthOptionsViewModel._();
 
   factory OtherAuthOptionsViewModel(
           [void Function(OtherAuthOptionsViewModelBuilder) updates]) =
       _$OtherAuthOptionsViewModel;
+
+  static OtherAuthOptionsViewModelBuilder initBuilder() {
+    return OtherAuthOptionsViewModelBuilder()
+      ..mode = EmailAuthMode.signIn
+      ..showPassword = false
+      ..waiting = false
+      ..email = ''
+      ..password = ''
+      ..repeatPassword = '';
+  }
 
   Object toJson() =>
       serializers.serializeWith(OtherAuthOptionsViewModel.serializer, this);

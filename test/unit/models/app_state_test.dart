@@ -26,7 +26,7 @@ void main() {
         ..themeMode = 0
         ..navIndex = 0
         ..otherAuthOptions.mode = EmailAuthMode.signIn
-        ..otherAuthOptions.passwordVisible = true
+        ..otherAuthOptions.showPassword = true
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
 
@@ -45,7 +45,7 @@ void main() {
         ..themeMode = 0
         ..navIndex = 0
         ..otherAuthOptions.mode = EmailAuthMode.signIn
-        ..otherAuthOptions.passwordVisible = true
+        ..otherAuthOptions.showPassword = true
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
 

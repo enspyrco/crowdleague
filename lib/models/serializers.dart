@@ -2,6 +2,14 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:crowdleague/models/actions/add_problem.dart';
+import 'package:crowdleague/models/actions/clear_user_data.dart';
+import 'package:crowdleague/models/actions/observe_auth_state.dart';
+import 'package:crowdleague/models/actions/print_fcm_token.dart';
+import 'package:crowdleague/models/actions/request_fcm_permissions.dart';
+import 'package:crowdleague/models/actions/sign_in_with_email.dart';
+import 'package:crowdleague/models/actions/sign_up_with_email.dart';
+import 'package:crowdleague/models/actions/update_other_auth_options.dart';
 import 'package:crowdleague/models/app_state.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
@@ -16,7 +24,17 @@ part 'serializers.g.dart';
 /// all the generated serializers.
 ///
 /// Collection of generated serializers for the CrowdLeague app
-@SerializersFor([AppState])
+@SerializersFor([
+  AddProblem,
+  AppState,
+  ObserveAuthState,
+  RequestFCMPermissions,
+  PrintFCMToken,
+  ClearUserData,
+  UpdateOtherAuthOptions,
+  SignInWithEmail,
+  SignUpWithEmail,
+])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())
       ..add(Iso8601DateTimeSerializer()))
