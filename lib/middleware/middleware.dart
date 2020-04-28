@@ -1,16 +1,18 @@
-import 'package:crowdleague/models/actions/observe_auth_state.dart';
-import 'package:crowdleague/models/actions/print_fcm_token.dart';
-import 'package:crowdleague/models/actions/request_fcm_permissions.dart';
-import 'package:crowdleague/models/actions/sign_in_with_email.dart';
-import 'package:crowdleague/models/actions/sign_in_with_apple.dart';
-import 'package:crowdleague/models/actions/sign_in_with_google.dart';
-import 'package:crowdleague/models/actions/sign_out_user.dart';
-import 'package:crowdleague/models/actions/sign_up_with_email.dart';
-import 'package:crowdleague/models/actions/update_other_auth_options.dart';
+import 'package:crowdleague/models/actions/auth/observe_auth_state.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_apple.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
+import 'package:crowdleague/models/actions/auth/sign_out_user.dart';
+import 'package:crowdleague/models/actions/auth/sign_up_with_email.dart';
+import 'package:crowdleague/models/actions/auth/update_other_auth_options.dart';
+import 'package:crowdleague/models/actions/bundle_of_actions.dart';
+import 'package:crowdleague/models/actions/notifications/print_fcm_token.dart';
+import 'package:crowdleague/models/actions/notifications/request_fcm_permissions.dart';
+import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/enums/email_auth_step.dart';
+import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:redux/redux.dart';
-import 'package:crowdleague/models/app_state.dart';
-import 'package:crowdleague/services/auth_service.dart';
 
 /// Middleware is used for a variety of things:
 /// - Logging
@@ -24,6 +26,9 @@ import 'package:crowdleague/services/auth_service.dart';
 List<Middleware<AppState>> createMiddleware(
     {AuthService authService, NotificationsService notificationsService}) {
   return [
+    TypedMiddleware<AppState, BundleOfActions>(
+      _unwrapBundleOfActions(),
+    ),
     TypedMiddleware<AppState, ObserveAuthState>(
       _observeAuthState(authService),
     ),
@@ -49,6 +54,15 @@ List<Middleware<AppState>> createMiddleware(
       _printFCMToken(notificationsService),
     ),
   ];
+}
+
+void Function(
+        Store<AppState> store, BundleOfActions action, NextDispatcher next)
+    _unwrapBundleOfActions() {
+  return (Store<AppState> store, BundleOfActions action, NextDispatcher next) {
+    next(action);
+    action.actions.forEach(store.dispatch);
+  };
 }
 
 void Function(
@@ -96,13 +110,16 @@ void Function(
     next(action);
 
     // set the UI to waiting
-    store.dispatch(UpdateOtherAuthOptions((b) => b..waiting = true));
+    store.dispatch(UpdateOtherAuthOptions(
+        (b) => b..step = EmailAuthStep.waitingForServer));
 
     // attempt sign in then dispatch resulting action
     authService
         .signInWithEmail(store.state.otherAuthOptions.email,
             store.state.otherAuthOptions.password)
-        .then(store.dispatch);
+        .then(store.dispatch)
+        .whenComplete(() => store.dispatch(UpdateOtherAuthOptions(
+            (b) => b..step = EmailAuthStep.waitingForUser)));
   };
 }
 
@@ -113,11 +130,17 @@ void Function(
       NextDispatcher next) async {
     next(action);
 
+    // set the UI to waiting
+    store.dispatch(UpdateOtherAuthOptions(
+        (b) => b..step = EmailAuthStep.waitingForServer));
+
     // attempt sign up then dispatch resulting action
     authService
         .signUpWithEmail(store.state.otherAuthOptions.email,
             store.state.otherAuthOptions.password)
-        .then(store.dispatch);
+        .then(store.dispatch)
+        .whenComplete(() => store.dispatch(UpdateOtherAuthOptions(
+            (b) => b..step = EmailAuthStep.waitingForUser)));
   };
 }
 

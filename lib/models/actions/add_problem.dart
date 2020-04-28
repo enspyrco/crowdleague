@@ -4,11 +4,10 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:crowdleague/models/actions/redux_action.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
-
-import './redux_action.dart';
-import '../problem.dart';
-import '../serializers.dart';
+import 'package:crowdleague/models/problem.dart';
+import 'package:crowdleague/models/serializers.dart';
 
 part 'add_problem.g.dart';
 

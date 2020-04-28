@@ -1,8 +1,10 @@
 import 'package:crowdleague/app/app.dart';
 import 'package:crowdleague/middleware/middleware.dart';
+import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/models/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/services/auth_service.dart';
+import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,10 +16,20 @@ import 'package:redux/redux.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  /// we use a [GlobalKey] to allow navigation from a service
+  /// ie. without a [BuildContext])
+  ///
+  /// The [GlobalKey] is created here and passed to the [NavigationService] as
+  /// well as passed in to the [CrowdLeagueApp] widget so it can be used by the
+  /// [MaterialApp] widget
+  final navKey = GlobalKey<NavigatorState>();
+
   final store = Store<AppState>(
     appReducer,
     initialState: AppState.init(),
     middleware: [
+      ...createNavigationMiddleware(
+          navigationService: NavigationService(navKey)),
       ...createMiddleware(
         authService: AuthService(
           FirebaseAuth.instance,
@@ -29,5 +41,5 @@ void main() async {
     ],
   );
 
-  runApp(CrowdLeagueApp(store));
+  runApp(CrowdLeagueApp(store, navKey));
 }

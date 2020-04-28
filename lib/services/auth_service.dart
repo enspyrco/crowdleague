@@ -1,8 +1,14 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
-import 'package:crowdleague/models/actions/clear_user_data.dart';
+import 'package:built_collection/built_collection.dart';
+import 'package:crowdleague/models/actions/auth/clear_user_data.dart';
+import 'package:crowdleague/models/actions/auth/store_auth_step.dart';
+import 'package:crowdleague/models/actions/auth/store_user.dart';
+import 'package:crowdleague/models/actions/auth/update_other_auth_options.dart';
+import 'package:crowdleague/models/actions/bundle_of_actions.dart';
+import 'package:crowdleague/models/actions/navigation/navigate_to.dart';
+import 'package:crowdleague/models/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/models/actions/redux_action.dart';
-import 'package:crowdleague/models/actions/store_auth_step.dart';
-import 'package:crowdleague/models/actions/store_user.dart';
+import 'package:crowdleague/models/enums/email_auth_step.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -134,8 +140,8 @@ class AuthService {
           .signInWithEmailAndPassword(email: email, password: password);
 
       // successful sign in will update the onAuthStateChanged stream
-      // so there is no point in doing anything here
-      return null;
+      // but we should navigate back to home
+      return NavigatorPopAll();
     } catch (error, trace) {
       return AddProblemObject.from(error, trace, ProblemType.emailSignIn);
     }
@@ -156,9 +162,9 @@ class AuthService {
       final AuthResult _ = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      // successful sign in will update the onAuthStateChanged stream
-      // so there is no point in doing anything here
-      return null;
+      // successful sign up will update the onAuthStateChanged stream
+      // but we should navigate back to home
+      return NavigatorPopAll();
     } catch (error, trace) {
       return AddProblemObject.from(error, trace, ProblemType.emailSignUp);
     }

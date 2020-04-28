@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/models/actions/sign_in_with_email.dart';
-import 'package:crowdleague/models/actions/sign_in_with_google.dart';
-import 'package:crowdleague/models/actions/sign_up_with_email.dart';
-import 'package:crowdleague/models/actions/update_other_auth_options.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
+import 'package:crowdleague/models/actions/auth/sign_up_with_email.dart';
+import 'package:crowdleague/models/actions/auth/update_other_auth_options.dart';
+import 'package:crowdleague/models/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/models/app_state.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
+import 'package:crowdleague/models/enums/email_auth_step.dart';
 import 'package:crowdleague/models/other_auth_options_view_model.dart';
 import 'package:crowdleague/models/problem.dart';
 import 'package:crowdleague/widgets/shared/problem_alert.dart';
@@ -49,7 +51,8 @@ class OtherAuthOptionsPage extends StatelessWidget {
           distinct: true,
           converter: (store) => store.state.otherAuthOptions,
           builder: (context, vm) {
-            if (vm.waiting) return CircularProgressIndicator();
+            if (vm.step == EmailAuthStep.waitingForServer)
+              return Center(child: CircularProgressIndicator());
             return Center(
               child: Column(
                 children: [

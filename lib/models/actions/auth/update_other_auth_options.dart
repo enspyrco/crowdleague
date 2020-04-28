@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
-import 'package:crowdleague/models/other_auth_options_view_model.dart';
+import 'package:crowdleague/models/enums/email_auth_step.dart';
 
-import './redux_action.dart';
-import '../serializers.dart';
+import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/models/serializers.dart';
 
 part 'update_other_auth_options.g.dart';
 
@@ -16,11 +16,11 @@ abstract class UpdateOtherAuthOptions extends Object
     with ReduxAction
     implements Built<UpdateOtherAuthOptions, UpdateOtherAuthOptionsBuilder> {
   @nullable
-  bool get showPassword;
-  @nullable
   EmailAuthMode get mode;
   @nullable
-  bool get waiting;
+  EmailAuthStep get step;
+  @nullable
+  bool get showPassword;
   @nullable
   String get email;
   @nullable

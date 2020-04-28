@@ -1,6 +1,6 @@
 import 'package:crowdleague/models/actions/add_problem.dart';
-import 'package:crowdleague/models/actions/store_auth_step.dart';
-import 'package:crowdleague/models/actions/store_user.dart';
+import 'package:crowdleague/models/actions/auth/store_auth_step.dart';
+import 'package:crowdleague/models/actions/auth/store_user.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:test/test.dart';

@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/models/actions/sign_in_with_apple.dart';
-import 'package:crowdleague/models/actions/sign_in_with_google.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_apple.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
+import 'package:crowdleague/models/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/models/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
@@ -147,7 +148,8 @@ class OtherOptionsButton extends StatelessWidget {
         ),
       ),
       child: RaisedButton(
-        onPressed: () => Navigator.pushNamed(context, '/other_auth_options'),
+        onPressed: () => context
+            .dispatch(NavigateTo((b) => b..location = '/other_auth_options')),
         color: Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.min,

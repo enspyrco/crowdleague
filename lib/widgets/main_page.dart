@@ -1,5 +1,5 @@
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/models/actions/sign_out_user.dart';
+import 'package:crowdleague/models/actions/auth/sign_out_user.dart';
 import 'package:crowdleague/models/actions/store_nav_index.dart';
 import 'package:crowdleague/models/app_state.dart';
 import 'package:flutter/material.dart';

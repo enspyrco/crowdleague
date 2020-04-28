@@ -1,7 +1,9 @@
 import 'package:crowdleague/app/app.dart';
 import 'package:crowdleague/middleware/middleware.dart';
+import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/models/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
+import 'package:crowdleague/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:redux/redux.dart';
@@ -15,12 +17,16 @@ void main() {
       false; // remove debug banner for screenshots
   enableFlutterDriverExtension();
 
+  final navKey = GlobalKey<NavigatorState>();
+
   // create the store with mocked out service members to give fast and
   // consistent responses
   final store = Store<AppState>(
     appReducer,
     initialState: AppState.init(),
     middleware: [
+      ...createNavigationMiddleware(
+          navigationService: NavigationService(navKey)),
       ...createMiddleware(
           authService: FakeAuthService(),
           notificationsService: FakeNotificationsService()),
@@ -28,5 +34,5 @@ void main() {
     ],
   );
 
-  runApp(CrowdLeagueApp(store));
+  runApp(CrowdLeagueApp(store, navKey));
 }

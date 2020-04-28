@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:crowdleague/middleware/middleware.dart';
+import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
+import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -19,11 +21,21 @@ void main() async {
 
   final remoteDevtools = RemoteDevToolsMiddleware('192.168.0.6:8000');
 
+  /// we use a [GlobalKey] to allow navigation from a service
+  /// ie. without a [BuildContext])
+  ///
+  /// The [GlobalKey] is created here and passed to the [NavigationService] as
+  /// well as passed in to the [CrowdLeagueApp] widget so it can be used by the
+  /// [MaterialApp] widget
+  final navKey = GlobalKey<NavigatorState>();
+
   final store = Store<AppState>(
     appReducer,
     initialState: AppState.init(),
     middleware: [
       remoteDevtools,
+      ...createNavigationMiddleware(
+          navigationService: NavigationService(navKey)),
       ...createMiddleware(
         authService: AuthService(
           FirebaseAuth.instance,
@@ -43,5 +55,5 @@ void main() async {
     print(e);
   }
 
-  runApp(CrowdLeagueApp(store));
+  runApp(CrowdLeagueApp(store, navKey));
 }

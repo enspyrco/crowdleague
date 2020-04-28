@@ -1,9 +1,9 @@
 import 'package:crowdleague/models/actions/add_problem.dart';
-import 'package:crowdleague/models/actions/clear_user_data.dart';
-import 'package:crowdleague/models/actions/store_auth_step.dart';
+import 'package:crowdleague/models/actions/auth/clear_user_data.dart';
+import 'package:crowdleague/models/actions/auth/store_auth_step.dart';
+import 'package:crowdleague/models/actions/auth/store_user.dart';
+import 'package:crowdleague/models/actions/auth/update_other_auth_options.dart';
 import 'package:crowdleague/models/actions/store_nav_index.dart';
-import 'package:crowdleague/models/actions/store_user.dart';
-import 'package:crowdleague/models/actions/update_other_auth_options.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app_state.dart';
 
@@ -51,12 +51,16 @@ AppState _storeNavIndex(AppState state, StoreNavIndex action) {
 /// A single reducer for all OtherAuthOptionsViewModel members is less
 /// efficient but requires less code (actions and reducers)
 /// [UpdateOtherAuthOptions] contains values to be updated or null
+///
+/// TODO: I feel like there is a nicer way way to do this but have thought about
+/// it a lot and can't think of anything -> seek advice from others
 AppState _updateOtherAuthOptions(
     AppState state, UpdateOtherAuthOptions action) {
   return state.rebuild((a) {
     a.otherAuthOptions.mode = action.mode ?? a.otherAuthOptions.mode;
     a.otherAuthOptions.showPassword =
         action.showPassword ?? a.otherAuthOptions.showPassword;
+    a.otherAuthOptions.step = action.step ?? a.otherAuthOptions.step;
     a.otherAuthOptions.email = action.email ?? a.otherAuthOptions.email;
     a.otherAuthOptions.password =
         action.password ?? a.otherAuthOptions.password;
