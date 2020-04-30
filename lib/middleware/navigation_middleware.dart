@@ -1,5 +1,7 @@
+import 'package:crowdleague/models/actions/add_problem.dart';
 import 'package:crowdleague/models/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/models/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/models/actions/remove_problem.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app_state.dart';
@@ -21,6 +23,9 @@ List<Middleware<AppState>> createNavigationMiddleware(
     ),
     TypedMiddleware<AppState, NavigatorPopAll>(
       _navigatorPopAll(navigationService),
+    ),
+    TypedMiddleware<AppState, AddProblem>(
+      _displayProblem(navigationService),
     ),
   ];
 }
@@ -47,100 +52,13 @@ void Function(
   };
 }
 
-// void Function(
-//         Store<AppState> store, SignInWithGoogle action, NextDispatcher next)
-//     _signInWithGoogle(AuthService authService) {
-//   return (Store<AppState> store, SignInWithGoogle action,
-//       NextDispatcher next) async {
-//     next(action);
+void Function(Store<AppState> store, AddProblem action, NextDispatcher next)
+    _displayProblem(NavigationService navigationService) {
+  return (Store<AppState> store, AddProblem action, NextDispatcher next) async {
+    next(action); // add the problem to the store
 
-//     // sign in and listen to the stream and dispatch actions
-//     authService.googleSignInStream.listen(store.dispatch);
-//   };
-// }
-
-// void Function(
-//         Store<AppState> store, SignInWithApple action, NextDispatcher next)
-//     _signInWithApple(AuthService authService) {
-//   return (Store<AppState> store, SignInWithApple action,
-//       NextDispatcher next) async {
-//     next(action);
-
-//     // sign in and listen to the stream and dispatch actions
-//     authService.appleSignInStream.listen(store.dispatch);
-//   };
-// }
-
-// void Function(
-//         Store<AppState> store, SignInWithEmail action, NextDispatcher next)
-//     _signInWithEmail(AuthService authService) {
-//   return (Store<AppState> store, SignInWithEmail action,
-//       NextDispatcher next) async {
-//     next(action);
-
-//     // set the UI to waiting
-//     store.dispatch(UpdateOtherAuthOptions(
-//         (b) => b..step = EmailAuthStep.waitingForServer));
-
-//     // attempt sign in then dispatch resulting action
-//     authService
-//         .signInWithEmail(store.state.otherAuthOptions.email,
-//             store.state.otherAuthOptions.password)
-//         .then(store.dispatch)
-//         .whenComplete(() => store.dispatch(UpdateOtherAuthOptions(
-//             (b) => b..step = EmailAuthStep.waitingForUser)));
-//   };
-// }
-
-// void Function(
-//         Store<AppState> store, SignUpWithEmail action, NextDispatcher next)
-//     _signUpWithEmail(AuthService authService) {
-//   return (Store<AppState> store, SignUpWithEmail action,
-//       NextDispatcher next) async {
-//     next(action);
-
-//     // set the UI to waiting
-//     store.dispatch(UpdateOtherAuthOptions(
-//         (b) => b..step = EmailAuthStep.waitingForServer));
-
-//     // attempt sign up then dispatch resulting action
-//     authService
-//         .signUpWithEmail(store.state.otherAuthOptions.email,
-//             store.state.otherAuthOptions.password)
-//         .then(store.dispatch)
-//         .whenComplete(() => store.dispatch(UpdateOtherAuthOptions(
-//             (b) => b..step = EmailAuthStep.waitingForUser)));
-//   };
-// }
-
-// void Function(Store<AppState> store, SignOutUser action, NextDispatcher next)
-//     _signOutUser(AuthService authService) {
-//   return (Store<AppState> store, SignOutUser action,
-//       NextDispatcher next) async {
-//     next(action);
-
-//     // sign out and dispatch the resulting action
-//     authService.signOut().then(store.dispatch);
-//   };
-// }
-
-// void Function(Store<AppState> store, RequestFCMPermissions action,
-//         NextDispatcher next)
-//     _requestNotificationPermissions(NotificationsService notificationsService) {
-//   return (Store<AppState> store, RequestFCMPermissions action,
-//       NextDispatcher next) async {
-//     next(action);
-
-//     notificationsService.requestPermissions();
-//   };
-// }
-
-// void Function(Store<AppState> store, PrintFCMToken action, NextDispatcher next)
-//     _printFCMToken(NotificationsService notificationsService) {
-//   return (Store<AppState> store, PrintFCMToken action,
-//       NextDispatcher next) async {
-//     next(action);
-
-//     notificationsService.printToken();
-//   };
-// }
+    // display the problem then remove from store when alert is dismissed
+    final problem = await navigationService.display(action.problem);
+    store.dispatch(RemoveProblem((b) => b..problem = problem.toBuilder()));
+  };
+}

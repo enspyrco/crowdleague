@@ -24,4 +24,7 @@ abstract class ClearUserData extends Object
       .deserializeWith(ClearUserData.serializer, json.decode(jsonString));
 
   static Serializer<ClearUserData> get serializer => _$clearUserDataSerializer;
+
+  @override
+  String toString() => 'CLEAR_USER_DATA';
 }

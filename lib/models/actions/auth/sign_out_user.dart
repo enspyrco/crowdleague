@@ -24,4 +24,7 @@ abstract class SignOutUser extends Object
       SignOutUser.serializer, json.decode(jsonString));
 
   static Serializer<SignOutUser> get serializer => _$signOutUserSerializer;
+
+  @override
+  String toString() => 'SIGN_OUT_USER';
 }

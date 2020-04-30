@@ -26,4 +26,7 @@ abstract class NavigatorPopAll extends Object
 
   static Serializer<NavigatorPopAll> get serializer =>
       _$navigatorPopAllSerializer;
+
+  @override
+  String toString() => 'NAVIGATOR_POP_ALL';
 }

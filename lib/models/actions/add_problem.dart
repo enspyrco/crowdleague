@@ -36,4 +36,7 @@ abstract class AddProblem extends Object
       AddProblem.serializer, json.decode(jsonString));
 
   static Serializer<AddProblem> get serializer => _$addProblemSerializer;
+
+  @override
+  String toString() => 'ADD_PROBLEM';
 }

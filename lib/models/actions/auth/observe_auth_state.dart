@@ -26,4 +26,7 @@ abstract class ObserveAuthState extends Object
 
   static Serializer<ObserveAuthState> get serializer =>
       _$observeAuthStateSerializer;
+
+  @override
+  String toString() => 'OBSERVE_AUTH_STATE';
 }

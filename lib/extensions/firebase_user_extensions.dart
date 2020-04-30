@@ -8,22 +8,22 @@ extension Convert on FirebaseUser {
   User toUser() {
     return User(
       (b) => b
-        ..uid = this.uid
-        ..displayName = this.displayName ?? 'No name'
-        ..email = this.email ?? 'noemail'
-        ..photoUrl = this.photoUrl ?? 'default'
-        ..providers = (this.providerData == null)
+        ..uid = uid
+        ..displayName = displayName ?? 'No name'
+        ..email = email ?? 'noemail'
+        ..photoUrl = photoUrl ?? 'default'
+        ..providers = (providerData == null)
             ? ListBuilder()
             : ListBuilder(
-                this.providerData.map<ProviderInfo>(
-                      (provider) => ProviderInfo((b) => b
-                        ..displayName = provider.displayName
-                        ..email = provider.email
-                        ..phoneNumber = provider.phoneNumber
-                        ..photoUrl = provider.photoUrl
-                        ..providerId = provider.providerId
-                        ..uid = provider.uid),
-                    ),
+                providerData.map<ProviderInfo>(
+                  (provider) => ProviderInfo((b) => b
+                    ..displayName = provider.displayName
+                    ..email = provider.email
+                    ..phoneNumber = provider.phoneNumber
+                    ..photoUrl = provider.photoUrl
+                    ..providerId = provider.providerId
+                    ..uid = provider.uid),
+                ),
               ),
     );
   }

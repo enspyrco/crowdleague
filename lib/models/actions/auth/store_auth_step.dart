@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/serializers.dart';
 
 part 'store_auth_step.g.dart';
@@ -13,7 +14,7 @@ part 'store_auth_step.g.dart';
 abstract class StoreAuthStep extends Object
     with ReduxAction
     implements Built<StoreAuthStep, StoreAuthStepBuilder> {
-  int get step;
+  AuthStep get step;
 
   StoreAuthStep._();
 
@@ -26,4 +27,7 @@ abstract class StoreAuthStep extends Object
       .deserializeWith(StoreAuthStep.serializer, json.decode(jsonString));
 
   static Serializer<StoreAuthStep> get serializer => _$storeAuthStepSerializer;
+
+  @override
+  String toString() => 'STORE_AUTH_STEP: $step';
 }

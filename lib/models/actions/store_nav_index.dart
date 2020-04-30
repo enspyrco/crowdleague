@@ -25,4 +25,7 @@ abstract class StoreNavIndex extends Object
       .deserializeWith(StoreNavIndex.serializer, json.decode(jsonString));
 
   static Serializer<StoreNavIndex> get serializer => _$storeNavIndexSerializer;
+
+  @override
+  String toString() => 'STORE_NAV_INDEX';
 }

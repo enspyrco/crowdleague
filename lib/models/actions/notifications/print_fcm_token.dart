@@ -24,4 +24,7 @@ abstract class PrintFCMToken extends Object
       .deserializeWith(PrintFCMToken.serializer, json.decode(jsonString));
 
   static Serializer<PrintFCMToken> get serializer => _$printFCMTokenSerializer;
+
+  @override
+  String toString() => 'PRINT_FCM_TOKEN';
 }

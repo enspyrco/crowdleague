@@ -4,15 +4,11 @@ import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/models/actions/auth/sign_out_user.dart';
 import 'package:crowdleague/models/actions/auth/sign_up_with_email.dart';
-import 'package:crowdleague/models/actions/auth/update_other_auth_options.dart';
-import 'package:crowdleague/models/actions/bundle_of_actions.dart';
-import 'package:crowdleague/models/actions/notifications/print_fcm_token.dart';
-import 'package:crowdleague/models/actions/notifications/request_fcm_permissions.dart';
-import 'package:crowdleague/models/app_state.dart';
-import 'package:crowdleague/models/enums/email_auth_step.dart';
+import 'package:crowdleague/models/actions/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/services/auth_service.dart';
-import 'package:crowdleague/services/notifications_service.dart';
 import 'package:redux/redux.dart';
+import 'package:crowdleague/models/app_state.dart';
 
 /// Middleware is used for a variety of things:
 /// - Logging
@@ -23,12 +19,8 @@ import 'package:redux/redux.dart';
 ///
 /// The output of an action can perform another action using the [NextDispatcher]
 ///
-List<Middleware<AppState>> createMiddleware(
-    {AuthService authService, NotificationsService notificationsService}) {
+List<Middleware<AppState>> createAuthMiddleware({AuthService authService}) {
   return [
-    TypedMiddleware<AppState, BundleOfActions>(
-      _unwrapBundleOfActions(),
-    ),
     TypedMiddleware<AppState, ObserveAuthState>(
       _observeAuthState(authService),
     ),
@@ -47,22 +39,7 @@ List<Middleware<AppState>> createMiddleware(
     TypedMiddleware<AppState, SignOutUser>(
       _signOutUser(authService),
     ),
-    TypedMiddleware<AppState, RequestFCMPermissions>(
-      _requestNotificationPermissions(notificationsService),
-    ),
-    TypedMiddleware<AppState, PrintFCMToken>(
-      _printFCMToken(notificationsService),
-    ),
   ];
-}
-
-void Function(
-        Store<AppState> store, BundleOfActions action, NextDispatcher next)
-    _unwrapBundleOfActions() {
-  return (Store<AppState> store, BundleOfActions action, NextDispatcher next) {
-    next(action);
-    action.actions.forEach(store.dispatch);
-  };
 }
 
 void Function(
@@ -110,37 +87,39 @@ void Function(
     next(action);
 
     // set the UI to waiting
-    store.dispatch(UpdateOtherAuthOptions(
-        (b) => b..step = EmailAuthStep.waitingForServer));
+    store.dispatch(UpdateOtherAuthOptionsPage(
+        (b) => b..step = AuthStep.signingInWithEmail));
 
     // attempt sign in then dispatch resulting action
-    authService
-        .signInWithEmail(store.state.otherAuthOptions.email,
-            store.state.otherAuthOptions.password)
-        .then(store.dispatch)
-        .whenComplete(() => store.dispatch(UpdateOtherAuthOptions(
-            (b) => b..step = EmailAuthStep.waitingForUser)));
+    final dismissAuthPageOrDisplayProblem = await authService.signInWithEmail(
+        store.state.otherAuthOptionsPage.email,
+        store.state.otherAuthOptionsPage.password);
+
+    store.dispatch(dismissAuthPageOrDisplayProblem);
+
+    // finish by resetting the UI of the auth page
+    store.dispatch(
+        UpdateOtherAuthOptionsPage((b) => b..step = AuthStep.waitingForInput));
   };
 }
 
 void Function(
         Store<AppState> store, SignUpWithEmail action, NextDispatcher next)
     _signUpWithEmail(AuthService authService) {
-  return (Store<AppState> store, SignUpWithEmail action,
-      NextDispatcher next) async {
+  return (Store<AppState> store, SignUpWithEmail action, NextDispatcher next) {
     next(action);
 
     // set the UI to waiting
-    store.dispatch(UpdateOtherAuthOptions(
-        (b) => b..step = EmailAuthStep.waitingForServer));
+    store.dispatch(UpdateOtherAuthOptionsPage(
+        (b) => b..step = AuthStep.signingUpWithEmail));
 
     // attempt sign up then dispatch resulting action
     authService
-        .signUpWithEmail(store.state.otherAuthOptions.email,
-            store.state.otherAuthOptions.password)
-        .then(store.dispatch)
-        .whenComplete(() => store.dispatch(UpdateOtherAuthOptions(
-            (b) => b..step = EmailAuthStep.waitingForUser)));
+        .signUpWithEmail(store.state.otherAuthOptionsPage.email,
+            store.state.otherAuthOptionsPage.password)
+        .then<dynamic>(store.dispatch)
+        .whenComplete(() => store.dispatch(UpdateOtherAuthOptionsPage(
+            (b) => b..step = AuthStep.waitingForInput)));
   };
 }
 
@@ -150,28 +129,11 @@ void Function(Store<AppState> store, SignOutUser action, NextDispatcher next)
       NextDispatcher next) async {
     next(action);
 
-    // sign out and dispatch the resulting action
-    authService.signOut().then(store.dispatch);
-  };
-}
+    // sign out and dispatch the resulting problem if there is one
+    final actionAfterSignout = await authService.signOut();
 
-void Function(Store<AppState> store, RequestFCMPermissions action,
-        NextDispatcher next)
-    _requestNotificationPermissions(NotificationsService notificationsService) {
-  return (Store<AppState> store, RequestFCMPermissions action,
-      NextDispatcher next) async {
-    next(action);
-
-    notificationsService.requestPermissions();
-  };
-}
-
-void Function(Store<AppState> store, PrintFCMToken action, NextDispatcher next)
-    _printFCMToken(NotificationsService notificationsService) {
-  return (Store<AppState> store, PrintFCMToken action,
-      NextDispatcher next) async {
-    next(action);
-
-    notificationsService.printToken();
+    if (actionAfterSignout != null) {
+      store.dispatch(actionAfterSignout);
+    }
   };
 }

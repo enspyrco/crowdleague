@@ -28,4 +28,7 @@ abstract class RequestFCMPermissions extends Object
 
   static Serializer<RequestFCMPermissions> get serializer =>
       _$requestFCMPermissionsSerializer;
+
+  @override
+  String toString() => 'REQUEST_FCM_PERMISSIONS';
 }

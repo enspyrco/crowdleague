@@ -1,7 +1,9 @@
 import 'dart:io';
 
-import 'package:crowdleague/middleware/middleware.dart';
+import 'package:crowdleague/middleware/app_middleware.dart';
+import 'package:crowdleague/middleware/auth_middleware.dart';
 import 'package:crowdleague/middleware/navigation_middleware.dart';
+import 'package:crowdleague/middleware/notifications_middleware.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
@@ -34,14 +36,16 @@ void main() async {
     initialState: AppState.init(),
     middleware: [
       remoteDevtools,
+      ...createAppMiddleware(),
+      ...createAuthMiddleware(
+          authService: AuthService(
+        FirebaseAuth.instance,
+        GoogleSignIn(scopes: <String>['email']),
+        AppleSignInObject(),
+      )),
       ...createNavigationMiddleware(
           navigationService: NavigationService(navKey)),
-      ...createMiddleware(
-        authService: AuthService(
-          FirebaseAuth.instance,
-          GoogleSignIn(scopes: <String>['email']),
-          AppleSignInObject(),
-        ),
+      ...createNotificationsMiddleware(
         notificationsService: NotificationsService(FirebaseMessaging()),
       ),
     ],

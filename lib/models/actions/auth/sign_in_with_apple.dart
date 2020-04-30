@@ -26,4 +26,7 @@ abstract class SignInWithApple extends Object
 
   static Serializer<SignInWithApple> get serializer =>
       _$signInWithAppleSerializer;
+
+  @override
+  String toString() => 'SIGN_IN_WITH_APPLE';
 }

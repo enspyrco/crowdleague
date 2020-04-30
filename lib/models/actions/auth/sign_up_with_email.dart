@@ -26,4 +26,7 @@ abstract class SignUpWithEmail extends Object
 
   static Serializer<SignUpWithEmail> get serializer =>
       _$signUpWithEmailSerializer;
+
+  @override
+  String toString() => 'SIGN_UP_WITH_EMAIL';
 }

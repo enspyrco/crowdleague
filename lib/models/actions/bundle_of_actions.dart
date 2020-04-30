@@ -28,4 +28,7 @@ abstract class BundleOfActions extends Object
 
   static Serializer<BundleOfActions> get serializer =>
       _$bundleOfActionsSerializer;
+
+  @override
+  String toString() => 'BUNDLE_OF_ACTIONS';
 }

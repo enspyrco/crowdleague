@@ -9,11 +9,11 @@ class ProblemAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Dammit!"),
+      title: Text('Dammit!'),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Text("Looks like there was a problem."),
+            Text('Looks like there was a problem.'),
             SizedBox(height: 20),
             Text(problem.message),
           ],
@@ -23,7 +23,7 @@ class ProblemAlert extends StatelessWidget {
         FlatButton(
           child: Text('OK'),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop<Problem>(problem);
           },
         ),
       ],

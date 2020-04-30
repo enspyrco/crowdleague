@@ -25,4 +25,7 @@ abstract class NavigateTo extends Object
       NavigateTo.serializer, json.decode(jsonString));
 
   static Serializer<NavigateTo> get serializer => _$navigateToSerializer;
+
+  @override
+  String toString() => 'NAVIGATE_TO: $location';
 }

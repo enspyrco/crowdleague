@@ -26,4 +26,7 @@ abstract class SignInWithGoogle extends Object
 
   static Serializer<SignInWithGoogle> get serializer =>
       _$signInWithGoogleSerializer;
+
+  @override
+  String toString() => 'SIGN_IN_WITH_GOOGLE';
 }

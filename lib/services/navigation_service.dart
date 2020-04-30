@@ -1,4 +1,7 @@
-import 'package:flutter/widgets.dart';
+import 'package:crowdleague/models/problem.dart';
+import 'package:crowdleague/widgets/shared/problem_alert.dart';
+import 'package:flutter/material.dart';
+// import 'package:flutter/widgets.dart';
 
 class NavigationService {
   NavigationService(this._navKey);
@@ -43,5 +46,15 @@ class NavigationService {
 
   void popHome() {
     _navKey.currentState.popUntil(ModalRoute.withName('/'));
+  }
+
+  Future<Problem> display(Problem problem) {
+    return showDialog<Problem>(
+        context: _navKey.currentState.overlay.context,
+        builder: (BuildContext context) {
+          return ProblemAlert(
+            problem: problem,
+          );
+        });
   }
 }

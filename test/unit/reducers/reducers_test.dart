@@ -3,6 +3,7 @@ import 'package:crowdleague/models/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/models/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/models/actions/auth/store_user.dart';
 import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
@@ -73,10 +74,11 @@ void main() {
       );
 
       // dispatch action to store auth step
-      store.dispatch(StoreAuthStep((b) => b..step = 1));
+      store.dispatch(
+          StoreAuthStep((b) => b..step = AuthStep.signingInWithApple));
 
       // check that the store has the expected value
-      expect(store.state.authStep, 1);
+      expect(store.state.authPage.step, AuthStep.signingInWithApple);
     });
 
     // test(

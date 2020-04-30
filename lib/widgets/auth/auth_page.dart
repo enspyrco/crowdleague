@@ -5,6 +5,7 @@ import 'package:crowdleague/models/actions/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/models/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -19,45 +20,67 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, int>(
-        distinct: true,
-        converter: (store) => store.state.authStep,
-        builder: (context, authState) {
-          return Material(
-            child: IndexedStack(
-              alignment: Alignment.center,
-              index: authState,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ExplanationText(),
-                    SizedBox(height: 50),
-                    CrowdLeagueLogo(),
-                    SizedBox(height: 50),
-                    TaglineText(),
-                    SizedBox(height: 100),
-                    PlatformSignInButton(),
-                    SizedBox(height: 20),
-                    OtherOptionsButton(),
-                  ],
-                ),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircularProgressIndicator(),
-                      Text('Contacting Auth Provider...')
-                    ]),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircularProgressIndicator(),
-                      Text('Signing in with Firebase...')
-                    ]),
-              ],
-            ),
-          );
-        });
+    return Material(
+        child: StoreConnector<AppState, AuthStep>(
+            distinct: true,
+            converter: (store) => store.state.authPage.step,
+            builder: (context, step) {
+              switch (step) {
+                case AuthStep.waitingForInput:
+                  return PageContents();
+                case AuthStep.signingInWithApple:
+                  return WaitingIndicator('Contacting Apple...');
+                case AuthStep.signingInWithGoogle:
+                  return WaitingIndicator('Contacting Google...');
+                case AuthStep.signingInWithEmail:
+                  return WaitingIndicator('Signing In With Email...');
+                case AuthStep.signingUpWithEmail:
+                  return WaitingIndicator('Signing Up With Email...');
+                case AuthStep.signingInWithFirebase:
+                  return WaitingIndicator('Signing in with Firebase...');
+                default:
+                  return WaitingIndicator('Who the heck knows?');
+              }
+            }));
+  }
+}
+
+class WaitingIndicator extends StatelessWidget {
+  final String message;
+  const WaitingIndicator(
+    this.message, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[CircularProgressIndicator(), Text(message)]);
+  }
+}
+
+class PageContents extends StatelessWidget {
+  const PageContents({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        ExplanationText(),
+        SizedBox(height: 50),
+        CrowdLeagueLogo(),
+        SizedBox(height: 50),
+        TaglineText(),
+        SizedBox(height: 100),
+        PlatformSignInButton(),
+        SizedBox(height: 20),
+        OtherOptionsButton(),
+      ],
+    );
   }
 }
 
@@ -158,7 +181,7 @@ class OtherOptionsButton extends StatelessWidget {
               'Other Sign in Options',
               style: TextStyle(
                   fontSize: 16.0,
-                  fontFamily: "SF Pro",
+                  fontFamily: 'SF Pro',
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
             ),

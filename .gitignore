@@ -44,8 +44,6 @@ app.*.map.json
 
 ############ added ignores 
 
-# mock data with potentially identifying info 
-lib/utilities/rdt_ips.dart
 # generated files 
 *.g.dart
 # don't add project credentials to version control

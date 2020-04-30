@@ -28,4 +28,7 @@ abstract class StoreUser extends Object
       StoreUser.serializer, json.decode(jsonString));
 
   static Serializer<StoreUser> get serializer => _$storeUserSerializer;
+
+  @override
+  String toString() => 'STORE_USER';
 }

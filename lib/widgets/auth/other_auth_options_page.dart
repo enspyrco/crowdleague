@@ -5,14 +5,12 @@ import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/models/actions/auth/sign_up_with_email.dart';
-import 'package:crowdleague/models/actions/auth/update_other_auth_options.dart';
-import 'package:crowdleague/models/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/models/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
-import 'package:crowdleague/models/enums/email_auth_step.dart';
-import 'package:crowdleague/models/other_auth_options_view_model.dart';
 import 'package:crowdleague/models/problem.dart';
-import 'package:crowdleague/widgets/shared/problem_alert.dart';
+import 'package:crowdleague/models/vm_other_auth_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -30,29 +28,19 @@ class OtherAuthOptionsPage extends StatelessWidget {
             StoreConnector<AppState, BuiltList<Problem>>(
               distinct: true,
               converter: (store) => store.state.problems,
-              onDidChange: (problems) {
-                if (problems.isNotEmpty) {
-                  showDialog<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ProblemAlert(
-                          problem: problems.first,
-                        );
-                      });
-                }
-              },
               builder: (context, vm) {
                 return Container();
               },
             )
           ],
         ),
-        body: StoreConnector<AppState, OtherAuthOptionsViewModel>(
+        body: StoreConnector<AppState, VmOtherAuthOptionsPage>(
           distinct: true,
-          converter: (store) => store.state.otherAuthOptions,
+          converter: (store) => store.state.otherAuthOptionsPage,
           builder: (context, vm) {
-            if (vm.step == EmailAuthStep.waitingForServer)
+            if (vm.step != AuthStep.waitingForInput) {
               return Center(child: CircularProgressIndicator());
+            }
             return Center(
               child: Column(
                 children: [
@@ -128,7 +116,7 @@ class EmailTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
         onChanged: (value) {
-          context.dispatch(UpdateOtherAuthOptions((b) => b..email = value));
+          context.dispatch(UpdateOtherAuthOptionsPage((b) => b..email = value));
         },
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
@@ -155,7 +143,7 @@ class PasswordTextField extends StatelessWidget {
       child: TextField(
         obscureText: !visible,
         onChanged: (value) => context
-            .dispatch(UpdateOtherAuthOptions((b) => b..password = value)),
+            .dispatch(UpdateOtherAuthOptionsPage((b) => b..password = value)),
         decoration: InputDecoration(
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
@@ -183,8 +171,8 @@ class RepeatPasswordTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
         obscureText: !visible,
-        onChanged: (value) => context
-            .dispatch(UpdateOtherAuthOptions((b) => b..repeatPassword = value)),
+        onChanged: (value) => context.dispatch(
+            UpdateOtherAuthOptionsPage((b) => b..repeatPassword = value)),
         decoration: InputDecoration(
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
@@ -211,7 +199,7 @@ class PasswordSuffixIconButton extends StatelessWidget {
         icon: (visible) ? Icon(Icons.close) : Icon(Icons.remove_red_eye),
         onPressed: () {
           context.dispatch(
-              UpdateOtherAuthOptions((b) => b..showPassword = !visible));
+              UpdateOtherAuthOptionsPage((b) => b..showPassword = !visible));
         },
       ),
     );
@@ -238,13 +226,13 @@ class OtherPlatformSignInButton extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Not ready yet"),
+          title: Text('Not ready yet'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text("Sorry! This hasn't been implemented yet."),
-                Text("If you have previously signed in on iOS you could link"),
-                Text("your google account there then use Google Sign In here."),
+                Text('If you have previously signed in on iOS you could link'),
+                Text('your google account there then use Google Sign In here.'),
               ],
             ),
           ),
@@ -273,8 +261,8 @@ class EmailSignInChip extends StatelessWidget {
         label: Text('SIGN IN WITH EMAIL'),
         selected: _selected,
         onSelected: (bool selected) {
-          context.dispatch(
-              UpdateOtherAuthOptions((b) => b..mode = EmailAuthMode.signIn));
+          context.dispatch(UpdateOtherAuthOptionsPage(
+              (b) => b..mode = EmailAuthMode.signIn));
         });
   }
 }
@@ -290,8 +278,8 @@ class EmailSignUpChip extends StatelessWidget {
         label: Text('CREATE AN ACCOUNT'),
         selected: _selected,
         onSelected: (bool selected) {
-          context.dispatch(
-              UpdateOtherAuthOptions((b) => b..mode = EmailAuthMode.signUp));
+          context.dispatch(UpdateOtherAuthOptionsPage(
+              (b) => b..mode = EmailAuthMode.signUp));
         });
   }
 }
@@ -320,7 +308,7 @@ class SignInButton extends StatelessWidget {
               'SIGN IN',
               style: TextStyle(
                   fontSize: 16.0,
-                  fontFamily: "SF Pro",
+                  fontFamily: 'SF Pro',
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
             ),
@@ -355,7 +343,7 @@ class CreateAccountButton extends StatelessWidget {
               'CREATE ACCOUNT',
               style: TextStyle(
                   fontSize: 16.0,
-                  fontFamily: "SF Pro",
+                  fontFamily: 'SF Pro',
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
             ),
