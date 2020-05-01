@@ -13,9 +13,12 @@ part 'problem.g.dart';
 
 abstract class Problem implements Built<Problem, ProblemBuilder> {
   ProblemType get type;
+
   String get message;
+
   @nullable
   String get trace;
+
   @nullable
   AppState get state;
 

@@ -7,8 +7,8 @@ import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/models/user.dart';
 
-import './redux_action.dart';
-import '../serializers.dart';
+import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/models/serializers.dart';
 
 part 'store_user.g.dart';
 
@@ -28,4 +28,7 @@ abstract class StoreUser extends Object
       StoreUser.serializer, json.decode(jsonString));
 
   static Serializer<StoreUser> get serializer => _$storeUserSerializer;
+
+  @override
+  String toString() => 'STORE_USER';
 }

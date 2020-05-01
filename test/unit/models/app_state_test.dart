@@ -1,5 +1,6 @@
 import 'package:crowdleague/models/app_state.dart';
-import 'package:crowdleague/models/enums/email_auth_mode.dart';
+import 'package:crowdleague/models/enums/auth_step.dart';
+import 'package:crowdleague/models/vm_other_auth_options_page.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/problem_mocks.dart';
@@ -22,15 +23,14 @@ void main() {
   group('ApState', () {
     test('members take expected values', () {
       final appState = AppState((b) => b
-        ..authStep = 0
+        ..authPage.step = AuthStep.waitingForInput
         ..themeMode = 0
         ..navIndex = 0
-        ..otherAuthOptions.mode = EmailAuthMode.signIn
-        ..otherAuthOptions.passwordVisible = true
+        ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
 
-      expect(appState.authStep, 0);
+      expect(appState.authPage.step, AuthStep.waitingForInput);
       expect(appState.themeMode, 0);
       expect(appState.problems, [mockProblem]);
       expect(appState.user, mockUser);
@@ -41,11 +41,10 @@ void main() {
     // TODO: check that that json produced is as expected
     test('toJson produces correct json string', () {
       final appState = AppState((b) => b
-        ..authStep = 0
+        ..authPage.step = AuthStep.waitingForInput
         ..themeMode = 0
         ..navIndex = 0
-        ..otherAuthOptions.mode = EmailAuthMode.signIn
-        ..otherAuthOptions.passwordVisible = true
+        ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
 

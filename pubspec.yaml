@@ -14,8 +14,6 @@ dependencies:
   built_collection:
   redux:
   flutter_redux:
-  redux_remote_devtools:
-  redux_logging:
   
   firebase_auth:
   google_sign_in:
@@ -25,6 +23,10 @@ dependencies:
   cloud_firestore:
   firebase_messaging:
   google_maps_flutter:
+
+  # remove before app store / play store submission 
+  redux_remote_devtools:
+  redux_logging:
 
 dev_dependencies:
   flutter_test:

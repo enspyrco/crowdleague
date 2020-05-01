@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import './redux_action.dart';
-import '../serializers.dart';
+import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/models/serializers.dart';
 
 part 'print_fcm_token.g.dart';
 
@@ -24,4 +24,7 @@ abstract class PrintFCMToken extends Object
       .deserializeWith(PrintFCMToken.serializer, json.decode(jsonString));
 
   static Serializer<PrintFCMToken> get serializer => _$printFCMTokenSerializer;
+
+  @override
+  String toString() => 'PRINT_FCM_TOKEN';
 }

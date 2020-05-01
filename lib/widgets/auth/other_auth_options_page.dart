@@ -1,12 +1,16 @@
 import 'dart:io';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/models/actions/set_email_auth_mode.dart';
-import 'package:crowdleague/models/actions/set_password_visibility.dart';
-import 'package:crowdleague/models/actions/sign_in_with_google.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
+import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
+import 'package:crowdleague/models/actions/auth/sign_up_with_email.dart';
+import 'package:crowdleague/models/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
-import 'package:crowdleague/models/other_auth_options_view_model.dart';
+import 'package:crowdleague/models/problem.dart';
+import 'package:crowdleague/models/vm_other_auth_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -20,11 +24,23 @@ class OtherAuthOptionsPage extends StatelessWidget {
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
+          actions: [
+            StoreConnector<AppState, BuiltList<Problem>>(
+              distinct: true,
+              converter: (store) => store.state.problems,
+              builder: (context, vm) {
+                return Container();
+              },
+            )
+          ],
         ),
-        body: StoreConnector<AppState, OtherAuthOptionsViewModel>(
+        body: StoreConnector<AppState, VmOtherAuthOptionsPage>(
           distinct: true,
-          converter: (store) => store.state.otherAuthOptions,
+          converter: (store) => store.state.otherAuthOptionsPage,
           builder: (context, vm) {
+            if (vm.step != AuthStep.waitingForInput) {
+              return Center(child: CircularProgressIndicator());
+            }
             return Center(
               child: Column(
                 children: [
@@ -45,12 +61,12 @@ class OtherAuthOptionsPage extends StatelessWidget {
                         EmailTextField(),
                         SizedBox(height: 20),
                         PasswordTextField(
-                          visible: vm.passwordVisible,
+                          visible: vm.showPassword,
                         ),
                         SizedBox(height: 20),
                         if (vm.mode == EmailAuthMode.signUp)
                           RepeatPasswordTextField(
-                            visible: vm.passwordVisible,
+                            visible: vm.showPassword,
                           ),
                         if (vm.mode == EmailAuthMode.signUp)
                           SizedBox(height: 50),
@@ -99,6 +115,9 @@ class EmailTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
+        onChanged: (value) {
+          context.dispatch(UpdateOtherAuthOptionsPage((b) => b..email = value));
+        },
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -123,6 +142,8 @@ class PasswordTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
         obscureText: !visible,
+        onChanged: (value) => context
+            .dispatch(UpdateOtherAuthOptionsPage((b) => b..password = value)),
         decoration: InputDecoration(
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
@@ -150,6 +171,8 @@ class RepeatPasswordTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
         obscureText: !visible,
+        onChanged: (value) => context.dispatch(
+            UpdateOtherAuthOptionsPage((b) => b..repeatPassword = value)),
         decoration: InputDecoration(
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
@@ -175,7 +198,8 @@ class PasswordSuffixIconButton extends StatelessWidget {
       child: IconButton(
         icon: (visible) ? Icon(Icons.close) : Icon(Icons.remove_red_eye),
         onPressed: () {
-          context.dispatch(SetPasswordVisibility((b) => b..visible = !visible));
+          context.dispatch(
+              UpdateOtherAuthOptionsPage((b) => b..showPassword = !visible));
         },
       ),
     );
@@ -202,13 +226,13 @@ class OtherPlatformSignInButton extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Not ready yet"),
+          title: Text('Not ready yet'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text("Sorry! This hasn't been implemented yet."),
-                Text("If you have previously signed in on iOS you could link"),
-                Text("your google account there then use Google Sign In here."),
+                Text('If you have previously signed in on iOS you could link'),
+                Text('your google account there then use Google Sign In here.'),
               ],
             ),
           ),
@@ -237,8 +261,8 @@ class EmailSignInChip extends StatelessWidget {
         label: Text('SIGN IN WITH EMAIL'),
         selected: _selected,
         onSelected: (bool selected) {
-          context.dispatch(
-              SetEmailAuthMode((b) => b..mode = EmailAuthMode.signIn));
+          context.dispatch(UpdateOtherAuthOptionsPage(
+              (b) => b..mode = EmailAuthMode.signIn));
         });
   }
 }
@@ -254,8 +278,8 @@ class EmailSignUpChip extends StatelessWidget {
         label: Text('CREATE AN ACCOUNT'),
         selected: _selected,
         onSelected: (bool selected) {
-          context.dispatch(
-              SetEmailAuthMode((b) => b..mode = EmailAuthMode.signUp));
+          context.dispatch(UpdateOtherAuthOptionsPage(
+              (b) => b..mode = EmailAuthMode.signUp));
         });
   }
 }
@@ -273,7 +297,9 @@ class SignInButton extends StatelessWidget {
         ),
       ),
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+          context.dispatch(SignInWithEmail());
+        },
         color: Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -282,7 +308,7 @@ class SignInButton extends StatelessWidget {
               'SIGN IN',
               style: TextStyle(
                   fontSize: 16.0,
-                  fontFamily: "SF Pro",
+                  fontFamily: 'SF Pro',
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
             ),
@@ -306,7 +332,9 @@ class CreateAccountButton extends StatelessWidget {
         ),
       ),
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+          context.dispatch(SignUpWithEmail());
+        },
         color: Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -315,7 +343,7 @@ class CreateAccountButton extends StatelessWidget {
               'CREATE ACCOUNT',
               style: TextStyle(
                   fontSize: 16.0,
-                  fontFamily: "SF Pro",
+                  fontFamily: 'SF Pro',
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
             ),

@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import './redux_action.dart';
-import '../serializers.dart';
+import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/models/serializers.dart';
 
 part 'request_fcm_permissions.g.dart';
 
@@ -28,4 +28,7 @@ abstract class RequestFCMPermissions extends Object
 
   static Serializer<RequestFCMPermissions> get serializer =>
       _$requestFCMPermissionsSerializer;
+
+  @override
+  String toString() => 'REQUEST_FCM_PERMISSIONS';
 }

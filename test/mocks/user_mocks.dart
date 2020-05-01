@@ -14,4 +14,4 @@ final mockUser = User((a) => a
   ..uid = 'id'
   ..displayName = 'name'
   ..photoUrl = 'url'
-  ..providers = ListBuilder([mockProviderInfo]));
+  ..providers = ListBuilder(<dynamic>[mockProviderInfo]));

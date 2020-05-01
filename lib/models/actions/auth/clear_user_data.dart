@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import './redux_action.dart';
-import '../serializers.dart';
+import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/models/serializers.dart';
 
 part 'clear_user_data.g.dart';
 
@@ -24,4 +24,7 @@ abstract class ClearUserData extends Object
       .deserializeWith(ClearUserData.serializer, json.decode(jsonString));
 
   static Serializer<ClearUserData> get serializer => _$clearUserDataSerializer;
+
+  @override
+  String toString() => 'CLEAR_USER_DATA';
 }

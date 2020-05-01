@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import './redux_action.dart';
-import '../serializers.dart';
+import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/models/serializers.dart';
 
 part 'sign_out_user.g.dart';
 
@@ -24,4 +24,7 @@ abstract class SignOutUser extends Object
       SignOutUser.serializer, json.decode(jsonString));
 
   static Serializer<SignOutUser> get serializer => _$signOutUserSerializer;
+
+  @override
+  String toString() => 'SIGN_OUT_USER';
 }
