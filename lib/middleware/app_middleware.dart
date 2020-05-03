@@ -1,5 +1,5 @@
 import 'package:crowdleague/models/actions/bundle_of_actions.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 import 'package:redux/redux.dart';
 
 /// Middleware is used for a variety of things:

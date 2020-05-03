@@ -3,7 +3,7 @@ import 'package:crowdleague/models/actions/remove_problem.dart';
 import 'package:crowdleague/reducers/auth_reducers.dart';
 import 'package:crowdleague/reducers/navigation_reducers.dart';
 import 'package:redux/redux.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 
 /// Reducers specify how the application"s state changes in response to actions
 /// sent to the store.

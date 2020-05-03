@@ -4,7 +4,7 @@ import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/models/actions/navigation/navigate_to.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';

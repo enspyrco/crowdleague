@@ -10,16 +10,18 @@ import 'package:crowdleague/models/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/models/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/models/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/models/actions/notifications/request_fcm_permissions.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/auth/provider_info.dart';
+import 'package:crowdleague/models/auth/vm_auth_page.dart';
+import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
+import 'package:crowdleague/models/conversations/conversation_item.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
+import 'package:crowdleague/models/enums/nav_bar_selection.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
-import 'package:crowdleague/models/problem.dart';
-import 'package:crowdleague/models/provider_info.dart';
-import 'package:crowdleague/models/route_info.dart';
-import 'package:crowdleague/models/user.dart';
-import 'package:crowdleague/models/vm_auth_page.dart';
-import 'package:crowdleague/models/vm_other_auth_options_page.dart';
+import 'package:crowdleague/models/navigation/problem.dart';
+import 'package:crowdleague/models/auth/user.dart';
+import 'package:crowdleague/models/navigation/route_info.dart';
 
 part 'serializers.g.dart';
 

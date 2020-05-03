@@ -6,8 +6,8 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/models/actions/redux_action.dart';
-import 'package:crowdleague/models/route_info.dart';
-import 'package:crowdleague/models/serializers.dart';
+import 'package:crowdleague/models/navigation/route_info.dart';
+import 'package:crowdleague/models/app/serializers.dart';
 
 part 'remove_route_info.g.dart';
 

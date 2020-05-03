@@ -11,7 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
 import 'package:crowdleague/app/app.dart';

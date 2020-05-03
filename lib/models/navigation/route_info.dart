@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/models/serializers.dart';
+import 'package:crowdleague/models/app/serializers.dart';
 
 part 'route_info.g.dart';
 

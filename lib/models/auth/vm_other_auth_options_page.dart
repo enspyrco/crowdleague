@@ -6,7 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
-import 'package:crowdleague/models/serializers.dart';
+import 'package:crowdleague/models/app/serializers.dart';
 
 part 'vm_other_auth_options_page.g.dart';
 

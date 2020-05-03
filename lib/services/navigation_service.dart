@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/problem.dart';
+import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/widgets/shared/problem_alert.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';

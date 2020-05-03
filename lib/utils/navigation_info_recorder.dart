@@ -1,7 +1,7 @@
 import 'package:crowdleague/models/actions/navigation/add_route_info.dart';
 import 'package:crowdleague/models/actions/navigation/remove_route_info.dart';
 import 'package:crowdleague/models/actions/navigation/replace_route_info.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 

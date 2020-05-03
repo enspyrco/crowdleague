@@ -1,16 +1,16 @@
 import 'package:crowdleague/models/actions/navigation/add_route_info.dart';
 import 'package:crowdleague/models/actions/navigation/remove_route_info.dart';
 import 'package:crowdleague/models/actions/navigation/replace_route_info.dart';
-import 'package:crowdleague/models/actions/store_nav_index.dart';
+import 'package:crowdleague/models/actions/store_nav_bar_selection.dart';
 import 'package:redux/redux.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 
 /// Reducers specify how the application"s state changes in response to actions
 /// sent to the store.
 ///
 /// Each reducer returns a new [AppState].
 final navigationReducers = <AppState Function(AppState, dynamic)>[
-  TypedReducer<AppState, StoreNavIndex>(_storeNavIndex),
+  TypedReducer<AppState, StoreNavBarSelection>(_storeNavBarSelection),
   TypedReducer<AppState, AddRouteInfo>(_addRouteInfo),
   TypedReducer<AppState, RemoveRouteInfo>(_removeRouteInfo),
   TypedReducer<AppState, ReplaceRouteInfo>(_replaceRouteInfo),
@@ -30,6 +30,6 @@ AppState _replaceRouteInfo(AppState state, ReplaceRouteInfo action) {
     ..routes.add(action.newInfo));
 }
 
-AppState _storeNavIndex(AppState state, StoreNavIndex action) {
-  return state.rebuild((b) => b..navIndex = action.index);
+AppState _storeNavBarSelection(AppState state, StoreNavBarSelection action) {
+  return state.rebuild((b) => b..navBarSelection = action.selection);
 }

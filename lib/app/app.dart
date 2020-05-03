@@ -1,8 +1,8 @@
 import 'package:crowdleague/models/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/models/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/models/actions/notifications/request_fcm_permissions.dart';
-import 'package:crowdleague/models/app_state.dart';
-import 'package:crowdleague/models/user.dart';
+import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/utils/navigation_info_recorder.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
