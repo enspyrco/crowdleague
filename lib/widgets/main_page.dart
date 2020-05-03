@@ -1,5 +1,6 @@
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/actions/auth/sign_out_user.dart';
+import 'package:crowdleague/models/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/models/actions/store_nav_bar_selection.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
@@ -21,37 +22,59 @@ class MainPage extends StatelessWidget {
           body: BodyWidget(
             selection: selection,
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Text(
-                  'sports_basketball',
-                  style: TextStyle(
-                    fontFamily: 'maticons',
-                  ),
-                ),
-                title: Text('Home'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.business),
-                title: Text('Business'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.message),
-                title: Text('Conversations'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.more_vert),
-                title: Text('More'),
-              ),
-            ],
-            type: BottomNavigationBarType.fixed,
-            currentIndex: selection.index,
-            selectedItemColor: Colors.amber[800],
-            onTap: (index) => _onItemTapped(context, index),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              context.dispatch(
+                  NavigateTo((b) => b..location = '/new_conversation'));
+            },
+            child: Icon(Icons.add),
+            backgroundColor: Colors.grey,
           ),
+          bottomNavigationBar: NavBar(selectedIndex: selection.index),
         );
       },
+    );
+  }
+}
+
+class NavBar extends StatelessWidget {
+  final int selectedIndex;
+
+  const NavBar({
+    @required this.selectedIndex,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Text(
+            'sports_basketball',
+            style: TextStyle(
+              fontFamily: 'maticons',
+            ),
+          ),
+          title: Text('Home'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.business),
+          title: Text('Business'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.message),
+          title: Text('Conversations'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.more_vert),
+          title: Text('More'),
+        ),
+      ],
+      type: BottomNavigationBarType.fixed,
+      currentIndex: selectedIndex,
+      selectedItemColor: Colors.amber[800],
+      onTap: (index) => _onItemTapped(context, index),
     );
   }
 

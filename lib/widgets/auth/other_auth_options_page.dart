@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
@@ -10,7 +9,6 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
-import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -24,15 +22,6 @@ class OtherAuthOptionsPage extends StatelessWidget {
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
-          actions: [
-            StoreConnector<AppState, BuiltList<Problem>>(
-              distinct: true,
-              converter: (store) => store.state.problems,
-              builder: (context, vm) {
-                return Container();
-              },
-            )
-          ],
         ),
         body: StoreConnector<AppState, VmOtherAuthOptionsPage>(
           distinct: true,

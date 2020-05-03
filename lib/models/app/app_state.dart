@@ -9,6 +9,7 @@ import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/conversation_item.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
+import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
@@ -23,6 +24,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   int get themeMode;
   NavBarSelection get navBarSelection;
   BuiltList<RouteInfo> get routes;
+  BuiltList<Leaguer> get leaguers;
   BuiltList<ConversationItem> get conversations;
   VmOtherAuthOptionsPage get otherAuthOptionsPage;
   VmAuthPage get authPage;

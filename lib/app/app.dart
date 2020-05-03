@@ -6,6 +6,7 @@ import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/utils/navigation_info_recorder.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
+import 'package:crowdleague/widgets/conversations/new_conversation_page.dart';
 import 'package:crowdleague/widgets/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -48,8 +49,8 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
                   : (themeMode == 1) ? ThemeMode.dark : ThemeMode.system,
               home: CheckAuth(), // becomes the route named '/'
               routes: <String, WidgetBuilder>{
-                '/other_auth_options': (BuildContext context) =>
-                    OtherAuthOptionsPage()
+                '/other_auth_options': (context) => OtherAuthOptionsPage(),
+                '/new_conversation': (context) => NewConversationPage()
               },
             );
           }),
