@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/middleware/app_middleware.dart';
-import 'package:crowdleague/middleware/auth_middleware.dart';
-import 'package:crowdleague/middleware/navigation_middleware.dart';
-import 'package:crowdleague/middleware/notifications_middleware.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
+import 'package:crowdleague/services/leaguers_service.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,33 +30,40 @@ void main() async {
   /// [MaterialApp] widget
   final navKey = GlobalKey<NavigatorState>();
 
+  // Create services
+  final authService = AuthService(
+    FirebaseAuth.instance,
+    GoogleSignIn(scopes: <String>['email']),
+    AppleSignInObject(),
+  );
+  final leaguersService = LeaguersService(firestore: Firestore.instance);
+  final navigationService = NavigationService(navKey);
+  final notificationsService = NotificationsService(FirebaseMessaging());
+
+  // Create the redux store
   final store = Store<AppState>(
     appReducer,
     initialState: AppState.init(),
     middleware: [
       remoteDevtools,
-      ...createAppMiddleware(),
-      ...createAuthMiddleware(
-          authService: AuthService(
-        FirebaseAuth.instance,
-        GoogleSignIn(scopes: <String>['email']),
-        AppleSignInObject(),
-      )),
-      ...createNavigationMiddleware(
-          navigationService: NavigationService(navKey)),
-      ...createNotificationsMiddleware(
-        notificationsService: NotificationsService(FirebaseMessaging()),
-      ),
+      ...createAppMiddleware(
+          authService: authService,
+          leaguersService: leaguersService,
+          navigationService: navigationService,
+          notificationsService: notificationsService),
     ],
   );
 
+  // pass in the store to RDT
   remoteDevtools.store = store;
 
+  // try to connect and print out any exception thrown
   try {
     await remoteDevtools.connect();
   } on SocketException catch (e) {
     print(e);
   }
 
+  // Fire up the app
   runApp(CrowdLeagueApp(store, navKey));
 }

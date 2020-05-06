@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
-import 'package:crowdleague/models/actions/add_problem.dart';
+import 'package:crowdleague/models/actions/navigation/add_problem.dart';
 import 'package:crowdleague/models/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/models/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
@@ -15,9 +15,13 @@ import 'package:crowdleague/models/auth/provider_info.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/conversation_item.dart';
+import 'package:crowdleague/models/conversations/vm_new_conversation_leaguers.dart';
+import 'package:crowdleague/models/conversations/vm_new_conversation_page.dart';
+import 'package:crowdleague/models/conversations/vm_new_conversation_selections.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
+import 'package:crowdleague/models/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
@@ -43,5 +47,7 @@ part 'serializers.g.dart';
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())
-      ..add(Iso8601DateTimeSerializer()))
+      ..add(Iso8601DateTimeSerializer())
+      ..addBuilderFactory(const FullType(BuiltList, [FullType(Leaguer)]),
+          () => ListBuilder<Leaguer>()))
     .build();

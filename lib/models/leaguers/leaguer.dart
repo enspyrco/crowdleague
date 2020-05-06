@@ -10,7 +10,9 @@ part 'leaguer.g.dart';
 
 abstract class Leaguer implements Built<Leaguer, LeaguerBuilder> {
   String get id;
+  @nullable
   String get name;
+  @nullable
   String get photoUrl;
 
   Leaguer._();

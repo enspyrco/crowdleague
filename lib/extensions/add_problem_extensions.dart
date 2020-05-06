@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/actions/add_problem.dart';
+import 'package:crowdleague/models/actions/navigation/add_problem.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 

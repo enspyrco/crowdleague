@@ -13,6 +13,7 @@ class ProblemType extends EnumClass {
   static const ProblemType emailSignIn = _$emailSignIn;
   static const ProblemType emailSignUp = _$emailSignUp;
   static const ProblemType signOut = _$signOut;
+  static const ProblemType retrieveLeaguers = _$retrieveLeaguers;
 
   const ProblemType._(String name) : super(name);
 

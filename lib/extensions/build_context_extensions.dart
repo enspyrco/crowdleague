@@ -8,3 +8,9 @@ extension StoreProviderDispatch on BuildContext {
     return StoreProvider.of<AppState>(this).dispatch(action);
   }
 }
+
+extension StoreProviderGetState on BuildContext {
+  AppState get appState {
+    return StoreProvider.of<AppState>(this).state;
+  }
+}
