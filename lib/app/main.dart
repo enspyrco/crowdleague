@@ -4,6 +4,7 @@ import 'package:crowdleague/middleware/app_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/services/auth_service.dart';
+import 'package:crowdleague/services/conversations_service.dart';
 import 'package:crowdleague/services/leaguers_service.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
@@ -33,6 +34,8 @@ void main() async {
   );
   final leaguersService = LeaguersService(firestore: Firestore.instance);
   final navigationService = NavigationService(navKey);
+  final conversationsService =
+      ConversationsService(firestore: Firestore.instance);
   final notificationsService = NotificationsService(FirebaseMessaging());
 
   /// Create the redux store
@@ -44,6 +47,7 @@ void main() async {
           authService: authService,
           leaguersService: leaguersService,
           navigationService: navigationService,
+          conversationsService: conversationsService,
           notificationsService: notificationsService),
     ],
   );

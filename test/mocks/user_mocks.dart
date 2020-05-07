@@ -11,7 +11,7 @@ final mockProviderInfo = ProviderInfo((b) => b
 
 final mockUser = User((a) => a
   ..email = 'email'
-  ..uid = 'id'
+  ..id = 'id'
   ..displayName = 'name'
   ..photoUrl = 'url'
   ..providers = ListBuilder(<dynamic>[mockProviderInfo]));

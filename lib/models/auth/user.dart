@@ -14,7 +14,7 @@ part 'user.g.dart';
 /// A list of [ProviderInfo]: providers
 abstract class User implements Built<User, UserBuilder> {
   /// The uid of the user's Firebase account.
-  String get uid;
+  String get id;
 
   /// The name of the user.
   String get displayName;

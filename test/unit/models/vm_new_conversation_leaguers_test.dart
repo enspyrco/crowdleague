@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:crowdleague/models/conversations/vm_new_conversation_leaguers.dart';
+import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/models/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,20 +19,20 @@ void main() {
   group('VmNewConversationLeaguers', () {
     test('toJson produces correct json string', () {
       final leaguer1 = Leaguer((b) => b
-        ..id = '1'
-        ..name = 'Andrea Jonus'
+        ..uid = '1'
+        ..displayName = 'Andrea Jonus'
         ..photoUrl =
             'https://lh3.googleusercontent.com/a-/AOh14GgpUMMFMDDMSfOSCUunGMkJdJ5TPkmbrU-cQEo6yZk=s96-c');
 
       final leaguer2 = Leaguer((b) => b
-        ..id = '2'
-        ..name = 'Nick Meinhold'
+        ..uid = '2'
+        ..displayName = 'Nick Meinhold'
         ..photoUrl =
             'https://lh3.googleusercontent.com/a-/AOh14GjI7gPhw0micPDoMr3PWmsRzksx0kc-z47wMKCpJQ=s96-c');
 
       final leaguer3 = Leaguer((b) => b
-        ..id = '3'
-        ..name = 'David Micallef'
+        ..uid = '3'
+        ..displayName = 'David Micallef'
         ..photoUrl =
             'https://lh3.googleusercontent.com/a-/AOh14GgcLuTiYf_wdIIMAw5CPaBDQowtVTHczbRV8eZrIQ=s96-c');
 

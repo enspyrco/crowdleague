@@ -11,8 +11,9 @@ part 'conversation_item.g.dart';
 
 abstract class ConversationItem
     implements Built<ConversationItem, ConversationItemBuilder> {
+  String get conversationId;
   BuiltList<String> get uids;
-  BuiltList<String> get photoUrls;
+  BuiltList<String> get photoURLs;
   BuiltList<String> get displayNames;
 
   ConversationItem._();

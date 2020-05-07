@@ -48,6 +48,10 @@ class NavigationService {
     _navKey.currentState.popUntil(ModalRoute.withName('/'));
   }
 
+  void replaceCurrentWith(String newRouteName) {
+    _navKey.currentState.pushReplacementNamed(newRouteName);
+  }
+
   Future<Problem> display(Problem problem) {
     return showDialog<Problem>(
         context: _navKey.currentState.overlay.context,

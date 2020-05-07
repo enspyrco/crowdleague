@@ -16,8 +16,9 @@ class LeaguersService {
       final snapshot = await collection.getDocuments();
       final leaguers = snapshot.documents.map<
           Leaguer>((user) => Leaguer((b) => b
-        ..id = user.data['uid'] as String
-        ..name = user.data['name'] as String ?? user.data['uid'] as String
+        ..uid = user.data['uid'] as String
+        ..displayName =
+            user.data['name'] as String ?? user.data['uid'] as String
         ..photoUrl = user.data['photoUrl'] as String ??
             'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'));
 

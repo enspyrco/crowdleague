@@ -8,7 +8,7 @@ extension Convert on FirebaseUser {
   User toUser() {
     return User(
       (b) => b
-        ..uid = uid
+        ..id = uid
         ..displayName = displayName ?? 'No name'
         ..email = email ?? 'noemail'
         ..photoUrl = photoUrl ?? 'default'

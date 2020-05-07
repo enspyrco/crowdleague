@@ -9,7 +9,7 @@ class ConversationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.network(item.photoUrls.first),
+      leading: Image.network(item.photoURLs.first),
       title: Text(item.displayNames.first),
     );
   }

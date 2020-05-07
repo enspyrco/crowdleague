@@ -1,16 +1,16 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/models/actions/leaguers/retrieve_leaguers.dart';
+import 'package:crowdleague/models/actions/navigation/navigator_replace_current.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/conversations/vm_new_conversation_leaguers.dart';
+import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/models/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/widgets/conversations/new_conversation/new_conversation_leaguers_list.dart';
 import 'package:crowdleague/widgets/conversations/new_conversation/new_conversation_selections_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
-import 'package:crowdleague/extensions/extensions.dart';
 
 class NewConversationPage extends StatelessWidget {
   @override
@@ -53,7 +53,11 @@ class NewConversationPage extends StatelessWidget {
             return (hasSelections)
                 ? FloatingActionButton(
                     onPressed: () {
-                      if (hasSelections) context.dispatch(CreateConversation());
+                      if (hasSelections) {
+                        context.dispatch(CreateConversation());
+                        context.dispatch(NavigatorReplaceCurrent(
+                            (b) => b..newLocation = '/conversation'));
+                      }
                     },
                     child: Icon(Icons.done),
                     backgroundColor: Colors.grey)

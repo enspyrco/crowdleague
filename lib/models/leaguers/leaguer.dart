@@ -9,9 +9,9 @@ import 'package:crowdleague/models/app/serializers.dart';
 part 'leaguer.g.dart';
 
 abstract class Leaguer implements Built<Leaguer, LeaguerBuilder> {
-  String get id;
+  String get uid;
   @nullable
-  String get name;
+  String get displayName;
   @nullable
   String get photoUrl;
 
