@@ -29,7 +29,7 @@ class FakeAuthService extends Fake implements AuthService {
     controller.add(StoreUser((b) => b.user = null));
     controller.add(
       StoreUser((b) => b.user
-        ..uid = 'id'
+        ..id = 'id'
         ..email = 'email'
         ..displayName = 'name'
         ..photoUrl = 'url'),

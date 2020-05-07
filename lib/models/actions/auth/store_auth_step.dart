@@ -7,7 +7,7 @@ import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/models/actions/redux_action.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
-import 'package:crowdleague/models/serializers.dart';
+import 'package:crowdleague/models/app/serializers.dart';
 
 part 'store_auth_step.g.dart';
 

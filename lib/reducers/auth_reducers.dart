@@ -3,7 +3,7 @@ import 'package:crowdleague/models/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/models/actions/auth/store_user.dart';
 import 'package:crowdleague/models/actions/auth/update_other_auth_options_page.dart';
 import 'package:redux/redux.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 
 /// Reducers specify how the application"s state changes in response to actions
 /// sent to the store.

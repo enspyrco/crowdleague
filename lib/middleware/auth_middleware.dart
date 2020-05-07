@@ -8,7 +8,7 @@ import 'package:crowdleague/models/actions/auth/update_other_auth_options_page.d
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:redux/redux.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 
 /// Middleware is used for a variety of things:
 /// - Logging

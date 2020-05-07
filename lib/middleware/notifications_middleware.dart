@@ -2,7 +2,7 @@ import 'package:crowdleague/models/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/models/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:redux/redux.dart';
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 
 /// Middleware is used for a variety of things:
 /// - Logging

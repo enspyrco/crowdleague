@@ -1,11 +1,13 @@
 import 'package:crowdleague/models/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/models/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/models/actions/notifications/request_fcm_permissions.dart';
-import 'package:crowdleague/models/app_state.dart';
-import 'package:crowdleague/models/user.dart';
+import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/utils/navigation_info_recorder.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
+import 'package:crowdleague/widgets/conversations/conversation/conversation_page.dart';
+import 'package:crowdleague/widgets/conversations/new_conversation/new_conversation_page.dart';
 import 'package:crowdleague/widgets/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -48,8 +50,9 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
                   : (themeMode == 1) ? ThemeMode.dark : ThemeMode.system,
               home: CheckAuth(), // becomes the route named '/'
               routes: <String, WidgetBuilder>{
-                '/other_auth_options': (BuildContext context) =>
-                    OtherAuthOptionsPage()
+                '/other_auth_options': (context) => OtherAuthOptionsPage(),
+                '/conversation': (context) => ConversationPage(),
+                '/new_conversation': (context) => NewConversationPage()
               },
             );
           }),
@@ -68,7 +71,7 @@ class CheckAuth extends StatelessWidget {
         distinct: true,
         converter: (store) => store.state.user,
         builder: (context, user) {
-          return (user == null || user.uid == null) ? AuthPage() : MainPage();
+          return (user == null || user.id == null) ? AuthPage() : MainPage();
         });
   }
 }

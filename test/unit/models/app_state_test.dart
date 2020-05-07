@@ -1,6 +1,8 @@
-import 'package:crowdleague/models/app_state.dart';
+import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
+import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
-import 'package:crowdleague/models/vm_other_auth_options_page.dart';
+import 'package:crowdleague/models/enums/nav_bar_selection.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/problem_mocks.dart';
@@ -25,8 +27,9 @@ void main() {
       final appState = AppState((b) => b
         ..authPage.step = AuthStep.waitingForInput
         ..themeMode = 0
-        ..navIndex = 0
+        ..navBarSelection = NavBarSelection.home
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
+        ..newConversationsPage = VmNewConversationPage.initBuilder()
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
 
@@ -43,8 +46,9 @@ void main() {
       final appState = AppState((b) => b
         ..authPage.step = AuthStep.waitingForInput
         ..themeMode = 0
-        ..navIndex = 0
+        ..navBarSelection = NavBarSelection.home
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
+        ..newConversationsPage = VmNewConversationPage.initBuilder()
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
 

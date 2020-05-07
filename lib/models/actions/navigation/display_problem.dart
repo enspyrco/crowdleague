@@ -6,8 +6,8 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/models/actions/redux_action.dart';
-import 'package:crowdleague/models/problem.dart';
-import 'package:crowdleague/models/serializers.dart';
+import 'package:crowdleague/models/navigation/problem.dart';
+import 'package:crowdleague/models/app/serializers.dart';
 
 part 'display_problem.g.dart';
 

@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/problem.dart';
+import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/widgets/shared/problem_alert.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
@@ -46,6 +46,10 @@ class NavigationService {
 
   void popHome() {
     _navKey.currentState.popUntil(ModalRoute.withName('/'));
+  }
+
+  void replaceCurrentWith(String newRouteName) {
+    _navKey.currentState.pushReplacementNamed(newRouteName);
   }
 
   Future<Problem> display(Problem problem) {

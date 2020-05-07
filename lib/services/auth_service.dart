@@ -12,11 +12,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 
 class AuthService {
-  AuthService(this._fireAuth, this._googleSignIn, this._appleSignIn);
-
   final FirebaseAuth _fireAuth;
   final GoogleSignIn _googleSignIn;
   final AppleSignInObject _appleSignIn;
+
+  AuthService(this._fireAuth, this._googleSignIn, this._appleSignIn);
 
   // Map FirebaseUser objects emitted by FirebaseAuth to a StoreUser action,
   // which can be dispatched by the store.

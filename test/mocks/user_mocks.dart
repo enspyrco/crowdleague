@@ -1,6 +1,6 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:crowdleague/models/provider_info.dart';
-import 'package:crowdleague/models/user.dart';
+import 'package:crowdleague/models/auth/provider_info.dart';
+import 'package:crowdleague/models/auth/user.dart';
 
 final mockProviderInfo = ProviderInfo((b) => b
   ..displayName = 'name'
@@ -11,7 +11,7 @@ final mockProviderInfo = ProviderInfo((b) => b
 
 final mockUser = User((a) => a
   ..email = 'email'
-  ..uid = 'id'
+  ..id = 'id'
   ..displayName = 'name'
   ..photoUrl = 'url'
   ..providers = ListBuilder(<dynamic>[mockProviderInfo]));

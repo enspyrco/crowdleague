@@ -1,6 +1,6 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:crowdleague/models/provider_info.dart';
-import 'package:crowdleague/models/user.dart';
+import 'package:crowdleague/models/auth/provider_info.dart';
+import 'package:crowdleague/models/auth/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 extension Convert on FirebaseUser {
@@ -8,7 +8,7 @@ extension Convert on FirebaseUser {
   User toUser() {
     return User(
       (b) => b
-        ..uid = uid
+        ..id = uid
         ..displayName = displayName ?? 'No name'
         ..email = email ?? 'noemail'
         ..photoUrl = photoUrl ?? 'default'
