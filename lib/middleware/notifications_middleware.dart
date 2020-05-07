@@ -1,5 +1,5 @@
-import 'package:crowdleague/models/actions/notifications/print_fcm_token.dart';
-import 'package:crowdleague/models/actions/notifications/request_fcm_permissions.dart';
+import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
+import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';

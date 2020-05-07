@@ -3,7 +3,7 @@ import 'package:crowdleague/middleware/conversations_middleware.dart';
 import 'package:crowdleague/middleware/leaguers_middleware.dart';
 import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/middleware/notifications_middleware.dart';
-import 'package:crowdleague/models/actions/meta/bundle_of_actions.dart';
+import 'package:crowdleague/actions/meta/bundle_of_actions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/conversations_service.dart';

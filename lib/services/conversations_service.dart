@@ -1,8 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/extensions/add_problem_extensions.dart';
-import 'package:crowdleague/models/actions/conversations/store_selected_conversation.dart';
-import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
+import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 

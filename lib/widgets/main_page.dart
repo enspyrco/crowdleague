@@ -1,7 +1,7 @@
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/models/actions/auth/sign_out_user.dart';
-import 'package:crowdleague/models/actions/navigation/navigate_to.dart';
-import 'package:crowdleague/models/actions/navigation/store_nav_bar_selection.dart';
+import 'package:crowdleague/actions/auth/sign_out_user.dart';
+import 'package:crowdleague/actions/navigation/navigate_to.dart';
+import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
 import 'package:crowdleague/widgets/conversations/conversations_page.dart';

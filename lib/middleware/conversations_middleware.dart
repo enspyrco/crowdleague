@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/actions/conversations/create_conversation.dart';
+import 'package:crowdleague/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/services/conversations_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';

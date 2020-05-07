@@ -1,5 +1,5 @@
-import 'package:crowdleague/models/actions/conversations/store_selected_conversation.dart';
-import 'package:crowdleague/models/actions/conversations/update_new_conversation_page.dart';
+import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
+import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 

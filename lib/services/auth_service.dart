@@ -1,9 +1,9 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
-import 'package:crowdleague/models/actions/auth/clear_user_data.dart';
-import 'package:crowdleague/models/actions/auth/store_auth_step.dart';
-import 'package:crowdleague/models/actions/auth/store_user.dart';
-import 'package:crowdleague/models/actions/navigation/navigator_pop_all.dart';
-import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/actions/auth/clear_user_data.dart';
+import 'package:crowdleague/actions/auth/store_auth_step.dart';
+import 'package:crowdleague/actions/auth/store_user.dart';
+import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';

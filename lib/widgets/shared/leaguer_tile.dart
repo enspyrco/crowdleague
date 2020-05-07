@@ -1,5 +1,5 @@
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/models/actions/conversations/update_new_conversation_page.dart';
+import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:flutter/material.dart';
 

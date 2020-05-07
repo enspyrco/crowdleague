@@ -1,7 +1,7 @@
-import 'package:crowdleague/models/actions/navigation/add_problem.dart';
-import 'package:crowdleague/models/actions/auth/clear_user_data.dart';
-import 'package:crowdleague/models/actions/auth/store_auth_step.dart';
-import 'package:crowdleague/models/actions/auth/store_user.dart';
+import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/auth/clear_user_data.dart';
+import 'package:crowdleague/actions/auth/store_auth_step.dart';
+import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';

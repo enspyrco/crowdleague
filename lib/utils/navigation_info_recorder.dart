@@ -1,6 +1,6 @@
-import 'package:crowdleague/models/actions/navigation/record_added_route_info.dart';
-import 'package:crowdleague/models/actions/navigation/record_removed_route_info.dart';
-import 'package:crowdleague/models/actions/navigation/record_replaced_route_info.dart';
+import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
+import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
+import 'package:crowdleague/actions/navigation/record_replaced_route_info.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';

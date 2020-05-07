@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/extensions/add_problem_extensions.dart';
-import 'package:crowdleague/models/actions/leaguers/store_leaguers.dart';
-import 'package:crowdleague/models/actions/redux_action.dart';
+import 'package:crowdleague/actions/leaguers/store_leaguers.dart';
+import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 

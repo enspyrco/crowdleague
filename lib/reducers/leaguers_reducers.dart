@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/actions/leaguers/store_leaguers.dart';
+import 'package:crowdleague/actions/leaguers/store_leaguers.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 
