@@ -1,3 +1,4 @@
+import 'package:crowdleague/actions/conversations/retrieve_conversation_items.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/actions/auth/sign_out_user.dart';
 import 'package:crowdleague/actions/navigation/navigate_to.dart';
@@ -79,6 +80,9 @@ class NavBar extends StatelessWidget {
   }
 
   void _onItemTapped(BuildContext context, int index) {
+    if (index == NavBarSelection.conversations.index) {
+      context.dispatch(RetrieveConversationItems());
+    }
     context.dispatch(StoreNavBarSelection(
         (b) => b..selection = NavBarSelection.valueOfIndex(index)));
   }
