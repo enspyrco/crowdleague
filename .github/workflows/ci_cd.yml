@@ -1,4 +1,4 @@
-name: iOS and Android
+name: Github Actions
 
 on:
   # Trigger the workflow on push or pull request, 
@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: Build and distribute
+    name: CI
     runs-on: macOS-latest
     
     steps:
