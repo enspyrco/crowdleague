@@ -5,7 +5,7 @@ import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
-import 'package:crowdleague/widgets/conversations/conversation_items_page.dart';
+import 'package:crowdleague/widgets/conversations/conversation_items/conversation_items_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
