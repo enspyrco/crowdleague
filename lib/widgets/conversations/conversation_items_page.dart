@@ -5,12 +5,12 @@ import 'package:crowdleague/widgets/conversations/conversations_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-class ConversationsPage extends StatelessWidget {
+class ConversationItemsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, BuiltList<ConversationItem>>(
       distinct: true,
-      converter: (store) => store.state.conversations,
+      converter: (store) => store.state.conversationItemsPage.items,
       builder: (context, vm) {
         return ConversationsList(
           items: vm,

@@ -16,7 +16,8 @@ final conversationsReducers = <AppState Function(AppState, dynamic)>[
 
 AppState _storeConversationItems(
     AppState state, StoreConversationItems action) {
-  return state.rebuild((b) => b..conversations.replace(action.items));
+  return state
+      .rebuild((b) => b..conversationItemsPage.items.replace(action.items));
 }
 
 /// The [UpdateNewConversationPage] action has either the state or a selection

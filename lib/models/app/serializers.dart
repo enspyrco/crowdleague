@@ -19,6 +19,7 @@ import 'package:crowdleague/models/conversations/conversation_item.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_selections.dart';
+import 'package:crowdleague/models/conversations/vm_conversation_items_page.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/models/enums/email_auth_mode.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
