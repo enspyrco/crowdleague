@@ -1,10 +1,10 @@
-import 'package:crowdleague/models/actions/auth/observe_auth_state.dart';
-import 'package:crowdleague/models/actions/auth/sign_in_with_apple.dart';
-import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
-import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
-import 'package:crowdleague/models/actions/auth/sign_out_user.dart';
-import 'package:crowdleague/models/actions/auth/sign_up_with_email.dart';
-import 'package:crowdleague/models/actions/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/actions/auth/observe_auth_state.dart';
+import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
+import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
+import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
+import 'package:crowdleague/actions/auth/sign_out_user.dart';
+import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
+import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:redux/redux.dart';

@@ -1,9 +1,9 @@
-import 'package:crowdleague/models/actions/navigation/add_problem.dart';
-import 'package:crowdleague/models/actions/navigation/record_added_route_info.dart';
-import 'package:crowdleague/models/actions/navigation/record_removed_route_info.dart';
-import 'package:crowdleague/models/actions/navigation/record_replaced_route_info.dart';
-import 'package:crowdleague/models/actions/navigation/remove_problem.dart';
-import 'package:crowdleague/models/actions/navigation/store_nav_bar_selection.dart';
+import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
+import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
+import 'package:crowdleague/actions/navigation/record_replaced_route_info.dart';
+import 'package:crowdleague/actions/navigation/remove_problem.dart';
+import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 

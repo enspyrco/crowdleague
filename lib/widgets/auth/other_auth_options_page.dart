@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/models/actions/auth/sign_in_with_email.dart';
-import 'package:crowdleague/models/actions/auth/sign_in_with_google.dart';
-import 'package:crowdleague/models/actions/auth/sign_up_with_email.dart';
-import 'package:crowdleague/models/actions/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
+import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
+import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
+import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';

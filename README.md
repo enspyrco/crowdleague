@@ -48,6 +48,12 @@ We use Cloud Functions for Firebase to automatically run backend code in respons
 
 The relevant code is all in `functions/`
 
+Setup
+
+```sh
+npm install
+```
+
 After making changes to `functions/src/index.ts`
 
 ```sh

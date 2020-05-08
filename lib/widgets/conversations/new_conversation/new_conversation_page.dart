@@ -1,8 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/models/actions/conversations/create_conversation.dart';
-import 'package:crowdleague/models/actions/leaguers/retrieve_leaguers.dart';
-import 'package:crowdleague/models/actions/navigation/navigator_replace_current.dart';
+import 'package:crowdleague/actions/conversations/create_conversation.dart';
+import 'package:crowdleague/actions/leaguers/retrieve_leaguers.dart';
+import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/models/enums/new_conversation_page_leaguers_state.dart';

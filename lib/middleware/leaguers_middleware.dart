@@ -1,5 +1,5 @@
-import 'package:crowdleague/models/actions/conversations/update_new_conversation_page.dart';
-import 'package:crowdleague/models/actions/leaguers/retrieve_leaguers.dart';
+import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
+import 'package:crowdleague/actions/leaguers/retrieve_leaguers.dart';
 import 'package:crowdleague/models/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/services/leaguers_service.dart';
 import 'package:redux/redux.dart';

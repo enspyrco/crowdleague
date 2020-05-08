@@ -1,8 +1,8 @@
-import 'package:crowdleague/models/actions/navigation/add_problem.dart';
-import 'package:crowdleague/models/actions/navigation/navigate_to.dart';
-import 'package:crowdleague/models/actions/navigation/navigator_pop_all.dart';
-import 'package:crowdleague/models/actions/navigation/navigator_replace_current.dart';
-import 'package:crowdleague/models/actions/navigation/remove_problem.dart';
+import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/navigation/navigate_to.dart';
+import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
+import 'package:crowdleague/actions/navigation/remove_problem.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';

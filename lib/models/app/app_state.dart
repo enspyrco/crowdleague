@@ -8,8 +8,8 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/conversation/vm_conversation_page.dart';
-import 'package:crowdleague/models/conversations/conversation_item.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
+import 'package:crowdleague/models/conversations/vm_conversation_items_page.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
@@ -27,7 +27,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   BuiltList<RouteInfo> get routes;
   VmOtherAuthOptionsPage get otherAuthOptionsPage;
   VmAuthPage get authPage;
-  BuiltList<ConversationItem> get conversations;
+  VmConversationItemsPage get conversationItemsPage;
   VmConversationPage get conversationPage;
   VmNewConversationPage get newConversationsPage;
 
