@@ -76,6 +76,10 @@ target 'Runner' do
     File.symlink(path, symlink)
     pod name, :path => File.join(symlink, 'ios')
   end
+
+  # My Extra Pods
+  pod 'Firebase/Crashlytics'
+
 end
 
 post_install do |installer|
