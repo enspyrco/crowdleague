@@ -39,7 +39,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
     ..themeMode = 2
     ..authPage = VmAuthPage.initBuilder()
     ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
-    ..newConversationsPage = VmNewConversationPage.initBuilder());
+    ..newConversationsPage = VmNewConversationPage.initBuilder()
+    ..conversationPage.messageText = '');
 
   factory AppState([void Function(AppStateBuilder) updates]) = _$AppState;
 

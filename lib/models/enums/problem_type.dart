@@ -15,6 +15,9 @@ class ProblemType extends EnumClass {
   static const ProblemType signOut = _$signOut;
   static const ProblemType retrieveLeaguers = _$retrieveLeaguers;
   static const ProblemType createConversation = _$createConversation;
+  static const ProblemType observeMessages = _$observeMessages;
+  static const ProblemType disregardMessages = _$disregardMessages;
+  static const ProblemType saveMessage = _$saveMessage;
 
   const ProblemType._(String name) : super(name);
 
