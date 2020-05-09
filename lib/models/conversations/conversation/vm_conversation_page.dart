@@ -2,9 +2,11 @@ library vm_conversation_page;
 
 import 'dart:convert';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation_item.dart';
 
 part 'vm_conversation_page.g.dart';
@@ -13,6 +15,8 @@ abstract class VmConversationPage
     implements Built<VmConversationPage, VmConversationPageBuilder> {
   @nullable
   ConversationItem get item;
+  BuiltList<Message> get messages;
+  String get messageText;
 
   VmConversationPage._();
 

@@ -1,5 +1,8 @@
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
+import 'package:crowdleague/actions/conversations/disregard_messages.dart';
+import 'package:crowdleague/actions/conversations/observe_messages.dart';
 import 'package:crowdleague/actions/conversations/retrieve_conversation_items.dart';
+import 'package:crowdleague/actions/conversations/save_message.dart';
 import 'package:crowdleague/services/conversations_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -10,6 +13,12 @@ typedef RetrieveConversationItemsMiddleware = void Function(
     Store<AppState> store,
     RetrieveConversationItems action,
     NextDispatcher next);
+typedef SaveMessageMiddleware = void Function(
+    Store<AppState> store, SaveMessage action, NextDispatcher next);
+typedef ObserveMessagesMiddleware = void Function(
+    Store<AppState> store, ObserveMessages action, NextDispatcher next);
+typedef DisregardMessagesMiddleware = void Function(
+    Store<AppState> store, DisregardMessages action, NextDispatcher next);
 
 /// Middleware is used for a variety of things:
 /// - Logging
@@ -28,6 +37,15 @@ List<Middleware<AppState>> createConversationsMiddleware(
     ),
     TypedMiddleware<AppState, RetrieveConversationItems>(
       _retrieveConversationItems(conversationsService),
+    ),
+    TypedMiddleware<AppState, SaveMessage>(
+      _saveMessage(conversationsService),
+    ),
+    TypedMiddleware<AppState, ObserveMessages>(
+      _observeMessages(conversationsService),
+    ),
+    TypedMiddleware<AppState, DisregardMessages>(
+      _disregardMessages(conversationsService),
     ),
   ];
 }
@@ -55,5 +73,40 @@ RetrieveConversationItemsMiddleware _retrieveConversationItems(
     ///
     store.dispatch(await conversationService
         .retrieveConversationItems(store.state.user.id));
+  };
+}
+
+SaveMessageMiddleware _saveMessage(ConversationsService conversationService) {
+  return (Store<AppState> store, SaveMessage action,
+      NextDispatcher next) async {
+    next(action);
+
+    /// the function calls listen on the firestore and keeps the stream open
+    /// until disregardMessages is called
+    conversationService.saveMessage(store);
+  };
+}
+
+ObserveMessagesMiddleware _observeMessages(
+    ConversationsService conversationService) {
+  return (Store<AppState> store, ObserveMessages action,
+      NextDispatcher next) async {
+    next(action);
+
+    /// the function calls listen on the firestore and keeps the stream open
+    /// until disregardMessages is called
+    conversationService.observeMessages(store);
+  };
+}
+
+DisregardMessagesMiddleware _disregardMessages(
+    ConversationsService conversationService) {
+  return (Store<AppState> store, DisregardMessages action,
+      NextDispatcher next) async {
+    next(action);
+
+    /// the function calls listen on the firestore and keeps the stream open
+    /// until disregardMessages is called
+    conversationService.disregardMessages(store);
   };
 }
