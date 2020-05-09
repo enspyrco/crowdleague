@@ -30,6 +30,7 @@ void main() {
         ..navBarSelection = NavBarSelection.home
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
+        ..conversationPage.messageText = ''
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
 
@@ -49,6 +50,7 @@ void main() {
         ..navBarSelection = NavBarSelection.home
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
+        ..conversationPage.messageText = ''
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
 
