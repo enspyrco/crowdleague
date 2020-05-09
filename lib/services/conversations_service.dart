@@ -84,7 +84,7 @@ class ConversationsService {
       // observeMessages function
       await firestore
           .collection(
-              'conversations/${store.state.conversationPage.item}/messages')
+              'conversations/${store.state.conversationPage.item.conversationId}/messages')
           .add(<String, dynamic>{
         'authorId': store.state.user.id,
         'text': store.state.conversationPage.messageText,
