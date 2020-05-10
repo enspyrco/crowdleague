@@ -14,6 +14,7 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
+import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation/vm_conversation_page.dart';
 import 'package:crowdleague/models/conversations/conversation_item.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';

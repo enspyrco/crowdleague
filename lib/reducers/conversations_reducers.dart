@@ -1,5 +1,7 @@
 import 'package:crowdleague/actions/conversations/store_conversation_items.dart';
+import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
+import 'package:crowdleague/actions/conversations/update_conversation_page.dart';
 import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -12,6 +14,8 @@ final conversationsReducers = <AppState Function(AppState, dynamic)>[
   TypedReducer<AppState, StoreConversationItems>(_storeConversationItems),
   TypedReducer<AppState, UpdateNewConversationPage>(_updateNewConversationPage),
   TypedReducer<AppState, StoreSelectedConversation>(_storeSelectedConversation),
+  TypedReducer<AppState, StoreMessages>(_storeMessages),
+  TypedReducer<AppState, UpdateConversationPage>(_updateConversationPage),
 ];
 
 AppState _storeConversationItems(
@@ -37,4 +41,15 @@ AppState _updateNewConversationPage(
 AppState _storeSelectedConversation(
     AppState state, StoreSelectedConversation action) {
   return state.rebuild((b) => b..conversationPage.item.replace(action.item));
+}
+
+AppState _storeMessages(AppState state, StoreMessages action) {
+  return state
+      .rebuild((b) => b..conversationPage.messages.replace(action.messages));
+}
+
+AppState _updateConversationPage(
+    AppState state, UpdateConversationPage action) {
+  return state
+      .rebuild((b) => b..conversationPage.messageText = action.messageText);
 }
