@@ -1,4 +1,5 @@
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
@@ -26,8 +27,8 @@ void main() {
     test('members take expected values', () {
       final appState = AppState((b) => b
         ..authPage.step = AuthStep.waitingForInput
-        ..themeMode = 0
         ..navBarSelection = NavBarSelection.home
+        ..settings = Settings.initBuilder()
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
         ..conversationPage.messageText = ''
@@ -35,7 +36,6 @@ void main() {
         ..user.replace(mockUser));
 
       expect(appState.authPage.step, AuthStep.waitingForInput);
-      expect(appState.themeMode, 0);
       expect(appState.problems, [mockProblem]);
       expect(appState.user, mockUser);
     });
@@ -46,8 +46,8 @@ void main() {
     test('toJson produces correct json string', () {
       final appState = AppState((b) => b
         ..authPage.step = AuthStep.waitingForInput
-        ..themeMode = 0
         ..navBarSelection = NavBarSelection.home
+        ..settings = Settings.initBuilder()
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
         ..conversationPage.messageText = ''

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/conversation/vm_conversation_page.dart';
@@ -22,7 +23,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   BuiltList<Problem> get problems;
   @nullable
   User get user;
-  int get themeMode;
+  Settings get settings;
   NavBarSelection get navBarSelection;
   BuiltList<RouteInfo> get routes;
   VmOtherAuthOptionsPage get otherAuthOptionsPage;
@@ -36,7 +37,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   factory AppState.init() => AppState((a) => a
     ..problems = ListBuilder<Problem>()
     ..navBarSelection = NavBarSelection.home
-    ..themeMode = 2
+    ..settings = Settings.initBuilder()
     ..authPage = VmAuthPage.initBuilder()
     ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
     ..newConversationsPage = VmNewConversationPage.initBuilder()

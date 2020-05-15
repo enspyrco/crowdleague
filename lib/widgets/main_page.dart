@@ -1,11 +1,12 @@
-import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
-import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/actions/auth/sign_out_user.dart';
+import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
 import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
 import 'package:crowdleague/widgets/conversations/conversation_summaries/conversation_summaries_page.dart';
+import 'package:crowdleague/widgets/more_options/more_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -29,7 +30,6 @@ class MainPage extends StatelessWidget {
                   NavigateTo((b) => b..location = '/new_conversation'));
             },
             child: Icon(Icons.add),
-            backgroundColor: Colors.grey,
           ),
           bottomNavigationBar: NavBar(selectedIndex: selection.index),
         );
@@ -74,7 +74,6 @@ class NavBar extends StatelessWidget {
       ],
       type: BottomNavigationBarType.fixed,
       currentIndex: selectedIndex,
-      selectedItemColor: Colors.amber[800],
       onTap: (index) => _onItemTapped(context, index),
     );
   }
@@ -105,7 +104,7 @@ class BodyWidget extends StatelessWidget {
       case NavBarSelection.conversations:
         return ConversationSummariesPage();
       case NavBarSelection.more:
-        return Center(child: Text('More Page'));
+        return MoreOptionsPage();
       default:
         return Center(child: Text('Main Page'));
     }
