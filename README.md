@@ -64,6 +64,12 @@ After making changes to `functions/src/index.ts`
 firebase deploy --only functions
 ```
 
+## Firestore Rules 
+
+```sh
+firebase deploy --only firestore:rules
+```
+
 ## Screenshots 
 
 To setup, follow the instructions in [screenshots | Dart Package](https://pub.dev/packages/screenshots) 
