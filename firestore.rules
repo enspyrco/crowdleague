@@ -11,8 +11,8 @@ service cloud.firestore {
       allow read: if request.auth.uid != null;
       allow write: if false;
 
-      // only the user can read their conversation items 
-      match /conversation-items/{conversationId} {
+      // only the user can read their conversation summaries
+      match /conversation-summaries/{summaryId} {
         allow write: if false;
         allow read: if request.auth.uid == userId;
       }

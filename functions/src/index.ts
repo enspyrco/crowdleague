@@ -27,7 +27,7 @@ export const saveDetailsOnFirstSignIn = functions.auth.user().onCreate((user) =>
     });
 });
 
-// when a conversation is created, add a conversation-item to each participant at user/{uid}/conversation-items
+// when a conversation is created, add a conversation-summary to each participant at user/{uid}/conversation-summaries
 export const addConversationsToUsers = functions.firestore.document('conversations/{conversationId}').onCreate((snapshot, context) => {
 
     const docData = snapshot.data();
@@ -41,7 +41,7 @@ export const addConversationsToUsers = functions.firestore.document('conversatio
     const promises = [];
     for(i = 0; i < docData.uids.length; i++) {
         const uid = docData.uids[i];
-        const promise = db.collection('users/'+uid+'/conversation-items')
+        const promise = db.collection('users/'+uid+'/conversation-summaries')
             .add({  conversationId: snapshot.id, 
                     uids: docData.uids, 
                     displayNames: docData.displayNames, 

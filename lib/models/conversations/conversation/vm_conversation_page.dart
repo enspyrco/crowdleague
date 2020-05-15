@@ -7,14 +7,14 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
-import 'package:crowdleague/models/conversations/conversation_item.dart';
+import 'package:crowdleague/models/conversations/conversation_summary.dart';
 
 part 'vm_conversation_page.g.dart';
 
 abstract class VmConversationPage
     implements Built<VmConversationPage, VmConversationPageBuilder> {
   @nullable
-  ConversationItem get item;
+  ConversationSummary get summary;
   BuiltList<Message> get messages;
   String get messageText;
 

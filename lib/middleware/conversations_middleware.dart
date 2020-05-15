@@ -1,7 +1,7 @@
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/actions/conversations/disregard_messages.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
-import 'package:crowdleague/actions/conversations/retrieve_conversation_items.dart';
+import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/save_message.dart';
 import 'package:crowdleague/services/conversations_service.dart';
 import 'package:redux/redux.dart';
@@ -9,9 +9,9 @@ import 'package:crowdleague/models/app/app_state.dart';
 
 typedef CreateConversationMiddleware = void Function(
     Store<AppState> store, CreateConversation action, NextDispatcher next);
-typedef RetrieveConversationItemsMiddleware = void Function(
+typedef RetrieveConversationSummariesMiddleware = void Function(
     Store<AppState> store,
-    RetrieveConversationItems action,
+    RetrieveConversationSummaries action,
     NextDispatcher next);
 typedef SaveMessageMiddleware = void Function(
     Store<AppState> store, SaveMessage action, NextDispatcher next);
@@ -35,8 +35,8 @@ List<Middleware<AppState>> createConversationsMiddleware(
     TypedMiddleware<AppState, CreateConversation>(
       _createConversation(conversationsService),
     ),
-    TypedMiddleware<AppState, RetrieveConversationItems>(
-      _retrieveConversationItems(conversationsService),
+    TypedMiddleware<AppState, RetrieveConversationSummaries>(
+      _retrieveConversationSummaries(conversationsService),
     ),
     TypedMiddleware<AppState, SaveMessage>(
       _saveMessage(conversationsService),
@@ -64,15 +64,15 @@ CreateConversationMiddleware _createConversation(
   };
 }
 
-RetrieveConversationItemsMiddleware _retrieveConversationItems(
+RetrieveConversationSummariesMiddleware _retrieveConversationSummaries(
     ConversationsService conversationService) {
-  return (Store<AppState> store, RetrieveConversationItems action,
+  return (Store<AppState> store, RetrieveConversationSummaries action,
       NextDispatcher next) async {
     next(action);
 
     ///
     store.dispatch(await conversationService
-        .retrieveConversationItems(store.state.user.id));
+        .retrieveConversationSummaries(store.state.user.id));
   };
 }
 
