@@ -1,4 +1,6 @@
 import 'package:crowdleague/actions/auth/sign_out_user.dart';
+import 'package:crowdleague/actions/themes/store_theme_colors.dart';
+import 'package:crowdleague/models/themes/theme_colors.dart';
 import 'package:crowdleague/widgets/more_options/dark_mode_toggle.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +22,18 @@ class MoreOptionsPage extends StatelessWidget {
           ),
         ),
         DarkModeToggle(),
-        MaterialButton(onPressed: null),
-        MaterialButton(onPressed: null),
+        MaterialButton(
+            color: Colors.red,
+            onPressed: () {
+              context.dispatch(StoreThemeColors(
+                  (b) => b..colors.replace(ThemeColors.crowdleague)));
+            }),
+        MaterialButton(
+            color: Colors.grey,
+            onPressed: () {
+              context.dispatch(StoreThemeColors(
+                  (b) => b..colors.replace(ThemeColors.greyscale)));
+            }),
       ],
     );
   }

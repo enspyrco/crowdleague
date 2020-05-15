@@ -11,7 +11,7 @@ import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/app/theme_values.dart';
+import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
@@ -33,6 +33,8 @@ import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
+import 'package:crowdleague/models/themes/theme_colors.dart';
+import 'package:crowdleague/models/themes/theme_set.dart';
 
 part 'serializers.g.dart';
 

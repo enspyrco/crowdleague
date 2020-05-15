@@ -3,9 +3,8 @@ import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/app/theme_values.dart';
+import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/user.dart';
-import 'package:crowdleague/models/enums/themes/theme_option.dart';
 import 'package:crowdleague/utils/navigation_info_recorder.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
@@ -39,22 +38,16 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: widget.store,
-      child: StoreConnector<AppState, ThemeValues>(
+      child: StoreConnector<AppState, Settings>(
           distinct: true,
-          converter: (store) => store.state.themeValues,
-          builder: (context, themeValues) {
+          converter: (store) => store.state.settings,
+          builder: (context, settings) {
             return MaterialApp(
               navigatorKey: widget.navKey,
               navigatorObservers: [NavigationInfoRecorder(widget.store)],
-              theme: ThemeDataExt.fromValues(
-                  ThemeOption.greyscale_light.themeValues),
-              darkTheme: ThemeDataExt.fromValues(
-                  ThemeOption.greyscale_dark.themeValues),
-              themeMode: (themeValues.brightnessMode.isLight)
-                  ? ThemeMode.light
-                  : (themeValues.brightnessMode.isDark)
-                      ? ThemeMode.dark
-                      : ThemeMode.system,
+              theme: ThemeDataExt.from(settings.lightTheme),
+              darkTheme: ThemeDataExt.from(settings.darkTheme),
+              themeMode: ThemeModeExt.from(settings.brightnessMode),
               home: CheckAuth(), // becomes the route named '/'
               routes: <String, WidgetBuilder>{
                 '/other_auth_options': (context) => OtherAuthOptionsPage(),

@@ -1,42 +1,39 @@
-import 'package:crowdleague/models/app/theme_values.dart';
 import 'package:crowdleague/models/enums/themes/theme_brightness.dart';
+import 'package:crowdleague/models/themes/theme_set.dart';
 import 'package:flutter/material.dart';
 
 // static functions must be called on the extension name, ie. ThemeDataExt
 extension ThemeDataExt on ThemeData {
-  static ThemeData fromValues(ThemeValues values) {
-    if (values.themeBrightness == ThemeBrightness.light &&
-        values.errorColor == null) {
+  static ThemeData from(ThemeSet themeSet) {
+    if (themeSet.brightness == ThemeBrightness.light &&
+        themeSet.colors.error == null) {
       return ThemeData.from(
           colorScheme: ColorScheme.light(
-              primary: Color(values.primaryColor),
-              secondary: Color(values.secondaryColor)));
-    }
-    if (values.themeBrightness == ThemeBrightness.light &&
-        values.errorColor != null) {
+        primary: Color(themeSet.colors.primary),
+        secondary: Color(themeSet.colors.secondary),
+      ));
+    } else if (themeSet.brightness == ThemeBrightness.light &&
+        themeSet.colors.error != null) {
       return ThemeData.from(
           colorScheme: ColorScheme.light(
-              primary: Color(values.primaryColor),
-              secondary: Color(values.secondaryColor),
-              error: Color(values.errorColor)));
-    }
-    if (values.themeBrightness == ThemeBrightness.dark &&
-        values.errorColor == null) {
+              primary: Color(themeSet.colors.primary),
+              secondary: Color(themeSet.colors.secondary),
+              error: Color(themeSet.colors.error)));
+    } else if (themeSet.brightness == ThemeBrightness.dark &&
+        themeSet.colors.error == null) {
       return ThemeData.from(
           colorScheme: ColorScheme.dark(
-              primary: Color(values.primaryColor),
-              secondary: Color(values.secondaryColor)));
-    }
-    if (values.themeBrightness == ThemeBrightness.dark &&
-        values.errorColor != null) {
+        primary: Color(themeSet.colors.primary),
+        secondary: Color(themeSet.colors.secondary),
+      ));
+    } else if (themeSet.brightness == ThemeBrightness.dark &&
+        themeSet.colors.error != null) {
       return ThemeData.from(
           colorScheme: ColorScheme.dark(
-              primary: Color(values.primaryColor),
-              secondary: Color(values.secondaryColor),
-              error: Color(values.errorColor)));
+              primary: Color(themeSet.colors.primary),
+              secondary: Color(themeSet.colors.secondary),
+              error: Color(themeSet.colors.error)));
     }
-
-    // we shouldn't ever get here but makes the analyzer happy
     return null;
   }
 }
