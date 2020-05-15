@@ -2,10 +2,14 @@
 name: Feature plan
 about: Plan a feature
 title: ''
-labels: enhancement
+labels: feature plan
 assignees: ''
 
 ---
+
+## designs 
+
+- [ ] 
 
 ## navigation 
 
