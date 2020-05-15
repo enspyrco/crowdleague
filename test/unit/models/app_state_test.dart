@@ -1,4 +1,5 @@
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/models/enums/auth_step.dart';
@@ -27,6 +28,7 @@ void main() {
       final appState = AppState((b) => b
         ..authPage.step = AuthStep.waitingForInput
         ..navBarSelection = NavBarSelection.home
+        ..settings = Settings.initBuilder()
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
         ..conversationPage.messageText = ''
@@ -45,6 +47,7 @@ void main() {
       final appState = AppState((b) => b
         ..authPage.step = AuthStep.waitingForInput
         ..navBarSelection = NavBarSelection.home
+        ..settings = Settings.initBuilder()
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
         ..conversationPage.messageText = ''
