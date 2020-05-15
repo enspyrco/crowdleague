@@ -6,6 +6,7 @@ import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/enums/nav_bar_selection.dart';
 import 'package:crowdleague/widgets/conversations/conversation_items/conversation_items_page.dart';
+import 'package:crowdleague/widgets/more_options/more_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -29,7 +30,6 @@ class MainPage extends StatelessWidget {
                   NavigateTo((b) => b..location = '/new_conversation'));
             },
             child: Icon(Icons.add),
-            backgroundColor: Colors.grey,
           ),
           bottomNavigationBar: NavBar(selectedIndex: selection.index),
         );
@@ -74,7 +74,6 @@ class NavBar extends StatelessWidget {
       ],
       type: BottomNavigationBarType.fixed,
       currentIndex: selectedIndex,
-      selectedItemColor: Colors.amber[800],
       onTap: (index) => _onItemTapped(context, index),
     );
   }
@@ -105,7 +104,7 @@ class BodyWidget extends StatelessWidget {
       case NavBarSelection.conversations:
         return ConversationItemsPage();
       case NavBarSelection.more:
-        return Center(child: Text('More Page'));
+        return MoreOptionsPage();
       default:
         return Center(child: Text('Main Page'));
     }

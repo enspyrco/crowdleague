@@ -26,7 +26,6 @@ void main() {
     test('members take expected values', () {
       final appState = AppState((b) => b
         ..authPage.step = AuthStep.waitingForInput
-        ..themeMode = 0
         ..navBarSelection = NavBarSelection.home
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
@@ -35,7 +34,6 @@ void main() {
         ..user.replace(mockUser));
 
       expect(appState.authPage.step, AuthStep.waitingForInput);
-      expect(appState.themeMode, 0);
       expect(appState.problems, [mockProblem]);
       expect(appState.user, mockUser);
     });
@@ -46,7 +44,6 @@ void main() {
     test('toJson produces correct json string', () {
       final appState = AppState((b) => b
         ..authPage.step = AuthStep.waitingForInput
-        ..themeMode = 0
         ..navBarSelection = NavBarSelection.home
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
