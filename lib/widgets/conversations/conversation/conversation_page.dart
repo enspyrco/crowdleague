@@ -20,7 +20,7 @@ class ConversationPage extends StatelessWidget {
         distinct: true,
         onInit: (store) => store.dispatch(ObserveMessages()),
         onDispose: (store) => store.dispatch(DisregardMessages()),
-        converter: (store) => store.state.conversationPage.item == null,
+        converter: (store) => store.state.conversationPage.summary == null,
         builder: (context, waiting) {
           return (waiting)
               ? Center(child: CircularProgressIndicator())

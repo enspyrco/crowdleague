@@ -7,7 +7,7 @@ import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/serializers.dart';
-import 'package:crowdleague/models/conversations/conversation_item.dart';
+import 'package:crowdleague/models/conversations/conversation_summary.dart';
 
 part 'store_selected_conversation.g.dart';
 
@@ -15,7 +15,7 @@ abstract class StoreSelectedConversation extends Object
     with ReduxAction
     implements
         Built<StoreSelectedConversation, StoreSelectedConversationBuilder> {
-  ConversationItem get item;
+  ConversationSummary get summary;
 
   StoreSelectedConversation._();
 

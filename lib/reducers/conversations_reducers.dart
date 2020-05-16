@@ -1,4 +1,4 @@
-import 'package:crowdleague/actions/conversations/store_conversation_items.dart';
+import 'package:crowdleague/actions/conversations/store_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/actions/conversations/update_conversation_page.dart';
@@ -11,17 +11,18 @@ import 'package:crowdleague/models/app/app_state.dart';
 ///
 /// Each reducer returns a new [AppState].
 final conversationsReducers = <AppState Function(AppState, dynamic)>[
-  TypedReducer<AppState, StoreConversationItems>(_storeConversationItems),
+  TypedReducer<AppState, StoreConversationSummaries>(
+      _storeConversationSummaries),
   TypedReducer<AppState, UpdateNewConversationPage>(_updateNewConversationPage),
   TypedReducer<AppState, StoreSelectedConversation>(_storeSelectedConversation),
   TypedReducer<AppState, StoreMessages>(_storeMessages),
   TypedReducer<AppState, UpdateConversationPage>(_updateConversationPage),
 ];
 
-AppState _storeConversationItems(
-    AppState state, StoreConversationItems action) {
-  return state
-      .rebuild((b) => b..conversationItemsPage.items.replace(action.items));
+AppState _storeConversationSummaries(
+    AppState state, StoreConversationSummaries action) {
+  return state.rebuild(
+      (b) => b..conversationSummariesPage.summaries.replace(action.summaries));
 }
 
 /// The [UpdateNewConversationPage] action has either the state or a selection
@@ -40,7 +41,8 @@ AppState _updateNewConversationPage(
 
 AppState _storeSelectedConversation(
     AppState state, StoreSelectedConversation action) {
-  return state.rebuild((b) => b..conversationPage.item.replace(action.item));
+  return state
+      .rebuild((b) => b..conversationPage.summary.replace(action.summary));
 }
 
 AppState _storeMessages(AppState state, StoreMessages action) {

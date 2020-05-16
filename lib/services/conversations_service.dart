@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crowdleague/actions/conversations/store_conversation_items.dart';
+import 'package:crowdleague/actions/conversations/store_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/extensions/add_problem_extensions.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
-import 'package:crowdleague/models/conversations/conversation_item.dart';
+import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/enums/problem_type.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:redux/redux.dart';
@@ -44,10 +44,10 @@ class ConversationsService {
       });
 
       return StoreSelectedConversation((b) => b
-        ..item.conversationId = docRef.documentID
-        ..item.displayNames = ListBuilder(displayNames)
-        ..item.photoURLs = ListBuilder(photoURLs)
-        ..item.uids = ListBuilder(uids));
+        ..summary.conversationId = docRef.documentID
+        ..summary.displayNames = ListBuilder(displayNames)
+        ..summary.photoURLs = ListBuilder(photoURLs)
+        ..summary.uids = ListBuilder(uids));
     } catch (error, trace) {
       return AddProblemObject.from(
           error, trace, ProblemType.createConversation);
@@ -55,14 +55,14 @@ class ConversationsService {
   }
 
   /// Returns a [Future] of either [StoreSelectedConversation] or [AddProblem]
-  Future<ReduxAction> retrieveConversationItems(String userId) async {
+  Future<ReduxAction> retrieveConversationSummaries(String userId) async {
     try {
       final querySnapshot = await firestore
-          .collection('users/$userId/conversation-items')
+          .collection('users/$userId/conversation-summaries')
           .getDocuments();
 
-      final items = querySnapshot.documents.map<
-          ConversationItem>((snapshot) => ConversationItem((b) => b
+      final summaries = querySnapshot.documents.map<
+          ConversationSummary>((snapshot) => ConversationSummary((b) => b
         ..conversationId = snapshot.data['conversationId'] as String
         ..displayNames.replace(
             List<String>.from(snapshot.data['displayNames'] as List<dynamic>))
@@ -71,7 +71,7 @@ class ConversationsService {
         ..uids.replace(
             List<String>.from(snapshot.data['uids'] as List<dynamic>))));
 
-      return StoreConversationItems((b) => b..items.replace(items));
+      return StoreConversationSummaries((b) => b..summaries.replace(summaries));
     } catch (error, trace) {
       return AddProblemObject.from(
           error, trace, ProblemType.createConversation);
@@ -84,7 +84,7 @@ class ConversationsService {
       // observeMessages function
       await firestore
           .collection(
-              'conversations/${store.state.conversationPage.item.conversationId}/messages')
+              'conversations/${store.state.conversationPage.summary.conversationId}/messages')
           .add(<String, dynamic>{
         'authorId': store.state.user.id,
         'text': store.state.conversationPage.messageText,
@@ -101,7 +101,7 @@ class ConversationsService {
     try {
       messagesSubscription = firestore
           .collection(
-              'conversations/${store.state.conversationPage.item.conversationId}/messages')
+              'conversations/${store.state.conversationPage.summary.conversationId}/messages')
           .snapshots()
           .listen((querySnapshot) {
         store.dispatch(StoreMessages(
