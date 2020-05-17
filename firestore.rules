@@ -21,6 +21,12 @@ service cloud.firestore {
       allow delete: if false;
       allow read: if request.auth.uid in resource.data.uids;
 
+      // messages can be created and read by conversation participants 
+      // see: https://firebase.google.com/docs/firestore/solutions/role-based-access
+      match /leave/{userId} {
+        allow create: if request.auth.uid == userId;
+      }
+
 			// messages can be created and read by conversation participants 
       // see: https://firebase.google.com/docs/firestore/solutions/role-based-access
       match /messages/{messageId} {

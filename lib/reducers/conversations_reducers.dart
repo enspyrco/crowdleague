@@ -1,3 +1,4 @@
+import 'package:crowdleague/actions/conversations/leave_conversation.dart';
 import 'package:crowdleague/actions/conversations/store_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
@@ -17,6 +18,7 @@ final conversationsReducers = <AppState Function(AppState, dynamic)>[
   TypedReducer<AppState, StoreSelectedConversation>(_storeSelectedConversation),
   TypedReducer<AppState, StoreMessages>(_storeMessages),
   TypedReducer<AppState, UpdateConversationPage>(_updateConversationPage),
+  TypedReducer<AppState, LeaveConversation>(_leaveConversation),
 ];
 
 AppState _storeConversationSummaries(
@@ -54,4 +56,10 @@ AppState _updateConversationPage(
     AppState state, UpdateConversationPage action) {
   return state
       .rebuild((b) => b..conversationPage.messageText = action.messageText);
+}
+
+AppState _leaveConversation(AppState state, LeaveConversation action) {
+  return state.rebuild((b) => b
+    ..conversationSummariesPage.summaries.removeWhere(
+        (summary) => summary.conversationId == action.conversationId));
 }

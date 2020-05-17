@@ -26,3 +26,41 @@ export const saveDetailsOnFirstSignIn = functions.auth.user().onCreate((user) =>
         }))
     });
 });
+
+// when a user leaves a conversation, update the conversation doc
+export const updateConversationOnUserLeaving = functions.firestore.document('conversations/{conversationId}/leave/{userId}').onCreate(async (snapshot, context) => {
+
+    ///////////////////////////////////////////////////////////////////////
+    // remove the user from the conversation 
+    ///////////////////////////////////////////////////////////////////////
+
+    // get the document data 
+    const conversationDocRef = db.collection('conversations').doc(context.params.conversationId);
+    const conversationData = (await conversationDocRef.get()).data();
+
+    if(conversationData === undefined) {
+        console.error("(await db.collection('conversations').doc(context.params..conversationId).get()).data() was undefined");
+        return;
+    }
+
+    // find the index of the leaving user and delete their entry in each list
+    const index = conversationData.uids.indexOf(context.params.userId);
+    conversationData.uids.splice(index, 1);
+    conversationData.photoURLs.splice(index, 1);
+    conversationData.displayNames.splice(index, 1);
+
+    // push the promise returned by the set 
+    await conversationDocRef.set(conversationData);
+
+    ///////////////////////////////////////////////////////////////////////
+    // add a message that the user left 
+    ///////////////////////////////////////////////////////////////////////
+
+    // add a message indicating user has left the conversation
+    await db.collection('conversations/'+context.params.conversationId+'/messages').add({
+        authorId: context.params.userId,
+        text: 'And... I\'m out!',
+        timestamp: admin.firestore.FieldValue.serverTimestamp()
+    });
+    
+});

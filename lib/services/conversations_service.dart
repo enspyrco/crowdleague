@@ -157,4 +157,10 @@ class ConversationsService {
           AddProblemObject.from(error, trace, ProblemType.disregardMessages));
     }
   }
+
+  Future<void> leaveConversation(String userId, String conversationId) {
+    return firestore
+        .document('conversations/$conversationId/leave/$userId')
+        .setData(<String, dynamic>{'timestamp': FieldValue.serverTimestamp()});
+  }
 }
