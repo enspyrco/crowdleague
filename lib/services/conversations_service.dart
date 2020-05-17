@@ -58,12 +58,13 @@ class ConversationsService {
   Future<ReduxAction> retrieveConversationSummaries(String userId) async {
     try {
       final querySnapshot = await firestore
-          .collection('users/$userId/conversation-summaries')
+          .collection('conversations')
+          .where('uids', arrayContains: userId)
           .getDocuments();
 
       final summaries = querySnapshot.documents.map<
           ConversationSummary>((snapshot) => ConversationSummary((b) => b
-        ..conversationId = snapshot.data['conversationId'] as String
+        ..conversationId = snapshot.documentID
         ..displayNames.replace(
             List<String>.from(snapshot.data['displayNames'] as List<dynamic>))
         ..photoURLs.replace(
