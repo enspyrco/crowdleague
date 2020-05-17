@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/widgets/shared/problem_alert.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
 
 class NavigationService {
   NavigationService(this._navKey);
@@ -52,13 +53,22 @@ class NavigationService {
     _navKey.currentState.pushReplacementNamed(newRouteName);
   }
 
+  /// Add a call to display the problem to the post-frame callbacks (so we
+  /// avoid calling setState during a build).
   Future<Problem> display(Problem problem) {
-    return showDialog<Problem>(
-        context: _navKey.currentState.overlay.context,
-        builder: (BuildContext context) {
-          return ProblemAlert(
-            problem: problem,
-          );
-        });
+    // create a completer whose future is returned and is passed in to
+    // addPostFrameCallback and completed when showDialog completes
+    final completer = Completer<Problem>();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final returnedProblem = await showDialog<Problem>(
+          context: _navKey.currentState.overlay.context,
+          builder: (BuildContext context) {
+            return ProblemAlert(
+              problem: problem,
+            );
+          });
+      completer.complete(returnedProblem);
+    });
+    return completer.future;
   }
 }

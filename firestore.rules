@@ -10,12 +10,6 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if request.auth.uid != null;
       allow write: if false;
-
-      // only the user can read their conversation summaries
-      match /conversation-summaries/{summaryId} {
-        allow write: if false;
-        allow read: if request.auth.uid == userId;
-      }
     }
 
     // Match any document in the 'conversations' collection
