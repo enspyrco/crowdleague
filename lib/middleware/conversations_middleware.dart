@@ -3,6 +3,8 @@ import 'package:crowdleague/actions/conversations/disregard_messages.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
 import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/save_message.dart';
+import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
 import 'package:crowdleague/services/conversations_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -56,11 +58,18 @@ CreateConversationMiddleware _createConversation(
       NextDispatcher next) async {
     next(action);
 
-    /// [createConversation] returns a [Future] of either
+    /// [conversationService.createConversation] returns a [Future] of either
     /// a [StoreSelectedConversation] or [AddProblem]
-    store.dispatch(await conversationService.createConversation(
+    final reaction = await conversationService.createConversation(
         store.state.user.id,
-        store.state.newConversationsPage.selectionsVM.selections));
+        store.state.newConversationsPage.selectionsVM.selections);
+    store.dispatch(reaction);
+
+    // if there was no problem, navigate to Conversation Page
+    if (reaction.runtimeType != AddProblem) {
+      store.dispatch(
+          NavigatorReplaceCurrent((b) => b..newLocation = '/conversation'));
+    }
   };
 }
 
