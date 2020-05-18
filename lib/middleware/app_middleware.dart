@@ -4,12 +4,14 @@ import 'package:crowdleague/middleware/leaguers_middleware.dart';
 import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/middleware/notifications_middleware.dart';
 import 'package:crowdleague/actions/meta/bundle_of_actions.dart';
+import 'package:crowdleague/middleware/storage_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/conversations_service.dart';
 import 'package:crowdleague/services/leaguers_service.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
+import 'package:crowdleague/services/storage_service.dart';
 import 'package:redux/redux.dart';
 
 /// Middleware is used for a variety of things:
@@ -26,7 +28,8 @@ List<Middleware<AppState>> createAppMiddleware(
     LeaguersService leaguersService,
     NavigationService navigationService,
     ConversationsService conversationsService,
-    NotificationsService notificationsService}) {
+    NotificationsService notificationsService,
+    StorageService storageService}) {
   return [
     TypedMiddleware<AppState, BundleOfActions>(
       _unwrapBundleOfActions(),
@@ -39,6 +42,7 @@ List<Middleware<AppState>> createAppMiddleware(
     ...createNotificationsMiddleware(
       notificationsService: notificationsService,
     ),
+    ...createStorageMiddleware(storageService: storageService),
   ];
 }
 

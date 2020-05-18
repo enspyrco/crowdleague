@@ -13,7 +13,8 @@ Be in a league of your own...
 ## Common Commands 
 
 ```sh
-flutter pub run build_runner build
+remotedev --port 8000
+flutter pub run build_runner watch
 ```
 
 ## Get Credential Files
@@ -107,6 +108,10 @@ After making changes to built_value classes run the builder to generate the new 
 
 ```sh
 flutter pub run build_runner build
+```
+or 
+```sh
+flutter pub run build_runner watch
 ```
 
 ## App Icons 

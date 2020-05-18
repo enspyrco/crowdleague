@@ -10,7 +10,7 @@ import 'package:crowdleague/widgets/auth/auth_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
 import 'package:crowdleague/widgets/conversations/conversation/conversation_page.dart';
 import 'package:crowdleague/widgets/conversations/new_conversation/new_conversation_page.dart';
-import 'package:crowdleague/widgets/main_page.dart';
+import 'package:crowdleague/widgets/main/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';

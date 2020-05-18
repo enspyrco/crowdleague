@@ -7,10 +7,12 @@ import 'package:crowdleague/services/conversations_service.dart';
 import 'package:crowdleague/services/leaguers_service.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
+import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
 import 'package:crowdleague/widgets/crowd_league_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:redux/redux.dart';
@@ -37,6 +39,11 @@ void main() async {
   final conversationsService =
       ConversationsService(firestore: Firestore.instance);
   final notificationsService = NotificationsService(FirebaseMessaging());
+  final storageService = StorageService(
+    FirebaseStorage(
+        app: Firestore.instance.app,
+        storageBucket: 'gs://crowdleague1.appspot.com'),
+  );
 
   /// Create the redux store
   final store = Store<AppState>(
@@ -48,7 +55,8 @@ void main() async {
           leaguersService: leaguersService,
           navigationService: navigationService,
           conversationsService: conversationsService,
-          notificationsService: notificationsService),
+          notificationsService: notificationsService,
+          storageService: storageService),
     ],
   );
 
