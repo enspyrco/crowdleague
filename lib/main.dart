@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crowdleague/app/app.dart';
 import 'package:crowdleague/middleware/app_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
@@ -9,6 +8,7 @@ import 'package:crowdleague/services/leaguers_service.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
+import 'package:crowdleague/widgets/crowd_league_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
