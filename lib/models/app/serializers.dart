@@ -6,6 +6,7 @@ import 'package:crowdleague/actions/auth/sign_out_user.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/actions/conversations/disregard_messages.dart';
+import 'package:crowdleague/actions/conversations/leave_conversation.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
 import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/store_conversation_summaries.dart';
@@ -81,6 +82,7 @@ part 'serializers.g.dart';
   StoreNavBarSelection,
   StoreConversationSummaries,
   StoreSelectedConversation,
+  LeaveConversation,
   UpdateNewConversationPage,
   RetrieveLeaguers,
   StoreLeaguers,

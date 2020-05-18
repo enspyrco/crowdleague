@@ -1,5 +1,6 @@
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/actions/conversations/disregard_messages.dart';
+import 'package:crowdleague/actions/conversations/leave_conversation.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
 import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/save_message.dart';
@@ -21,6 +22,8 @@ typedef ObserveMessagesMiddleware = void Function(
     Store<AppState> store, ObserveMessages action, NextDispatcher next);
 typedef DisregardMessagesMiddleware = void Function(
     Store<AppState> store, DisregardMessages action, NextDispatcher next);
+typedef LeaveConversationMiddleware = void Function(
+    Store<AppState> store, LeaveConversation action, NextDispatcher next);
 
 /// Middleware is used for a variety of things:
 /// - Logging
@@ -48,6 +51,9 @@ List<Middleware<AppState>> createConversationsMiddleware(
     ),
     TypedMiddleware<AppState, DisregardMessages>(
       _disregardMessages(conversationsService),
+    ),
+    TypedMiddleware<AppState, LeaveConversation>(
+      _leaveConversation(conversationsService),
     ),
   ];
 }
@@ -117,5 +123,18 @@ DisregardMessagesMiddleware _disregardMessages(
     /// the function calls listen on the firestore and keeps the stream open
     /// until disregardMessages is called
     conversationService.disregardMessages(store);
+  };
+}
+
+LeaveConversationMiddleware _leaveConversation(
+    ConversationsService conversationService) {
+  return (Store<AppState> store, LeaveConversation action,
+      NextDispatcher next) async {
+    next(action);
+
+    /// returns a Future<void>, currently no need to do anything when the
+    /// future completes as the list has been updated locally already
+    await conversationService.leaveConversation(
+        store.state.user.id, action.conversationId);
   };
 }
