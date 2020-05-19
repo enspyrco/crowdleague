@@ -28,6 +28,11 @@ void Function(
       NextDispatcher next) async {
     next(action);
 
-    await storageService.uploadProfilePic(store.state.user.id, action.filePath);
+    final stream =
+        storageService.uploadProfilePic(store.state.user.id, action.filePath);
+
+    stream.listen((event) {
+      store.dispatch(event);
+    });
   };
 }

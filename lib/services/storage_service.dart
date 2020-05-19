@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/actions/storage/update_storage_task_info.dart';
-import 'package:crowdleague/enums/storage/update_storage_task_type.dart';
+import 'package:crowdleague/actions/storage/update_upload_task_info.dart';
+import 'package:crowdleague/enums/storage/update_upload_task_type.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,11 +19,11 @@ class StorageService {
 
     // emit a setup event to create the entry in the store that will be used
     // by each subsequent update event
-    yield UpdateStorageTaskInfo((b) => b
-      ..type = UpdateStorageTaskType.setup
+    yield UpdateUploadTaskInfo((b) => b
+      ..type = UpdateUploadTaskType.setup
       ..uuid = uuid);
 
-    final ref = storage.ref().child('profilePics').child(userId).child(uuid);
+    final ref = storage.ref().child('profile_pics').child(userId).child(uuid);
     final uploadTask = ref.putFile(
       File(filePath),
       StorageMetadata(
@@ -35,7 +35,7 @@ class StorageService {
     _tasks[uuid] = uploadTask;
 
     await for (final action in uploadTask.events
-        .map<UpdateStorageTaskInfo>((event) => event.toReduxAction())) {
+        .map<UpdateUploadTaskInfo>((event) => event.toUpdateUploadTaskInfo())) {
       yield action;
     }
   }

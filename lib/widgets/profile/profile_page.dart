@@ -1,4 +1,6 @@
+import 'package:crowdleague/actions/device/pick_profile_pic.dart';
 import 'package:crowdleague/actions/profile/retrieve_profile_leaguer.dart';
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +26,13 @@ class ProfilePage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-            return Image.network(vm.leaguer.photoUrl);
+
+            return GestureDetector(
+              child: Image.network(vm.leaguer.photoUrl),
+              onTap: () {
+                context.dispatch(PickProfilePic());
+              },
+            );
           }),
     );
   }
