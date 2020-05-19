@@ -5,11 +5,15 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
-
-    // Match any document in the 'users' collection
+    
     match /users/{userId} {
       allow read: if request.auth.uid != null;
       allow write: if false;
+    }
+
+    match /leaguers/{userId} {
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid == userId;
     }
 
     // Match any document in the 'conversations' collection

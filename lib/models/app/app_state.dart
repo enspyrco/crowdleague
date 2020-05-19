@@ -16,6 +16,7 @@ import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:crowdleague/models/storage/storage_task_info.dart';
 
 part 'app_state.g.dart';
@@ -33,6 +34,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   VmConversationSummariesPage get conversationSummariesPage;
   VmConversationPage get conversationPage;
   VmNewConversationPage get newConversationsPage;
+  VmProfilePage get profilePage;
 
   AppState._();
 

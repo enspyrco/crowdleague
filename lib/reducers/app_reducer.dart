@@ -2,6 +2,7 @@ import 'package:crowdleague/reducers/auth_reducers.dart';
 import 'package:crowdleague/reducers/conversations_reducers.dart';
 import 'package:crowdleague/reducers/leaguers_reducers.dart';
 import 'package:crowdleague/reducers/navigation_reducers.dart';
+import 'package:crowdleague/reducers/profile_reducer.dart';
 import 'package:crowdleague/reducers/themes_reducers.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -17,4 +18,5 @@ final appReducer =
   ...conversationsReducers,
   ...navigationReducers,
   ...themesReducers,
+  ...profileReducers,
 ]);

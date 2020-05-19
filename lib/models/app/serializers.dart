@@ -26,9 +26,11 @@ import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
 import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_replaced_route_info.dart';
+import 'package:crowdleague/actions/navigation/remove_problem.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
+import 'package:crowdleague/actions/profile/retrieve_profile_leaguer.dart';
 import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
 import 'package:crowdleague/actions/themes/store_theme_colors.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -54,6 +56,7 @@ import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
+import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:crowdleague/models/storage/storage_task_info.dart';
 import 'package:crowdleague/models/themes/theme_colors.dart';
 import 'package:crowdleague/models/themes/theme_set.dart';
@@ -66,6 +69,7 @@ part 'serializers.g.dart';
 /// Collection of generated serializers for the CrowdLeague app
 @SerializersFor([
   AddProblem,
+  RemoveProblem,
   AppState,
   ObserveAuthState,
   RequestFCMPermissions,
@@ -95,6 +99,7 @@ part 'serializers.g.dart';
   DisregardMessages,
   StoreBrightnessMode,
   StoreThemeColors,
+  RetrieveProfileLeaguer,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())

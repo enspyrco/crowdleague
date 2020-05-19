@@ -9,9 +9,9 @@ const db = admin.firestore();
 
 // The user object here is a:
 // https://firebase.google.com/docs/reference/admin/node/admin.auth.UserRecord 
-export const saveDetailsOnFirstSignIn = functions.auth.user().onCreate((user) => {
-    return db.doc('/users/'+user.uid).set({
-        uid: user.uid,
+export const saveDetailsOnFirstSignIn = functions.auth.user().onCreate(async (user) => {
+    // add all auth data to the user doc 
+    await db.doc('/users/'+user.uid).set({
         displayName: user.displayName ?? null,
         email: user.email ?? null,
         photoURL: user.photoURL ?? null, 
@@ -24,6 +24,12 @@ export const saveDetailsOnFirstSignIn = functions.auth.user().onCreate((user) =>
             providerId: info.providerId,
             uid: info.uid
         }))
+    });
+
+    // add relevant data to the leaguer doc
+    await db.doc('/leaguers/'+user.uid).set({
+        displayName: user.displayName ?? null,
+        photoURL: user.photoURL ?? null,
     });
 });
 

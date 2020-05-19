@@ -4,6 +4,7 @@ import 'package:crowdleague/middleware/device_middleware.dart';
 import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/middleware/notifications_middleware.dart';
 import 'package:crowdleague/actions/meta/bundle_of_actions.dart';
+import 'package:crowdleague/middleware/profile_middleware.dart';
 import 'package:crowdleague/middleware/storage_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
@@ -42,6 +43,7 @@ List<Middleware<AppState>> createAppMiddleware(
     ),
     ...createStorageMiddleware(storageService: storageService),
     ...createDeviceMiddleware(deviceService: deviceService),
+    ...createProfileMiddleware(databaseService: databaseService),
   ];
 }
 
