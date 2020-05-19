@@ -6,7 +6,7 @@ import 'package:crowdleague/actions/conversations/retrieve_conversation_summarie
 import 'package:crowdleague/actions/conversations/save_message.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
-import 'package:crowdleague/services/conversations_service.dart';
+import 'package:crowdleague/services/database_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 
@@ -35,31 +35,31 @@ typedef LeaveConversationMiddleware = void Function(
 /// The output of an action can perform another action using the [NextDispatcher]
 ///
 List<Middleware<AppState>> createConversationsMiddleware(
-    {ConversationsService conversationsService}) {
+    {DatabaseService databaseService}) {
   return [
     TypedMiddleware<AppState, CreateConversation>(
-      _createConversation(conversationsService),
+      _createConversation(databaseService),
     ),
     TypedMiddleware<AppState, RetrieveConversationSummaries>(
-      _retrieveConversationSummaries(conversationsService),
+      _retrieveConversationSummaries(databaseService),
     ),
     TypedMiddleware<AppState, SaveMessage>(
-      _saveMessage(conversationsService),
+      _saveMessage(databaseService),
     ),
     TypedMiddleware<AppState, ObserveMessages>(
-      _observeMessages(conversationsService),
+      _observeMessages(databaseService),
     ),
     TypedMiddleware<AppState, DisregardMessages>(
-      _disregardMessages(conversationsService),
+      _disregardMessages(databaseService),
     ),
     TypedMiddleware<AppState, LeaveConversation>(
-      _leaveConversation(conversationsService),
+      _leaveConversation(databaseService),
     ),
   ];
 }
 
 CreateConversationMiddleware _createConversation(
-    ConversationsService conversationService) {
+    DatabaseService conversationService) {
   return (Store<AppState> store, CreateConversation action,
       NextDispatcher next) async {
     next(action);
@@ -80,7 +80,7 @@ CreateConversationMiddleware _createConversation(
 }
 
 RetrieveConversationSummariesMiddleware _retrieveConversationSummaries(
-    ConversationsService conversationService) {
+    DatabaseService conversationService) {
   return (Store<AppState> store, RetrieveConversationSummaries action,
       NextDispatcher next) async {
     next(action);
@@ -91,7 +91,7 @@ RetrieveConversationSummariesMiddleware _retrieveConversationSummaries(
   };
 }
 
-SaveMessageMiddleware _saveMessage(ConversationsService conversationService) {
+SaveMessageMiddleware _saveMessage(DatabaseService conversationService) {
   return (Store<AppState> store, SaveMessage action,
       NextDispatcher next) async {
     next(action);
@@ -103,7 +103,7 @@ SaveMessageMiddleware _saveMessage(ConversationsService conversationService) {
 }
 
 ObserveMessagesMiddleware _observeMessages(
-    ConversationsService conversationService) {
+    DatabaseService conversationService) {
   return (Store<AppState> store, ObserveMessages action,
       NextDispatcher next) async {
     next(action);
@@ -115,7 +115,7 @@ ObserveMessagesMiddleware _observeMessages(
 }
 
 DisregardMessagesMiddleware _disregardMessages(
-    ConversationsService conversationService) {
+    DatabaseService conversationService) {
   return (Store<AppState> store, DisregardMessages action,
       NextDispatcher next) async {
     next(action);
@@ -127,7 +127,7 @@ DisregardMessagesMiddleware _disregardMessages(
 }
 
 LeaveConversationMiddleware _leaveConversation(
-    ConversationsService conversationService) {
+    DatabaseService conversationService) {
   return (Store<AppState> store, LeaveConversation action,
       NextDispatcher next) async {
     next(action);

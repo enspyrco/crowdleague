@@ -14,7 +14,7 @@ Be in a league of your own...
 
 ```sh
 remotedev --port 8000
-flutter pub run build_runner watch
+flutter pub run build_runner watch --delete-conflicting-outputs
 ```
 
 ## Get Credential Files

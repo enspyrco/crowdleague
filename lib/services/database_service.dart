@@ -4,22 +4,27 @@ import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/actions/conversations/store_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
+import 'package:crowdleague/actions/leaguers/store_leaguers.dart';
 import 'package:crowdleague/extensions/add_problem_extensions.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
-import 'package:crowdleague/models/enums/problem_type.dart';
+import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:redux/redux.dart';
 
-class ConversationsService {
+class DatabaseService {
   final Firestore firestore;
 
-  ConversationsService({this.firestore});
+  DatabaseService({this.firestore});
 
   StreamSubscription<QuerySnapshot> messagesSubscription;
+
+  //////////////////////////////////////////////////////////////////////////////
+  /// CONVERSATIONS
+  //////////////////////////////////////////////////////////////////////////////
 
   /// Returns a [Future] of either [StoreSelectedConversation] or [AddProblem]
   Future<ReduxAction> createConversation(
@@ -163,4 +168,35 @@ class ConversationsService {
         .document('conversations/$conversationId/leave/$userId')
         .setData(<String, dynamic>{'timestamp': FieldValue.serverTimestamp()});
   }
+
+  //////////////////////////////////////////////////////////////////////////////
+  /// LEAGUERS
+  //////////////////////////////////////////////////////////////////////////////
+
+  Future<ReduxAction> get retrieveLeaguers async {
+    try {
+      final collection = await firestore.collection('users');
+      final snapshot = await collection.getDocuments();
+      final leaguers = snapshot.documents.map<
+          Leaguer>((user) => Leaguer((b) => b
+        ..uid = user.data['uid'] as String
+        ..displayName =
+            user.data['name'] as String ?? user.data['uid'] as String
+        ..photoUrl = user.data['photoUrl'] as String ??
+            'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'));
+
+      // TODO: this is for testing and can be removed when there is enough real data
+      // final vm = VmNewConversationLeaguers.fromJson(leaguers_data_json);
+      // return StoreLeaguers((b) => b..leaguers.replace(vm.leaguers));
+
+      return StoreLeaguers((b) => b..leaguers.replace(leaguers));
+    } catch (error, trace) {
+      return AddProblemObject.from(error, trace, ProblemType.retrieveLeaguers);
+    }
+  }
 }
+
+// TODO: this is for testing and can be removed when there is enough real data
+final leaguers_data_json = '''
+{"leaguers":[{"id":"1","name":"Andrea Jonus","photoUrl":"https://lh3.googleusercontent.com/a-/AOh14GgpUMMFMDDMSfOSCUunGMkJdJ5TPkmbrU-cQEo6yZk=s96-c"},{"id":"2","name":"Nick Meinhold","photoUrl":"https://lh3.googleusercontent.com/a-/AOh14GjI7gPhw0micPDoMr3PWmsRzksx0kc-z47wMKCpJQ=s96-c"},{"id":"3","name":"David Micallef","photoUrl":"https://lh3.googleusercontent.com/a-/AOh14GgcLuTiYf_wdIIMAw5CPaBDQowtVTHczbRV8eZrIQ=s96-c"}],"state":"ready"}
+''';

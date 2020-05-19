@@ -13,7 +13,6 @@ part 'upload_profile_pic.g.dart';
 abstract class UploadProfilePic extends Object
     with ReduxAction
     implements Built<UploadProfilePic, UploadProfilePicBuilder> {
-  String get profilePicId;
   String get filePath;
 
   UploadProfilePic._();

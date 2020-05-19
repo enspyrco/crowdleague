@@ -28,7 +28,6 @@ void Function(
       NextDispatcher next) async {
     next(action);
 
-    await storageService.uploadProfilePic(
-        store.state.user.id, action.profilePicId, action.filePath);
+    await storageService.uploadProfilePic(store.state.user.id, action.filePath);
   };
 }

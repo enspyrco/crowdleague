@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
-import 'package:crowdleague/models/enums/new_conversation_page_leaguers_state.dart';
+import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -1,7 +1,7 @@
 import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
 import 'package:crowdleague/actions/leaguers/retrieve_leaguers.dart';
-import 'package:crowdleague/models/enums/new_conversation_page_leaguers_state.dart';
-import 'package:crowdleague/services/leaguers_service.dart';
+import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
+import 'package:crowdleague/services/database_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 
@@ -15,17 +15,17 @@ import 'package:crowdleague/models/app/app_state.dart';
 /// The output of an action can perform another action using the [NextDispatcher]
 ///
 List<Middleware<AppState>> createLeaguersMiddleware(
-    {LeaguersService leaguersService}) {
+    {DatabaseService databaseService}) {
   return [
     TypedMiddleware<AppState, RetrieveLeaguers>(
-      _retrieveLeaguers(leaguersService),
+      _retrieveLeaguers(databaseService),
     ),
   ];
 }
 
 void Function(
         Store<AppState> store, RetrieveLeaguers action, NextDispatcher next)
-    _retrieveLeaguers(LeaguersService leaguersService) {
+    _retrieveLeaguers(DatabaseService leaguersService) {
   return (Store<AppState> store, RetrieveLeaguers action,
       NextDispatcher next) async {
     next(action);

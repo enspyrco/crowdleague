@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/enums/themes/theme_brightness.dart';
+import 'package:crowdleague/enums/themes/theme_brightness.dart';
 import 'package:crowdleague/models/themes/theme_set.dart';
 import 'package:flutter/material.dart';
 

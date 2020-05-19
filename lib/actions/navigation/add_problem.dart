@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/enums/problem_type.dart';
+import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/app/serializers.dart';
 
