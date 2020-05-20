@@ -46,7 +46,7 @@ void main() async {
   final storageService = StorageService(
     FirebaseStorage(
         app: Firestore.instance.app,
-        storageBucket: 'gs://crowdleague1.appspot.com'),
+        storageBucket: 'gs://crowdleague-profile-pics'),
   );
   final deviceService = DeviceService(ImagePickerObject());
 

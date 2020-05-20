@@ -9,10 +9,10 @@ import 'package:uuid/uuid.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 
 class StorageService {
-  final FirebaseStorage storage;
+  final FirebaseStorage profilePicsStorage;
   final Map<String, StorageUploadTask> _tasks = <String, StorageUploadTask>{};
 
-  StorageService(this.storage);
+  StorageService(this.profilePicsStorage);
 
   Stream<ReduxAction> uploadProfilePic(String userId, String filePath) async* {
     final uuid = Uuid().v1();
@@ -23,7 +23,7 @@ class StorageService {
       ..type = UpdateUploadTaskType.setup
       ..uuid = uuid);
 
-    final ref = storage.ref().child('profile_pics').child(userId).child(uuid);
+    final ref = profilePicsStorage.ref().child(userId).child(uuid);
     final uploadTask = ref.putFile(
       File(filePath),
       StorageMetadata(

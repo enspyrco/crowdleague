@@ -2,6 +2,7 @@ import 'package:crowdleague/actions/storage/update_upload_task_info.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/enums/storage/storage_task_state.dart';
 import 'package:crowdleague/enums/storage/update_upload_task_type.dart';
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/storage/storage_task_info.dart';
@@ -22,8 +23,8 @@ AppState _updateStorageTaskInfo(AppState state, UpdateUploadTaskInfo action) {
     final problem = Problem((b) => b
       ..type = ProblemType.uploadTaskFailure
       ..state = state.toBuilder()
-      ..message = 'There was a problem uploading the file name ${action.uuid}');
-    // TODO: use the error to get a meaningful error message
+      ..message =
+          'There was a problem uploading file name ${action.uuid}, StorageError: ${action.error.toStorageErrorString()}');
     action.error;
     newStateBuilder.problems.add(problem);
   }
