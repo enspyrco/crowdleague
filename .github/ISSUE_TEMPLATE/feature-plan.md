@@ -15,6 +15,18 @@ assignees: ''
 
 - [ ] 
 
+## packages & plugins 
+
+- [ ] 
+
+## enums 
+
+- [ ] 
+
+## extensions 
+
+- [ ] 
+
 ## actions 
 
 - [ ] 
@@ -36,5 +48,17 @@ assignees: ''
 - [ ] 
 
 ## widgets 
+
+- [ ] 
+
+## database 
+
+- [ ] 
+
+## storage 
+
+- [ ] 
+
+## cloud functions 
 
 - [ ]
