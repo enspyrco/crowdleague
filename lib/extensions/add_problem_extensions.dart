@@ -1,5 +1,5 @@
 import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/models/enums/problem_type.dart';
+import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 
 // static functions must be called on the extension name, ie. AddProblemFuture

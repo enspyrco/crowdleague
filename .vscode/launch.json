@@ -8,13 +8,13 @@
             "name": "Main",
             "request": "launch",
             "type": "dart",
-            "program": "lib/app/main.dart"
+            "program": "lib/main.dart"
         },
         {
             "name": "MainRDT",
             "type": "dart",
             "request": "launch",
-            "program": "lib/app/main_rdt.dart",
+            "program": "lib/main_rdt.dart",
         }
     ]
 }

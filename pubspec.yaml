@@ -23,6 +23,9 @@ dependencies:
   cloud_firestore:
   firebase_messaging:
   google_maps_flutter:
+  firebase_storage:
+  image_picker:
+  uuid:
 
   # remove before app store / play store submission 
   redux_remote_devtools:

@@ -7,7 +7,7 @@ import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/serializers.dart';
-import 'package:crowdleague/models/enums/themes/brightness_mode.dart';
+import 'package:crowdleague/enums/themes/brightness_mode.dart';
 
 part 'store_brightness_mode.g.dart';
 

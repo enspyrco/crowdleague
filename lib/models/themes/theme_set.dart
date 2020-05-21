@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/app/serializers.dart';
-import 'package:crowdleague/models/enums/themes/theme_brightness.dart';
+import 'package:crowdleague/enums/themes/theme_brightness.dart';
 import 'package:crowdleague/models/themes/theme_colors.dart';
 
 part 'theme_set.g.dart';

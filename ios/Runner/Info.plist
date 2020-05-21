@@ -57,5 +57,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to take those action snaps</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to capture audio to go with the video</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to add profile pics, venue pics, etc.</string>
 </dict>
 </plist>

@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/enums/themes/brightness_mode.dart';
+import 'package:crowdleague/enums/themes/brightness_mode.dart';
 import 'package:flutter/material.dart';
 
 extension ThemeModeExt on ThemeMode {

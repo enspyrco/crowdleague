@@ -5,7 +5,7 @@ import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/actions/auth/sign_out_user.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
-import 'package:crowdleague/models/enums/auth_step.dart';
+import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';

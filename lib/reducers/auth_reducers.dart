@@ -20,14 +20,10 @@ final authReducers = <AppState Function(AppState, dynamic)>[
 AppState _clearUserData(AppState state, ClearUserData action) =>
     AppState.init();
 
+/// Set the user object to null if action has null user or update the state
+/// with the new user
 AppState _storeUser(AppState state, StoreUser action) {
-  // we need to be able to set user to null for when no user signed in
-  // but replace won't take null
-  // TODO: determine if there is a more elegant way to do this
-  // see: https://github.com/google/built_value.dart/issues/238
-  return (action.user == null)
-      ? state.rebuild((b) => b..user = null)
-      : state.rebuild((b) => b..user.replace(action.user));
+  return state.rebuild((b) => b..user = action.user?.toBuilder());
 }
 
 AppState _storeAuthStep(AppState state, StoreAuthStep action) {

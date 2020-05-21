@@ -1,66 +1,15 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 import * as functions from 'firebase-functions';
-
-// The Firebase Admin SDK to access the Firestore.
 import * as admin from 'firebase-admin';
-
 admin.initializeApp();
-const db = admin.firestore();
 
-// The user object here is a:
-// https://firebase.google.com/docs/reference/admin/node/admin.auth.UserRecord 
-export const saveDetailsOnFirstSignIn = functions.auth.user().onCreate((user) => {
-    return db.doc('/users/'+user.uid).set({
-        uid: user.uid,
-        displayName: user.displayName ?? null,
-        email: user.email ?? null,
-        photoURL: user.photoURL ?? null, 
-        phoneNumber: user.phoneNumber ?? null,
-        providerData: user.providerData.map(info => ({
-            displayName: info.displayName ?? null,
-            email: info.email ?? null,
-            phoneNumber: info.phoneNumber ?? null,
-            photoURL: info.photoURL ?? null,
-            providerId: info.providerId,
-            uid: info.uid
-        }))
-    });
-});
+import { updateConversation } from './conversations/on_user_leaving';
+import { saveDetails } from './auth/on_first_sign_in';
+import { createResizedPics } from './storage/on_profile_pic';
 
 // when a user leaves a conversation, update the conversation doc
-export const updateConversationOnUserLeaving = functions.firestore.document('conversations/{conversationId}/leave/{userId}').onCreate(async (snapshot, context) => {
+export const updateConversationOnUserLeaving = functions.firestore.document('conversations/{conversationId}/leave/{userId}').onCreate(updateConversation);
 
-    ///////////////////////////////////////////////////////////////////////
-    // remove the user from the conversation 
-    ///////////////////////////////////////////////////////////////////////
+// when a new account is created, add auth details to the database
+export const saveDetailsOnFirstSignIn = functions.auth.user().onCreate(saveDetails);
 
-    // get the document data 
-    const conversationDocRef = db.collection('conversations').doc(context.params.conversationId);
-    const conversationData = (await conversationDocRef.get()).data();
-
-    if(conversationData === undefined) {
-        console.error("(await db.collection('conversations').doc(context.params..conversationId).get()).data() was undefined");
-        return;
-    }
-
-    // find the index of the leaving user and delete their entry in each list
-    const index = conversationData.uids.indexOf(context.params.userId);
-    conversationData.uids.splice(index, 1);
-    conversationData.photoURLs.splice(index, 1);
-    conversationData.displayNames.splice(index, 1);
-
-    // push the promise returned by the set 
-    await conversationDocRef.set(conversationData);
-
-    ///////////////////////////////////////////////////////////////////////
-    // add a message that the user left 
-    ///////////////////////////////////////////////////////////////////////
-
-    // add a message indicating user has left the conversation
-    await db.collection('conversations/'+context.params.conversationId+'/messages').add({
-        authorId: context.params.userId,
-        text: 'And... I\'m out!',
-        timestamp: admin.firestore.FieldValue.serverTimestamp()
-    });
-    
-});
+export const generateResizedImages = functions.storage.bucket('crowdleague-profile-pics').object().onFinalize(createResizedPics);

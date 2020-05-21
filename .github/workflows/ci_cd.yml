@@ -69,8 +69,8 @@ jobs:
     - run: flutter pub get
     - run: flutter pub run build_runner build
     - run: flutter test
-    - run: flutter build appbundle -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
-    - run: flutter build ios --release --no-codesign -t lib/app/main.dart --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter build appbundle --build-number=$GITHUB_RUN_NUMBER
+    - run: flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
 
     ##############################################
     # use fastlane to build ios app 
