@@ -19,6 +19,9 @@ AppState _setPickingProfilePic(AppState state, PickProfilePic action) {
 }
 
 AppState _updateProfilePage(AppState state, UpdateProfilePage action) {
-  return state.rebuild(
-      (b) => b..profilePage.pickingProfilePic = action.pickingProfilePic);
+  return state.rebuild((b) => b
+    ..profilePage.pickingProfilePic =
+        action.pickingProfilePic ?? b.profilePage.pickingProfilePic
+    ..profilePage.profilePicUploadId =
+        action.profilePicUploadId ?? b.profilePage.profilePicUploadId);
 }

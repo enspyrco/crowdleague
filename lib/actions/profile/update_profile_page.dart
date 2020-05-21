@@ -15,6 +15,8 @@ abstract class UpdateProfilePage extends Object
     implements Built<UpdateProfilePage, UpdateProfilePageBuilder> {
   @nullable
   bool get pickingProfilePic;
+  @nullable
+  String get profilePicUploadId;
 
   UpdateProfilePage._();
 
