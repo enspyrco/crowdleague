@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/enums/storage/storage_task_state.dart';
+import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/app/serializers.dart';
 
 part 'storage_task_info.g.dart';
@@ -12,7 +12,7 @@ part 'storage_task_info.g.dart';
 abstract class StorageTaskInfo
     implements Built<StorageTaskInfo, StorageTaskInfoBuilder> {
   String get uuid;
-  StorageTaskState get state;
+  UploadTaskState get state;
   @nullable
   int get error;
   @nullable

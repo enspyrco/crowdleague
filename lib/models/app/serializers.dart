@@ -33,7 +33,7 @@ import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/actions/profile/retrieve_profile_leaguer.dart';
 import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
 import 'package:crowdleague/actions/themes/store_theme_colors.dart';
-import 'package:crowdleague/enums/storage/storage_task_state.dart';
+import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';

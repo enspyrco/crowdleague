@@ -13,6 +13,9 @@ abstract class VmProfilePage
     implements Built<VmProfilePage, VmProfilePageBuilder> {
   @nullable
   Leaguer get leaguer;
+  @nullable
+  String get profilePicUploadId;
+  bool get pickingProfilePic;
 
   VmProfilePage._();
 
