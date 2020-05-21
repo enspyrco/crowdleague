@@ -1,0 +1,22 @@
+// https://firebase.google.com/docs/storage/security/start
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+
+  match /b/crowdleague-profile-pics/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // Only a user can upload their profile picture, but anyone can view it
+    match /{userId}/{profilePicId} {
+      allow read;
+      allow write: if request.auth.uid == userId;
+    }
+  }
+}

@@ -65,6 +65,12 @@ After making changes to `functions/src/index.ts`
 firebase deploy --only functions
 ```
 
+## Firebase Storage 
+
+```sh
+firebase deploy --only storage
+```
+
 ## Firestore Rules 
 
 ```sh
