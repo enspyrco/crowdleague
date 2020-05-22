@@ -1,17 +1,17 @@
-import { Bucket } from "firebase-admin/node_modules/@google-cloud/storage";
-import * as admin from "firebase-admin";
-import * as fs from "fs";
-import * as functions from "firebase-functions";
-import * as mkdirp from "mkdirp";
-import * as os from "os";
-import * as path from "path";
-import * as sharp from "sharp";
+import { Bucket } from 'firebase-admin/node_modules/@google-cloud/storage';
+import * as admin from 'firebase-admin';
+import * as fs from 'fs';
+import * as functions from 'firebase-functions';
+import * as mkdirp from 'mkdirp';
+import * as os from 'os';
+import * as path from 'path';
+import * as sharp from 'sharp';
 
-import config from "./config";
-import * as logs from "./logs";
-import * as validators from "./validators";
-import { ObjectMetadata } from "firebase-functions/lib/providers/storage";
-import { extractFileNameWithoutExtension } from "./util";
+import config from './config';
+import * as logs from './logs';
+import * as validators from './validators';
+import { ObjectMetadata } from 'firebase-functions/lib/providers/storage';
+import { extractFileNameWithoutExtension } from './util';
 
 interface ResizedImageResult {
   size: string;
