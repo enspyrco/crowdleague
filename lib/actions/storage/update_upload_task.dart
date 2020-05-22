@@ -22,6 +22,10 @@ abstract class UpdateUploadTask extends Object
 
   // Each StorageTaskEvent has the equivalent of the following members
   UploadTaskUpdateType get type;
+
+  // The local path to the file that is being uploaded
+  @nullable
+  String get filePath;
   @nullable
   int get error;
   @nullable

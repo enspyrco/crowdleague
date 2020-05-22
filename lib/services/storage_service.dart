@@ -22,8 +22,11 @@ class StorageService {
     // by each subsequent update event
     yield UpdateUploadTask((b) => b
       ..type = UploadTaskUpdateType.setup
-      ..uuid = uuid);
+      ..uuid = uuid
+      ..filePath = filePath);
 
+    // the profile page vm now has the uuid that it can use to access the upload
+    // task
     yield UpdateProfilePage((b) => b..profilePicUploadId = uuid);
 
     final ref = profilePicsStorage.ref().child(userId).child(uuid);
@@ -38,7 +41,7 @@ class StorageService {
     _tasks[uuid] = uploadTask;
 
     await for (final action in uploadTask.events
-        .map<UpdateUploadTask>((event) => event.toUpdateUploadTaskInfo())) {
+        .map<UpdateUploadTask>((event) => event.toUpdateUploadTask())) {
       yield action;
     }
   }

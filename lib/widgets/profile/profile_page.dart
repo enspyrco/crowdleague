@@ -1,4 +1,5 @@
 import 'package:crowdleague/actions/profile/retrieve_profile_leaguer.dart';
+import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:crowdleague/models/storage/upload_task.dart';
@@ -31,25 +32,23 @@ class ProfilePage extends StatelessWidget {
             return Stack(
               children: [
                 BackgroundPhoto(),
-                if (vm.profilePicUploadId == null)
-                  Positioned(
-                    bottom: 30,
-                    left: 30,
-                    child: SizedBox(
+                Positioned(
+                  bottom: 30,
+                  left: 30,
+                  child: SizedBox(
                       width: 90,
                       height: 90,
-                      child: CircularProgressIndicator(
-                        value: (vm.pickingProfilePic) ? null : 1,
-                        strokeWidth: 8,
-                      ),
-                    ),
-                  ),
-                if (vm.profilePicUploadId == null)
-                  Positioned(
-                    bottom: 30,
-                    left: 30,
-                    child: ProfileAvatar(vm.leaguer.photoUrl),
-                  ),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CircularProgressIndicator(
+                            value: (vm.pickingProfilePic) ? null : 1,
+                            strokeWidth: 8,
+                          ),
+                          ProfileAvatar(photoURL: vm.leaguer.photoUrl),
+                        ],
+                      )),
+                ),
                 if (vm.profilePicUploadId != null)
                   StoreConnector<AppState, UploadTask>(
                     distinct: true,
@@ -57,29 +56,60 @@ class ProfilePage extends StatelessWidget {
                         store.state.uploadTasksMap[vm.profilePicUploadId],
                     builder: (context, task) {
                       return Positioned(
-                        bottom: 30,
-                        left: 30,
-                        child: SizedBox(
-                          width: 90,
-                          height: 90,
-                          child: CircularProgressIndicator(
-                            value: (task.bytesTransferred == null ||
-                                    task.totalByteCount == null)
-                                ? null
-                                : (task.bytesTransferred / task.totalByteCount <
-                                        0.1)
-                                    ? null
-                                    : task.bytesTransferred /
-                                        task.totalByteCount,
-                            strokeWidth: 8,
-                          ),
-                        ),
-                      );
+                          bottom: (task.state == UploadTaskState.processing)
+                              ? 90
+                              : 10,
+                          left: 10,
+                          child: SizedBox(
+                            width: 45,
+                            height: 45,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                ProfilePicUploadProgressIndicator(task),
+                                ProfileAvatar(filePath: task.filePath),
+                              ],
+                            ),
+                          ));
                     },
-                  )
+                  ),
               ],
             );
           }),
+    );
+  }
+}
+
+class ProfilePicUploadProgressIndicator extends StatelessWidget {
+  final UploadTask task;
+
+  const ProfilePicUploadProgressIndicator(
+    this.task, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (task.state == UploadTaskState.processing) {
+      return CircularProgressIndicator(
+        value: null,
+        strokeWidth: 8,
+      );
+    }
+
+    final hasValues =
+        task.bytesTransferred != null && task.totalByteCount != null;
+    double progress; // show indeterminate unless there are valid values
+    if (hasValues) {
+      progress = task.bytesTransferred / task.totalByteCount;
+      if (progress < 0.1) {
+        // or a small progress value
+        progress = null;
+      }
+    }
+    return CircularProgressIndicator(
+      value: progress,
+      strokeWidth: 8,
     );
   }
 }

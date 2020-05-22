@@ -11,6 +11,7 @@ part 'upload_task.g.dart';
 
 abstract class UploadTask implements Built<UploadTask, UploadTaskBuilder> {
   String get uuid;
+  String get filePath;
   UploadTaskState get state;
   @nullable
   int get error;

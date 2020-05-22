@@ -35,6 +35,7 @@ AppState _updateStorageTaskInfo(AppState state, UpdateUploadTask action) {
     case UploadTaskUpdateType.setup:
       {
         taskBuilder.state = UploadTaskState.setup;
+        taskBuilder.filePath = action.filePath;
         break;
       }
     case UploadTaskUpdateType.resume:

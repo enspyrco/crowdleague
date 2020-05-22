@@ -3,7 +3,7 @@ import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 extension ConvertToReduxAction on StorageTaskEvent {
-  UpdateUploadTask toUpdateUploadTaskInfo() {
+  UpdateUploadTask toUpdateUploadTask() {
     UploadTaskUpdateType convertedType;
     switch (type) {
       case StorageTaskEventType.resume:
