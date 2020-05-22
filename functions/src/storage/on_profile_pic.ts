@@ -10,6 +10,7 @@ import * as sharp from 'sharp';
 import config from './config';
 import * as logs from './logs';
 import * as validators from './validators';
+import * as database from './database';
 import { ObjectMetadata } from 'firebase-functions/lib/providers/storage';
 import { extractFileNameWithoutExtension } from './util';
 
@@ -62,6 +63,7 @@ export async function createResizedPics(object : functions.storage.ObjectMetadat
 
   let originalFile : any;
   let remoteFile;
+  const db = new database.ProcessingEntry(fileDir, fileNameWithoutExtension);
   try {
     originalFile = path.join(os.tmpdir(), filePath);
     const tempLocalDir = path.dirname(originalFile);
@@ -100,9 +102,11 @@ export async function createResizedPics(object : functions.storage.ObjectMetadat
     const failed = results.some((result) => result.success === false);
     if (failed) {
       logs.failed();
+      await db.failed();
       return;
     }
     logs.complete();
+    await db.complete();
   } catch (err) {
     logs.error(err);
   } finally {
