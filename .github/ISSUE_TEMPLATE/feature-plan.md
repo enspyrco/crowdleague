@@ -11,7 +11,11 @@ assignees: ''
 
 - [ ] 
 
-## navigation 
+## user goals 
+
+- [ ] 
+
+## interactions 
 
 - [ ] 
 
