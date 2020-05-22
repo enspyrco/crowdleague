@@ -17,8 +17,7 @@ import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
-import 'package:crowdleague/models/storage/storage_task_info.dart';
-
+import 'package:crowdleague/models/storage/upload_task.dart';
 part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
@@ -27,7 +26,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   User get user;
   Settings get settings;
   NavBarSelection get navBarSelection;
-  BuiltMap<String, StorageTaskInfo> get storageTasks;
+  BuiltMap<String, UploadTask> get uploadTasksMap;
   BuiltList<RouteInfo> get routes;
   VmOtherAuthOptionsPage get otherAuthOptionsPage;
   VmAuthPage get authPage;

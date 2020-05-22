@@ -5,7 +5,7 @@ import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
-import 'package:crowdleague/models/storage/storage_task_info.dart';
+import 'package:crowdleague/models/storage/upload_task.dart';
 import 'package:redux/redux.dart';
 
 final storageReducers = <AppState Function(AppState, dynamic)>[
@@ -14,8 +14,9 @@ final storageReducers = <AppState Function(AppState, dynamic)>[
 
 AppState _updateStorageTaskInfo(AppState state, UpdateUploadTask action) {
   final newStateBuilder = state.toBuilder();
-  final taskBuilder = newStateBuilder.storageTasks[action.uuid]?.toBuilder() ??
-      StorageTaskInfoBuilder();
+  final taskBuilder =
+      newStateBuilder.uploadTasksMap[action.uuid]?.toBuilder() ??
+          UploadTaskBuilder();
 
   // TODO: fix the issue with the 'info' member of Problem and add the error
   // integer, the uuid and other useful info to the problem
@@ -72,7 +73,7 @@ AppState _updateStorageTaskInfo(AppState state, UpdateUploadTask action) {
   taskBuilder.uploadSessionUri =
       action.uploadSessionUri ?? taskBuilder.uploadSessionUri;
 
-  newStateBuilder.storageTasks[action.uuid] = taskBuilder.build();
+  newStateBuilder.uploadTasksMap[action.uuid] = taskBuilder.build();
 
   return newStateBuilder.build();
 }
