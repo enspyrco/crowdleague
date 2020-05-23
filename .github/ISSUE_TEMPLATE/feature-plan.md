@@ -7,15 +7,11 @@ assignees: ''
 
 ---
 
+## user goals & interactions 
+
+- [ ] 
+
 ## designs 
-
-- [ ] 
-
-## user goals 
-
-- [ ] 
-
-## interactions 
 
 - [ ] 
 
