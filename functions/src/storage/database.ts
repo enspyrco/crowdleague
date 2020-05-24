@@ -10,13 +10,16 @@ export class ProcessingEntry {
         this.picId = profilePicId;
     }
     async complete() {
-        await db.doc(`leaguers/${this.uid}/processing/${this.picId}`).set({
-            'complete' : true
+        await db.doc(`leaguers/${this.uid}/profile_pics/${this.picId}`).set({
+            'addedOn' : admin.firestore.FieldValue.serverTimestamp(),
+        });
+        await db.doc(`leaguers/${this.uid}`).update({
+            'photoURL' : `https://storage.googleapis.com/crowdleague-profile-pics/${this.uid}/${this.picId}_100x100`,
         });
     }
     async failed() {
-        await db.doc(`leaguers/${this.uid}/processing/${this.picId}`).set({
-            'failed' : true
+        await db.doc(`leaguers/${this.uid}/failed_profile_pics/${this.picId}`).set({
+            'message' : 'The resize failed, see cloud function logs for details.'
         });
     }
 }

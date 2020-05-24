@@ -106,7 +106,13 @@ export async function createResizedPics(object : functions.storage.ObjectMetadat
       return;
     }
     logs.complete();
-    await db.complete();
+    try {
+      logs.addProfilePicsToFirestore();
+      await db.complete();
+      logs.addedProfilePicsToFirestore();
+    } catch (err) {
+      logs.errorAddingProfilePicsToFirestore(err);
+    }
   } catch (err) {
     logs.error(err);
   } finally {
@@ -204,6 +210,7 @@ const resizeImage = async ({
     await bucket.upload(resizedFile, {
       destination: resizedFilePath,
       metadata,
+      public: true,
     });
     logs.imageUploaded(resizedFilePath);
 

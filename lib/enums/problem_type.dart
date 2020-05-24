@@ -19,6 +19,8 @@ class ProblemType extends EnumClass {
   static const ProblemType disregardMessages = _$disregardMessages;
   static const ProblemType saveMessage = _$saveMessage;
   static const ProblemType uploadTaskFailure = _$uploadTaskFailure;
+  static const ProblemType observeProfilePics = _$observeProfilePics;
+  static const ProblemType disregardProfilePics = _$disregardProfilePics;
 
   const ProblemType._(String name) : super(name);
 

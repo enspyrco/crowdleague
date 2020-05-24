@@ -7,6 +7,7 @@ import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/actions/leaguers/store_leaguers.dart';
 import 'package:crowdleague/actions/profile/store_profile_leaguer.dart';
+import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
@@ -18,10 +19,11 @@ import 'package:redux/redux.dart';
 
 class DatabaseService {
   final Firestore firestore;
+  StreamSubscription<QuerySnapshot> messagesSubscription;
+  final StreamController<ReduxAction> profilePicsController =
+      StreamController<ReduxAction>();
 
   DatabaseService({this.firestore});
-
-  StreamSubscription<QuerySnapshot> messagesSubscription;
 
   //////////////////////////////////////////////////////////////////////////////
   /// CONVERSATIONS
@@ -204,6 +206,43 @@ class DatabaseService {
           (b) => b..leaguer.replace(snapshot.toLeaguer()));
     } catch (error, trace) {
       return AddProblemObject.from(error, trace, ProblemType.retrieveLeaguers);
+    }
+  }
+
+  ///
+  Stream<ReduxAction> observeProfilePics(String userId) {
+    try {
+      firestore
+          .collection('leaguers/$userId/profile_pics')
+          .snapshots()
+          .listen((querySnapshot) {
+        try {
+          final picIds = <String>[];
+          for (final docSnapshot in querySnapshot.documents) {
+            picIds.add(docSnapshot.documentID);
+          }
+          profilePicsController
+              .add(StoreProfilePics((b) => b..profilePicIds.replace(picIds)));
+        } catch (error, trace) {
+          profilePicsController.add(AddProblemObject.from(
+              error, trace, ProblemType.observeProfilePics));
+        }
+      });
+    } catch (error, trace) {
+      profilePicsController.add(
+          AddProblemObject.from(error, trace, ProblemType.observeProfilePics));
+    }
+
+    return profilePicsController.stream;
+  }
+
+  /// cancels the subscription or dispatches an AddProblem action
+  void disregardProfilePics(Store<AppState> store) async {
+    try {
+      await profilePicsController.close();
+    } catch (error, trace) {
+      profilePicsController.add(AddProblemObject.from(
+          error, trace, ProblemType.disregardProfilePics));
     }
   }
 }

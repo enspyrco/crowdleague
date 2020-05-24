@@ -1,3 +1,5 @@
+import 'package:crowdleague/actions/profile/disregard_profile_pics.dart';
+import 'package:crowdleague/actions/profile/observe_profile_pics.dart';
 import 'package:crowdleague/actions/profile/retrieve_profile_leaguer.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -19,7 +21,11 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
       body: StoreConnector<AppState, VmProfilePage>(
-          onInit: (store) => store.dispatch(RetrieveProfileLeaguer()),
+          onInit: (store) {
+            store.dispatch(RetrieveProfileLeaguer());
+            store.dispatch(ObserveProfilePics());
+          },
+          onDispose: (store) => store.dispatch(DisregardProfilePics()),
           distinct: true,
           converter: (store) => store.state.profilePage,
           builder: (context, vm) {
