@@ -22,6 +22,9 @@ abstract class VmProfilePage
   factory VmProfilePage([void Function(VmProfilePageBuilder) updates]) =
       _$VmProfilePage;
 
+  static VmProfilePageBuilder initBuilder() =>
+      VmProfilePageBuilder()..pickingProfilePic = false;
+
   Object toJson() => serializers.serializeWith(VmProfilePage.serializer, this);
 
   static VmProfilePage fromJson(String jsonString) => serializers
