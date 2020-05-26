@@ -6,7 +6,7 @@ extension ConvertToLeaguer on DocumentSnapshot {
     return Leaguer((b) => b
       ..uid = documentID
       ..displayName = data['displayName'] as String
-      ..photoUrl = data['photoUrl'] as String ??
+      ..photoUrl = data['photoURL'] as String ??
           'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y');
   }
 }

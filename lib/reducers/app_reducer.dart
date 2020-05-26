@@ -2,7 +2,7 @@ import 'package:crowdleague/reducers/auth_reducers.dart';
 import 'package:crowdleague/reducers/conversations_reducers.dart';
 import 'package:crowdleague/reducers/leaguers_reducers.dart';
 import 'package:crowdleague/reducers/navigation_reducers.dart';
-import 'package:crowdleague/reducers/profile_reducer.dart';
+import 'package:crowdleague/reducers/profile_reducers.dart';
 import 'package:crowdleague/reducers/storage_reducers.dart';
 import 'package:crowdleague/reducers/themes_reducers.dart';
 import 'package:redux/redux.dart';

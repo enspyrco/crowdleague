@@ -4,6 +4,7 @@ import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/nav_bar_selection.dart';
+import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/problem_mocks.dart';
@@ -31,6 +32,7 @@ void main() {
         ..settings = Settings.initBuilder()
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
+        ..profilePage = VmProfilePage.initBuilder()
         ..conversationPage.messageText = ''
         ..problems.add(mockProblem)
         ..user.replace(mockUser));
@@ -50,6 +52,7 @@ void main() {
         ..settings = Settings.initBuilder()
         ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
         ..newConversationsPage = VmNewConversationPage.initBuilder()
+        ..profilePage = VmProfilePage.initBuilder()
         ..conversationPage.messageText = ''
         ..problems.add(mockProblem)
         ..user.replace(mockUser));

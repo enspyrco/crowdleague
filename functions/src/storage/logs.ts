@@ -8,6 +8,18 @@ export const complete = () => {
   console.log("Completed execution of extension");
 };
 
+export const addProfilePicsToFirestore = () => {
+  console.log('Adding profile pic data to Firestore...');
+}
+
+export const addedProfilePicsToFirestore = () => {
+  console.log('Added profile pic data to Firestore.');
+}
+
+export const errorAddingProfilePicsToFirestore = (err: Error)  => {
+  console.error("Error when adding profile pic data to Firestore", err);
+}
+
 export const noContentType = () => {
   console.log(`File has no Content-Type, no processing is required`);
 };

@@ -1,11 +1,12 @@
+import 'package:crowdleague/actions/database/plumb_database_stream.dart';
+import 'package:crowdleague/enums/problem_type.dart';
+import 'package:crowdleague/extensions/add_problem_extensions.dart';
 import 'package:crowdleague/middleware/auth_middleware.dart';
 import 'package:crowdleague/middleware/conversations_middleware.dart';
-import 'package:crowdleague/middleware/device_middleware.dart';
 import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/middleware/notifications_middleware.dart';
 import 'package:crowdleague/actions/meta/bundle_of_actions.dart';
 import 'package:crowdleague/middleware/profile_middleware.dart';
-import 'package:crowdleague/middleware/storage_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/database_service.dart';
@@ -32,18 +33,22 @@ List<Middleware<AppState>> createAppMiddleware(
     StorageService storageService,
     DeviceService deviceService}) {
   return [
-    TypedMiddleware<AppState, BundleOfActions>(
-      _unwrapBundleOfActions(),
-    ),
     ...createAuthMiddleware(authService: authService),
     ...createNavigationMiddleware(navigationService: navigationService),
     ...createConversationsMiddleware(databaseService: databaseService),
     ...createNotificationsMiddleware(
       notificationsService: notificationsService,
     ),
-    ...createStorageMiddleware(storageService: storageService),
-    ...createDeviceMiddleware(deviceService: deviceService),
-    ...createProfileMiddleware(databaseService: databaseService),
+    ...createProfileMiddleware(
+        databaseService: databaseService,
+        deviceService: deviceService,
+        storageService: storageService),
+    TypedMiddleware<AppState, BundleOfActions>(
+      _unwrapBundleOfActions(),
+    ),
+    TypedMiddleware<AppState, PlumbDatabaseStream>(
+      _plumbDatabaseStream(databaseService),
+    ),
   ];
 }
 
@@ -53,5 +58,22 @@ void Function(
   return (Store<AppState> store, BundleOfActions action, NextDispatcher next) {
     next(action);
     action.actions.forEach(store.dispatch);
+  };
+}
+
+void Function(
+        Store<AppState> store, PlumbDatabaseStream action, NextDispatcher next)
+    _plumbDatabaseStream(DatabaseService databaseService) {
+  return (Store<AppState> store, PlumbDatabaseStream action,
+      NextDispatcher next) async {
+    next(action);
+
+    databaseService.storeStream.listen(
+      store.dispatch,
+      onError: (dynamic error, StackTrace trace) => store.dispatch(
+        AddProblemObject.from(
+            error, trace, ProblemType.databaseStoreController),
+      ),
+    );
   };
 }

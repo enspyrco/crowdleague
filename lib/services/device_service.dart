@@ -8,6 +8,6 @@ class DeviceService {
 
   Future<String> pickProfilePic() async {
     final file = await imagePicker.pickImage(source: ImageSource.gallery);
-    return file.path;
+    return file?.path;
   }
 }

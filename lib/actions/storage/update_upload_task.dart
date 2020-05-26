@@ -1,4 +1,4 @@
-library update_upload_task_info;
+library update_upload_task;
 
 import 'dart:convert';
 
@@ -6,22 +6,26 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/enums/storage/update_upload_task_type.dart';
+import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:crowdleague/models/app/serializers.dart';
 
-part 'update_upload_task_info.g.dart';
+part 'update_upload_task.g.dart';
 
 /// Either converted from a [FirebaseStorage.StorageTaskEvent] or created
-/// directly (eg. the first event has type [UpdateUploadTaskType.setup] and has
+/// directly (eg. the first event has type [UploadTaskUpdateType.setup] and has
 /// the uuid that is used to identify the upload task in each subsequent event)
-abstract class UpdateUploadTaskInfo extends Object
+abstract class UpdateUploadTask extends Object
     with ReduxAction
-    implements Built<UpdateUploadTaskInfo, UpdateUploadTaskInfoBuilder> {
+    implements Built<UpdateUploadTask, UpdateUploadTaskBuilder> {
   // Used to link the file in storage, the task info in memory and the db entry
   String get uuid;
 
   // Each StorageTaskEvent has the equivalent of the following members
-  UpdateUploadTaskType get type;
+  UploadTaskUpdateType get type;
+
+  // The local path to the file that is being uploaded
+  @nullable
+  String get filePath;
   @nullable
   int get error;
   @nullable
@@ -36,22 +40,20 @@ abstract class UpdateUploadTaskInfo extends Object
   // final StorageReference ref;
   // final StorageMetadata storageMetadata;
 
-  UpdateUploadTaskInfo._();
+  UpdateUploadTask._();
 
-  factory UpdateUploadTaskInfo(
-          [void Function(UpdateUploadTaskInfoBuilder) updates]) =
-      _$UpdateUploadTaskInfo;
+  factory UpdateUploadTask([void Function(UpdateUploadTaskBuilder) updates]) =
+      _$UpdateUploadTask;
 
   Object toJson() =>
-      serializers.serializeWith(UpdateUploadTaskInfo.serializer, this);
+      serializers.serializeWith(UpdateUploadTask.serializer, this);
 
-  static UpdateUploadTaskInfo fromJson(String jsonString) =>
-      serializers.deserializeWith(
-          UpdateUploadTaskInfo.serializer, json.decode(jsonString));
+  static UpdateUploadTask fromJson(String jsonString) => serializers
+      .deserializeWith(UpdateUploadTask.serializer, json.decode(jsonString));
 
-  static Serializer<UpdateUploadTaskInfo> get serializer =>
-      _$updateUploadTaskInfoSerializer;
+  static Serializer<UpdateUploadTask> get serializer =>
+      _$updateUploadTaskSerializer;
 
   @override
-  String toString() => 'UPDATE_UPLOAD_TASK_INFO';
+  String toString() => 'UPDATE_UPLOAD_TASK';
 }

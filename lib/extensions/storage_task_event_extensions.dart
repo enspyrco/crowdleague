@@ -1,29 +1,29 @@
-import 'package:crowdleague/actions/storage/update_upload_task_info.dart';
-import 'package:crowdleague/enums/storage/update_upload_task_type.dart';
+import 'package:crowdleague/actions/storage/update_upload_task.dart';
+import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 extension ConvertToReduxAction on StorageTaskEvent {
-  UpdateUploadTaskInfo toUpdateUploadTaskInfo() {
-    UpdateUploadTaskType convertedType;
+  UpdateUploadTask toUpdateUploadTask() {
+    UploadTaskUpdateType convertedType;
     switch (type) {
       case StorageTaskEventType.resume:
-        convertedType = UpdateUploadTaskType.resume;
+        convertedType = UploadTaskUpdateType.resume;
         break;
       case StorageTaskEventType.progress:
-        convertedType = UpdateUploadTaskType.progress;
+        convertedType = UploadTaskUpdateType.progress;
         break;
       case StorageTaskEventType.pause:
-        convertedType = UpdateUploadTaskType.pause;
+        convertedType = UploadTaskUpdateType.pause;
         break;
       case StorageTaskEventType.success:
-        convertedType = UpdateUploadTaskType.success;
+        convertedType = UploadTaskUpdateType.success;
         break;
       case StorageTaskEventType.failure:
-        convertedType = UpdateUploadTaskType.failure;
+        convertedType = UploadTaskUpdateType.failure;
         break;
     }
 
-    return UpdateUploadTaskInfo((b) => b
+    return UpdateUploadTask((b) => b
       ..type = convertedType
       ..error = snapshot.error
       ..bytesTransferred = snapshot.bytesTransferred

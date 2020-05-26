@@ -41,7 +41,7 @@ void main() async {
     AppleSignInObject(),
   );
   final navigationService = NavigationService(navKey);
-  final databaseService = DatabaseService(firestore: Firestore.instance);
+  final databaseService = DatabaseService(Firestore.instance);
   final notificationsService = NotificationsService(FirebaseMessaging());
   final storageService = StorageService(
     FirebaseStorage(

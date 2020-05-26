@@ -8,8 +8,7 @@ import 'package:crowdleague/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/actions/conversations/disregard_messages.dart';
 import 'package:crowdleague/actions/conversations/leave_conversation.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
-import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
-import 'package:crowdleague/actions/conversations/store_conversation_summaries.dart';
+import 'package:crowdleague/actions/conversations/store_conversations.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
@@ -30,10 +29,9 @@ import 'package:crowdleague/actions/navigation/remove_problem.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
-import 'package:crowdleague/actions/profile/retrieve_profile_leaguer.dart';
 import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
 import 'package:crowdleague/actions/themes/store_theme_colors.dart';
-import 'package:crowdleague/enums/storage/storage_task_state.dart';
+import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
@@ -58,7 +56,7 @@ import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
-import 'package:crowdleague/models/storage/storage_task_info.dart';
+import 'package:crowdleague/models/storage/upload_task.dart';
 import 'package:crowdleague/models/themes/theme_colors.dart';
 import 'package:crowdleague/models/themes/theme_set.dart';
 
@@ -84,9 +82,8 @@ part 'serializers.g.dart';
   RecordRemovedRouteInfo,
   RecordReplacedRouteInfo,
   StoreUser,
-  RetrieveConversationSummaries,
   StoreNavBarSelection,
-  StoreConversationSummaries,
+  StoreConversations,
   StoreSelectedConversation,
   LeaveConversation,
   UpdateNewConversationPage,
@@ -100,7 +97,6 @@ part 'serializers.g.dart';
   DisregardMessages,
   StoreBrightnessMode,
   StoreThemeColors,
-  RetrieveProfileLeaguer,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())

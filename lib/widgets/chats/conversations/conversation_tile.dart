@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 
 import 'package:crowdleague/extensions/extensions.dart';
 
-class ConversationSummaryTile extends StatelessWidget {
+class ConversationTile extends StatelessWidget {
   final ConversationSummary summary;
 
-  ConversationSummaryTile({@required this.summary, Key key}) : super(key: key);
+  ConversationTile({@required this.summary, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

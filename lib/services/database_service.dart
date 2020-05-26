@@ -2,26 +2,37 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crowdleague/actions/conversations/store_conversation_summaries.dart';
-import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/actions/leaguers/store_leaguers.dart';
-import 'package:crowdleague/actions/profile/store_profile_leaguer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/conversations/conversation/message.dart';
-import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
+import 'package:crowdleague/utils/firestore_subscriptions.dart';
 import 'package:redux/redux.dart';
 
 class DatabaseService {
-  final Firestore firestore;
+  /// The [Firestore] instance, the current implementation of the database
+  final Firestore _firestore;
 
-  DatabaseService({this.firestore});
+  /// The [FirestoreSubscriptions] object holds the subscriptions to the
+  /// firestore streams, used to cancel streams when we want to stop listening
+  /// to events in the firestore
+  final FirestoreSubscriptions _firestoreSubscriptions =
+      FirestoreSubscriptions();
 
-  StreamSubscription<QuerySnapshot> messagesSubscription;
+  /// The [_storeController] is connected to the redux [Store] and is used
+  /// by the [DatabaseService] to add actions to the stream where they will
+  /// be dispatched by the store
+  final StreamController<ReduxAction> _storeController =
+      StreamController<ReduxAction>();
+
+  /// The stream of the [_storeController] is used just once on app load, to
+  /// connect the [_storeController] to the redux [Store]
+  Stream<ReduxAction> get storeStream => _storeController.stream;
+
+  DatabaseService(Firestore firestore) : _firestore = firestore;
 
   //////////////////////////////////////////////////////////////////////////////
   /// CONVERSATIONS
@@ -41,7 +52,7 @@ class DatabaseService {
       }
 
       final docRef =
-          await firestore.collection('conversations').add(<String, dynamic>{
+          await _firestore.collection('/conversations/').add(<String, dynamic>{
         'createdBy': userId,
         'createdOn': FieldValue.serverTimestamp(),
         'displayNames': displayNames,
@@ -60,28 +71,27 @@ class DatabaseService {
     }
   }
 
-  /// Returns a [Future] of either [StoreSelectedConversation] or [AddProblem]
-  Future<ReduxAction> retrieveConversationSummaries(String userId) async {
+  /// We listen for changes in the conversations collection and try to convert
+  /// each updated collection to a [StoreConversationSummaries] action.
+  ///
+  /// The action is added to the [_storeController] or if there was a problem,
+  /// an [AddProblem] action is added.
+  void observeConversations(String userId) {
     try {
-      final querySnapshot = await firestore
-          .collection('conversations')
-          .where('uids', arrayContains: userId)
-          .getDocuments();
-
-      final summaries = querySnapshot.documents.map<
-          ConversationSummary>((snapshot) => ConversationSummary((b) => b
-        ..conversationId = snapshot.documentID
-        ..displayNames.replace(
-            List<String>.from(snapshot.data['displayNames'] as List<dynamic>))
-        ..photoURLs.replace(
-            List<String>.from(snapshot.data['photoURLs'] as List<dynamic>))
-        ..uids.replace(
-            List<String>.from(snapshot.data['uids'] as List<dynamic>))));
-
-      return StoreConversationSummaries((b) => b..summaries.replace(summaries));
+      _firestoreSubscriptions.conversations =
+          _firestore.connectToConversations(userId, _storeController);
     } catch (error, trace) {
-      return AddProblemObject.from(
-          error, trace, ProblemType.createConversation);
+      _storeController.add(
+          AddProblemObject.from(error, trace, ProblemType.createConversation));
+    }
+  }
+
+  void disregardConversations() {
+    try {
+      _firestoreSubscriptions.conversations?.cancel();
+    } catch (error, trace) {
+      _storeController.add(AddProblemObject.from(
+          error, trace, ProblemType.disregardConversations));
     }
   }
 
@@ -89,9 +99,9 @@ class DatabaseService {
     try {
       // the message saved to firestore will be put in the app state via the
       // observeMessages function
-      await firestore
+      await _firestore
           .collection(
-              'conversations/${store.state.conversationPage.summary.conversationId}/messages')
+              '/conversations/${store.state.conversationPage.summary.conversationId}/messages/')
           .add(<String, dynamic>{
         'authorId': store.state.user.id,
         'text': store.state.conversationPage.messageText,
@@ -103,61 +113,22 @@ class DatabaseService {
     }
   }
 
-  ///
-  void observeMessages(Store<AppState> store) {
+  /// We listen for changes in the messages collection and add the updated
+  /// entries to the stream connected to the store.
+  void observeMessages(String conversationId) {
     try {
-      messagesSubscription = firestore
-          .collection(
-              'conversations/${store.state.conversationPage.summary.conversationId}/messages')
-          .snapshots()
-          .listen((querySnapshot) {
-        store.dispatch(StoreMessages(
-          (b) => b
-            ..messages =
-                ListBuilder<Message>(querySnapshot.documents.map<Message>(
-              (docSnapshot) =>
-                  Message((b) => b..text = docSnapshot.data['text'] as String),
-            )),
-        ));
-      })
-            ..onError((dynamic error, StackTrace trace) {
-              store.dispatch(AddProblemObject.from(
-                  error, trace, ProblemType.observeMessages));
-            });
+      _firestoreSubscriptions.messages =
+          _firestore.connectToMessages(conversationId, _storeController);
     } catch (error, trace) {
-      store.dispatch(
+      _storeController.add(
           AddProblemObject.from(error, trace, ProblemType.observeMessages));
     }
-
-    // below was me trying a few different ideas on how to setup the service
-    // function, I ended passing in the store which makes things a lot easier
-    // but leaving these here till I see the chosen method is working
-
-    // return firestore
-    //     .collection('conversations/$conversationId')
-    //     .snapshots()
-    //     .map<ReduxAction>((querySnapshot) => StoreMessages((b) => b
-    //       ..messages = ListBuilder<Message>(querySnapshot.documents
-    //           .map<Message>((docSnapshot) => Message(
-    //               (b) => b..text = docSnapshot.data['text'] as String)))));
-
-    // await for (QuerySnapshot querySnapshot
-    //     in firestore.collection('conversations/$conversationId').snapshots()) {
-    //   try {
-    //     yield StoreMessages((b) => b
-    //       ..messages = ListBuilder<Message>(querySnapshot.documents
-    //           .map<Message>((docSnapshot) => Message(
-    //               (b) => b..text = docSnapshot.data['text'] as String))));
-    //   } catch (error, trace) {
-    //     yield AddProblemObject.from(error, trace, ProblemType.observeMessages);
-    //   }
-    // }
   }
 
   /// cancels the subscription or dispatches an AddProblem action
   void disregardMessages(Store<AppState> store) async {
     try {
-      await messagesSubscription?.cancel();
+      await _firestoreSubscriptions.messages?.cancel();
     } catch (error, trace) {
       store.dispatch(
           AddProblemObject.from(error, trace, ProblemType.disregardMessages));
@@ -165,8 +136,8 @@ class DatabaseService {
   }
 
   Future<void> leaveConversation(String userId, String conversationId) {
-    return firestore
-        .document('conversations/$conversationId/leave/$userId')
+    return _firestore
+        .document('/conversations/$conversationId/leave/$userId')
         .setData(<String, dynamic>{'timestamp': FieldValue.serverTimestamp()});
   }
 
@@ -176,7 +147,7 @@ class DatabaseService {
 
   Future<ReduxAction> get retrieveLeaguers async {
     try {
-      final collection = await firestore.collection('users');
+      final collection = await _firestore.collection('/users/');
       final snapshot = await collection.getDocuments();
       final leaguers = snapshot.documents.map<
           Leaguer>((user) => Leaguer((b) => b
@@ -196,14 +167,48 @@ class DatabaseService {
     }
   }
 
-  Future<ReduxAction> retrieveLeaguer(String userId) async {
+  void observeProfilePics(String userId) {
     try {
-      final snapshot = await firestore.document('leaguers/$userId').get();
-
-      return StoreProfileLeaguer(
-          (b) => b..leaguer.replace(snapshot.toLeaguer()));
+      // - create a stream from the firestore
+      // - listen to the stream and add events to the stream_controller
+      // - store the subscription so the stream from the firestore can be
+      // cancelled
+      _firestoreSubscriptions.profilePics =
+          _firestore.connectToProfilePics(userId, _storeController);
     } catch (error, trace) {
-      return AddProblemObject.from(error, trace, ProblemType.retrieveLeaguers);
+      _storeController.add(
+          AddProblemObject.from(error, trace, ProblemType.observeProfilePics));
+    }
+  }
+
+  /// cancels the subscription or dispatches an AddProblem action
+  void disregardProfilePics() async {
+    try {
+      await _firestoreSubscriptions.profilePics?.cancel();
+    } catch (error, trace) {
+      _storeController.add(AddProblemObject.from(
+          error, trace, ProblemType.disregardProfilePics));
+    }
+  }
+
+  ///
+  void observeProfile(String userId) {
+    try {
+      _firestoreSubscriptions.profile =
+          _firestore.connectToProfile(userId, _storeController);
+    } catch (error, trace) {
+      _storeController
+          .add(AddProblemObject.from(error, trace, ProblemType.observeProfile));
+    }
+  }
+
+  /// cancels the subscription or dispatches an AddProblem action
+  void disregardProfile() async {
+    try {
+      await _firestoreSubscriptions.profile?.cancel();
+    } catch (error, trace) {
+      _storeController.add(
+          AddProblemObject.from(error, trace, ProblemType.disregardProfile));
     }
   }
 }

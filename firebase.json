@@ -16,7 +16,12 @@
       "port": "8081"
     }
   },
-  "storage": {
-    "rules": "storage.rules"
-  }
+  "storage": [{
+    "rules": "firebase-storage-rules/main-storage.rules",
+    "bucket": "crowdleague1.appspot.com"
+  },
+  {
+    "rules": "firebase-storage-rules/profile-pics-storage.rules",
+    "bucket": "crowdleague-profile-pics"
+  }]
 }

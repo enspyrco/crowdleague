@@ -1,17 +1,18 @@
-import { Bucket } from "firebase-admin/node_modules/@google-cloud/storage";
-import * as admin from "firebase-admin";
-import * as fs from "fs";
-import * as functions from "firebase-functions";
-import * as mkdirp from "mkdirp";
-import * as os from "os";
-import * as path from "path";
-import * as sharp from "sharp";
+import { Bucket } from 'firebase-admin/node_modules/@google-cloud/storage';
+import * as admin from 'firebase-admin';
+import * as fs from 'fs';
+import * as functions from 'firebase-functions';
+import * as mkdirp from 'mkdirp';
+import * as os from 'os';
+import * as path from 'path';
+import * as sharp from 'sharp';
 
-import config from "./config";
-import * as logs from "./logs";
-import * as validators from "./validators";
-import { ObjectMetadata } from "firebase-functions/lib/providers/storage";
-import { extractFileNameWithoutExtension } from "./util";
+import config from './config';
+import * as logs from './logs';
+import * as validators from './validators';
+import * as database from './database';
+import { ObjectMetadata } from 'firebase-functions/lib/providers/storage';
+import { extractFileNameWithoutExtension } from './util';
 
 interface ResizedImageResult {
   size: string;
@@ -62,6 +63,7 @@ export async function createResizedPics(object : functions.storage.ObjectMetadat
 
   let originalFile : any;
   let remoteFile;
+  const db = new database.ProcessingEntry(fileDir, fileNameWithoutExtension);
   try {
     originalFile = path.join(os.tmpdir(), filePath);
     const tempLocalDir = path.dirname(originalFile);
@@ -100,9 +102,17 @@ export async function createResizedPics(object : functions.storage.ObjectMetadat
     const failed = results.some((result) => result.success === false);
     if (failed) {
       logs.failed();
+      await db.failed();
       return;
     }
     logs.complete();
+    try {
+      logs.addProfilePicsToFirestore();
+      await db.complete();
+      logs.addedProfilePicsToFirestore();
+    } catch (err) {
+      logs.errorAddingProfilePicsToFirestore(err);
+    }
   } catch (err) {
     logs.error(err);
   } finally {
@@ -200,6 +210,7 @@ const resizeImage = async ({
     await bucket.upload(resizedFile, {
       destination: resizedFilePath,
       metadata,
+      public: true,
     });
     logs.imageUploaded(resizedFilePath);
 

@@ -1,4 +1,5 @@
 import 'package:crowdleague/actions/auth/observe_auth_state.dart';
+import 'package:crowdleague/actions/database/plumb_database_stream.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/extensions/extensions.dart';
@@ -8,8 +9,8 @@ import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/utils/navigation_info_recorder.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
-import 'package:crowdleague/widgets/conversations/conversation/conversation_page.dart';
-import 'package:crowdleague/widgets/conversations/new_conversation/new_conversation_page.dart';
+import 'package:crowdleague/widgets/chats/messages/messages_page.dart';
+import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_page.dart';
 import 'package:crowdleague/widgets/main/main_page.dart';
 import 'package:crowdleague/widgets/profile/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,11 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
     widget.store.dispatch(ObserveAuthState());
     widget.store.dispatch(RequestFCMPermissions());
     widget.store.dispatch(PrintFCMToken());
+
+    /// This should happen once on app load, the various streams from the
+    /// [Firestore] database are changed but the [DatabaseService] stream
+    /// controller is connected to the redux [Store] then remains unchanged.
+    widget.store.dispatch(PlumbDatabaseStream());
   }
 
   @override
@@ -52,7 +58,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
               home: CheckAuth(), // becomes the route named '/'
               routes: <String, WidgetBuilder>{
                 '/other_auth_options': (context) => OtherAuthOptionsPage(),
-                '/conversation': (context) => ConversationPage(),
+                '/conversation': (context) => MessagesPage(),
                 '/new_conversation': (context) => NewConversationPage(),
                 '/profile': (context) => ProfilePage()
               },

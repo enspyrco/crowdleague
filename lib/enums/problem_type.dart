@@ -13,12 +13,20 @@ class ProblemType extends EnumClass {
   static const ProblemType emailSignIn = _$emailSignIn;
   static const ProblemType emailSignUp = _$emailSignUp;
   static const ProblemType signOut = _$signOut;
+  static const ProblemType databaseStoreController = _$databaseStoreController;
   static const ProblemType retrieveLeaguers = _$retrieveLeaguers;
   static const ProblemType createConversation = _$createConversation;
   static const ProblemType observeMessages = _$observeMessages;
   static const ProblemType disregardMessages = _$disregardMessages;
   static const ProblemType saveMessage = _$saveMessage;
   static const ProblemType uploadTaskFailure = _$uploadTaskFailure;
+  static const ProblemType observeProfilePics = _$observeProfilePics;
+  static const ProblemType disregardProfilePics = _$disregardProfilePics;
+  static const ProblemType observeProfile = _$observeProfile;
+  static const ProblemType disregardProfile = _$disregardProfile;
+  static const ProblemType observeConversations = _$observeConversations;
+  static const ProblemType disregardConversations = _$disregardConversations;
+  static const ProblemType retrieveConversations = _$retrieveConversations;
 
   const ProblemType._(String name) : super(name);
 
