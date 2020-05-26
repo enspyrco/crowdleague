@@ -26,10 +26,19 @@ platform :ios do
         timeout: 3600,
         lock_when_sleeps: false
     )
+
     match(type: "appstore", 
           readonly: true, 
           keychain_name: "unlocked_keychain",
-          keychain_password: "doesntmatter")
+          keychain_password: "doesntmatter"
+    )
+
+    update_project_provisioning(
+          profile: ENV["sigh_co.enspyr.crowdleague1_appstore_profile-path"],
+          build_configuration: "Release",
+          code_signing_identity: "Apple Distribution: Enspyr Pty Ltd (SPL85G447K)"
+    )
+
     build_app(
         workspace: "Runner.xcworkspace", 
         scheme: "Runner", 
@@ -58,10 +67,19 @@ platform :ios do
         timeout: 3600,
         lock_when_sleeps: false
     )
+    
     match(type: "appstore", 
           readonly: true, 
           keychain_name: "unlocked_keychain",
-          keychain_password: "doesntmatter")
+          keychain_password: "doesntmatter"
+    )
+    
+    update_project_provisioning(
+          profile: ENV["sigh_co.enspyr.crowdleague1_appstore_profile-path"],
+          build_configuration: "Release",
+          code_signing_identity: "Apple Distribution: Enspyr Pty Ltd (SPL85G447K)"
+    )
+
     build_app(
         workspace: "Runner.xcworkspace", 
         scheme: "Runner", 
@@ -69,6 +87,7 @@ platform :ios do
           method: "app-store"
         }
     )
+    
     upload_to_testflight(
       skip_submission: true,
       skip_waiting_for_build_processing: true
