@@ -89,7 +89,7 @@ jobs:
 
     - name: Install screenshots package 
       if: github.ref == 'refs/heads/master' || github.base_ref == 'refs/heads/master'
-      run: flutter pub global activate -sgit https://github.com/mmcc007/screenshots
+      run: flutter pub global activate -sgit https://github.com/nickmeinhold/screenshots
 
     # ############################################################
     # # setup android emulator with android-emulator-runner 
