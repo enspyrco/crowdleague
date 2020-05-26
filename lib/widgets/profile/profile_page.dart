@@ -1,6 +1,7 @@
+import 'package:crowdleague/actions/profile/disregard_profile.dart';
 import 'package:crowdleague/actions/profile/disregard_profile_pics.dart';
+import 'package:crowdleague/actions/profile/observe_profile.dart';
 import 'package:crowdleague/actions/profile/observe_profile_pics.dart';
-import 'package:crowdleague/actions/profile/retrieve_profile_leaguer.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
@@ -22,10 +23,13 @@ class ProfilePage extends StatelessWidget {
       ),
       body: StoreConnector<AppState, VmProfilePage>(
           onInit: (store) {
-            store.dispatch(RetrieveProfileLeaguer());
+            store.dispatch(ObserveProfile());
             store.dispatch(ObserveProfilePics());
           },
-          onDispose: (store) => store.dispatch(DisregardProfilePics()),
+          onDispose: (store) {
+            store.dispatch(DisregardProfilePics());
+            store.dispatch(DisregardProfile());
+          },
           distinct: true,
           converter: (store) => store.state.profilePage,
           builder: (context, vm) {
@@ -55,11 +59,11 @@ class ProfilePage extends StatelessWidget {
                         ],
                       )),
                 ),
-                if (vm.profilePicUploadId != null)
+                if (vm.uploadingProfilePicId != null)
                   StoreConnector<AppState, UploadTask>(
                     distinct: true,
                     converter: (store) =>
-                        store.state.uploadTasksMap[vm.profilePicUploadId],
+                        store.state.uploadTasksMap[vm.uploadingProfilePicId],
                     builder: (context, task) {
                       return Positioned(
                           bottom: (task.state == UploadTaskState.processing)

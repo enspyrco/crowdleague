@@ -27,7 +27,7 @@ class StorageService {
 
     // the profile page vm now has the uuid that it can use to access the upload
     // task
-    yield UpdateProfilePage((b) => b..profilePicUploadId = uuid);
+    yield UpdateProfilePage((b) => b..uploadingProfilePicId = uuid);
 
     final ref = profilePicsStorage.ref().child(userId).child(uuid);
     final uploadTask = ref.putFile(

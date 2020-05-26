@@ -7,8 +7,8 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
-import 'package:crowdleague/widgets/conversations/new_conversation/new_conversation_leaguers_list.dart';
-import 'package:crowdleague/widgets/conversations/new_conversation/new_conversation_selections_list.dart';
+import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_leaguers_list.dart';
+import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_selections_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 

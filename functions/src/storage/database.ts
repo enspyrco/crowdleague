@@ -14,7 +14,7 @@ export class ProcessingEntry {
             'addedOn' : admin.firestore.FieldValue.serverTimestamp(),
         });
         await db.doc(`leaguers/${this.uid}`).update({
-            'photoURL' : `https://storage.googleapis.com/crowdleague-profile-pics/${this.uid}/${this.picId}_100x100`,
+            'photoURL' : `https://storage.googleapis.com/crowdleague-profile-pics/${this.uid}/${this.picId}_200x200`,
         });
     }
     async failed() {

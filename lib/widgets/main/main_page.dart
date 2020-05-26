@@ -1,11 +1,10 @@
 import 'package:crowdleague/actions/auth/sign_out_user.dart';
-import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
 import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/enums/nav_bar_selection.dart';
-import 'package:crowdleague/widgets/conversations/conversation_summaries/conversation_summaries_page.dart';
+import 'package:crowdleague/widgets/chats/conversations/conversations_page.dart';
 import 'package:crowdleague/widgets/more_options/more_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -79,9 +78,6 @@ class NavBar extends StatelessWidget {
   }
 
   void _onItemTapped(BuildContext context, int index) {
-    if (index == NavBarSelection.conversations.index) {
-      context.dispatch(RetrieveConversationSummaries());
-    }
     context.dispatch(StoreNavBarSelection(
         (b) => b..selection = NavBarSelection.valueOfIndex(index)));
   }

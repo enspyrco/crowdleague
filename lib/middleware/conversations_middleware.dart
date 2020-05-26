@@ -1,8 +1,9 @@
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
+import 'package:crowdleague/actions/conversations/disregard_conversations.dart';
 import 'package:crowdleague/actions/conversations/disregard_messages.dart';
 import 'package:crowdleague/actions/conversations/leave_conversation.dart';
+import 'package:crowdleague/actions/conversations/observe_conversations.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
-import 'package:crowdleague/actions/conversations/retrieve_conversation_summaries.dart';
 import 'package:crowdleague/actions/conversations/save_message.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
@@ -12,10 +13,10 @@ import 'package:crowdleague/models/app/app_state.dart';
 
 typedef CreateConversationMiddleware = void Function(
     Store<AppState> store, CreateConversation action, NextDispatcher next);
-typedef RetrieveConversationSummariesMiddleware = void Function(
-    Store<AppState> store,
-    RetrieveConversationSummaries action,
-    NextDispatcher next);
+typedef ObserveConversationsMiddleware = void Function(
+    Store<AppState> store, ObserveConversations action, NextDispatcher next);
+typedef DisregardConversationsMiddleware = void Function(
+    Store<AppState> store, DisregardConversations action, NextDispatcher next);
 typedef SaveMessageMiddleware = void Function(
     Store<AppState> store, SaveMessage action, NextDispatcher next);
 typedef ObserveMessagesMiddleware = void Function(
@@ -40,8 +41,11 @@ List<Middleware<AppState>> createConversationsMiddleware(
     TypedMiddleware<AppState, CreateConversation>(
       _createConversation(databaseService),
     ),
-    TypedMiddleware<AppState, RetrieveConversationSummaries>(
-      _retrieveConversationSummaries(databaseService),
+    TypedMiddleware<AppState, ObserveConversations>(
+      _observeConversations(databaseService),
+    ),
+    TypedMiddleware<AppState, DisregardConversations>(
+      _disregardConversations(databaseService),
     ),
     TypedMiddleware<AppState, SaveMessage>(
       _saveMessage(databaseService),
@@ -59,14 +63,14 @@ List<Middleware<AppState>> createConversationsMiddleware(
 }
 
 CreateConversationMiddleware _createConversation(
-    DatabaseService conversationService) {
+    DatabaseService databaseService) {
   return (Store<AppState> store, CreateConversation action,
       NextDispatcher next) async {
     next(action);
 
-    /// [conversationService.createConversation] returns a [Future] of either
+    /// [databaseService.createConversation] returns a [Future] of either
     /// a [StoreSelectedConversation] or [AddProblem]
-    final reaction = await conversationService.createConversation(
+    final reaction = await databaseService.createConversation(
         store.state.user.id,
         store.state.newConversationsPage.selectionsVM.selections);
     store.dispatch(reaction);
@@ -79,62 +83,70 @@ CreateConversationMiddleware _createConversation(
   };
 }
 
-RetrieveConversationSummariesMiddleware _retrieveConversationSummaries(
-    DatabaseService conversationService) {
-  return (Store<AppState> store, RetrieveConversationSummaries action,
+ObserveConversationsMiddleware _observeConversations(
+    DatabaseService databaseService) {
+  return (Store<AppState> store, ObserveConversations action,
       NextDispatcher next) async {
     next(action);
 
-    ///
-    store.dispatch(await conversationService
-        .retrieveConversationSummaries(store.state.user.id));
+    databaseService.observeConversations(store.state.user.id);
   };
 }
 
-SaveMessageMiddleware _saveMessage(DatabaseService conversationService) {
+DisregardConversationsMiddleware _disregardConversations(
+    DatabaseService databaseService) {
+  return (Store<AppState> store, DisregardConversations action,
+      NextDispatcher next) async {
+    next(action);
+
+    databaseService.disregardConversations();
+  };
+}
+
+SaveMessageMiddleware _saveMessage(DatabaseService databaseService) {
   return (Store<AppState> store, SaveMessage action,
       NextDispatcher next) async {
     next(action);
 
     /// the function calls listen on the firestore and keeps the stream open
     /// until disregardMessages is called
-    conversationService.saveMessage(store);
+    databaseService.saveMessage(store);
   };
 }
 
-ObserveMessagesMiddleware _observeMessages(
-    DatabaseService conversationService) {
+ObserveMessagesMiddleware _observeMessages(DatabaseService databaseService) {
   return (Store<AppState> store, ObserveMessages action,
       NextDispatcher next) async {
     next(action);
 
     /// the function calls listen on the firestore and keeps the stream open
     /// until disregardMessages is called
-    conversationService.observeMessages(store);
+    databaseService
+        .observeMessages(store.state.conversationPage.summary.conversationId);
   };
 }
 
 DisregardMessagesMiddleware _disregardMessages(
-    DatabaseService conversationService) {
+    DatabaseService databaseService) {
   return (Store<AppState> store, DisregardMessages action,
       NextDispatcher next) async {
     next(action);
 
     /// the function calls listen on the firestore and keeps the stream open
     /// until disregardMessages is called
-    conversationService.disregardMessages(store);
+    databaseService.disregardMessages(store);
   };
 }
 
 LeaveConversationMiddleware _leaveConversation(
-    DatabaseService conversationService) {
+    DatabaseService databaseService) {
   return (Store<AppState> store, LeaveConversation action,
       NextDispatcher next) async {
     next(action);
 
     /// returns a Future<void>, currently no need to do anything when the
     /// future completes as the list has been updated locally already
-    await conversationService.leaveConversation(
+    await databaseService.leaveConversation(
         store.state.user.id, action.conversationId);
   };
 }
