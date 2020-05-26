@@ -5,16 +5,20 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
-
-    // Match any document in the 'users' collection
+    
     match /users/{userId} {
       allow read: if request.auth.uid != null;
       allow write: if false;
+    }
 
-      // only the user can read their conversation items 
-      match /conversation-items/{conversationId} {
+    match /leaguers/{userId} {
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid == userId;
+
+      // profile pic ids are added by the server, anyone can read
+      match /profile_pics/{picId} {
+        allow read: if request.auth.uid != null;
         allow write: if false;
-        allow read: if request.auth.uid == userId;
       }
     }
 
@@ -26,6 +30,12 @@ service cloud.firestore {
       allow update: if false;
       allow delete: if false;
       allow read: if request.auth.uid in resource.data.uids;
+
+      // messages can be created and read by conversation participants 
+      // see: https://firebase.google.com/docs/firestore/solutions/role-based-access
+      match /leave/{userId} {
+        allow create: if request.auth.uid == userId;
+      }
 
 			// messages can be created and read by conversation participants 
       // see: https://firebase.google.com/docs/firestore/solutions/role-based-access

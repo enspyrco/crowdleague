@@ -1,5 +1,5 @@
 name: crowdleague
-description: A new Flutter project.
+description: A platform for crowd sourcing sports leagues.
 
 version: 0.0.1+1
 
@@ -14,8 +14,6 @@ dependencies:
   built_collection:
   redux:
   flutter_redux:
-  redux_remote_devtools:
-  redux_logging:
   
   firebase_auth:
   google_sign_in:
@@ -25,6 +23,13 @@ dependencies:
   cloud_firestore:
   firebase_messaging:
   google_maps_flutter:
+  firebase_storage:
+  image_picker:
+  uuid:
+
+  # remove before app store / play store submission 
+  redux_remote_devtools:
+  redux_logging:
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +46,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/logo-300-greyscale.png
+
   fonts:
     - family: maticons # workaround to get full set of material icons
       fonts:
@@ -50,4 +59,4 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/app-icon-large-white.png"
+  image_path: "assets/images/logo-1024-white-bg.png"

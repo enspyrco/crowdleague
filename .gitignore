@@ -44,10 +44,6 @@ app.*.map.json
 
 ############ added ignores 
 
-# build products 
-ios/Build/
-# mock data with potentially identifying info 
-lib/utilities/rdt_ips.dart
 # generated files 
 *.g.dart
 # don't add project credentials to version control
@@ -64,8 +60,5 @@ android/crowdleague-fastlane-manager.json
 ios/Flutter/.last_build_id
 # Fastlane reports
 ios/fastlane/report.xml
-
-##### Added ignores 
-
 # credential for admin SDK to use when running functions locally for testing
 functions/firebase-functions-admin-key.json

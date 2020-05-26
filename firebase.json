@@ -7,12 +7,21 @@
     "predeploy": [
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
-    ]
+    ],
+    "source": "functions"
   },
   "emulators": {
     "firestore": {
       "host": "localhost",
       "port": "8081"
     }
-  }
+  },
+  "storage": [{
+    "rules": "firebase-storage-rules/main-storage.rules",
+    "bucket": "crowdleague1.appspot.com"
+  },
+  {
+    "rules": "firebase-storage-rules/profile-pics-storage.rules",
+    "bucket": "crowdleague-profile-pics"
+  }]
 }

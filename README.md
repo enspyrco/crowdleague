@@ -1,6 +1,10 @@
 # crowdleague
 
-CrowdLeague is a platform for crowd sourcing sports leagues. Be in a league of your own...
+CrowdLeague is a platform for crowd sourcing sports leagues. 
+
+Be in a league of your own...
+
+![Github Actions](https://github.com/nickmeinhold/crowdleague/workflows/Github%20Actions/badge.svg)
 
 [github](https://github.com/nickmeinhold/crowdleague_public) | [firebase console](https://console.firebase.google.com/u/0/project/crowdleague1/overview)
 
@@ -9,15 +13,26 @@ CrowdLeague is a platform for crowd sourcing sports leagues. Be in a league of y
 ## Common Commands 
 
 ```sh
-flutter pub run build_runner build
+remotedev --port 8000
+flutter pub run build_runner watch --delete-conflicting-outputs
 ```
 
 ## Get Credential Files
 
+If you are a contributor with access to our Firebase project you can just run: 
 ```sh
-chmod 755 ./get-credentials.sh
 ./get-credentials.sh
 ```
+
+Otherwise you will need to create your own Firebase project and add config files:
+
+- `android/app/google-services.json`
+- `ios/Runner/GoogleService-Info.plist`
+
+as specified in:
+
+- [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) 
+- [Add Firebase to your iOS project](https://firebase.google.com/docs/ios/setup)
 
 ### iOS Signing with Match
 
@@ -38,10 +53,28 @@ We use Cloud Functions for Firebase to automatically run backend code in respons
 
 The relevant code is all in `functions/`
 
+Setup
+
+```sh
+npm install
+```
+
 After making changes to `functions/src/index.ts`
 
 ```sh
 firebase deploy --only functions
+```
+
+## Firebase Storage 
+
+```sh
+firebase deploy --only storage
+```
+
+## Firestore Rules 
+
+```sh
+firebase deploy --only firestore:rules
 ```
 
 ## Screenshots 
@@ -81,6 +114,10 @@ After making changes to built_value classes run the builder to generate the new 
 
 ```sh
 flutter pub run build_runner build
+```
+or 
+```sh
+flutter pub run build_runner watch
 ```
 
 ## App Icons 

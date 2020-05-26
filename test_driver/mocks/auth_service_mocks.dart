@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:crowdleague/models/actions/clear_user_data.dart';
-import 'package:crowdleague/models/actions/redux_action.dart';
-import 'package:crowdleague/models/actions/store_user.dart';
+import 'package:crowdleague/actions/auth/clear_user_data.dart';
+import 'package:crowdleague/actions/auth/store_user.dart';
+import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:mockito/mockito.dart';
 
@@ -29,7 +29,7 @@ class FakeAuthService extends Fake implements AuthService {
     controller.add(StoreUser((b) => b.user = null));
     controller.add(
       StoreUser((b) => b.user
-        ..uid = 'id'
+        ..id = 'id'
         ..email = 'email'
         ..displayName = 'name'
         ..photoUrl = 'url'),
