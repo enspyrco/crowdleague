@@ -128,10 +128,22 @@ We use [flutter_launcher_icons](https://github.com/fluttercommunity/flutter_laun
 flutter pub run flutter_launcher_icons:main
 ```
 
-## Tests 
+## Testing 
 
 ### Unit and Widget Tests 
 
 ```sh
 flutter test
+```
+
+### Loclal Firebase Emulators 
+
+Run the emulator suite: 
+```
+firebase emulators:start
+```
+
+Local UI available at: 
+```
+http://localhost:4000
 ```

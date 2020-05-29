@@ -84,12 +84,17 @@ extension ConnectAndConvert on Firestore {
     });
   }
 
+  /// Connects a stream from the firestore (specifically from the 'leaguers/$userId' doc)
+  /// to a [StreamController<ReduxAction>] by listening to the firestore stream
+  /// and adding all events to the controller
   StreamSubscription<DocumentSnapshot> connectToProfile(
       String userId, StreamController<ReduxAction> controller) {
     return document('leaguers/$userId').snapshots().listen((docSnapshot) {
       try {
-        controller.add(UpdateProfilePage(
-            (b) => b..leaguer = docSnapshot.toLeaguer().toBuilder()));
+        final leaguer = docSnapshot.toLeaguer();
+        controller.add(UpdateProfilePage((b) => b
+          ..userId = leaguer.uid
+          ..leaguerPhotoURL = leaguer.photoUrl));
       } catch (error, trace) {
         controller.add(
             AddProblemObject.from(error, trace, ProblemType.observeProfile));

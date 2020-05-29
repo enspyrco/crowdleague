@@ -16,12 +16,15 @@ AppState _setPickingProfilePic(AppState state, PickProfilePic action) {
 
 AppState _updateProfilePage(AppState state, UpdateProfilePage action) {
   return state.rebuild((b) => b
+    ..profilePage.selectingProfilePic =
+        action.selectingProfilePic ?? b.profilePage.selectingProfilePic
     ..profilePage.pickingProfilePic =
         action.pickingProfilePic ?? b.profilePage.pickingProfilePic
     ..profilePage.uploadingProfilePicId =
         action.uploadingProfilePicId ?? b.profilePage.uploadingProfilePicId
-    ..profilePage.leaguer =
-        action.leaguer?.toBuilder() ?? b.profilePage.leaguer);
+    ..profilePage.userId = action.userId ?? b.profilePage.userId
+    ..profilePage.leaguerPhotoURL =
+        action.leaguerPhotoURL ?? b.profilePage.leaguerPhotoURL);
 }
 
 AppState _storeProfilePics(AppState state, StoreProfilePics action) {
