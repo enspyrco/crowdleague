@@ -7,7 +7,6 @@ import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/serializers.dart';
-import 'package:crowdleague/models/leaguers/leaguer.dart';
 
 part 'update_profile_page.g.dart';
 
@@ -15,11 +14,15 @@ abstract class UpdateProfilePage extends Object
     with ReduxAction
     implements Built<UpdateProfilePage, UpdateProfilePageBuilder> {
   @nullable
+  String get userId;
+  @nullable
+  String get leaguerPhotoURL;
+  @nullable
+  bool get selectingProfilePic;
+  @nullable
   bool get pickingProfilePic;
   @nullable
   String get uploadingProfilePicId;
-  @nullable
-  Leaguer get leaguer;
 
   UpdateProfilePage._();
 
@@ -36,5 +39,11 @@ abstract class UpdateProfilePage extends Object
       _$updateProfilePageSerializer;
 
   @override
-  String toString() => 'UPDATE_PROFILE_PAGE';
+  String toString() => '''UPDATE_PROFILE_PAGE: 
+    ${userId == null ? '' : 'userId | '}
+    ${leaguerPhotoURL == null ? '' : 'profilePicURL | '}
+    ${selectingProfilePic == null ? '' : 'selectingProfilePic | '}
+    ${pickingProfilePic == null ? '' : 'pickingProfilePic | '}
+    ${uploadingProfilePicId == null ? '' : 'uploadingProfilePicId | '}
+    ''';
 }

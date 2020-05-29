@@ -157,15 +157,27 @@ class DatabaseService {
         ..photoUrl = user.data['photoUrl'] as String ??
             'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'));
 
-      // TODO: this is for testing and can be removed when there is enough real data
-      // final vm = VmNewConversationLeaguers.fromJson(leaguers_data_json);
-      // return StoreLeaguers((b) => b..leaguers.replace(vm.leaguers));
-
       return StoreLeaguers((b) => b..leaguers.replace(leaguers));
     } catch (error, trace) {
       return AddProblemObject.from(error, trace, ProblemType.retrieveLeaguers);
     }
   }
+
+  Future<ReduxAction> updateLeaguer(String userId, String picId) async {
+    try {
+      final docRef = await _firestore.document('/leaguers/$userId');
+      final picURL =
+          'https://storage.googleapis.com/crowdleague-profile-pics/$userId/${picId}_200x200';
+      await docRef.updateData(<String, dynamic>{'photoURL': picURL});
+      return null;
+    } catch (error, trace) {
+      return AddProblemObject.from(error, trace, ProblemType.updateLeaguer);
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  /// PROFILE
+  //////////////////////////////////////////////////////////////////////////////
 
   void observeProfilePics(String userId) {
     try {
@@ -212,8 +224,3 @@ class DatabaseService {
     }
   }
 }
-
-// TODO: this is for testing and can be removed when there is enough real data
-final leaguers_data_json = '''
-{"leaguers":[{"id":"1","name":"Andrea Jonus","photoUrl":"https://lh3.googleusercontent.com/a-/AOh14GgpUMMFMDDMSfOSCUunGMkJdJ5TPkmbrU-cQEo6yZk=s96-c"},{"id":"2","name":"Nick Meinhold","photoUrl":"https://lh3.googleusercontent.com/a-/AOh14GjI7gPhw0micPDoMr3PWmsRzksx0kc-z47wMKCpJQ=s96-c"},{"id":"3","name":"David Micallef","photoUrl":"https://lh3.googleusercontent.com/a-/AOh14GgcLuTiYf_wdIIMAw5CPaBDQowtVTHczbRV8eZrIQ=s96-c"}],"state":"ready"}
-''';

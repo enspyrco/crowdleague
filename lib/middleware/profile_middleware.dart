@@ -3,6 +3,7 @@ import 'package:crowdleague/actions/profile/disregard_profile.dart';
 import 'package:crowdleague/actions/profile/disregard_profile_pics.dart';
 import 'package:crowdleague/actions/profile/observe_profile.dart';
 import 'package:crowdleague/actions/profile/observe_profile_pics.dart';
+import 'package:crowdleague/actions/profile/select_profile_pic.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/actions/profile/upload_profile_pic.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -42,6 +43,9 @@ List<Middleware<AppState>> createProfileMiddleware(
     ),
     TypedMiddleware<AppState, DisregardProfile>(
       _disregardProfile(databaseService),
+    ),
+    TypedMiddleware<AppState, SelectProfilePic>(
+      _updateLeaguer(databaseService),
     ),
   ];
 }
@@ -124,5 +128,19 @@ void Function(
     next(action);
 
     databaseService.disregardProfile();
+  };
+}
+
+void Function(
+        Store<AppState> store, SelectProfilePic action, NextDispatcher next)
+    _updateLeaguer(DatabaseService databaseService) {
+  return (Store<AppState> store, SelectProfilePic action,
+      NextDispatcher next) async {
+    next(action);
+
+    final reaction =
+        await databaseService.updateLeaguer(store.state.user.id, action.picId);
+
+    if (reaction != null) store.dispatch(reaction);
   };
 }
