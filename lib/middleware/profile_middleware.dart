@@ -1,4 +1,5 @@
 import 'package:crowdleague/actions/device/pick_profile_pic.dart';
+import 'package:crowdleague/actions/profile/delete_profile_pic.dart';
 import 'package:crowdleague/actions/profile/disregard_profile.dart';
 import 'package:crowdleague/actions/profile/disregard_profile_pics.dart';
 import 'package:crowdleague/actions/profile/observe_profile.dart';
@@ -46,6 +47,9 @@ List<Middleware<AppState>> createProfileMiddleware(
     ),
     TypedMiddleware<AppState, SelectProfilePic>(
       _updateLeaguer(databaseService),
+    ),
+    TypedMiddleware<AppState, DeleteProfilePic>(
+      _deleteProfilePic(databaseService),
     ),
   ];
 }
@@ -141,6 +145,23 @@ void Function(
     final reaction =
         await databaseService.updateLeaguer(store.state.user.id, action.picId);
 
+    if (reaction != null) store.dispatch(reaction);
+  };
+}
+
+void Function(
+        Store<AppState> store, DeleteProfilePic action, NextDispatcher next)
+    _deleteProfilePic(DatabaseService databaseService) {
+  return (Store<AppState> store, DeleteProfilePic action,
+      NextDispatcher next) async {
+    next(action);
+
+    final reaction = await databaseService.deleteProfilePic(
+        store.state.user.id, action.picId);
+
+    // If deleteProfilePic completed successfully, reaction is null and
+    // observeProfilePics will fire to update the list.
+    // Non-null reaction means and AddProblem action needs to be dispatched
     if (reaction != null) store.dispatch(reaction);
   };
 }
