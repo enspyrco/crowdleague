@@ -224,10 +224,12 @@ class DatabaseService {
     }
   }
 
-  /// cancels the subscription or dispatches an AddProblem action
+  /// ... or dispatches an AddProblem action
   Future<ReduxAction> deleteProfilePic(String userId, String picId) async {
     try {
-      await _firestore.document('leaguers/$userId/profilePics/$picId').delete();
+      await _firestore
+          .document('leaguers/$userId/profile_pics/$picId')
+          .delete();
       return null;
     } catch (error, trace) {
       return AddProblemObject.from(error, trace, ProblemType.deleteProfilePic);

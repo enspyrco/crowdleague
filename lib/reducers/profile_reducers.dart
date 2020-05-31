@@ -1,4 +1,5 @@
 import 'package:crowdleague/actions/device/pick_profile_pic.dart';
+import 'package:crowdleague/actions/profile/delete_profile_pic.dart';
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -8,10 +9,16 @@ final profileReducers = <AppState Function(AppState, dynamic)>[
   TypedReducer<AppState, PickProfilePic>(_setPickingProfilePic),
   TypedReducer<AppState, UpdateProfilePage>(_updateProfilePage),
   TypedReducer<AppState, StoreProfilePics>(_storeProfilePics),
+  TypedReducer<AppState, DeleteProfilePic>(_setDeletingProfilePic),
 ];
 
 AppState _setPickingProfilePic(AppState state, PickProfilePic action) {
   return state.rebuild((b) => b..profilePage.pickingProfilePic = true);
+}
+
+AppState _setDeletingProfilePic(AppState state, DeleteProfilePic action) {
+  return state
+      .rebuild((b) => b..profilePage.deletingProfilePicIds.add(action.picId));
 }
 
 AppState _updateProfilePage(AppState state, UpdateProfilePage action) {

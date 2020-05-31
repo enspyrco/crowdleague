@@ -30,6 +30,7 @@ import 'package:crowdleague/actions/navigation/remove_problem.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
+import 'package:crowdleague/actions/profile/delete_profile_pic.dart';
 import 'package:crowdleague/actions/profile/disregard_profile.dart';
 import 'package:crowdleague/actions/profile/disregard_profile_pics.dart';
 import 'package:crowdleague/actions/profile/observe_profile.dart';
@@ -113,6 +114,7 @@ part 'serializers.g.dart';
   SelectProfilePic,
   UpdateProfilePage,
   PlumbDatabaseStream,
+  DeleteProfilePic,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())

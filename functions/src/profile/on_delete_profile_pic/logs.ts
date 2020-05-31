@@ -1,4 +1,5 @@
 import config from "./config";
+import { DeleteFileResponse } from 'firebase-admin/node_modules/@google-cloud/storage';
 
 export const start = () => {
   console.log("Started execution with configuration", config);
@@ -8,13 +9,28 @@ export const constructedFilePath = (path: string) => {
   console.log(`Constructed file path: '${path}'`);
 };
 
+// export const removingSizes = (sizesMap: Map<string, string>) => {
+//   console.log('Sizes are: ');
+//   for(const key in sizesMap.keys()) {
+//       console.log(`${key} : ${sizesMap.get(key)}, `);
+//   }
+// }
+
+export const deleteFileResponse = (identifier: string, response : DeleteFileResponse) => {
+    console.log(`deleted ${identifier} with response: ${response}`);
+}
+
+export const complete = () => {
+  console.log("Completed removing profile pic files");
+};
+
+export const failed = (failures: any) => {
+  console.error("Failed removing profile pic files: "+failures);
+};
+
 // export const objectNameUndefined = () => {
 //   console.log("Object name was undefined");
 // }
-
-// export const complete = () => {
-//   console.log("Completed execution of extension");
-// };
 
 // export const addProfilePicsToFirestore = () => {
 //   console.log('Adding profile pic data to Firestore...');
@@ -44,10 +60,6 @@ export const constructedFilePath = (path: string) => {
 
 // export const errorDeleting = (err: Error) => {
 //   console.warn("Error when deleting temporary files", err);
-// };
-
-// export const failed = () => {
-//   console.log("Failed execution of extension");
 // };
 
 // export const imageAlreadyResized = () => {

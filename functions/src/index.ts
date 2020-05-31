@@ -13,7 +13,8 @@ export const saveDetailsOnFirstSignIn = functions.auth.user().onCreate(saveDetai
 // when a user leaves a conversation, update the conversation doc
 export const updateConversationOnUserLeaving = functions.firestore.document('conversations/{conversationId}/leave/{userId}').onCreate(updateConversation);
 
-// when a user deletes a profile pic, remove the files from storage (original and resized)
-export const removeFilesOnProfilePicDelete = functions.firestore.document('leaguers/{userId}/profilePics/{picId}').onDelete(removeProfilePicFiles);
-
+// when a user uploads a profile pic, generate resized versions of various sizes for fast image serving 
 export const generateResizedImages = functions.storage.bucket('crowdleague-profile-pics').object().onFinalize(createResizedPics);
+
+// when a user deletes a profile pic, remove the files from storage (original and resized)
+export const removeFilesOnProfilePicDelete = functions.firestore.document('leaguers/{userId}/profile_pics/{picId}').onDelete(removeProfilePicFiles);

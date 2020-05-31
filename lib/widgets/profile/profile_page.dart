@@ -48,19 +48,9 @@ class ProfilePage extends StatelessWidget {
                   Positioned(
                     bottom: 30,
                     left: 30,
-                    child: SizedBox(
-                        width: 90,
-                        height: 90,
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            CircularProgressIndicator(
-                              value: (vm.pickingProfilePic) ? null : 1,
-                              strokeWidth: 8,
-                            ),
-                            ProfileAvatar(photoURL: vm.leaguerPhotoURL),
-                          ],
-                        )),
+                    child: ProfileAvatar(
+                        photoURL: vm.leaguerPhotoURL,
+                        pickingPhoto: vm.pickingProfilePic),
                   ),
                 if (vm.selectingProfilePic)
                   Positioned(
@@ -68,7 +58,10 @@ class ProfilePage extends StatelessWidget {
                     left: 30.0,
                     right: 0.0,
                     child: ProfilePicsList(
-                        profilePicIds: vm.profilePicIds, userId: vm.userId),
+                      profilePicIds: vm.profilePicIds,
+                      userId: vm.userId,
+                      deletingPicIds: vm.deletingProfilePicIds,
+                    ),
                   ),
                 if (vm.uploadingProfilePicId != null)
                   StoreConnector<AppState, UploadTask>(

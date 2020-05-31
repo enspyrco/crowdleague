@@ -17,6 +17,13 @@ abstract class VmProfilePage
   String get leaguerPhotoURL;
   @nullable
   String get uploadingProfilePicId;
+
+  /// When a user long presses a profile pic in the selection list, the id is
+  /// added to the deletingProfilePicIds list. Each ListProfileAvatar widget
+  /// checks the deletingProfilePicIds list to determine if a
+  /// CircularProgressIndicator should be shown.
+  BuiltSet<String> get deletingProfilePicIds;
+
   bool get pickingProfilePic;
   bool get selectingProfilePic;
   BuiltList<String> get profilePicIds;

@@ -18,7 +18,10 @@ service cloud.firestore {
       // profile pic ids are added by the server, anyone can read
       match /profile_pics/{picId} {
         allow read: if request.auth.uid != null;
-        allow write: if false;
+        allow create: if false;
+        allow update: if false;
+        allow delete: if request.auth.uid == userId;
+        // exists(/databases/$(database)/documents/leaguers/$(request.auth.uid));
       }
     }
 
