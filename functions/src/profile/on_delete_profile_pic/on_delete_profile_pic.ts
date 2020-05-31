@@ -3,14 +3,25 @@ import * as admin from 'firebase-admin';
 const db = admin.firestore();
 import { DeleteFileResponse } from 'firebase-admin/node_modules/@google-cloud/storage';
 
+import * as logs from './logs';
+
 export async function removeProfilePicFiles(snapshot : functions.firestore.DocumentSnapshot, context : functions.EventContext) {
 
     ///////////////////////////////////////////////////////////////////////
     // remove the files (original and resized)
+    // 
+    // see: 
+    //  - https://firebase.google.com/docs/reference/admin/node 
+    //  - https://googleapis.dev/nodejs/storage/latest/File.html#delete 
+    //  
     ///////////////////////////////////////////////////////////////////////
+
+    logs.start();
 
     try {
         const filePath = context.params.userId + '/' + context.params.picId;
+        logs.constructedFilePath(filePath);
+
         const bucket = admin.storage().bucket('gs://crowdleague-profile-pics');
         
         const sizes = new Map<string, string>();

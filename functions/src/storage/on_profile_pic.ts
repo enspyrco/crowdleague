@@ -1,3 +1,5 @@
+// Adapted from https://github.com/firebase/extensions/tree/master/storage-resize-images
+
 import { Bucket } from 'firebase-admin/node_modules/@google-cloud/storage';
 import * as admin from 'firebase-admin';
 import * as fs from 'fs';

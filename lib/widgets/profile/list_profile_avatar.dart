@@ -1,3 +1,4 @@
+import 'package:crowdleague/actions/profile/delete_profile_pic.dart';
 import 'package:crowdleague/actions/profile/select_profile_pic.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/extensions/extensions.dart';
@@ -21,6 +22,9 @@ class ListProfileAvatar extends StatelessWidget {
         context.dispatch(UpdateProfilePage((b) => b
           ..leaguerPhotoURL = _picURL
           ..selectingProfilePic = false));
+      },
+      onLongPress: () {
+        context.dispatch(DeleteProfilePic((b) => b..picId = _picId));
       },
     );
   }
