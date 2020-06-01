@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:crowdleague/models/navigation/problem.dart';
+import 'package:crowdleague/widgets/shared/confirmation_alert.dart';
 import 'package:crowdleague/widgets/shared/problem_alert.dart';
 import 'package:flutter/material.dart';
 
@@ -55,20 +56,37 @@ class NavigationService {
 
   /// Add a call to display the problem to the post-frame callbacks (so we
   /// avoid calling setState during a build).
-  Future<Problem> display(Problem problem) {
+  Future<Problem> display(Problem problem) async {
     // create a completer whose future is returned and is passed in to
     // addPostFrameCallback and completed when showDialog completes
     final completer = Completer<Problem>();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final returnedProblem = await showDialog<Problem>(
-          context: _navKey.currentState.overlay.context,
-          builder: (BuildContext context) {
-            return ProblemAlert(
-              problem: problem,
-            );
-          });
-      completer.complete(returnedProblem);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    final returnedProblem = await showDialog<Problem>(
+        context: _navKey.currentState.overlay.context,
+        builder: (BuildContext context) {
+          return ProblemAlert(
+            problem: problem,
+          );
+        });
+    completer.complete(returnedProblem);
+    // });
+    return completer.future;
+  }
+
+  Future<bool> displayConfirmation(String question) async {
+    // create a completer whose future is returned and is passed in to
+    // addPostFrameCallback and completed when showDialog completes
+    final completer = Completer<bool>();
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    final response = await showDialog<bool>(
+        context: _navKey.currentState.overlay.context,
+        builder: (BuildContext context) {
+          return ConfirmationAlert(
+            question: question,
+          );
+        });
+    completer.complete(response);
+    // });
     return completer.future;
   }
 }

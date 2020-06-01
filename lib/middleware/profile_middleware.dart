@@ -10,6 +10,7 @@ import 'package:crowdleague/actions/profile/upload_profile_pic.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
+import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:redux/redux.dart';
 
@@ -25,7 +26,8 @@ import 'package:redux/redux.dart';
 List<Middleware<AppState>> createProfileMiddleware(
     {DatabaseService databaseService,
     StorageService storageService,
-    DeviceService deviceService}) {
+    DeviceService deviceService,
+    NavigationService navigationService}) {
   return [
     TypedMiddleware<AppState, PickProfilePic>(
       _pickProfilePic(deviceService),
@@ -49,7 +51,7 @@ List<Middleware<AppState>> createProfileMiddleware(
       _updateLeaguer(databaseService),
     ),
     TypedMiddleware<AppState, DeleteProfilePic>(
-      _deleteProfilePic(databaseService),
+      _deleteProfilePic(databaseService, navigationService),
     ),
   ];
 }
@@ -151,17 +153,27 @@ void Function(
 
 void Function(
         Store<AppState> store, DeleteProfilePic action, NextDispatcher next)
-    _deleteProfilePic(DatabaseService databaseService) {
+    _deleteProfilePic(
+        DatabaseService databaseService, NavigationService navigationService) {
   return (Store<AppState> store, DeleteProfilePic action,
       NextDispatcher next) async {
     next(action);
 
-    final reaction = await databaseService.deleteProfilePic(
-        store.state.user.id, action.picId);
+    final confirmed = await navigationService.displayConfirmation(
+        'Are you sure you want to delete your profile pic?');
 
-    // If deleteProfilePic completed successfully, reaction is null and
-    // observeProfilePics will fire to update the list.
-    // Non-null reaction means and AddProblem action needs to be dispatched
-    if (reaction != null) store.dispatch(reaction);
+    if (confirmed) {
+      final reaction = await databaseService.deleteProfilePic(
+          store.state.user.id, action.picId);
+
+      // If deleteProfilePic completed successfully, reaction is null and
+      // observeProfilePics will fire to update the list.
+      // Non-null reaction means and AddProblem action needs to be dispatched
+      if (reaction != null) store.dispatch(reaction);
+    } else {
+      // action.picId
+      store.dispatch(UpdateProfilePage(
+          (b) => b..removeDeletingProfilePicId = action.picId));
+    }
   };
 }

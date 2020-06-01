@@ -42,7 +42,8 @@ List<Middleware<AppState>> createAppMiddleware(
     ...createProfileMiddleware(
         databaseService: databaseService,
         deviceService: deviceService,
-        storageService: storageService),
+        storageService: storageService,
+        navigationService: navigationService),
     TypedMiddleware<AppState, BundleOfActions>(
       _unwrapBundleOfActions(),
     ),

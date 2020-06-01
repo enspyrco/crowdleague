@@ -31,7 +31,10 @@ AppState _updateProfilePage(AppState state, UpdateProfilePage action) {
         action.uploadingProfilePicId ?? b.profilePage.uploadingProfilePicId
     ..profilePage.userId = action.userId ?? b.profilePage.userId
     ..profilePage.leaguerPhotoURL =
-        action.leaguerPhotoURL ?? b.profilePage.leaguerPhotoURL);
+        action.leaguerPhotoURL ?? b.profilePage.leaguerPhotoURL
+    ..profilePage
+        .deletingProfilePicIds
+        .remove(action.removeDeletingProfilePicId));
 }
 
 AppState _storeProfilePics(AppState state, StoreProfilePics action) {

@@ -23,6 +23,8 @@ abstract class UpdateProfilePage extends Object
   bool get pickingProfilePic;
   @nullable
   String get uploadingProfilePicId;
+  @nullable
+  String get removeDeletingProfilePicId;
 
   UpdateProfilePage._();
 
