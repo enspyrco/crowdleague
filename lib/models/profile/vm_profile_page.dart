@@ -6,6 +6,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/models/profile/profile_pic.dart';
 
 part 'vm_profile_page.g.dart';
 
@@ -18,15 +19,9 @@ abstract class VmProfilePage
   @nullable
   String get uploadingProfilePicId;
 
-  /// When a user long presses a profile pic in the selection list, the id is
-  /// added to the deletingProfilePicIds list. Each ListProfileAvatar widget
-  /// checks the deletingProfilePicIds list to determine if a
-  /// CircularProgressIndicator should be shown.
-  BuiltSet<String> get deletingProfilePicIds;
-
   bool get pickingProfilePic;
   bool get selectingProfilePic;
-  BuiltList<String> get profilePicIds;
+  BuiltList<ProfilePic> get profilePics;
 
   VmProfilePage._();
 

@@ -164,16 +164,16 @@ void Function(
 
     if (confirmed) {
       final reaction = await databaseService.deleteProfilePic(
-          store.state.user.id, action.picId);
+          store.state.user.id, action.pic.id);
 
       // If deleteProfilePic completed successfully, reaction is null and
       // observeProfilePics will fire to update the list.
       // Non-null reaction means and AddProblem action needs to be dispatched
       if (reaction != null) store.dispatch(reaction);
     } else {
-      // action.picId
+      // action.pic.id
       store.dispatch(UpdateProfilePage(
-          (b) => b..removeDeletingProfilePicId = action.picId));
+          (b) => b..removeDeletingState = action.pic.toBuilder()));
     }
   };
 }

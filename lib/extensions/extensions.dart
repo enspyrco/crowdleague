@@ -7,3 +7,4 @@ export 'storage_task_event_extensions.dart';
 export 'document_snapshot_extensions.dart';
 export 'storage_error_extensions.dart';
 export 'firestore_extensions.dart';
+export 'built_value_extensions.dart';

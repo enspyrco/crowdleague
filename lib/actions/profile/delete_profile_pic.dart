@@ -7,13 +7,14 @@ import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/models/profile/profile_pic.dart';
 
 part 'delete_profile_pic.g.dart';
 
 abstract class DeleteProfilePic extends Object
     with ReduxAction
     implements Built<DeleteProfilePic, DeleteProfilePicBuilder> {
-  String get picId;
+  ProfilePic get pic;
 
   DeleteProfilePic._();
 

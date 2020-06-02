@@ -15,13 +15,12 @@ service cloud.firestore {
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid == userId;
 
-      // profile pic ids are added by the server, anyone can read
+      // profile pic ids are added by the server, anyone can read, user can delete
       match /profile_pics/{picId} {
         allow read: if request.auth.uid != null;
         allow create: if false;
         allow update: if false;
         allow delete: if request.auth.uid == userId;
-        // exists(/databases/$(database)/documents/leaguers/$(request.auth.uid));
       }
     }
 

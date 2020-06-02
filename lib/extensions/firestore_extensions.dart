@@ -11,6 +11,7 @@ import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/add_problem_extensions.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
+import 'package:crowdleague/models/profile/profile_pic.dart';
 
 import 'extensions.dart';
 
@@ -68,12 +69,15 @@ extension ConnectAndConvert on Firestore {
         .snapshots()
         .listen((querySnapshot) {
       try {
-        final picIds = <String>[];
+        final picIds = <ProfilePic>[];
         for (final docSnapshot in querySnapshot.documents) {
-          picIds.add(docSnapshot.documentID);
+          picIds.add(ProfilePic((b) => b
+            ..id = docSnapshot.documentID
+            ..deleting = docSnapshot.data['deleting'] as bool ?? false
+            ..url =
+                'https://storage.googleapis.com/crowdleague-profile-pics/$userId/${docSnapshot.documentID}_200x200'));
         }
-        controller
-            .add(StoreProfilePics((b) => b..profilePicIds.replace(picIds)));
+        controller.add(StoreProfilePics((b) => b..profilePics.replace(picIds)));
       } catch (error, trace) {
         controller.add(AddProblemObject.from(
             error, trace, ProblemType.observeProfilePics));

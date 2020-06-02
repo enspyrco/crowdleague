@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/models/profile/profile_pic.dart';
 
 part 'update_profile_page.g.dart';
 
@@ -24,7 +25,7 @@ abstract class UpdateProfilePage extends Object
   @nullable
   String get uploadingProfilePicId;
   @nullable
-  String get removeDeletingProfilePicId;
+  ProfilePic get removeDeletingState;
 
   UpdateProfilePage._();
 

@@ -57,11 +57,7 @@ class ProfilePage extends StatelessWidget {
                     bottom: 30.0,
                     left: 30.0,
                     right: 0.0,
-                    child: ProfilePicsList(
-                      profilePicIds: vm.profilePicIds,
-                      userId: vm.userId,
-                      deletingPicIds: vm.deletingProfilePicIds,
-                    ),
+                    child: ProfilePicsList(profilePics: vm.profilePics),
                   ),
                 if (vm.uploadingProfilePicId != null)
                   StoreConnector<AppState, UploadTask>(

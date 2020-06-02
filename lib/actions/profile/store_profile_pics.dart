@@ -8,13 +8,16 @@ import 'package:built_value/serializer.dart';
 
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/models/profile/profile_pic.dart';
 
 part 'store_profile_pics.g.dart';
 
+/// Members:
+/// - BuiltList<ProfilePic> profilePics
 abstract class StoreProfilePics extends Object
     with ReduxAction
     implements Built<StoreProfilePics, StoreProfilePicsBuilder> {
-  BuiltList<String> get profilePicIds;
+  BuiltList<ProfilePic> get profilePics;
 
   StoreProfilePics._();
 
