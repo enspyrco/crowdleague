@@ -13,6 +13,10 @@ import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
+import 'package:crowdleague/actions/functions/disregard_processing_failures.dart';
+import 'package:crowdleague/actions/functions/observe_processing_failures.dart';
+import 'package:crowdleague/actions/functions/store_processing_failures.dart';
+import 'package:crowdleague/actions/functions/update_processing_failure.dart';
 import 'package:crowdleague/actions/leaguers/retrieve_leaguers.dart';
 import 'package:crowdleague/actions/leaguers/store_leaguers.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
@@ -40,6 +44,7 @@ import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
 import 'package:crowdleague/actions/themes/store_theme_colors.dart';
+import 'package:crowdleague/enums/processing_failure_type.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/app/settings.dart';
@@ -60,6 +65,7 @@ import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/enums/themes/brightness_mode.dart';
 import 'package:crowdleague/enums/themes/theme_brightness.dart';
+import 'package:crowdleague/models/functions/processing_failure.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/models/navigation/problem.dart';
 import 'package:crowdleague/models/auth/user.dart';
@@ -116,6 +122,10 @@ part 'serializers.g.dart';
   UpdateProfilePage,
   PlumbDatabaseStream,
   DeleteProfilePic,
+  ObserveProcessingFailures,
+  DisregardProcessingFailures,
+  StoreProcessingFailures,
+  UpdateProcessingFailure,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())

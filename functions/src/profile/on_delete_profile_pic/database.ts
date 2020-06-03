@@ -10,8 +10,15 @@ export class FailedProfilePicDeletionEntry {
         this.picId = profilePicId;
     }
     async failed(failures: any) {
-        await db.doc(`leaguers/${this.uid}/failed_profile_pics/${this.picId}`).set({
-            'failures' : failures
+        const data = {
+            'picId': this.picId,
+            'failures': failures
+        };
+        await db.collection(`users/${this.uid}/processing_failures`).add({
+            'type': 'on_delete_profile_pic',
+            'createdOn': admin.firestore.FieldValue.serverTimestamp,
+            'message': JSON.stringify(data),
+            'data': data
         });
     }
 }

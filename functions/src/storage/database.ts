@@ -17,9 +17,16 @@ export class ProcessingEntry {
             'photoURL' : `https://storage.googleapis.com/crowdleague-profile-pics/${this.uid}/${this.picId}_200x200`,
         });
     }
-    async failed() {
-        await db.doc(`leaguers/${this.uid}/failed_profile_pics/${this.picId}`).set({
-            'message' : 'The resize failed, see cloud function logs for details.'
+    async failed(failures: any[]) {
+        const data = {
+            'picId': this.picId,
+            'failures': failures
+        };
+        await db.collection(`users/${this.uid}/processing_failures`).add({
+            'type': 'on_profile_pic',
+            'createdOn': admin.firestore.FieldValue.serverTimestamp,
+            'message': JSON.stringify(data),
+            'data': data
         });
     }
 }

@@ -35,6 +35,20 @@ class DatabaseService {
   DatabaseService(Firestore firestore) : _firestore = firestore;
 
   //////////////////////////////////////////////////////////////////////////////
+  /// PROCESSING FAILURES
+  //////////////////////////////////////////////////////////////////////////////
+
+  void observeProcessingFailures(String userId) async {
+    try {
+      _firestoreSubscriptions.processingFailures =
+          _firestore.connectToProcessingFailures(userId, _storeController);
+    } catch (error, trace) {
+      _storeController.add(AddProblemObject.from(
+          error, trace, ProblemType.observeProcessingFailures));
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
   /// CONVERSATIONS
   //////////////////////////////////////////////////////////////////////////////
 
