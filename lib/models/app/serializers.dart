@@ -2,11 +2,16 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
+import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/actions/auth/sign_out_user.dart';
+import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
+import 'package:crowdleague/actions/conversations/disregard_conversations.dart';
 import 'package:crowdleague/actions/conversations/disregard_messages.dart';
 import 'package:crowdleague/actions/conversations/leave_conversation.dart';
+import 'package:crowdleague/actions/conversations/observe_conversations.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
 import 'package:crowdleague/actions/conversations/store_conversations.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
@@ -26,6 +31,7 @@ import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/navigate_to.dart';
+import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
 import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
@@ -91,9 +97,12 @@ part 'serializers.g.dart';
   PrintFCMToken,
   ClearUserData,
   UpdateOtherAuthOptionsPage,
+  SignInWithGoogle,
+  SignInWithApple,
   SignInWithEmail,
   SignUpWithEmail,
   SignOutUser,
+  StoreAuthStep,
   RecordAddedRouteInfo,
   RecordRemovedRouteInfo,
   RecordReplacedRouteInfo,
@@ -106,8 +115,11 @@ part 'serializers.g.dart';
   RetrieveLeaguers,
   StoreLeaguers,
   CreateConversation,
+  ObserveConversations,
+  DisregardConversations,
   NavigateTo,
   NavigatorReplaceCurrent,
+  NavigatorPopAll,
   ObserveMessages,
   StoreMessages,
   DisregardMessages,

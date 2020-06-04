@@ -2,6 +2,7 @@ library add_problem;
 
 import 'dart:convert';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
@@ -26,13 +27,14 @@ abstract class AddProblem extends Object
     @required String message,
     @required ProblemType type,
     String traceString,
-    Map<String, Object> info,
+    BuiltMap<String, Object> info,
     AppState state,
   }) {
     return AddProblem((b) => b
       ..problem.message = message
       ..problem.type = type
       ..problem.trace = traceString
+      ..problem.info.replace(info)
       ..problem.state.replace(state));
   }
 

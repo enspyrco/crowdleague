@@ -29,7 +29,7 @@ extension ConnectAndConvert on Firestore {
           final action = AddProblem.from(
               message: failure.message,
               type: ProblemType.processingFailure,
-              info: {'id': failure.id});
+              info: BuiltMap({'id': failure.id}));
 
           controller.add(action);
         }

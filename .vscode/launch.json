@@ -11,10 +11,16 @@
             "program": "lib/main.dart"
         },
         {
-            "name": "MainRDT",
+            "name": "RDT",
             "type": "dart",
             "request": "launch",
             "program": "lib/main_rdt.dart",
+        },
+        {
+            "name": "Local",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_local_rdt.dart",
         }
     ]
 }
