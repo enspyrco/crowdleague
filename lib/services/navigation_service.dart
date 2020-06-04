@@ -1,6 +1,10 @@
 import 'dart:async';
 
-import 'package:crowdleague/models/navigation/problem.dart';
+import 'package:crowdleague/actions/functions/acknowledge_processing_failure.dart';
+import 'package:crowdleague/actions/navigation/remove_problem.dart';
+import 'package:crowdleague/actions/redux_action.dart';
+import 'package:crowdleague/enums/problem_type.dart';
+import 'package:crowdleague/models/app/problem.dart';
 import 'package:crowdleague/widgets/shared/confirmation_alert.dart';
 import 'package:crowdleague/widgets/shared/problem_alert.dart';
 import 'package:flutter/material.dart';
@@ -54,12 +58,14 @@ class NavigationService {
     _navKey.currentState.pushReplacementNamed(newRouteName);
   }
 
-  /// Add a call to display the problem to the post-frame callbacks (so we
-  /// avoid calling setState during a build).
-  Future<Problem> display(Problem problem) async {
+  /// Display the problem and return a future that will complete with an action
+  /// to be dispatched.
+  /// EDIT: (changed to async which apparently avoids the problem)
+  ///   - Add a call to the post-frame callbacks (so we avoid calling setState during a build).
+  Future<ReduxAction> display(Problem problem) async {
     // create a completer whose future is returned and is passed in to
     // addPostFrameCallback and completed when showDialog completes
-    final completer = Completer<Problem>();
+    final completer = Completer<ReduxAction>();
     // WidgetsBinding.instance.addPostFrameCallback((_) async {
     final returnedProblem = await showDialog<Problem>(
         context: _navKey.currentState.overlay.context,
@@ -68,8 +74,19 @@ class NavigationService {
             problem: problem,
           );
         });
-    completer.complete(returnedProblem);
-    // });
+
+    ReduxAction nextAction;
+    switch (returnedProblem.type) {
+      case ProblemType.processingFailure:
+        nextAction = AcknowledgeProcessingFailure(
+            (b) => b..id = returnedProblem.info['id'] as String);
+        break;
+      default:
+        nextAction = RemoveProblem((b) => b..problem.replace(returnedProblem));
+    }
+
+    completer.complete(nextAction);
+
     return completer.future;
   }
 

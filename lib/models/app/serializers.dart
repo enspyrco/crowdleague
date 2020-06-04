@@ -67,7 +67,7 @@ import 'package:crowdleague/enums/themes/brightness_mode.dart';
 import 'package:crowdleague/enums/themes/theme_brightness.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
-import 'package:crowdleague/models/navigation/problem.dart';
+import 'package:crowdleague/models/app/problem.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';

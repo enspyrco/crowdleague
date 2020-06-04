@@ -5,11 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/actions/conversations/store_conversations.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/functions/store_processing_failures.dart';
+import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/problem_type.dart';
-import 'package:crowdleague/extensions/add_problem_extensions.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
@@ -23,6 +23,18 @@ extension ConnectAndConvert on Firestore {
     return collection('users/$userId/processing_failures')
         .snapshots()
         .listen((querySnapshot) {
+      for (final change in querySnapshot.documentChanges) {
+        if (change.type == DocumentChangeType.added) {
+          final failure = change.document.toProcessingFailure();
+          final action = AddProblem.from(
+              message: failure.message,
+              type: ProblemType.processingFailure,
+              info: {'id': failure.id});
+
+          controller.add(action);
+        }
+      }
+
       // convert the query snapshot to a list of ProcessingFailure
       final failures = querySnapshot.documents.map<ProcessingFailure>(
           (docSnapshot) => docSnapshot.toProcessingFailure());
@@ -59,8 +71,11 @@ extension ConnectAndConvert on Firestore {
                   (b) => b..text = docSnapshot.data['text'] as String))),
       ));
     }, onError: (dynamic error, StackTrace trace) {
-      controller.add(
-          AddProblemObject.from(error, trace, ProblemType.observeMessages));
+      controller.add(AddProblem.from(
+        message: error.toString(),
+        traceString: trace.toString(),
+        type: ProblemType.observeMessages,
+      ));
     });
   }
 
@@ -89,12 +104,18 @@ extension ConnectAndConvert on Firestore {
         }
         controller.add(StoreProfilePics((b) => b..profilePics.replace(picIds)));
       } catch (error, trace) {
-        controller.add(AddProblemObject.from(
-            error, trace, ProblemType.observeProfilePics));
+        controller.add(AddProblem.from(
+          message: error.toString(),
+          type: ProblemType.observeProfilePics,
+          traceString: trace.toString(),
+        ));
       }
     }, onError: (dynamic error, StackTrace trace) {
-      controller.add(
-          AddProblemObject.from(error, trace, ProblemType.observeProfilePics));
+      controller.add(AddProblem.from(
+        message: error.toString(),
+        type: ProblemType.observeProfilePics,
+        traceString: trace.toString(),
+      ));
     });
   }
 
@@ -110,8 +131,11 @@ extension ConnectAndConvert on Firestore {
           ..userId = leaguer.uid
           ..leaguerPhotoURL = leaguer.photoUrl));
       } catch (error, trace) {
-        controller.add(
-            AddProblemObject.from(error, trace, ProblemType.observeProfile));
+        controller.add(AddProblem.from(
+          message: error.toString(),
+          type: ProblemType.observeProfile,
+          traceString: trace.toString(),
+        ));
       }
     });
   }

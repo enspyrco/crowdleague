@@ -13,7 +13,7 @@ import 'package:crowdleague/models/conversations/new_conversation/vm_new_convers
 import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.dart';
 import 'package:crowdleague/enums/nav_bar_selection.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
-import 'package:crowdleague/models/navigation/problem.dart';
+import 'package:crowdleague/models/app/problem.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/app/serializers.dart';
