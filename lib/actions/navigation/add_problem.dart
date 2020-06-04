@@ -34,8 +34,8 @@ abstract class AddProblem extends Object
       ..problem.message = message
       ..problem.type = type
       ..problem.trace = traceString
-      ..problem.info.replace(info)
-      ..problem.state.replace(state));
+      ..problem.info = info?.toBuilder()
+      ..problem.state = state?.toBuilder());
   }
 
   Object toJson() => serializers.serializeWith(AddProblem.serializer, this);

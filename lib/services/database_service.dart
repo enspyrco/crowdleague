@@ -68,7 +68,7 @@ class DatabaseService {
       final uids = <String>[];
       for (final leaguer in leaguers) {
         displayNames.add(leaguer.displayName);
-        photoURLs.add(leaguer.photoUrl);
+        photoURLs.add(leaguer.photoURL);
         uids.add(leaguer.uid);
       }
 
@@ -180,14 +180,13 @@ class DatabaseService {
 
   Future<ReduxAction> get retrieveLeaguers async {
     try {
-      final collection = await _firestore.collection('/users/');
+      final collection = await _firestore.collection('leaguers');
       final snapshot = await collection.getDocuments();
       final leaguers = snapshot.documents.map<
           Leaguer>((user) => Leaguer((b) => b
-        ..uid = user.data['uid'] as String
-        ..displayName =
-            user.data['name'] as String ?? user.data['uid'] as String
-        ..photoUrl = user.data['photoUrl'] as String ??
+        ..uid = user.documentID
+        ..displayName = user.data['displayName'] as String ?? user.documentID
+        ..photoURL = user.data['photoURL'] as String ??
             'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'));
 
       return StoreLeaguers((b) => b..leaguers.replace(leaguers));

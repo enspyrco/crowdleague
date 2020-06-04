@@ -129,7 +129,7 @@ extension ConnectAndConvert on Firestore {
         final leaguer = docSnapshot.toLeaguer();
         controller.add(UpdateProfilePage((b) => b
           ..userId = leaguer.uid
-          ..leaguerPhotoURL = leaguer.photoUrl));
+          ..leaguerPhotoURL = leaguer.photoURL));
       } catch (error, trace) {
         controller.add(AddProblem.from(
           message: error.toString(),

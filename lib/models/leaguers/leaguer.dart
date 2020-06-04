@@ -13,7 +13,7 @@ abstract class Leaguer implements Built<Leaguer, LeaguerBuilder> {
   @nullable
   String get displayName;
   @nullable
-  String get photoUrl;
+  String get photoURL;
 
   Leaguer._();
 

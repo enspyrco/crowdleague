@@ -11,7 +11,7 @@ extension Convert on FirebaseUser {
         ..id = uid
         ..displayName = displayName ?? 'No name'
         ..email = email ?? 'noemail'
-        ..photoUrl = photoUrl ?? 'default'
+        ..photoURL = photoUrl ?? 'default'
         ..providers = (providerData == null)
             ? ListBuilder()
             : ListBuilder(
@@ -20,7 +20,7 @@ extension Convert on FirebaseUser {
                     ..displayName = provider.displayName
                     ..email = provider.email
                     ..phoneNumber = provider.phoneNumber
-                    ..photoUrl = provider.photoUrl
+                    ..photoURL = provider.photoUrl
                     ..providerId = provider.providerId
                     ..uid = provider.uid),
                 ),

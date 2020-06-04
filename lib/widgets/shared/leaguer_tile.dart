@@ -11,7 +11,7 @@ class LeaguerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.network(leaguer.photoUrl),
+      leading: Image.network(leaguer.photoURL),
       title: Text(leaguer.displayName),
       onTap: () => context.dispatch(
           UpdateNewConversationPage((b) => b..selection.replace(leaguer))),
