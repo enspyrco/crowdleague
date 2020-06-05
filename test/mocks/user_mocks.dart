@@ -5,7 +5,7 @@ import 'package:crowdleague/models/auth/user.dart';
 final mockProviderInfo = ProviderInfo((b) => b
   ..displayName = 'name'
   ..providerId = 'provider'
-  ..photoUrl = 'url'
+  ..photoURL = 'url'
   ..email = 'email'
   ..uid = 'uid');
 
@@ -13,5 +13,5 @@ final mockUser = User((a) => a
   ..email = 'email'
   ..id = 'id'
   ..displayName = 'name'
-  ..photoUrl = 'url'
+  ..photoURL = 'url'
   ..providers = ListBuilder(<dynamic>[mockProviderInfo]));

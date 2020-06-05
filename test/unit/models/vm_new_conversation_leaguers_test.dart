@@ -21,19 +21,19 @@ void main() {
       final leaguer1 = Leaguer((b) => b
         ..uid = '1'
         ..displayName = 'Andrea Jonus'
-        ..photoUrl =
+        ..photoURL =
             'https://lh3.googleusercontent.com/a-/AOh14GgpUMMFMDDMSfOSCUunGMkJdJ5TPkmbrU-cQEo6yZk=s96-c');
 
       final leaguer2 = Leaguer((b) => b
         ..uid = '2'
         ..displayName = 'Nick Meinhold'
-        ..photoUrl =
+        ..photoURL =
             'https://lh3.googleusercontent.com/a-/AOh14GjI7gPhw0micPDoMr3PWmsRzksx0kc-z47wMKCpJQ=s96-c');
 
       final leaguer3 = Leaguer((b) => b
         ..uid = '3'
         ..displayName = 'David Micallef'
-        ..photoUrl =
+        ..photoURL =
             'https://lh3.googleusercontent.com/a-/AOh14GgcLuTiYf_wdIIMAw5CPaBDQowtVTHczbRV8eZrIQ=s96-c');
 
       final vm = VmNewConversationLeaguers((b) => b

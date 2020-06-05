@@ -39,8 +39,8 @@ android {
     defaultConfig {
         applicationId "co.enspyr.crowdleague1"
         minSdkVersion 21
-        targetSdkVersion 28
-        ndkVersion "21.1.6352462"
+        targetSdkVersion 29
+        ndkVersion "21.2.6472646"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

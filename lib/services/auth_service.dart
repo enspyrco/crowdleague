@@ -2,6 +2,7 @@ import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
+import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
@@ -69,7 +70,11 @@ class AuthService {
       // errors with code kSignInCanceledError are swallowed by the
       // GoogleSignIn.signIn() method so we can assume anything caught here
       // is a problem and send to the store for display
-      yield AddProblemObject.from(error, trace, ProblemType.googleSignIn);
+      yield AddProblem.from(
+        message: error.toString(),
+        type: ProblemType.googleSignIn,
+        traceString: trace.toString(),
+      );
     }
   }
 
@@ -116,7 +121,11 @@ class AuthService {
       yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
       // any specific errors are caught and dealt with so we can assume
       // anything caught here is a problem and send to the store for display
-      yield AddProblemObject.from(error, trace, ProblemType.appleSignIn);
+      yield AddProblem.from(
+        message: error.toString(),
+        type: ProblemType.appleSignIn,
+        traceString: trace.toString(),
+      );
     }
   }
 
@@ -142,7 +151,11 @@ class AuthService {
       // but we should navigate back to home
       return NavigatorPopAll();
     } catch (error, trace) {
-      return AddProblemObject.from(error, trace, ProblemType.emailSignIn);
+      return AddProblem.from(
+        message: error.toString(),
+        type: ProblemType.emailSignIn,
+        traceString: trace.toString(),
+      );
     }
   }
 
@@ -165,7 +178,11 @@ class AuthService {
       // but we should navigate back to home
       return NavigatorPopAll();
     } catch (error, trace) {
-      return AddProblemObject.from(error, trace, ProblemType.emailSignUp);
+      return AddProblem.from(
+        message: error.toString(),
+        type: ProblemType.emailSignUp,
+        traceString: trace.toString(),
+      );
     }
   }
 
@@ -176,7 +193,11 @@ class AuthService {
       // TODO: add sign out for sign in with apple provider
       // see Issue #6 https://github.com/nickmeinhold/crowdleague_public/issues/6
     } catch (error, trace) {
-      return AddProblemFuture.from(error, trace, ProblemType.signOut);
+      return AddProblem.from(
+        message: error.toString(),
+        type: ProblemType.signOut,
+        traceString: trace.toString(),
+      );
     }
 
     // we let the AuthStateObserver dispatch a ClearUserData action when it

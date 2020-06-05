@@ -32,7 +32,7 @@ class FakeAuthService extends Fake implements AuthService {
         ..id = 'id'
         ..email = 'email'
         ..displayName = 'name'
-        ..photoUrl = 'url'),
+        ..photoURL = 'url'),
     );
     return controller.stream;
   }

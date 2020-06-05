@@ -35,9 +35,6 @@ AppState _storeAuthStep(AppState state, StoreAuthStep action) {
 /// A single reducer for all OtherAuthOptionsViewModel members is less
 /// efficient but requires less code (actions and reducers)
 /// [UpdateOtherAuthOptions] contains values to be updated or null
-///
-/// TODO: I'm sure there is a nicer way way to do this but have thought about
-/// it a lot and can't think of anything -> seek advice from others
 AppState _updateOtherAuthOptions(
     AppState state, UpdateOtherAuthOptionsPage action) {
   return state.rebuild((a) {

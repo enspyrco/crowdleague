@@ -8,6 +8,8 @@ import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:crowdleague/models/storage/upload_task.dart';
 import 'package:crowdleague/widgets/profile/background_photo.dart';
 import 'package:crowdleague/widgets/profile/profile_avatar.dart';
+import 'package:crowdleague/widgets/profile/profile_pics_list.dart';
+import 'package:crowdleague/widgets/profile/uploading_profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -33,7 +35,7 @@ class ProfilePage extends StatelessWidget {
           distinct: true,
           converter: (store) => store.state.profilePage,
           builder: (context, vm) {
-            if (vm.leaguer == null) {
+            if (vm.userId == null) {
               return Center(
                 child: CircularProgressIndicator(),
               );
@@ -42,23 +44,21 @@ class ProfilePage extends StatelessWidget {
             return Stack(
               children: [
                 BackgroundPhoto(),
-                Positioned(
-                  bottom: 30,
-                  left: 30,
-                  child: SizedBox(
-                      width: 90,
-                      height: 90,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          CircularProgressIndicator(
-                            value: (vm.pickingProfilePic) ? null : 1,
-                            strokeWidth: 8,
-                          ),
-                          ProfileAvatar(photoURL: vm.leaguer.photoUrl),
-                        ],
-                      )),
-                ),
+                if (!vm.selectingProfilePic)
+                  Positioned(
+                    bottom: 30,
+                    left: 30,
+                    child: ProfileAvatar(
+                        photoURL: vm.leaguerPhotoURL,
+                        pickingPhoto: vm.pickingProfilePic),
+                  ),
+                if (vm.selectingProfilePic)
+                  Positioned(
+                    bottom: 30.0,
+                    left: 30.0,
+                    right: 0.0,
+                    child: ProfilePicsList(profilePics: vm.profilePics),
+                  ),
                 if (vm.uploadingProfilePicId != null)
                   StoreConnector<AppState, UploadTask>(
                     distinct: true,
@@ -77,7 +77,7 @@ class ProfilePage extends StatelessWidget {
                               fit: StackFit.expand,
                               children: [
                                 ProfilePicUploadProgressIndicator(task),
-                                ProfileAvatar(filePath: task.filePath),
+                                UploadingProfileAvatar(filePath: task.filePath),
                               ],
                             ),
                           ));

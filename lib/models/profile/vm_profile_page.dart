@@ -6,26 +6,31 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/app/serializers.dart';
-import 'package:crowdleague/models/leaguers/leaguer.dart';
+import 'package:crowdleague/models/profile/profile_pic.dart';
 
 part 'vm_profile_page.g.dart';
 
 abstract class VmProfilePage
     implements Built<VmProfilePage, VmProfilePageBuilder> {
   @nullable
-  Leaguer get leaguer;
+  String get userId;
+  @nullable
+  String get leaguerPhotoURL;
   @nullable
   String get uploadingProfilePicId;
+
   bool get pickingProfilePic;
-  BuiltList<String> get profilePicIds;
+  bool get selectingProfilePic;
+  BuiltList<ProfilePic> get profilePics;
 
   VmProfilePage._();
 
   factory VmProfilePage([void Function(VmProfilePageBuilder) updates]) =
       _$VmProfilePage;
 
-  static VmProfilePageBuilder initBuilder() =>
-      VmProfilePageBuilder()..pickingProfilePic = false;
+  static VmProfilePageBuilder initBuilder() => VmProfilePageBuilder()
+    ..pickingProfilePic = false
+    ..selectingProfilePic = false;
 
   Object toJson() => serializers.serializeWith(VmProfilePage.serializer, this);
 

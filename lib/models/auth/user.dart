@@ -10,7 +10,7 @@ import 'package:crowdleague/models/app/serializers.dart';
 
 part 'user.g.dart';
 
-/// Non-null Strings: [uid], [displayName], [photoUrl], [email]
+/// Non-null Strings: [uid], [displayName], [photoURL], [email]
 /// A list of [ProviderInfo]: providers
 abstract class User implements Built<User, UserBuilder> {
   /// The uid of the user's Firebase account.
@@ -20,7 +20,7 @@ abstract class User implements Built<User, UserBuilder> {
   String get displayName;
 
   /// The URL of the user’s profile photo.
-  String get photoUrl;
+  String get photoURL;
 
   /// The user’s email address.
   String get email;
