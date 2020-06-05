@@ -22,7 +22,7 @@ abstract class ProviderInfo
 
   /// The URL of the user’s profile photo.
   @nullable
-  String get photoUrl;
+  String get photoURL;
 
   /// The user’s email address.
   @nullable

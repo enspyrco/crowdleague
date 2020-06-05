@@ -120,7 +120,7 @@ class AccountButton extends StatelessWidget {
         size: 50,
       ),
       onPressed: () {
-        context.dispatch(SignOutUser());
+        context.dispatch(NavigateTo((b) => b..location = '/profile'));
       },
     );
   }

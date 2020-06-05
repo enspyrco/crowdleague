@@ -1,21 +1,46 @@
 import 'package:crowdleague/actions/device/pick_profile_pic.dart';
+import 'package:crowdleague/actions/profile/delete_profile_pic.dart';
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:redux/redux.dart';
 
+import 'package:crowdleague/extensions/extensions.dart';
+
 final profileReducers = <AppState Function(AppState, dynamic)>[
   TypedReducer<AppState, PickProfilePic>(_setPickingProfilePic),
   TypedReducer<AppState, UpdateProfilePage>(_updateProfilePage),
   TypedReducer<AppState, StoreProfilePics>(_storeProfilePics),
+  TypedReducer<AppState, DeleteProfilePic>(_setDeletingProfilePic),
 ];
 
 AppState _setPickingProfilePic(AppState state, PickProfilePic action) {
   return state.rebuild((b) => b..profilePage.pickingProfilePic = true);
 }
 
-AppState _updateProfilePage(AppState state, UpdateProfilePage action) {
+AppState _setDeletingProfilePic(AppState state, DeleteProfilePic action) {
+  // get the index of the profile pic
+  final index = state.profilePage.profilePics.indexOf(action.pic);
+
+  // update the item in the list to have the deleting state
   return state.rebuild((b) => b
+    ..profilePage.profilePics[index] =
+        b.profilePage.profilePics[index].rebuild((b) => b..deleting = true));
+}
+
+AppState _updateProfilePage(AppState state, UpdateProfilePage action) {
+  final stateBuilder = state.toBuilder();
+
+  // if the update included removing a 'delete' state, update the list item
+  // - this is done separately with an initial null check to avoid iterating
+  // over the list each time the reducer is run
+  if (action.removeDeletingState != null) {
+    stateBuilder.profilePage.profilePics.updateWhere(
+        (pic) => pic == action.removeDeletingState, (b) => b..deleting = false);
+  }
+
+  // update each member of state.profilePage if the action has a value
+  stateBuilder.update((b) => b
     ..profilePage.selectingProfilePic =
         action.selectingProfilePic ?? b.profilePage.selectingProfilePic
     ..profilePage.pickingProfilePic =
@@ -25,6 +50,8 @@ AppState _updateProfilePage(AppState state, UpdateProfilePage action) {
     ..profilePage.userId = action.userId ?? b.profilePage.userId
     ..profilePage.leaguerPhotoURL =
         action.leaguerPhotoURL ?? b.profilePage.leaguerPhotoURL);
+
+  return stateBuilder.build();
 }
 
 AppState _storeProfilePics(AppState state, StoreProfilePics action) {
@@ -38,8 +65,8 @@ AppState _storeProfilePics(AppState state, StoreProfilePics action) {
   final mapBuilder = state.uploadTasksMap.toBuilder();
   final appStateBuilder = state.toBuilder();
   for (final uploadId in state.uploadTasksMap.keys) {
-    for (final profilePicId in action.profilePicIds) {
-      if (uploadId == profilePicId) {
+    for (final profilePic in action.profilePics) {
+      if (uploadId == profilePic.id) {
         mapBuilder.removeWhere((upId, _) => upId == uploadId);
         if (state.profilePage.uploadingProfilePicId == uploadId) {
           appStateBuilder.profilePage.uploadingProfilePicId = null;
@@ -49,7 +76,7 @@ AppState _storeProfilePics(AppState state, StoreProfilePics action) {
   }
 
   // add the profile pics to the app state
-  appStateBuilder.profilePage.profilePicIds = action.profilePicIds.toBuilder();
+  appStateBuilder.profilePage.profilePics = action.profilePics.toBuilder();
 
   return appStateBuilder.build();
 }

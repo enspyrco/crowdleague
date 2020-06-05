@@ -1,4 +1,5 @@
 import 'package:crowdleague/actions/device/pick_profile_pic.dart';
+import 'package:crowdleague/actions/profile/delete_profile_pic.dart';
 import 'package:crowdleague/actions/profile/disregard_profile.dart';
 import 'package:crowdleague/actions/profile/disregard_profile_pics.dart';
 import 'package:crowdleague/actions/profile/observe_profile.dart';
@@ -9,6 +10,7 @@ import 'package:crowdleague/actions/profile/upload_profile_pic.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
+import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:redux/redux.dart';
 
@@ -24,7 +26,8 @@ import 'package:redux/redux.dart';
 List<Middleware<AppState>> createProfileMiddleware(
     {DatabaseService databaseService,
     StorageService storageService,
-    DeviceService deviceService}) {
+    DeviceService deviceService,
+    NavigationService navigationService}) {
   return [
     TypedMiddleware<AppState, PickProfilePic>(
       _pickProfilePic(deviceService),
@@ -46,6 +49,9 @@ List<Middleware<AppState>> createProfileMiddleware(
     ),
     TypedMiddleware<AppState, SelectProfilePic>(
       _updateLeaguer(databaseService),
+    ),
+    TypedMiddleware<AppState, DeleteProfilePic>(
+      _deleteProfilePic(databaseService, navigationService),
     ),
   ];
 }
@@ -142,5 +148,32 @@ void Function(
         await databaseService.updateLeaguer(store.state.user.id, action.picId);
 
     if (reaction != null) store.dispatch(reaction);
+  };
+}
+
+void Function(
+        Store<AppState> store, DeleteProfilePic action, NextDispatcher next)
+    _deleteProfilePic(
+        DatabaseService databaseService, NavigationService navigationService) {
+  return (Store<AppState> store, DeleteProfilePic action,
+      NextDispatcher next) async {
+    next(action);
+
+    final confirmed = await navigationService.displayConfirmation(
+        'Are you sure you want to delete your profile pic?');
+
+    if (confirmed) {
+      final reaction = await databaseService.deleteProfilePic(
+          store.state.user.id, action.pic.id);
+
+      // If deleteProfilePic completed successfully, reaction is null and
+      // observeProfilePics will fire to update the list.
+      // Non-null reaction means and AddProblem action needs to be dispatched
+      if (reaction != null) store.dispatch(reaction);
+    } else {
+      // action.pic.id
+      store.dispatch(UpdateProfilePage(
+          (b) => b..removeDeletingState = action.pic.toBuilder()));
+    }
   };
 }

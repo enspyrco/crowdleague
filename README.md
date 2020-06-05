@@ -140,7 +140,7 @@ flutter test
 
 Run the emulator suite: 
 ```
-firebase emulators:start
+firebase emulators:start --import=test/data
 ```
 
 Local UI available at: 

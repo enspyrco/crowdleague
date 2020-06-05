@@ -18,7 +18,7 @@ class NewConversationSelectionsList extends StatelessWidget {
           itemCount: items.length,
           itemBuilder: (context, index) => CircleAvatar(
                 backgroundImage: NetworkImage(
-                  items[index].photoUrl,
+                  items[index].photoURL,
                 ),
                 minRadius: 50,
               )),

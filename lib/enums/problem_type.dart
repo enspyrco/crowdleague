@@ -28,6 +28,10 @@ class ProblemType extends EnumClass {
   static const ProblemType disregardConversations = _$disregardConversations;
   static const ProblemType retrieveConversations = _$retrieveConversations;
   static const ProblemType updateLeaguer = _$updateLeaguer;
+  static const ProblemType deleteProfilePic = _$deleteProfilePic;
+  static const ProblemType observeProcessingFailures =
+      _$observeProcessingFailures;
+  static const ProblemType processingFailure = _$processingFailure;
 
   const ProblemType._(String name) : super(name);
 

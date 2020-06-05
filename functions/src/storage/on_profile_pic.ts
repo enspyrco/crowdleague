@@ -1,3 +1,5 @@
+// Adapted from https://github.com/firebase/extensions/tree/master/storage-resize-images
+
 import { Bucket } from 'firebase-admin/node_modules/@google-cloud/storage';
 import * as admin from 'firebase-admin';
 import * as fs from 'fs';
@@ -98,11 +100,12 @@ export async function createResizedPics(object : functions.storage.ObjectMetadat
     });
 
     const results = await Promise.all(tasks);
+    
+    const failedResults = results.filter((result) => (result.success === false));
 
-    const failed = results.some((result) => result.success === false);
-    if (failed) {
+    if (failedResults.length > 0) {
       logs.failed();
-      await db.failed();
+      await db.failed(failedResults);
       return;
     }
     logs.complete();
