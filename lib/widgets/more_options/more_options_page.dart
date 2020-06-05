@@ -1,5 +1,4 @@
 import 'package:crowdleague/actions/auth/sign_out_user.dart';
-import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/themes/store_theme_colors.dart';
 import 'package:crowdleague/models/themes/theme_colors.dart';
 import 'package:crowdleague/widgets/more_options/dark_mode_toggle.dart';
@@ -35,14 +34,6 @@ class MoreOptionsPage extends StatelessWidget {
               context.dispatch(StoreThemeColors(
                   (b) => b..colors.replace(ThemeColors.greyscale)));
             }),
-        ListTile(
-          title: RaisedButton(
-            child: Text('PROFILE'),
-            onPressed: () {
-              context.dispatch(NavigateTo((b) => b..location = '/profile'));
-            },
-          ),
-        ),
       ],
     );
   }
