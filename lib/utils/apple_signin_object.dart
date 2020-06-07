@@ -1,9 +1,12 @@
-import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AppleSignInObject {
-  Future<AuthorizationResult> startAuth() {
-    return AppleSignIn.performRequests([
-      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
-    ]);
+  Future<AuthorizationCredentialAppleID> startAuth() {
+    return SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
   }
 }

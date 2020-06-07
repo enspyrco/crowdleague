@@ -1,4 +1,4 @@
-import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
@@ -11,6 +11,7 @@ import 'package:crowdleague/utils/apple_signin_object.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:crowdleague/extensions/extensions.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
   final FirebaseAuth _fireAuth;
@@ -83,37 +84,33 @@ class AuthService {
     yield StoreAuthStep((b) => b..step = AuthStep.signingInWithApple);
 
     try {
-      final result = await _appleSignIn.startAuth();
+      final appleIdCredential = await _appleSignIn.startAuth();
 
-      switch (result.status) {
-        case AuthorizationStatus.authorized:
-          // signal to change UI
-          yield StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase);
+      // signal to change UI
+      yield StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase);
 
-          // retrieve the apple credential and convert to oauth credential
-          final appleIdCredential = result.credential;
-          final oAuthProvider = OAuthProvider(providerId: 'apple.com');
-          final credential = oAuthProvider.getCredential(
-            idToken: String.fromCharCodes(appleIdCredential.identityToken),
-            accessToken:
-                String.fromCharCodes(appleIdCredential.authorizationCode),
-          );
+      final credential = OAuthProvider(providerId: 'apple.com').getCredential(
+        idToken: appleIdCredential.identityToken,
+        accessToken: appleIdCredential.authorizationCode,
+      );
 
-          // use the credential to sign in to firebase
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      // use the credential to sign in to firebase
+      await FirebaseAuth.instance.signInWithCredential(credential);
 
-          // we are signed in so reset the UI and pop anything on top of home
-          yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
-          yield NavigatorPopAll();
-
+      // we are signed in so reset the UI and pop anything on top of home
+      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield NavigatorPopAll();
+    } on SignInWithAppleAuthorizationException catch (e) {
+      // reset the UI and display an alert (if not canceled)
+      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      switch (e.code) {
+        case AuthorizationErrorCode.canceled:
           break;
-        case AuthorizationStatus.error:
-          throw result.error;
-          break;
-
-        case AuthorizationStatus.cancelled:
-          yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
-          break;
+        default:
+          yield AddProblem.from(
+              message: e.toString(),
+              type: ProblemType.appleSignIn,
+              info: BuiltMap({'code': e.code}));
       }
     } catch (error, trace) {
       // reset the UI and display an alert
