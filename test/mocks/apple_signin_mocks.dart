@@ -4,7 +4,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class FakeAppleSignIn extends Fake implements AppleSignInObject {
   @override
-  Future<AuthorizationCredentialAppleID> startAuth() {
+  Future<AuthorizationCredentialAppleID> getAppleIDCredential() {
     final result = AuthorizationCredentialAppleID(
         authorizationCode: 'code',
         identityToken: 'token',
@@ -20,7 +20,7 @@ class FakeAppleSignIn extends Fake implements AppleSignInObject {
 // When the user cancels during the signin process, startAuth throws AuthorizationErrorCode
 class FakeAppleSignInCancels extends Fake implements AppleSignInObject {
   @override
-  Future<AuthorizationCredentialAppleID> startAuth() {
+  Future<AuthorizationCredentialAppleID> getAppleIDCredential() {
     throw SignInWithAppleAuthorizationException(
         code: AuthorizationErrorCode.canceled, message: 'message');
   }
@@ -28,7 +28,7 @@ class FakeAppleSignInCancels extends Fake implements AppleSignInObject {
 
 class FakeAppleSignInThrows extends Fake implements AppleSignInObject {
   @override
-  Future<AuthorizationCredentialAppleID> startAuth() {
+  Future<AuthorizationCredentialAppleID> getAppleIDCredential() {
     throw Exception('AppleSignIn.signIn');
   }
 }
