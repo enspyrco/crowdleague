@@ -84,11 +84,13 @@ class AuthService {
     yield StoreAuthStep((b) => b..step = AuthStep.signingInWithApple);
 
     try {
-      final appleIdCredential = await _appleSignIn.startAuth();
+      // get an AuthorizationCredentialAppleID
+      final appleIdCredential = await _appleSignIn.getAppleIDCredential();
 
       // signal to change UI
       yield StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase);
 
+      // get an OAuthCredential
       final credential = OAuthProvider(providerId: 'apple.com').getCredential(
         idToken: appleIdCredential.identityToken,
         accessToken: appleIdCredential.authorizationCode,
