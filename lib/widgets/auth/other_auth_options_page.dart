@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
@@ -205,37 +206,7 @@ class OtherPlatformSignInButton extends StatelessWidget {
           )
         : AppleSignInButton(
             style: AppleButtonStyle.black,
-            onPressed: () {
-              _notImplemented(context);
-            });
-  }
-
-  Future<void> _notImplemented(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Not ready yet'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text("Sorry! This hasn't been implemented yet."),
-                Text('If you have previously signed in on iOS you could link'),
-                Text('your google account there then use Google Sign In here.'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+            onPressed: () => context.dispatch(SignInWithApple()));
   }
 }
 
