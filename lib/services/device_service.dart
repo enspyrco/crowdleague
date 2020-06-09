@@ -1,13 +1,12 @@
-import 'package:crowdleague/utils/image_picker_object.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DeviceService {
-  final ImagePickerObject imagePicker;
+  final ImagePicker _picker;
 
-  DeviceService(this.imagePicker);
+  DeviceService({ImagePicker imagePicker}) : _picker = imagePicker;
 
   Future<String> pickProfilePic() async {
-    final file = await imagePicker.pickImage(source: ImageSource.gallery);
+    final file = await _picker.getImage(source: ImageSource.gallery);
     return file?.path;
   }
 }
