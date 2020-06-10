@@ -17,7 +17,7 @@ dependencies:
   
   firebase_auth:
   google_sign_in:
-  apple_sign_in:
+  sign_in_with_apple:
   flutter_auth_buttons:
 
   cloud_firestore:
