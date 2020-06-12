@@ -28,6 +28,8 @@ AppState _setDeletingProfilePic(AppState state, DeleteProfilePic action) {
         b.profilePage.profilePics[index].rebuild((b) => b..deleting = true));
 }
 
+/// [UpdateProfilePage] holds values to be set or null
+/// Only non-null values are used as updates
 AppState _updateProfilePage(AppState state, UpdateProfilePage action) {
   final stateBuilder = state.toBuilder();
 
@@ -39,10 +41,17 @@ AppState _updateProfilePage(AppState state, UpdateProfilePage action) {
         (pic) => pic == action.removeDeletingState, (b) => b..deleting = false);
   }
 
+  if (action.selectingProfilePic != null) {
+    if (action.selectingProfilePic &&
+        state.profilePage.profilePics.length < 2) {
+      // if there are not two or more pics to select from, don't respond to action
+    } else {
+      stateBuilder.profilePage.selectingProfilePic = action.selectingProfilePic;
+    }
+  }
+
   // update each member of state.profilePage if the action has a value
   stateBuilder.update((b) => b
-    ..profilePage.selectingProfilePic =
-        action.selectingProfilePic ?? b.profilePage.selectingProfilePic
     ..profilePage.pickingProfilePic =
         action.pickingProfilePic ?? b.profilePage.pickingProfilePic
     ..profilePage.uploadingProfilePicId =
