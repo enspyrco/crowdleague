@@ -5,9 +5,9 @@ import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:test/test.dart';
 
-import '../../mocks/apple_signin_mocks.dart';
-import '../../mocks/firebase_auth_mocks.dart';
-import '../../mocks/google_signin_mocks.dart';
+import '../../mocks/auth/apple_signin_mocks.dart';
+import '../../mocks/auth/firebase_auth_mocks.dart';
+import '../../mocks/auth/google_signin_mocks.dart';
 
 // TODO: test that sign streams close when sign in has finished
 // TODO: test that sign streams close when sign in errors

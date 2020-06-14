@@ -8,8 +8,8 @@ import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
 
-import '../../mocks/problem_mocks.dart';
-import '../../mocks/user_mocks.dart';
+import '../../mocks/models/problem_mocks.dart';
+import '../../mocks/models/user_mocks.dart';
 
 void main() {
   group('Reducer', () {

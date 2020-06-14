@@ -7,8 +7,8 @@ import 'package:crowdleague/enums/nav_bar_selection.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:test/test.dart';
 
-import '../../mocks/problem_mocks.dart';
-import '../../mocks/user_mocks.dart';
+import '../../mocks/models/problem_mocks.dart';
+import '../../mocks/models/user_mocks.dart';
 
 void main() {
   ///
