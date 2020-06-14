@@ -5,7 +5,7 @@ import 'package:crowdleague/reducers/profile_reducers.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
 
-import '../../mocks/profile_pic_mocks.dart';
+import '../../mocks/models/profile_pic_mocks.dart';
 
 void main() {
   group('Profile Reducer', () {
