@@ -18,6 +18,7 @@ import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
+import 'package:crowdleague/actions/device/pick_profile_pic.dart';
 import 'package:crowdleague/actions/functions/disregard_processing_failures.dart';
 import 'package:crowdleague/actions/functions/observe_processing_failures.dart';
 import 'package:crowdleague/actions/functions/store_processing_failures.dart';
@@ -48,10 +49,13 @@ import 'package:crowdleague/actions/profile/observe_profile_pics.dart';
 import 'package:crowdleague/actions/profile/select_profile_pic.dart';
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
+import 'package:crowdleague/actions/profile/upload_profile_pic.dart';
+import 'package:crowdleague/actions/storage/update_upload_task.dart';
 import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
 import 'package:crowdleague/actions/themes/store_theme_colors.dart';
 import 'package:crowdleague/enums/processing_failure_type.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
+import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
@@ -138,6 +142,9 @@ part 'serializers.g.dart';
   DisregardProcessingFailures,
   StoreProcessingFailures,
   UpdateProcessingFailure,
+  PickProfilePic,
+  UploadProfilePic,
+  UpdateUploadTask,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())

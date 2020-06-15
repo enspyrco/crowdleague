@@ -23,5 +23,9 @@
   {
     "rules": "firebase-storage-rules/profile-pics-storage.rules",
     "bucket": "crowdleague-profile-pics"
+  },
+  {
+    "rules": "firebase-storage-rules/profile-pics-storage.rules",
+    "bucket": "profile-pics-prototyping"
   }]
 }
