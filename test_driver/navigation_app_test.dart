@@ -1,9 +1,5 @@
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
-import 'package:screenshots/screenshots.dart';
-
-// e2e tests
-// TODO: Check that signing in with google sets the profile pic url
 
 void main() {
   group('CrowdLeague App', () {
@@ -30,14 +26,8 @@ void main() {
     });
 
     test('Take screenshots', () async {
-      final config = Config();
-      await screenshot(driver, config, 'myscreenshot1');
       await driver.waitFor(buttonFinder);
       await driver.tap(buttonFinder);
-      // had to set waitUntilNoTransientCallbacks or the call times out
-      // TODO: need to get to the bottom of this, see issue #15
-      await screenshot(driver, config, 'myscreenshot2',
-          waitUntilNoTransientCallbacks: false);
     });
   });
 }
