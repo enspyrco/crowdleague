@@ -18,40 +18,30 @@ AppState _updateStorageTaskInfo(AppState state, UpdateUploadTask action) {
   // use the event type to set the storage task state
   switch (action.type) {
     case UploadTaskUpdateType.setup:
-      {
-        taskBuilder.state = UploadTaskState.setup;
-        taskBuilder.filePath = action.filePath;
-        break;
-      }
+      taskBuilder.state = UploadTaskState.setup;
+      taskBuilder.filePath = action.filePath;
+      break;
     case UploadTaskUpdateType.resume:
-      {
-        taskBuilder.state = UploadTaskState.resumed;
-        break;
-      }
+      taskBuilder.state = UploadTaskState.resumed;
+      break;
     case UploadTaskUpdateType.progress:
-      {
-        taskBuilder.state = UploadTaskState.inProgress;
-        break;
-      }
+      taskBuilder.state = UploadTaskState.inProgress;
+      break;
     case UploadTaskUpdateType.pause:
-      {
-        taskBuilder.state = UploadTaskState.paused;
-        break;
-      }
+      taskBuilder.state = UploadTaskState.paused;
+      break;
     case UploadTaskUpdateType.success:
-      {
-        taskBuilder.state = UploadTaskState.processing;
-        break;
-      }
+      taskBuilder.state = UploadTaskState.processing;
+      break;
     case UploadTaskUpdateType.failure:
-      {
-        taskBuilder.state = UploadTaskState.failed;
-        break;
-      }
+      taskBuilder.state = UploadTaskState.failed;
+      break;
   }
 
+  // no need to preserve the previous state for errors
+  taskBuilder.error = action.error?.toBuilder();
+
   taskBuilder.uuid = action.uuid ?? taskBuilder.uuid;
-  taskBuilder.error = action.error.toBuilder() ?? taskBuilder.error;
   taskBuilder.bytesTransferred =
       action.bytesTransferred ?? taskBuilder.bytesTransferred;
   taskBuilder.totalByteCount =
