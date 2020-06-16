@@ -39,9 +39,9 @@ CheckUpdateUploadTaskMiddleware _checkUpdateUploadTask(
         store.dispatch(
           AddProblem.from(
               message:
-                  'There was a problem uploading file name ${action.uuid}, ${action.error}',
+                  'There was a problem uploading file name ${action.uuid}, ${action.failure}',
               type: ProblemType.uploadTaskFailure,
-              info: BuiltMap({'error': action.error, 'uuid': action.uuid}),
+              info: BuiltMap({'failure': action.failure, 'uuid': action.uuid}),
               state: store.state),
         );
       }

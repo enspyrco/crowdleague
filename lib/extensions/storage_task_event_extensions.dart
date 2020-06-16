@@ -27,7 +27,7 @@ extension ConvertToReduxAction on StorageTaskEvent {
 
     return UpdateUploadTask((b) => b
       ..type = convertedType
-      ..error = snapshot.getUploadError()?.toBuilder()
+      ..failure = snapshot.getUploadFailure()?.toBuilder()
       ..bytesTransferred = snapshot.bytesTransferred
       ..totalByteCount = snapshot.totalByteCount
       ..uploadSessionUri = snapshot.uploadSessionUri

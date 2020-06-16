@@ -59,7 +59,8 @@ class FakeStorageService extends Fake implements StorageService {
     yield UpdateUploadTask((b) => b
       ..type = UploadTaskUpdateType.failure
       ..uuid = uuid
-      ..error = -13021
+      ..failure.code = -13021
+      ..failure.description = 'description'
       ..totalByteCount = 159
       ..bytesTransferred = 3782214);
   }

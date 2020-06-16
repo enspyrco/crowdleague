@@ -1,8 +1,8 @@
-import 'package:crowdleague/models/storage/upload_error.dart';
+import 'package:crowdleague/models/storage/upload_failure.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 extension StorageTaskSnapshotExt on StorageTaskSnapshot {
-  UploadError getUploadError() {
+  UploadFailure getUploadFailure() {
     if (error == null) return null;
     String description;
     switch (error) {
@@ -40,7 +40,7 @@ extension StorageTaskSnapshotExt on StorageTaskSnapshot {
         description = 'Really Unkown';
     }
 
-    return UploadError((b) => b
+    return UploadFailure((b) => b
       ..code = error
       ..description = description);
   }

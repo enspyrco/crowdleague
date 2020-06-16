@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/storage/upload_error.dart';
+import 'package:crowdleague/models/storage/upload_failure.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -10,15 +10,15 @@ void main() {
   ///
   ///
 
-  group('UploadError', () {
+  group('UploadFailure', () {
     test('.toString() prints code and description', () {
-      final error = UploadError((b) => b
+      final error = UploadFailure((b) => b
         ..code = 1
         ..description = 'hello');
 
       expect(
           error.toString(),
-          'UploadError {\n'
+          'UploadFailure {\n'
           '  code=1,\n'
           '  description=hello,\n'
           '}');

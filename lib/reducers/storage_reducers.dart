@@ -39,7 +39,7 @@ AppState _updateStorageTaskInfo(AppState state, UpdateUploadTask action) {
   }
 
   // no need to preserve the previous state for errors
-  taskBuilder.error = action.error?.toBuilder();
+  taskBuilder.failure = action.failure?.toBuilder();
 
   taskBuilder.uuid = action.uuid ?? taskBuilder.uuid;
   taskBuilder.bytesTransferred =
