@@ -8,6 +8,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/models/storage/upload_error.dart';
 
 part 'update_upload_task.g.dart';
 
@@ -27,7 +28,7 @@ abstract class UpdateUploadTask extends Object
   @nullable
   String get filePath;
   @nullable
-  int get error;
+  UploadError get error;
   @nullable
   int get bytesTransferred;
   @nullable

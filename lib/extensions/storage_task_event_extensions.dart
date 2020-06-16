@@ -2,6 +2,8 @@ import 'package:crowdleague/actions/storage/update_upload_task.dart';
 import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'storage_task_snapshot_extensions.dart';
+
 extension ConvertToReduxAction on StorageTaskEvent {
   UpdateUploadTask toUpdateUploadTask() {
     UploadTaskUpdateType convertedType;
@@ -25,7 +27,7 @@ extension ConvertToReduxAction on StorageTaskEvent {
 
     return UpdateUploadTask((b) => b
       ..type = convertedType
-      ..error = snapshot.error
+      ..error.replace(snapshot.getUploadError())
       ..bytesTransferred = snapshot.bytesTransferred
       ..totalByteCount = snapshot.totalByteCount
       ..uploadSessionUri = snapshot.uploadSessionUri

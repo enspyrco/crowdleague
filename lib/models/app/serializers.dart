@@ -78,6 +78,7 @@ import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
+import 'package:crowdleague/models/storage/upload_error.dart';
 import 'package:crowdleague/models/storage/upload_task.dart';
 import 'package:crowdleague/models/themes/theme_colors.dart';
 import 'package:crowdleague/models/themes/theme_set.dart';
