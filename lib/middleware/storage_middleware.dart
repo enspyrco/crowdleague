@@ -22,7 +22,7 @@ typedef CheckUpdateUploadTaskMiddleware = void Function(
 ///
 /// The output of an action can perform another action using the [NextDispatcher]
 ///
-List<Middleware<AppState>> createProfileMiddleware(
+List<Middleware<AppState>> createStorageMiddleware(
     {StorageService storageService, NavigationService navigationService}) {
   return [
     TypedMiddleware<AppState, UpdateUploadTask>(
@@ -35,6 +35,7 @@ List<Middleware<AppState>> createProfileMiddleware(
 CheckUpdateUploadTaskMiddleware _checkUpdateUploadTask(
         NavigationService navigationService) =>
     (store, action, next) async {
+      next(action);
       if (action.type == UploadTaskUpdateType.failure) {
         store.dispatch(
           AddProblem.from(

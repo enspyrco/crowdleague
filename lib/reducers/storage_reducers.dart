@@ -10,6 +10,14 @@ final storageReducers = <AppState Function(AppState, dynamic)>[
 ];
 
 AppState _updateStorageTaskInfo(AppState state, UpdateUploadTask action) {
+  // If there was a failure, a message has been displayed via middleware so
+  // we remove the UploadTask and reset the profile page uploading UI
+  if (action.failure != null) {
+    return state.rebuild((b) => b
+      ..uploadTasksMap.remove(action.uuid)
+      ..profilePage.uploadingProfilePicId = null);
+  }
+
   final newStateBuilder = state.toBuilder();
   final taskBuilder =
       newStateBuilder.uploadTasksMap[action.uuid]?.toBuilder() ??
@@ -37,9 +45,6 @@ AppState _updateStorageTaskInfo(AppState state, UpdateUploadTask action) {
       taskBuilder.state = UploadTaskState.failed;
       break;
   }
-
-  // no need to preserve the previous state for errors
-  taskBuilder.failure = action.failure?.toBuilder();
 
   taskBuilder.uuid = action.uuid ?? taskBuilder.uuid;
   taskBuilder.bytesTransferred =
