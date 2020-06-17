@@ -3,7 +3,7 @@ import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 
 final mockUpdateUploadTask = UpdateUploadTask((b) => b
   ..type = UploadTaskUpdateType.progress
-  ..error = null
+  ..failure = null
   ..bytesTransferred = 1
   ..totalByteCount = 1000
   ..uploadSessionUri = null

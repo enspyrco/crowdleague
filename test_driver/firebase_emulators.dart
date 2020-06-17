@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/middleware/app_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -9,22 +7,21 @@ import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
-import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
 import 'package:crowdleague/widgets/crowd_league_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_driver/driver_extension.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
-import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
-void main() async {
+import 'mocks/storage_service_mocks.dart';
+
+Future<void> main() async {
+  enableFlutterDriverExtension();
   WidgetsFlutterBinding.ensureInitialized();
-
-  final remoteDevtools = RemoteDevToolsMiddleware('localhost:8000');
 
   await Firestore.instance.settings(
     host: 'localhost:8081',
@@ -49,12 +46,7 @@ void main() async {
   final navigationService = NavigationService(navKey);
   final databaseService = DatabaseService(Firestore.instance);
   final notificationsService = NotificationsService(FirebaseMessaging());
-  final storageService = StorageService(
-    // we use a different bucket as there is no storage emulator
-    FirebaseStorage(
-        app: Firestore.instance.app,
-        storageBucket: 'gs://profile-pics-prototyping'),
-  );
+  final storageService = FakeStorageService();
   final deviceService = DeviceService(imagePicker: ImagePicker());
 
   // Create the redux store
@@ -62,7 +54,6 @@ void main() async {
     appReducer,
     initialState: AppState.init(),
     middleware: [
-      remoteDevtools,
       ...createAppMiddleware(
           authService: authService,
           navigationService: navigationService,
@@ -72,16 +63,6 @@ void main() async {
           deviceService: deviceService),
     ],
   );
-
-  // pass in the store to RDT
-  remoteDevtools.store = store;
-
-  // try to connect and print out any exception thrown
-  try {
-    await remoteDevtools.connect();
-  } on SocketException catch (e) {
-    print(e);
-  }
 
   // Fire up the app
   runApp(CrowdLeagueApp(store, navKey));

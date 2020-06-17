@@ -51,6 +51,11 @@ class NavigationService {
   }
 
   void popHome() {
+    /// The [popHome] method calls [NavigatorState.popUntil], passing a
+    /// [RoutePredicate] created with [ModalRoute.withName]('/')
+    ///
+    /// The [RoutePredicate] is used to pop until the condition is met
+    ///
     _navKey.currentState.popUntil(ModalRoute.withName('/'));
   }
 
