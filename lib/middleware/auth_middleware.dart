@@ -91,11 +91,11 @@ void Function(
         (b) => b..step = AuthStep.signingInWithEmail));
 
     // attempt sign in then dispatch resulting action
-    final dismissAuthPageOrDisplayProblem = await authService.signInWithEmail(
+    final navigateOrAddProblem = await authService.signInWithEmail(
         store.state.otherAuthOptionsPage.email,
         store.state.otherAuthOptionsPage.password);
 
-    store.dispatch(dismissAuthPageOrDisplayProblem);
+    store.dispatch(navigateOrAddProblem);
 
     // finish by resetting the UI of the auth page
     store.dispatch(
