@@ -1,4 +1,4 @@
-import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/problems/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';

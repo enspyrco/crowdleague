@@ -1,4 +1,4 @@
-import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/problems/add_problem.dart';
 import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_replaced_route_info.dart';

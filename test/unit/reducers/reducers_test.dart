@@ -1,4 +1,4 @@
-import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/problems/add_problem.dart';
 import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';

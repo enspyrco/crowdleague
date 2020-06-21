@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/problems/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';

@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/actions/conversations/store_conversations.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/functions/store_processing_failures.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/problems/add_problem.dart';
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';

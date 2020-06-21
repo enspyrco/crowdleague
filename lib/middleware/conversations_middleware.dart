@@ -5,7 +5,7 @@ import 'package:crowdleague/actions/conversations/leave_conversation.dart';
 import 'package:crowdleague/actions/conversations/observe_conversations.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
 import 'package:crowdleague/actions/conversations/save_message.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/problems/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:redux/redux.dart';

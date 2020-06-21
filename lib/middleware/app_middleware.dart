@@ -1,5 +1,5 @@
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/problems/add_problem.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/middleware/auth_middleware.dart';
 import 'package:crowdleague/middleware/conversations_middleware.dart';
