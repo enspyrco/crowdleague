@@ -6,6 +6,7 @@ import 'package:crowdleague/middleware/conversations_middleware.dart';
 import 'package:crowdleague/middleware/leaguers_middleware.dart';
 import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/middleware/notifications_middleware.dart';
+import 'package:crowdleague/middleware/problems_middleware.dart';
 import 'package:crowdleague/middleware/profile_middleware.dart';
 import 'package:crowdleague/middleware/storage_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -35,6 +36,7 @@ List<Middleware<AppState>> createAppMiddleware(
     DeviceService deviceService}) {
   return [
     ...createAuthMiddleware(authService: authService),
+    ...createProblemsMiddleware(navigationService: navigationService),
     ...createNavigationMiddleware(navigationService: navigationService),
     ...createLeaguersMiddleware(databaseService: databaseService),
     ...createConversationsMiddleware(databaseService: databaseService),
