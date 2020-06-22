@@ -24,6 +24,8 @@ part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   BuiltList<Problem> get problems;
+  @nullable
+  Problem get displayedProblem;
   BuiltList<ProcessingFailure> get processingFailures;
   @nullable
   User get user;

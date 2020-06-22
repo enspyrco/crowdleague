@@ -37,7 +37,7 @@ import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
 import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_replaced_route_info.dart';
-import 'package:crowdleague/actions/navigation/remove_problem.dart';
+import 'package:crowdleague/actions/problems/remove_problem.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';

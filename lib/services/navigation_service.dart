@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:crowdleague/actions/functions/acknowledge_processing_failure.dart';
-import 'package:crowdleague/actions/navigation/remove_problem.dart';
+import 'package:crowdleague/actions/problems/remove_problem.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/models/app/problem.dart';

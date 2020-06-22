@@ -5,7 +5,6 @@ import 'package:crowdleague/models/conversations/new_conversation/vm_new_convers
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/nav_bar_selection.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
-import 'package:crowdleague/models/storage/upload_task.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/models/problem_mocks.dart';
