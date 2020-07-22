@@ -1,6 +1,7 @@
 import 'package:crowdleague/actions/problems/remove_problem.dart';
 import 'package:crowdleague/actions/problems/add_problem.dart';
 import 'package:crowdleague/actions/problems/display_problem.dart';
+import 'package:crowdleague/actions/problems/set_displaying_problem.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:redux/redux.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -47,10 +48,14 @@ AddProblemMiddleware _displayAddedProblem(
       next(action); // add the problem to the store
 
       // if there is not already a problem beign displayed, display this problem
-      if (store.state.displayedProblem == null) {
+      if (!store.state.displayingProblem) {
+        // set the state to indicate a problem is being displayed
+        store.dispatch(SetDisplayingProblem((b) => b..displaying = true));
+
         // display the problem then remove from store when alert is dismissed
         final nextAction = await navigationService.display(action.problem);
 
+        store.dispatch(SetDisplayingProblem((b) => b..displaying = false));
         store.dispatch(nextAction);
       }
     };
@@ -62,10 +67,14 @@ DisplayProblemMiddleware _displayProblem(NavigationService navigationService) =>
       next(action); // currently nothing else uses the action but good practice
 
       // if there is not already a problem beign displayed, display this problem
-      if (store.state.displayedProblem == null) {
+      if (!store.state.displayingProblem) {
+        // set the state to indicate a problem is being displayed
+        store.dispatch(SetDisplayingProblem((b) => b..displaying = true));
+
         // display the problem then remove from store when alert is dismissed
         final nextAction = await navigationService.display(action.problem);
 
+        store.dispatch(SetDisplayingProblem((b) => b..displaying = false));
         store.dispatch(nextAction);
       }
     };

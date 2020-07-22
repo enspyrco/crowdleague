@@ -24,8 +24,7 @@ part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   BuiltList<Problem> get problems;
-  @nullable
-  Problem get displayedProblem;
+  bool get displayingProblem;
   BuiltList<ProcessingFailure> get processingFailures;
   @nullable
   User get user;
@@ -43,6 +42,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   AppState._();
 
   factory AppState.init() => AppState((a) => a
+    ..displayingProblem = false
     ..navBarSelection = NavBarSelection.home
     ..settings = Settings.initBuilder()
     ..authPage = VmAuthPage.initBuilder()
