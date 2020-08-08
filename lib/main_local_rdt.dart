@@ -24,7 +24,7 @@ import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final remoteDevtools = RemoteDevToolsMiddleware('localhost:8000');
+  final remoteDevtools = RemoteDevToolsMiddleware<dynamic>('localhost:8000');
 
   await Firestore.instance.settings(
     host: 'localhost:8081',
