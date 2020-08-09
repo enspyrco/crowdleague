@@ -7,6 +7,7 @@ import 'package:crowdleague/middleware/leaguers_middleware.dart';
 import 'package:crowdleague/middleware/navigation_middleware.dart';
 import 'package:crowdleague/middleware/notifications_middleware.dart';
 import 'package:crowdleague/middleware/profile_middleware.dart';
+import 'package:crowdleague/middleware/storage_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/database_service.dart';
@@ -45,6 +46,8 @@ List<Middleware<AppState>> createAppMiddleware(
         deviceService: deviceService,
         storageService: storageService,
         navigationService: navigationService),
+    ...createStorageMiddleware(
+        storageService: storageService, navigationService: navigationService),
     TypedMiddleware<AppState, PlumbDatabaseStream>(
       _plumbDatabaseStream(databaseService),
     ),
