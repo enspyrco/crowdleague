@@ -8,14 +8,14 @@ class FakeFirebaseAuthPeriodic extends Fake implements FirebaseAuth {
   Stream<FirebaseUser> get onAuthStateChanged =>
       Stream.periodic(Duration(seconds: 1), (tickNum) {
         if (tickNum > 1) tickNum = 1;
-        return [FakeFirebaseUserNull(), FakeFirebaseUser()].elementAt(tickNum);
+        return [FakeFirebaseUser(), FakeFirebaseUser()].elementAt(tickNum);
       });
 }
 
 class FakeFirebaseAuth1 extends Fake implements FirebaseAuth {
   @override
   Stream<FirebaseUser> get onAuthStateChanged =>
-      Stream.fromIterable([FakeFirebaseUserNull(), FakeFirebaseUser()]);
+      Stream.fromIterable([FakeFirebaseUser()]);
 
   @override
   Future<AuthResult> signInWithCredential(AuthCredential credential) =>
@@ -35,19 +35,19 @@ class FakeFirebaseAuthOpen extends Fake implements FirebaseAuth {
   }
 }
 
-class FakeFirebaseUserNull extends Fake implements FirebaseUser {
-  @override
-  String get uid => null;
-  @override
-  String get displayName => null;
-  @override
-  String get email => null;
-  @override
-  String get photoUrl => null;
+// class FakeFirebaseUserNull extends Fake implements FirebaseUser {
+//   @override
+//   String get uid => null;
+//   @override
+//   String get displayName => null;
+//   @override
+//   String get email => null;
+//   @override
+//   String get photoUrl => null;
 
-  @override
-  List<UserInfo> providerData;
-}
+//   @override
+//   List<UserInfo> providerData;
+// }
 
 class FakeFirebaseUser extends Fake implements FirebaseUser {
   @override

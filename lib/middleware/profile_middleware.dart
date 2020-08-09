@@ -56,16 +56,22 @@ List<Middleware<AppState>> createProfileMiddleware(
   ];
 }
 
+/// If a ProfilePic is being picked or uploaded we swallow the action and
+/// don't start an upload
 void Function(Store<AppState> store, PickProfilePic action, NextDispatcher next)
     _pickProfilePic(DeviceService deviceService) {
   return (Store<AppState> store, PickProfilePic action,
       NextDispatcher next) async {
-    next(action);
+    // check that we are not picking or uploading
+    if (!store.state.profilePage.pickingProfilePic &&
+        store.state.profilePage.uploadingProfilePicId == null) {
+      next(action);
 
-    final filePath = await deviceService.pickProfilePic();
-    store.dispatch(UpdateProfilePage((b) => b..pickingProfilePic = false));
-    if (filePath != null) {
-      store.dispatch(UploadProfilePic((b) => b..filePath = filePath));
+      final filePath = await deviceService.pickProfilePic();
+      store.dispatch(UpdateProfilePage((b) => b..pickingProfilePic = false));
+      if (filePath != null) {
+        store.dispatch(UploadProfilePic((b) => b..filePath = filePath));
+      }
     }
   };
 }

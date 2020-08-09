@@ -11,20 +11,20 @@ import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
-import 'package:crowdleague/utils/image_picker_object.dart';
 import 'package:crowdleague/widgets/crowd_league_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final remoteDevtools = RemoteDevToolsMiddleware('localhost:8000');
+  final remoteDevtools = RemoteDevToolsMiddleware<dynamic>('localhost:8000');
 
   await Firestore.instance.settings(
     host: 'localhost:8081',
@@ -50,11 +50,12 @@ void main() async {
   final databaseService = DatabaseService(Firestore.instance);
   final notificationsService = NotificationsService(FirebaseMessaging());
   final storageService = StorageService(
+    // we use a different bucket as there is no storage emulator
     FirebaseStorage(
         app: Firestore.instance.app,
-        storageBucket: 'gs://crowdleague-profile-pics'),
+        storageBucket: 'gs://profile-pics-prototyping'),
   );
-  final deviceService = DeviceService(ImagePickerObject());
+  final deviceService = DeviceService(imagePicker: ImagePicker());
 
   // Create the redux store
   final store = Store<AppState>(

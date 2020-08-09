@@ -2,14 +2,15 @@
 name: Feature plan
 about: Plan a feature
 title: ''
-labels: feature plan
+labels: plan
 assignees: ''
 
 ---
 
-## user goals & interactions 
+## user goal & interactions 
 
-- [ ] 
+Goal
+- 
 
 ## designs 
 

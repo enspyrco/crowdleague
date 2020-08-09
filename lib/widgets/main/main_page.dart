@@ -1,4 +1,3 @@
-import 'package:crowdleague/actions/auth/sign_out_user.dart';
 import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
