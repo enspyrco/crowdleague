@@ -11,28 +11,30 @@ import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
 /// [_navKey] is a [GlobalKey] that is used in the []
 class ReduxBundle {
-  final Store<AppState> _store;
+  Store<AppState> _store;
 
   // if in RDT mode, create a RemoteDevToolsMiddleware
   final RemoteDevToolsMiddleware _remoteDevtools =
       (const bool.fromEnvironment('RDT'))
-          ? RemoteDevToolsMiddleware<dynamic>('localhost:8000')
+          ? RemoteDevToolsMiddleware<dynamic>('192.168.0.8:8000')
           : null;
 
-  ReduxBundle({@required ServicesBundle services})
-      : _store = Store<AppState>(
-          appReducer,
-          initialState: AppState.init(),
-          middleware: [
-            ...createAppMiddleware(
-                authService: services.auth,
-                navigationService: services.navigation,
-                databaseService: services.database,
-                notificationsService: services.notifications,
-                storageService: services.storage,
-                deviceService: services.device),
-          ],
-        ) {
+  ReduxBundle({@required ServicesBundle services}) {
+    _store = Store<AppState>(
+      appReducer,
+      initialState: AppState.init(),
+      middleware: [
+        ...createAppMiddleware(
+            authService: services.auth,
+            navigationService: services.navigation,
+            databaseService: services.database,
+            notificationsService: services.notifications,
+            storageService: services.storage,
+            deviceService: services.device),
+        if (const bool.fromEnvironment('RDT')) _remoteDevtools
+      ],
+    );
+
     // if in RDT mode, give RDT access to the store
     if (const bool.fromEnvironment('RDT')) {
       _remoteDevtools.store = _store;
@@ -45,12 +47,17 @@ class ReduxBundle {
       await _remoteDevtools.connect();
     }
 
-    if (const bool.fromEnvironment('FIREBASE_EMULATORS')) {
+    if (const bool.fromEnvironment('EMULATORS')) {
       await Firestore.instance.settings(
-        host: 'localhost:8081',
+        host: 'localhost:8080',
         sslEnabled: false,
         persistenceEnabled: false,
       );
+      final querySnapshot =
+          await Firestore.instance.collection('leaguers').getDocuments();
+      for (final doc in querySnapshot.documents) {
+        print(doc.documentID);
+      }
     }
   }
 

@@ -15,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
 
 /// Services can be injected, or if missing are given default values
 class ServicesBundle {
-  static const String bucketName = bool.fromEnvironment('FIREBASE_EMULATORS')
+  static const String bucketName = bool.fromEnvironment('EMULATORS')
       ? 'gs://profile-pics-prototyping'
       : 'gs://crowdleague-profile-pics';
 

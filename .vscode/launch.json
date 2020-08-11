@@ -18,14 +18,14 @@
             "args": ["--dart-define=RDT=true"]
         },
         {
-            "name": "Debug - RDT/Local",
+            "name": "Debug - RDT/EMULATORS",
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "args": ["--dart-define=RDT=true", "--dart-define=FIREBASE_EMULATORS=true"]
+            "args": ["--dart-define=RDT=true", "--dart-define=EMULATORS=true"]
         },
         {
-            "name": "Debug - RDT/Mocks",
+            "name": "Debug - RDT/MOCKS",
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
