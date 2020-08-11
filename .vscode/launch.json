@@ -11,16 +11,25 @@
             "program": "lib/main.dart"
         },
         {
-            "name": "MainRDT",
+            "name": "Debug - RDT",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main_rdt.dart",
+            "program": "lib/main.dart",
+            "args": ["--dart-define=RDT=true"]
         },
         {
-            "name": "LocalRDT",
+            "name": "Debug - EMULATORS",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main_local_rdt.dart",
+            "program": "lib/main.dart",
+            "args": ["--dart-define=EMULATORS=true"]
+        },
+        {
+            "name": "Debug - RDT/EMULATORS",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": ["--dart-define=RDT=true", "--dart-define=EMULATORS=true"]
         }
     ]
 }
