@@ -18,18 +18,18 @@
             "args": ["--dart-define=RDT=true"]
         },
         {
+            "name": "Debug - EMULATORS",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": ["--dart-define=EMULATORS=true"]
+        },
+        {
             "name": "Debug - RDT/EMULATORS",
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
             "args": ["--dart-define=RDT=true", "--dart-define=EMULATORS=true"]
-        },
-        {
-            "name": "Debug - RDT/MOCKS",
-            "type": "dart",
-            "request": "launch",
-            "program": "lib/main.dart",
-            "args": ["--dart-define=RDT=true", "--dart-define=MOCKS=true"]
         }
     ]
 }

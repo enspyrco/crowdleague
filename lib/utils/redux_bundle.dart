@@ -16,7 +16,7 @@ class ReduxBundle {
   // if in RDT mode, create a RemoteDevToolsMiddleware
   final RemoteDevToolsMiddleware _remoteDevtools =
       (const bool.fromEnvironment('RDT'))
-          ? RemoteDevToolsMiddleware<dynamic>('192.168.0.8:8000')
+          ? RemoteDevToolsMiddleware<dynamic>('localhost:8000')
           : null;
 
   ReduxBundle({@required ServicesBundle services}) {
@@ -53,11 +53,6 @@ class ReduxBundle {
         sslEnabled: false,
         persistenceEnabled: false,
       );
-      final querySnapshot =
-          await Firestore.instance.collection('leaguers').getDocuments();
-      for (final doc in querySnapshot.documents) {
-        print(doc.documentID);
-      }
     }
   }
 
