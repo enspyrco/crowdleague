@@ -7,9 +7,9 @@ assignees: ''
 
 ---
 
-## user goal & interactions 
+## User flow 
 
-Goal
+A Leaguer wants to 
 - 
 
 ## designs 
