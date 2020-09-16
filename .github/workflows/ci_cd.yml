@@ -1,18 +1,14 @@
 name: Github Actions
 
 on:
-  # Trigger workflow on PRs for dev and master branch.
-  # 
-  # Branches are required to be up to date, so there is no need to 
-  # run the CI on push.
-  #  
-  # Successful CI runs for PRs onto master will result in a merge so we 
-  # can just deploy in PRs onto master, as the deploy is the last step 
-  # and only happens if the rest of the run is successful.
   pull_request:
     branches:
       - dev
-      - release
+  push:
+    branches:
+      - dev
+      - build
+      - deploy
 
 jobs:
   build:
@@ -32,7 +28,7 @@ jobs:
     ##############################################
     # flutter-action
     ##############################################
-    # the flutter-action action seems to need java
+    # the flutter-action action needs java
     - name: Install Java for Flutter tool
       uses: actions/setup-java@v1
       with:
@@ -41,21 +37,39 @@ jobs:
     - name: Install Flutter tool
       uses: subosito/flutter-action@v1
       with:
-        channel: 'dev' # or: 'stable' or 'beta'
+        channel: 'dev'
+
+    ##############################################
+    # get dependencies & generate built_value code 
+    ##############################################
+    - name: Get dependencies
+      run: flutter pub get
+    - name: Generate built_value code
+      run: flutter pub run build_runner build
     
+    ##############################################
+    # run tests and upload coverage to coveralls
+    ##############################################
+    - name: Run tests and save coverage
+      # run on PR for status check and on push for coverage
+      if: ${{ github.base_ref == 'dev' || github.ref == 'refs/heads/dev' }}
+      run: flutter test --coverage
+    - name: Coveralls
+      # run on push to dev branch, for the coverage
+      if: github.ref == 'refs/heads/dev'
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
     ##############################################
     # setup-gcloud
     ##############################################
-    # the setup-gcloud action seems to need python
-    - name: Install python for gcloud/gsutil
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.x'
     # use setup-gcloud configured with auth credentials 
-    - name: Install gcloud/gsutil
+    - name: Setup gcloud
+      if: github.ref == 'refs/heads/build' || github.ref == 'refs/heads/deploy'
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
-        version: '270.0.0'
+        version: '290.0.1'
         service_account_email: ${{ secrets.GSUTIL_SERVICE_ACC_EMAIL }}
         service_account_key: ${{ secrets.GSUTIL_SERVICE_ACC_PASSWORD }}
     
@@ -63,16 +77,18 @@ jobs:
     # download credential files 
     ############################################
     - name: Download credential files
+      if: github.ref == 'refs/heads/build' || github.ref == 'refs/heads/deploy'
       run: ./get-credentials.sh
 
     ############################################
     # build ios app and android app
     ############################################
-    - run: flutter pub get
-    - run: flutter pub run build_runner build
-    - run: flutter test
-    - run: flutter build appbundle --build-number=$GITHUB_RUN_NUMBER
-    - run: flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+    - name: Build for Android
+      if: github.ref == 'refs/heads/build' || github.ref == 'refs/heads/deploy'
+      run: flutter build appbundle --build-number=$GITHUB_RUN_NUMBER
+    - name: Build for iOS
+      if: github.ref == 'refs/heads/build' || github.ref == 'refs/heads/deploy'
+      run: flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
 
     ##############################################
     # use fastlane to build ios app 
