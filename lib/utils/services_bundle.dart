@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crowdleague/middleware/app_middleware.dart';
+import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
@@ -12,9 +15,19 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
 /// Services can be injected, or if missing are given default values
 class ServicesBundle {
+  // Store<AppState> _store;
+
+  // if in RDT mode, create a RemoteDevToolsMiddleware
+  final RemoteDevToolsMiddleware _remoteDevtools =
+      (const bool.fromEnvironment('RDT'))
+          ? RemoteDevToolsMiddleware<dynamic>('localhost:8000')
+          : null;
+
   static const String bucketName = bool.fromEnvironment('EMULATORS')
       ? 'gs://profile-pics-prototyping'
       : 'gs://crowdleague-profile-pics';
@@ -43,13 +56,14 @@ class ServicesBundle {
             ),
         _navigationService = navigationService ?? NavigationService(navKey),
         _databaseService =
-            databaseService ?? DatabaseService(Firestore.instance),
+            databaseService ?? DatabaseService(FirebaseFirestore.instance),
         _notificationsService =
             notificationsService ?? NotificationsService(FirebaseMessaging()),
         _storageService = storageService ??
             StorageService(
               FirebaseStorage(
-                  app: Firestore.instance.app, storageBucket: bucketName),
+                  app: FirebaseFirestore.instance.app,
+                  storageBucket: bucketName),
             ),
         _deviceService =
             deviceService ?? DeviceService(imagePicker: ImagePicker());
@@ -60,4 +74,40 @@ class ServicesBundle {
   NotificationsService get notifications => _notificationsService;
   StorageService get storage => _storageService;
   DeviceService get device => _deviceService;
+
+  Future<Store<AppState>> get store async {
+    final _store = Store<AppState>(
+      appReducer,
+      initialState: AppState.init(),
+      middleware: [
+        ...createAppMiddleware(
+            authService: _authService,
+            navigationService: _navigationService,
+            databaseService: _databaseService,
+            notificationsService: _notificationsService,
+            storageService: _storageService,
+            deviceService: _deviceService),
+        if (const bool.fromEnvironment('RDT')) _remoteDevtools
+      ],
+    );
+
+    // if in RDT mode, give RDT access to the store
+    if (const bool.fromEnvironment('RDT')) {
+      _remoteDevtools.store = _store;
+    }
+
+    if (const bool.fromEnvironment('RDT')) {
+      await _remoteDevtools.connect();
+    }
+
+    if (const bool.fromEnvironment('EMULATORS')) {
+      FirebaseFirestore.instance.settings = Settings(
+        host: 'localhost:8080',
+        sslEnabled: false,
+        persistenceEnabled: false,
+      );
+    }
+
+    return _store;
+  }
 }

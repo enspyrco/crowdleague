@@ -6,23 +6,23 @@ import 'package:crowdleague/models/leaguers/leaguer.dart';
 
 extension ConvertDocumentSnapshot on DocumentSnapshot {
   Leaguer toLeaguer() => Leaguer((b) => b
-    ..uid = documentID
-    ..displayName = data['displayName'] as String
-    ..photoURL = data['photoURL'] as String ??
+    ..uid = id
+    ..displayName = data()['displayName'] as String
+    ..photoURL = data()['photoURL'] as String ??
         'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y');
 
   ProcessingFailure toProcessingFailure() => ProcessingFailure((b) => b
-    ..id = documentID
-    ..type = ProcessingFailureType.valueOf(data['type'] as String)
-    ..seen = data['seen'] as bool ?? false
-    ..createdOn = data['createdOn'] as DateTime
-    ..message = data['message'] as String
-    ..data = data['data'] as Object);
+    ..id = id
+    ..type = ProcessingFailureType.valueOf(data()['type'] as String)
+    ..seen = data()['seen'] as bool ?? false
+    ..createdOn = data()['createdOn'] as DateTime
+    ..message = data()['message'] as String
+    ..data = data()['data'] as Object);
 
   ConversationSummary toConversationSummary() => ConversationSummary((b) => b
-    ..conversationId = documentID
+    ..conversationId = id
     ..displayNames
-        .replace(List<String>.from(data['displayNames'] as List<dynamic>))
-    ..photoURLs.replace(List<String>.from(data['photoURLs'] as List<dynamic>))
-    ..uids.replace(List<String>.from(data['uids'] as List<dynamic>)));
+        .replace(List<String>.from(data()['displayNames'] as List<dynamic>))
+    ..photoURLs.replace(List<String>.from(data()['photoURLs'] as List<dynamic>))
+    ..uids.replace(List<String>.from(data()['uids'] as List<dynamic>)));
 }

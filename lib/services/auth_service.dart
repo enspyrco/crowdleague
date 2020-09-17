@@ -7,10 +7,10 @@ import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:crowdleague/extensions/extensions.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
@@ -20,12 +20,12 @@ class AuthService {
 
   AuthService(this._fireAuth, this._googleSignIn, this._appleSignIn);
 
-  // Map FirebaseUser objects emitted by FirebaseAuth to a StoreUser action,
+  // Map auth.User objects emitted by FirebaseAuth to a StoreUser action,
   // which can be dispatched by the store.
-  // If the FirebaseUser or the uid field is null, create an empty StoreUser
+  // If the auth.User or the uid field is null, create an empty StoreUser
   // object that will set the user field of the AppState to null.
   Stream<ReduxAction> get streamOfStateChanges {
-    return _fireAuth.onAuthStateChanged.map<ReduxAction>((firebaseUser) {
+    return _fireAuth.authStateChanges().map<ReduxAction>((firebaseUser) {
       if (firebaseUser == null) {
         return ClearUserData();
       }
@@ -52,7 +52,7 @@ class AuthService {
 
       final googleAuth = await googleUser.authentication;
 
-      final credential = GoogleAuthProvider.getCredential(
+      final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
@@ -91,7 +91,7 @@ class AuthService {
       yield StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase);
 
       // get an OAuthCredential
-      final credential = OAuthProvider(providerId: 'apple.com').getCredential(
+      final credential = OAuthProvider('apple.com').credential(
         idToken: appleIdCredential.identityToken,
         accessToken: appleIdCredential.authorizationCode,
       );

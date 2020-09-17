@@ -20,6 +20,7 @@ dependencies:
   sign_in_with_apple:
   flutter_auth_buttons:
 
+  firebase_core:
   cloud_firestore:
   firebase_messaging:
   # TODO: remove when https://github.com/FirebaseExtended/flutterfire/issues/3312 is fixed 
