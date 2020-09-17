@@ -20,14 +20,20 @@ dependencies:
   sign_in_with_apple:
   flutter_auth_buttons:
 
+  firebase_core:
   cloud_firestore:
   firebase_messaging:
+  # TODO: remove when https://github.com/FirebaseExtended/flutterfire/issues/3312 is fixed 
+    git:
+      url: git://github.com/preetjdp/flutterfire.git
+      ref: fix-3312
+      path: packages/firebase_messaging
   google_maps_flutter:
   firebase_storage:
   image_picker:
   uuid:
 
-  # remove before app store / play store submission 
+  # TODO: move to dev dependencies 
   redux_remote_devtools:
   redux_logging:
 
