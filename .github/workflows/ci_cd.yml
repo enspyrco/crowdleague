@@ -56,7 +56,7 @@ jobs:
       run: flutter test --coverage
     - name: Coveralls
       # run on push to dev branch, for the coverage
-      if: github.ref == 'refs/heads/dev'
+      if: ${{ github.base_ref == 'dev' || github.ref == 'refs/heads/dev' }}
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
