@@ -74,7 +74,7 @@ jobs:
         service_account_key: ${{ secrets.GSUTIL_SERVICE_ACC_PASSWORD }}
     - name: Download credential files
       if: github.ref == 'refs/heads/build' || github.ref == 'refs/heads/deploy'
-      run: ./get-credentials.sh
+      run: ./.scripts/get-credentials.sh
 
     ############################################
     # build ios app and android app
