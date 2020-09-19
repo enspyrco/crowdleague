@@ -1,7 +1,7 @@
 {
   "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
+    "rules": ".firebase/firestore.rules",
+    "indexes": ".firebase/firestore.indexes.json"
   },
   "functions": {
     "predeploy": [
@@ -11,15 +11,15 @@
     "source": "functions"
   },
   "storage": [{
-    "rules": "firebase-storage-rules/main-storage.rules",
+    "rules": ".firebase/main-storage.rules",
     "bucket": "crowdleague1.appspot.com"
   },
   {
-    "rules": "firebase-storage-rules/profile-pics-storage.rules",
+    "rules": ".firebase/profile-pics-storage.rules",
     "bucket": "crowdleague-profile-pics"
   },
   {
-    "rules": "firebase-storage-rules/profile-pics-storage.rules",
+    "rules": ".firebase/profile-pics-storage.rules",
     "bucket": "profile-pics-prototyping"
   }]
 }
