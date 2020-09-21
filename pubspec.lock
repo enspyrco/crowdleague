@@ -277,12 +277,10 @@ packages:
   firebase_messaging:
     dependency: "direct main"
     description:
-      path: "packages/firebase_messaging"
-      ref: fix-3312
-      resolved-ref: "946cb06c27e84127897cd5e24f9faa719efa3976"
-      url: "git://github.com/preetjdp/flutterfire.git"
-    source: git
-    version: "7.0.1"
+      name: firebase_messaging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.0.0"
   firebase_storage:
     dependency: "direct main"
     description:
@@ -568,7 +566,7 @@ packages:
     source: hosted
     version: "3.1.0"
   platform:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: platform
       url: "https://pub.dartlang.org"
