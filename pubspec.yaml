@@ -6,6 +6,10 @@ version: 0.0.1+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+dependency_overrides:
+  # For firebase_messaging
+  platform: 3.0.0-nullsafety.1
+
 dependencies:
   flutter:
     sdk: flutter
@@ -14,7 +18,7 @@ dependencies:
   built_collection:
   redux:
   flutter_redux:
-  
+
   firebase_auth:
   google_sign_in:
   sign_in_with_apple:
@@ -23,17 +27,17 @@ dependencies:
   firebase_core:
   cloud_firestore:
   firebase_messaging:
-  # TODO: remove when https://github.com/FirebaseExtended/flutterfire/issues/3312 is fixed 
-    git:
-      url: git://github.com/preetjdp/flutterfire.git
-      ref: fix-3312
-      path: packages/firebase_messaging
+    # # TODO: remove when https://github.com/FirebaseExtended/flutterfire/issues/3312 is fixed
+    # git:
+    #   url: git://github.com/preetjdp/flutterfire.git
+    #   ref: fix-3312
+    #   path: packages/firebase_messaging
   google_maps_flutter:
   firebase_storage:
   image_picker:
   uuid:
 
-  # TODO: move to dev dependencies 
+  # TODO: move to dev dependencies
   redux_remote_devtools:
   redux_logging:
 
