@@ -21,7 +21,7 @@ flutter pub run build_runner watch --delete-conflicting-outputs
 
 If you are a contributor with access to our Firebase project you can just run: 
 ```sh
-./get-credentials.sh
+./.scripts/get-credentials.sh
 ```
 
 Otherwise you will need to create your own Firebase project and add config files:
