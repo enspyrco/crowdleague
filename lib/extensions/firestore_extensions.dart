@@ -124,7 +124,7 @@ extension ConnectAndConvert on FirebaseFirestore {
   /// and adding all events to the controller
   StreamSubscription<DocumentSnapshot> connectToProfile(
       String userId, StreamController<ReduxAction> controller) {
-    return document('leaguers/$userId').snapshots().listen((docSnapshot) {
+    return doc('leaguers/$userId').snapshots().listen((docSnapshot) {
       try {
         final leaguer = docSnapshot.toLeaguer();
         controller.add(UpdateProfilePage((b) => b
