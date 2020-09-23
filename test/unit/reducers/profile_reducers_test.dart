@@ -1,7 +1,7 @@
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/reducers/profile_reducers.dart';
+import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
 
@@ -17,7 +17,7 @@ void main() {
       // create a basic store with the profile reducers and the initial state
       final store = Store<AppState>(
         combineReducers<AppState>(
-            <AppState Function(AppState, dynamic)>[...profileReducers]),
+            <AppState Function(AppState, dynamic)>[appReducer]),
         initialState: AppState.init(),
       );
 
