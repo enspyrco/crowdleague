@@ -68,17 +68,22 @@ class PageContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         ExplanationText(),
-        SizedBox(height: 50),
         CrowdLeagueLogo(),
-        SizedBox(height: 50),
         TaglineText(),
-        SizedBox(height: 100),
-        PlatformSignInButton(),
-        SizedBox(height: 20),
-        OtherOptionsButton(),
+        Container(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                PlatformSignInButton(),
+                SizedBox(
+                  height: 10,
+                ),
+                OtherOptionsButton(),
+              ]),
+        ),
       ],
     );
   }
