@@ -37,10 +37,6 @@ dependencies:
   image_picker:
   uuid:
 
-  # TODO: move to dev dependencies
-  redux_remote_devtools:
-  redux_logging:
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -50,6 +46,7 @@ dev_dependencies:
   flutter_launcher_icons:
   build_runner:
   built_value_generator:
+  redux_remote_devtools:
   pedantic:
   test:
   mockito:

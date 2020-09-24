@@ -26,24 +26,25 @@ class CrowdLeagueApp extends StatefulWidget {
 }
 
 class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
-  Store<AppState> _store;
-  // A GlobalKey that allows the NavigationService to navigate,
-  // must be used when creating the MaterialApp widget
   final _navKey = GlobalKey<NavigatorState>();
-  // Set default `_initialized` and `_error` state to false
-  bool _initialized = false;
+  Store<AppState> _store;
+  bool _initializedFirebase = false;
+  bool _initializedReduxStore = false;
   bool _error = false;
 
   // Define an async function to initialize FlutterFire
-  void initializeFlutterFire() async {
+  void initialize() async {
     try {
       await Firebase.initializeApp();
       setState(() {
-        _initialized = true;
+        _initializedFirebase = true;
       });
 
       final services = ServicesBundle(navKey: _navKey);
-      _store = await services.store;
+      _store = await services.createStore();
+      setState(() {
+        _initializedReduxStore = true;
+      });
 
       // dispatch initial actions
       _store.dispatch(ObserveAuthState());
@@ -65,7 +66,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
   @override
   void initState() {
     super.initState();
-    initializeFlutterFire();
+    initialize();
   }
 
   @override
@@ -77,7 +78,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
     }
 
     // Show a loader until FlutterFire is initialized
-    if (!_initialized) {
+    if (!_initializedFirebase || !_initializedReduxStore) {
       return CircularProgressIndicator();
     }
 
