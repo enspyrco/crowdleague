@@ -42,7 +42,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
       });
 
       final services = ServicesBundle(navKey: _navKey);
-      _store = await services.store;
+      _store = await services.createStore();
 
       _store.dispatch(ObserveAuthState());
       _store.dispatch(RequestFCMPermissions());
