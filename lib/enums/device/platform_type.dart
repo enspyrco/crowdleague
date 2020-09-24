@@ -1,0 +1,28 @@
+import 'package:built_collection/built_collection.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:crowdleague/models/app/serializers.dart';
+
+part 'platform_type.g.dart';
+
+class PlatformType extends EnumClass {
+  static Serializer<PlatformType> get serializer => _$platformTypeSerializer;
+  static const PlatformType checking = _$checking;
+  static const PlatformType android = _$android;
+  static const PlatformType ios = _$ios;
+  static const PlatformType macOS = _$macOS;
+  static const Map<PlatformType, int> _$indexMap = {
+    checking: 0,
+    android: 1,
+    ios: 2,
+    macOS: 3
+  };
+
+  const PlatformType._(String name) : super(name);
+
+  int get index => _$indexMap[this];
+  static BuiltSet<PlatformType> get values => _$values;
+  static PlatformType valueOf(String name) => _$valueOf(name);
+
+  Object toJson() => serializers.serializeWith(PlatformType.serializer, this);
+}
