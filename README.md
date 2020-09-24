@@ -14,11 +14,42 @@ Be in a league of your own...
 ## Common Commands 
 
 ```sh
-remotedev --port 8000
 flutter pub run build_runner watch --delete-conflicting-outputs
+remotedev --port 8000
+firebase emulators:start --import=test/data
 ```
 
-## Get Credential Files
+## ReduxDevTools (RDT)
+
+##### run the server
+```
+remotedev --port 8000
+```
+##### open a web page with url:
+```
+http://localhost:8000
+```
+
+## Local Firebase Emulators 
+
+Run the emulator suite: 
+```
+firebase emulators:start --import=test/data
+```
+
+## Code gen with built_value 
+
+After making changes to built_value classes run the builder to generate the new code:
+
+```sh
+flutter pub run build_runner build
+```
+or 
+```sh
+flutter pub run build_runner watch
+```
+
+## Get Missing Files
 
 If you are a contributor with access to our Firebase project you can just run: 
 ```sh
@@ -92,59 +123,10 @@ From the project dir, run:
 screeenshots
 ```
 
-## Redux RemoteDevTools (RDT)
-
-- find the IP address of the computer 
-- use one of the strings in `utilities/mock.dart` or make a new one 
-- edit `main.dart` to use the correct IP 
-- run the remotedev server
-
-```
-remotedev --port 8000
-```
-
-- open a web page with url:
-
-```
-http://localhost:8000
-```
-
-## Code gen with built_value 
-
-After making changes to built_value classes run the builder to generate the new code:
-
-```sh
-flutter pub run build_runner build
-```
-or 
-```sh
-flutter pub run build_runner watch
-```
-
 ## App Icons 
 
 We use [flutter_launcher_icons](https://github.com/fluttercommunity/flutter_launcher_icons). To change the app icons, replace `assets/images/app-icon-large-white.png` and run: 
 
 ```sh
 flutter pub run flutter_launcher_icons:main
-```
-
-## Testing 
-
-### Unit and Widget Tests 
-
-```sh
-flutter test
-```
-
-### Loclal Firebase Emulators 
-
-Run the emulator suite: 
-```
-firebase emulators:start --import=test/data
-```
-
-Local UI available at: 
-```
-http://localhost:4000
 ```
