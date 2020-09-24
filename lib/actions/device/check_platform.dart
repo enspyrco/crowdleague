@@ -9,6 +9,8 @@ import 'package:crowdleague/models/app/serializers.dart';
 
 part 'check_platform.g.dart';
 
+/// A [ReduxAction] that is dispatched on app load that so the [DeviceService]
+/// can be used to retrieve the [PlatformType]
 abstract class CheckPlatform extends Object
     with ReduxAction
     implements Built<CheckPlatform, CheckPlatformBuilder> {

@@ -11,6 +11,8 @@ import 'package:meta/meta.dart';
 
 part 'store_platform.g.dart';
 
+/// A [ReduxAction] dispatched by [CheckPlatformMiddleware] when the
+/// [PlatformType] has been retrieved from the [DeviceService].
 abstract class StorePlatform extends Object
     with ReduxAction
     implements Built<StorePlatform, StorePlatformBuilder> {

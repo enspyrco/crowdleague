@@ -5,6 +5,7 @@ import 'package:crowdleague/models/app/serializers.dart';
 
 part 'platform_type.g.dart';
 
+/// Enum class for platform values
 class PlatformType extends EnumClass {
   static Serializer<PlatformType> get serializer => _$platformTypeSerializer;
   static const PlatformType checking = _$checking;
