@@ -8,7 +8,7 @@ import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
-import 'package:crowdleague/utils/apple_signin_object.dart';
+import 'package:crowdleague/utils/wrappers/apple_signin_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -16,7 +16,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 class AuthService {
   final FirebaseAuth _fireAuth;
   final GoogleSignIn _googleSignIn;
-  final AppleSignInObject _appleSignIn;
+  final AppleSignInWrapper _appleSignIn;
 
   AuthService(this._fireAuth, this._googleSignIn, this._appleSignIn);
 

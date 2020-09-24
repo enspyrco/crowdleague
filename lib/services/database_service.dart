@@ -10,7 +10,7 @@ import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
-import 'package:crowdleague/utils/firestore_subscriptions.dart';
+import 'package:crowdleague/utils/redux/firestore_subscriptions.dart';
 import 'package:redux/redux.dart';
 
 class DatabaseService {

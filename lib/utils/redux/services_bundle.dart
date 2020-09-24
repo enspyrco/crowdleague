@@ -8,8 +8,8 @@ import 'package:crowdleague/services/device_service.dart';
 import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
-import 'package:crowdleague/utils/apple_signin_object.dart';
-import 'package:crowdleague/utils/store_operation.dart';
+import 'package:crowdleague/utils/redux/store_operation.dart';
+import 'package:crowdleague/utils/wrappers/apple_signin_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -57,7 +57,7 @@ class ServicesBundle {
             AuthService(
               FirebaseAuth.instance,
               GoogleSignIn(scopes: <String>['email']),
-              AppleSignInObject(),
+              AppleSignInWrapper(),
             ),
         _navigationService = navigationService ?? NavigationService(navKey),
         _databaseService =

@@ -1,6 +1,6 @@
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-class AppleSignInObject {
+class AppleSignInWrapper {
   Future<AuthorizationCredentialAppleID> getAppleIDCredential() {
     return SignInWithApple.getAppleIDCredential(
       scopes: [
