@@ -4,11 +4,10 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/storage/upload_failure.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'update_upload_task.g.dart';
 

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/utils/services_bundle.dart';
-import 'package:crowdleague/utils/store_operation.dart';
+import 'package:crowdleague/utils/redux/services_bundle.dart';
+import 'package:crowdleague/utils/redux/store_operation.dart';
 import 'package:crowdleague/widgets/crowd_league_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';

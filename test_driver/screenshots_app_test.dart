@@ -9,7 +9,7 @@ void main() {
     // final counterTextFinder = find.byValueKey('counter');
     // final buttonFinder = find.byValueKey('increment');
 
-    final buttonFinder = find.byType('AccountButton');
+    // final buttonFinder = find.byType('AccountButton');
 
     FlutterDriver driver;
 
