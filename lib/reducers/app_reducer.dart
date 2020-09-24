@@ -1,3 +1,4 @@
+import 'package:crowdleague/actions/device/store_platform.dart';
 import 'package:crowdleague/actions/functions/store_processing_failures.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_problem.dart';
@@ -12,6 +13,7 @@ import 'package:crowdleague/reducers/conversations/store_messages.dart';
 import 'package:crowdleague/reducers/conversations/store_selected_conversation.dart';
 import 'package:crowdleague/reducers/conversations/update_conversations_page.dart';
 import 'package:crowdleague/reducers/conversations/update_new_conversations_page.dart';
+import 'package:crowdleague/reducers/device/store_platform.dart';
 import 'package:crowdleague/reducers/leaguers/store_leaguers.dart';
 import 'package:crowdleague/reducers/navigation/record_added_route_info.dart';
 import 'package:crowdleague/reducers/navigation/record_removed_route_info.dart';
@@ -42,6 +44,8 @@ final appReducer =
   StoreSelectedConversationReducer(),
   UpdateConversationPageReducer(),
   UpdateNewConversationPageReducer(),
+  // Device
+  StorePlatformReducer(),
   // Leaguers
   StoreLeaguersReducer(),
   // Navigation

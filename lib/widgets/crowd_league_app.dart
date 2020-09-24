@@ -1,5 +1,6 @@
 import 'package:crowdleague/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
+import 'package:crowdleague/actions/device/check_platform.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/extensions/extensions.dart';
@@ -45,9 +46,11 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
         _initializedReduxStore = true;
       });
 
+      // dispatch initial actions
       _store.dispatch(ObserveAuthState());
       _store.dispatch(RequestFCMPermissions());
       _store.dispatch(PrintFCMToken());
+      _store.dispatch(CheckPlatform());
 
       /// This should happen once on app load, the various streams from the
       /// [FirebaseFirestore] database are changed but the [DatabaseService] stream
