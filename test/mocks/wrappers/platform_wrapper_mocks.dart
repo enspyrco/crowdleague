@@ -7,3 +7,5 @@ class FakePlatformWrapper extends Fake implements PlatformWrapper {
   @override
   bool get isMacOS => true;
 }
+
+class MockPlatformWrapper extends Mock implements PlatformWrapper {}
