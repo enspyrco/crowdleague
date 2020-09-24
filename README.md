@@ -114,11 +114,11 @@ http://localhost:8000
 After making changes to built_value classes run the builder to generate the new code:
 
 ```sh
-flutter pub run build_runner build
+flutter pub run build_runner build --delete-conflicting-outputs
 ```
 or 
 ```sh
-flutter pub run build_runner watch
+flutter pub run build_runner watch --delete-conflicting-outputs
 ```
 
 ## App Icons 

@@ -14,6 +14,7 @@ import 'package:crowdleague/middleware/conversations/leave_conversation.dart';
 import 'package:crowdleague/middleware/conversations/observe_conversations.dart';
 import 'package:crowdleague/middleware/conversations/observe_messages.dart';
 import 'package:crowdleague/middleware/conversations/save_message.dart';
+import 'package:crowdleague/middleware/device/check_platform.dart';
 import 'package:crowdleague/middleware/leaguers/retrieve_leaguers.dart';
 import 'package:crowdleague/middleware/navigation/display_problem.dart';
 import 'package:crowdleague/middleware/navigation/navigate_to.dart';
@@ -71,6 +72,8 @@ List<Middleware<AppState>> createAppMiddleware(
     ObserveConversationsMiddleware(databaseService),
     ObserveMessagesMiddleware(databaseService),
     SaveMessageMiddleware(databaseService),
+    // Device
+    CheckPlatformMiddleware(deviceService),
     // Leaguers
     RetrieveLeaguersMiddleware(databaseService),
     // Navigation
