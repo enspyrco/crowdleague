@@ -9,6 +9,7 @@ import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/utils/apple_signin_object.dart';
+import 'package:crowdleague/utils/store_operation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,10 +22,18 @@ import 'package:redux/redux.dart';
 class ServicesBundle {
   static var _bucketName = 'gs://crowdleague-profile-pics';
   static var _extraMiddlewares = <Middleware>[];
+  static var _storeOperations = <StoreOperation>[];
+  static Settings _firestoreSettings;
 
-  static void setup({String bucketName, List<Middleware> extraMiddlewares}) {
+  static void setup(
+      {String bucketName,
+      List<Middleware> extraMiddlewares,
+      List<StoreOperation> storeOperations,
+      Settings firestoreSettings}) {
     _bucketName = bucketName ?? _bucketName;
     _extraMiddlewares = extraMiddlewares ?? _extraMiddlewares;
+    _storeOperations = storeOperations ?? _storeOperations;
+    _firestoreSettings = firestoreSettings;
   }
 
   /// Services
@@ -86,6 +95,16 @@ class ServicesBundle {
         ..._extraMiddlewares
       ],
     );
+
+    // now that we have a store, run any store operations that were added
+    for (final operation in _storeOperations) {
+      await operation.runOn(_store);
+    }
+
+    // finally, if firestore settings were added, set the instance to use them
+    if (_firestoreSettings != null) {
+      FirebaseFirestore.instance.settings = _firestoreSettings;
+    }
 
     return _store;
   }
