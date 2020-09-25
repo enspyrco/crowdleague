@@ -152,7 +152,6 @@ void main() {
         // check correct action is dispatched
         // use VerifyDispatchMiddleware to verfiy action call
       });
-
       testWidgets(
           'shows correct waiting indicator when signing in on Android device',
           (WidgetTester tester) async {
@@ -174,6 +173,29 @@ void main() {
         expect(waitingIndicator, findsOneWidget);
 
         final androidWaitingIndicatorText = find.text('Contacting Google...');
+        expect(androidWaitingIndicatorText, findsOneWidget);
+      });
+      testWidgets(
+          'shows correct waiting indicator when signing in on MacOs device',
+          (WidgetTester tester) async {
+        // Setup the app state with expected values
+        final initialAppState = AppState.init();
+        final alteredState = initialAppState
+            .rebuild((b) => b..authPage.step = AuthStep.signingInWithApple);
+        // Create the test harness.
+        final store = Store<AppState>(appReducer, initialState: alteredState);
+        final wut = AuthPage();
+        final harness = StoreProvider<AppState>(
+            store: store, child: MaterialApp(home: wut));
+
+        // Tell the tester to build the widget tree.
+        await tester.pumpWidget(harness);
+
+        // Show android waiting indicator
+        final waitingIndicator = find.byType(WaitingIndicator);
+        expect(waitingIndicator, findsOneWidget);
+
+        final androidWaitingIndicatorText = find.text('Contacting Apple...');
         expect(androidWaitingIndicatorText, findsOneWidget);
       });
     });
