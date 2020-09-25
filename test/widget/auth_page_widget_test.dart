@@ -58,51 +58,6 @@ void main() {
       // that AuthPage is shown
       expect(authPage, findsOneWidget);
     });
-    group('provider sign in buttons', () {
-      testWidgets('shows GoogleSignInButton on Android',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState =
-            initialAppState.rebuild((b) => b..platform = PlatformType.android);
-        // Create the test harness.
-        final store = Store<AppState>(appReducer, initialState: alteredState);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
-
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
-
-        // Create the Finders.
-        final googleSignInButton = find.byType(GoogleSignInButton);
-
-        // dispatch action to set platform to android
-        expect(googleSignInButton, findsOneWidget);
-      });
-      testWidgets('shows AppleSignInButton on IOS',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState =
-            initialAppState.rebuild((b) => b..platform = PlatformType.ios);
-        // Create the test harness.
-        final store = Store<AppState>(appReducer, initialState: alteredState);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
-
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
-
-        // Create the Finders.
-        final appleSignInButton = find.byType(AppleSignInButton);
-
-        // dispatch action to set platform to android
-        expect(appleSignInButton, findsOneWidget);
-      });
-    });
-
     group('waiting indicators', () {
       testWidgets('shows correct waiting indicator when signing in with google',
           (WidgetTester tester) async {
@@ -175,8 +130,49 @@ void main() {
         expect(firebaseWaitingIndicatorText, findsOneWidget);
       });
     });
+    group('platform default sign in', () {
+      testWidgets('shows GoogleSignInButton on Android',
+          (WidgetTester tester) async {
+        // Setup the app state with expected values
+        final initialAppState = AppState.init();
+        final alteredState =
+            initialAppState.rebuild((b) => b..platform = PlatformType.android);
+        // Create the test harness.
+        final store = Store<AppState>(appReducer, initialState: alteredState);
+        final wut = AuthPage();
+        final harness = StoreProvider<AppState>(
+            store: store, child: MaterialApp(home: wut));
 
-    group('on platform default sign in', () {
+        // Tell the tester to build the widget tree.
+        await tester.pumpWidget(harness);
+
+        // Create the Finders.
+        final googleSignInButton = find.byType(GoogleSignInButton);
+
+        // dispatch action to set platform to android
+        expect(googleSignInButton, findsOneWidget);
+      });
+      testWidgets('shows AppleSignInButton on IOS',
+          (WidgetTester tester) async {
+        // Setup the app state with expected values
+        final initialAppState = AppState.init();
+        final alteredState =
+            initialAppState.rebuild((b) => b..platform = PlatformType.ios);
+        // Create the test harness.
+        final store = Store<AppState>(appReducer, initialState: alteredState);
+        final wut = AuthPage();
+        final harness = StoreProvider<AppState>(
+            store: store, child: MaterialApp(home: wut));
+
+        // Tell the tester to build the widget tree.
+        await tester.pumpWidget(harness);
+
+        // Create the Finders.
+        final appleSignInButton = find.byType(AppleSignInButton);
+
+        // dispatch action to set platform to android
+        expect(appleSignInButton, findsOneWidget);
+      });
       testWidgets('on IOS device, dispatches signInWithApple action',
           (WidgetTester tester) async {
         // Setup the app state with expected values
