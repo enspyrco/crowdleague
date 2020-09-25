@@ -100,7 +100,7 @@ void main() {
     });
 
     group('on platform default sign in', () {
-      // TODO: waiting for test middleware to verify action calls
+      // TODO: waiting for VerifyDispatchMiddleware to verify action calls
       testWidgets('on IOS device, dispatches signInWithApple action',
           (WidgetTester tester) async {
         // Setup the app state with expected values
@@ -124,9 +124,9 @@ void main() {
         await tester.tap(platformSignIn);
 
         // check correct action is dispatched
-        // use test middleware to verfiy action call
+        // use VerifyDispatchMiddleware to verfiy action call
       });
-      // TODO: waiting for test middleware to verify action calls
+      // TODO: waiting for VerifyDispatchMiddleware to verify action calls
       testWidgets('on Android device, dispatches signInWithGoogle action',
           (WidgetTester tester) async {
         // Setup the app state with expected values
@@ -150,7 +150,7 @@ void main() {
         await tester.tap(platformSignIn);
 
         // check correct action is dispatched
-        // use test middleware to verfiy action call
+        // use VerifyDispatchMiddleware to verfiy action call
       });
 
       testWidgets(
