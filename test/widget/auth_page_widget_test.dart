@@ -15,12 +15,13 @@ import '../mocks/verify_dispatch_middleware.dart';
 
 void main() {
   group('AuthPage', () {
-    testWidgets('show default AuthPage ui while waiting for user input',
+    testWidgets('shows default UI while waiting for user input',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
       final alteredState = initialAppState
           .rebuild((b) => b..authPage.step = AuthStep.waitingForInput);
+
       // Create the test harness.
       final store = Store<AppState>(appReducer, initialState: alteredState);
       final wut = AuthPage();
@@ -58,179 +59,172 @@ void main() {
       // that AuthPage is shown
       expect(authPage, findsOneWidget);
     });
-    group('provider sign in buttons', () {
-      testWidgets('shows GoogleSignInButton on Android',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState =
-            initialAppState.rebuild((b) => b..platform = PlatformType.android);
-        // Create the test harness.
-        final store = Store<AppState>(appReducer, initialState: alteredState);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
+    testWidgets('shows GoogleSignInButton on Android',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState =
+          initialAppState.rebuild((b) => b..platform = PlatformType.android);
+      // Create the test harness.
+      final store = Store<AppState>(appReducer, initialState: alteredState);
+      final wut = AuthPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
 
-        // Create the Finders.
-        final googleSignInButton = find.byType(GoogleSignInButton);
+      // Create the Finders.
+      final googleSignInButton = find.byType(GoogleSignInButton);
 
-        // dispatch action to set platform to android
-        expect(googleSignInButton, findsOneWidget);
-      });
-      testWidgets('shows AppleSignInButton on IOS',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState =
-            initialAppState.rebuild((b) => b..platform = PlatformType.ios);
-        // Create the test harness.
-        final store = Store<AppState>(appReducer, initialState: alteredState);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
-
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
-
-        // Create the Finders.
-        final appleSignInButton = find.byType(AppleSignInButton);
-
-        // dispatch action to set platform to android
-        expect(appleSignInButton, findsOneWidget);
-      });
+      // dispatch action to set platform to android
+      expect(googleSignInButton, findsOneWidget);
     });
+    testWidgets('shows AppleSignInButton on iOS', (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState =
+          initialAppState.rebuild((b) => b..platform = PlatformType.ios);
+      // Create the test harness.
+      final store = Store<AppState>(appReducer, initialState: alteredState);
+      final wut = AuthPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
-    group('waiting indicators', () {
-      testWidgets('shows correct waiting indicator when signing in with google',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState = initialAppState
-            .rebuild((b) => b..authPage.step = AuthStep.signingInWithGoogle);
-        // Create the test harness.
-        final store = Store<AppState>(appReducer, initialState: alteredState);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
 
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
+      // Create the Finders.
+      final appleSignInButton = find.byType(AppleSignInButton);
 
-        // Show google waiting indicator
-        final waitingIndicator = find.byType(WaitingIndicator);
-        expect(waitingIndicator, findsOneWidget);
-
-        final googleWaitingIndicatorText = find.text('Contacting Google...');
-        expect(googleWaitingIndicatorText, findsOneWidget);
-      });
-      testWidgets('shows correct waiting indicator when signing in with apple',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState = initialAppState
-            .rebuild((b) => b..authPage.step = AuthStep.signingInWithApple);
-        // Create the test harness.
-        final store = Store<AppState>(appReducer, initialState: alteredState);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
-
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
-
-        // Show apple waiting indicator
-        final waitingIndicator = find.byType(WaitingIndicator);
-        expect(waitingIndicator, findsOneWidget);
-
-        // check that correct waiting text is shown
-        final appleWaitingIndicatorText = find.text('Contacting Apple...');
-        expect(appleWaitingIndicatorText, findsOneWidget);
-      });
-      testWidgets(
-          'shows correct waiting indicator when signing in with firebase',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState = initialAppState
-            .rebuild((b) => b..authPage.step = AuthStep.signingInWithFirebase);
-        // Create the test harness.
-        final store = Store<AppState>(appReducer, initialState: alteredState);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
-
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
-
-        // Show waiting indicator
-        final waitingIndicator = find.byType(WaitingIndicator);
-        expect(waitingIndicator, findsOneWidget);
-
-        // check that correct waiting text is shown
-        final firebaseWaitingIndicatorText =
-            find.text('Signing in with Firebase...');
-        expect(firebaseWaitingIndicatorText, findsOneWidget);
-      });
+      // dispatch action to set platform to android
+      expect(appleSignInButton, findsOneWidget);
     });
+  });
 
-    group('on platform default sign in', () {
-      testWidgets('on IOS device, dispatches signInWithApple action',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState =
-            initialAppState.rebuild((b) => b..platform = PlatformType.ios);
-        final testMiddleware = VerifyDispatchMiddleware();
-        // Create the test harness.
-        final store = Store<AppState>(appReducer,
-            initialState: alteredState, middleware: [testMiddleware]);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
+  testWidgets('shows waiting indicator when signing in with google',
+      (WidgetTester tester) async {
+    // Setup the app state with expected values
+    final initialAppState = AppState.init();
+    final alteredState = initialAppState
+        .rebuild((b) => b..authPage.step = AuthStep.signingInWithGoogle);
+    // Create the test harness.
+    final store = Store<AppState>(appReducer, initialState: alteredState);
+    final wut = AuthPage();
+    final harness =
+        StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
+    // Tell the tester to build the widget tree.
+    await tester.pumpWidget(harness);
 
-        // Create the Finders.
-        final platformSignIn = find.byType(PlatformSignInButton);
-        expect(platformSignIn, findsOneWidget);
+    // Show google waiting indicator
+    final waitingIndicator = find.byType(WaitingIndicator);
+    expect(waitingIndicator, findsOneWidget);
 
-        // Tap to sign in
-        await tester.tap(platformSignIn);
+    final googleWaitingIndicatorText = find.text('Contacting Google...');
+    expect(googleWaitingIndicatorText, findsOneWidget);
+  });
+  testWidgets('shows waiting indicator when signing in with apple',
+      (WidgetTester tester) async {
+    // Setup the app state with expected values
+    final initialAppState = AppState.init();
+    final alteredState = initialAppState
+        .rebuild((b) => b..authPage.step = AuthStep.signingInWithApple);
+    // Create the test harness.
+    final store = Store<AppState>(appReducer, initialState: alteredState);
+    final wut = AuthPage();
+    final harness =
+        StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
-        // check correct action is dispatched
-        expect(testMiddleware.received(SignInWithApple()), true);
-      });
-      testWidgets('on Android device, dispatches signInWithGoogle action',
-          (WidgetTester tester) async {
-        // Setup the app state with expected values
-        final initialAppState = AppState.init();
-        final alteredState =
-            initialAppState.rebuild((b) => b..platform = PlatformType.android);
-        final testMiddleware = VerifyDispatchMiddleware();
-        // Create the test harness.
-        final store = Store<AppState>(appReducer,
-            initialState: alteredState, middleware: [testMiddleware]);
-        final wut = AuthPage();
-        final harness = StoreProvider<AppState>(
-            store: store, child: MaterialApp(home: wut));
+    // Tell the tester to build the widget tree.
+    await tester.pumpWidget(harness);
 
-        // Tell the tester to build the widget tree.
-        await tester.pumpWidget(harness);
+    // Show apple waiting indicator
+    final waitingIndicator = find.byType(WaitingIndicator);
+    expect(waitingIndicator, findsOneWidget);
 
-        // Create the Finders.
-        final platformSignIn = find.byType(PlatformSignInButton);
-        expect(platformSignIn, findsOneWidget);
+    // check that correct waiting text is shown
+    final appleWaitingIndicatorText = find.text('Contacting Apple...');
+    expect(appleWaitingIndicatorText, findsOneWidget);
+  });
+  testWidgets('shows waiting indicator when signing in with firebase',
+      (WidgetTester tester) async {
+    // Setup the app state with expected values
+    final initialAppState = AppState.init();
+    final alteredState = initialAppState
+        .rebuild((b) => b..authPage.step = AuthStep.signingInWithFirebase);
+    // Create the test harness.
+    final store = Store<AppState>(appReducer, initialState: alteredState);
+    final wut = AuthPage();
+    final harness =
+        StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
-        // Tap to sign in
-        await tester.tap(platformSignIn);
+    // Tell the tester to build the widget tree.
+    await tester.pumpWidget(harness);
 
-        // check correct action is dispatched
-        expect(testMiddleware.received(SignInWithGoogle()), true);
-      });
-    });
+    // Show waiting indicator
+    final waitingIndicator = find.byType(WaitingIndicator);
+    expect(waitingIndicator, findsOneWidget);
+
+    // check that correct waiting text is shown
+    final firebaseWaitingIndicatorText =
+        find.text('Signing in with Firebase...');
+    expect(firebaseWaitingIndicatorText, findsOneWidget);
+  });
+
+  testWidgets('dispatches SignInWithApple action on iOS',
+      (WidgetTester tester) async {
+    // Setup the app state with expected values
+    final initialAppState = AppState.init();
+    final alteredState =
+        initialAppState.rebuild((b) => b..platform = PlatformType.ios);
+    final testMiddleware = VerifyDispatchMiddleware();
+    // Create the test harness.
+    final store = Store<AppState>(appReducer,
+        initialState: alteredState, middleware: [testMiddleware]);
+    final wut = AuthPage();
+    final harness =
+        StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+    // Tell the tester to build the widget tree.
+    await tester.pumpWidget(harness);
+
+    // Create the Finders.
+    final platformSignIn = find.byType(PlatformSignInButton);
+    expect(platformSignIn, findsOneWidget);
+
+    // Tap to sign in
+    await tester.tap(platformSignIn);
+
+    // check correct action is dispatched
+    expect(testMiddleware.received(SignInWithApple()), true);
+  });
+
+  testWidgets('dispatches SignInWithGoogle action on Android',
+      (WidgetTester tester) async {
+    // Setup the app state with expected values
+    final initialAppState = AppState.init();
+    final alteredState =
+        initialAppState.rebuild((b) => b..platform = PlatformType.android);
+    final testMiddleware = VerifyDispatchMiddleware();
+    // Create the test harness.
+    final store = Store<AppState>(appReducer,
+        initialState: alteredState, middleware: [testMiddleware]);
+    final wut = AuthPage();
+    final harness =
+        StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+    // Tell the tester to build the widget tree.
+    await tester.pumpWidget(harness);
+
+    // Create the Finders.
+    final platformSignIn = find.byType(PlatformSignInButton);
+    expect(platformSignIn, findsOneWidget);
+
+    // Tap to sign in
+    await tester.tap(platformSignIn);
+
+    // check correct action is dispatched
+    expect(testMiddleware.received(SignInWithGoogle()), true);
   });
 }
