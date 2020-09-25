@@ -29,13 +29,13 @@ class AuthService {
       if (firebaseUser == null) {
         return ClearUserData();
       }
-      return StoreUser((b) => b..user.replace(firebaseUser.toUser()));
+      return StoreUser(user: firebaseUser.toUser());
     });
   }
 
   Stream<ReduxAction> get googleSignInStream async* {
     // signal to change UI
-    yield StoreAuthStep((b) => b..step = AuthStep.signingInWithGoogle);
+    yield StoreAuthStep(step: AuthStep.signingInWithGoogle);
 
     try {
       final googleUser = await _googleSignIn.signIn();
@@ -43,12 +43,12 @@ class AuthService {
       // if the user canceled signin, an error is thrown but it gets swallowed
       // by the signIn() method so we need to reset the UI and close the stream
       if (googleUser == null) {
-        yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+        yield StoreAuthStep(step: AuthStep.waitingForInput);
         return;
       }
 
       // signal to change UI
-      yield StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase);
+      yield StoreAuthStep(step: AuthStep.signingInWithFirebase);
 
       final googleAuth = await googleUser.authentication;
 
@@ -62,12 +62,12 @@ class AuthService {
       await _fireAuth.signInWithCredential(credential);
 
       // we are signed in so reset the UI and pop anything on top of home
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
       yield NavigatorPopAll();
     } catch (error, trace) {
       // reset the UI and display an alert
 
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
       // errors with code kSignInCanceledError are swallowed by the
       // GoogleSignIn.signIn() method so we can assume anything caught here
       // is a problem and send to the store for display
@@ -81,14 +81,14 @@ class AuthService {
 
   Stream<ReduxAction> get appleSignInStream async* {
     // signal to change UI
-    yield StoreAuthStep((b) => b..step = AuthStep.signingInWithApple);
+    yield StoreAuthStep(step: AuthStep.signingInWithApple);
 
     try {
       // get an AuthorizationCredentialAppleID
       final appleIdCredential = await _appleSignIn.getAppleIDCredential();
 
       // signal to change UI
-      yield StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase);
+      yield StoreAuthStep(step: AuthStep.signingInWithFirebase);
 
       // get an OAuthCredential
       final credential = OAuthProvider('apple.com').credential(
@@ -100,11 +100,11 @@ class AuthService {
       await FirebaseAuth.instance.signInWithCredential(credential);
 
       // we are signed in so reset the UI and pop anything on top of home
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
       yield NavigatorPopAll();
     } on SignInWithAppleAuthorizationException catch (e) {
       // reset the UI and display an alert (if not canceled)
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
       switch (e.code) {
         case AuthorizationErrorCode.canceled:
           break;
@@ -117,7 +117,7 @@ class AuthService {
     } catch (error, trace) {
       // reset the UI and display an alert
 
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
       // any specific errors are caught and dealt with so we can assume
       // anything caught here is a problem and send to the store for display
       yield AddProblem.from(

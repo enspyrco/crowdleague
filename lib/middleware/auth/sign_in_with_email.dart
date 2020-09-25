@@ -12,8 +12,8 @@ class SignInWithEmailMiddleware
           next(action);
 
           // set the UI to waiting
-          store.dispatch(UpdateOtherAuthOptionsPage(
-              (b) => b..step = AuthStep.signingInWithEmail));
+          store.dispatch(
+              UpdateOtherAuthOptionsPage(step: AuthStep.signingInWithEmail));
 
           // attempt sign in then dispatch resulting action
           final dismissAuthPageOrDisplayProblem =
@@ -24,7 +24,7 @@ class SignInWithEmailMiddleware
           store.dispatch(dismissAuthPageOrDisplayProblem);
 
           // finish by resetting the UI of the auth page
-          store.dispatch(UpdateOtherAuthOptionsPage(
-              (b) => b..step = AuthStep.waitingForInput));
+          store.dispatch(
+              UpdateOtherAuthOptionsPage(step: AuthStep.waitingForInput));
         });
 }

@@ -84,10 +84,10 @@ class NavigationService {
     switch (returnedProblem.type) {
       case ProblemType.processingFailure:
         nextAction = AcknowledgeProcessingFailure(
-            (b) => b..id = returnedProblem.info['id'] as String);
+            id: returnedProblem.info['id'] as String);
         break;
       default:
-        nextAction = RemoveProblem((b) => b..problem.replace(returnedProblem));
+        nextAction = RemoveProblem(problem: returnedProblem);
     }
 
     completer.complete(nextAction);

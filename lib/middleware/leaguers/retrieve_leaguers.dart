@@ -13,9 +13,9 @@ class RetrieveLeaguersMiddleware
 
           //
           store.dispatch(UpdateNewConversationPage(
-              (b) => b..state = NewConversationPageLeaguersState.waiting));
+              state: NewConversationPageLeaguersState.waiting));
           store.dispatch(await databaseService.retrieveLeaguers);
           store.dispatch(UpdateNewConversationPage(
-              (b) => b..state = NewConversationPageLeaguersState.ready));
+              state: NewConversationPageLeaguersState.ready));
         });
 }

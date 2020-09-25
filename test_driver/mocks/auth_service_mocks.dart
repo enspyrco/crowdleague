@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/redux_action.dart';
+import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:mockito/mockito.dart';
 
@@ -26,14 +28,15 @@ class FakeAuthService extends Fake implements AuthService {
 
   @override
   Stream<ReduxAction> get streamOfStateChanges {
-    controller.add(StoreUser((b) => b.user = null));
-    controller.add(
-      StoreUser((b) => b.user
-        ..id = 'id'
-        ..email = 'email'
-        ..displayName = 'name'
-        ..photoURL = 'url'),
-    );
+    controller.add(StoreUser(user: null));
+    controller.add(StoreUser(
+      user: User(
+          id: 'id',
+          email: 'email',
+          displayName: 'name',
+          photoURL: 'url',
+          providers: BuiltList()),
+    ));
     return controller.stream;
   }
 

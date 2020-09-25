@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'upload_profile_pic.g.dart';
 
@@ -16,8 +17,10 @@ abstract class UploadProfilePic extends Object
 
   UploadProfilePic._();
 
-  factory UploadProfilePic([void Function(UploadProfilePicBuilder) updates]) =
-      _$UploadProfilePic;
+  factory UploadProfilePic({@required String filePath}) = _$UploadProfilePic._;
+
+  factory UploadProfilePic.by(
+      [void Function(UploadProfilePicBuilder) updates]) = _$UploadProfilePic;
 
   Object toJson() =>
       serializers.serializeWith(UploadProfilePic.serializer, this);

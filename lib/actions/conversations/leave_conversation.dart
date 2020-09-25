@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'leave_conversation.g.dart';
 
@@ -16,7 +17,10 @@ abstract class LeaveConversation extends Object
 
   LeaveConversation._();
 
-  factory LeaveConversation() = _$LeaveConversation;
+  factory LeaveConversation({@required String conversationId}) =
+      _$LeaveConversation._;
+
+  factory LeaveConversation.by() = _$LeaveConversation;
 
   Object toJson() =>
       serializers.serializeWith(LeaveConversation.serializer, this);

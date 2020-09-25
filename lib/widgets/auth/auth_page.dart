@@ -181,8 +181,8 @@ class OtherOptionsButton extends StatelessWidget {
         ),
       ),
       child: RaisedButton(
-        onPressed: () => context
-            .dispatch(NavigateTo((b) => b..location = '/other_auth_options')),
+        onPressed: () =>
+            context.dispatch(NavigateTo(location: '/other_auth_options')),
         color: Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.min,

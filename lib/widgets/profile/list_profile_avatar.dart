@@ -26,13 +26,12 @@ class ListProfileAvatar extends StatelessWidget {
             child: CircleAvatar(
                 radius: 45, backgroundImage: Image.network(_pic.url).image),
             onTap: () {
-              context.dispatch(SelectProfilePic((b) => b..picId = _pic.id));
-              context.dispatch(UpdateProfilePage((b) => b
-                ..leaguerPhotoURL = _pic.url
-                ..selectingProfilePic = false));
+              context.dispatch(SelectProfilePic(picId: _pic.id));
+              context.dispatch(UpdateProfilePage(
+                  leaguerPhotoURL: _pic.url, selectingProfilePic: false));
             },
             onLongPress: () {
-              context.dispatch(DeleteProfilePic((b) => b..pic.replace(_pic)));
+              context.dispatch(DeleteProfilePic(pic: _pic));
             },
           )
         ],

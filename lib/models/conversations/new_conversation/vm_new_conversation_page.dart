@@ -8,6 +8,7 @@ import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_selections.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'vm_new_conversation_page.g.dart';
 
@@ -19,6 +20,11 @@ abstract class VmNewConversationPage
   VmNewConversationPage._();
 
   factory VmNewConversationPage(
+          {@required VmNewConversationLeaguers leaguersVM,
+          @required VmNewConversationSelections selectionsVM}) =
+      _$VmNewConversationPage._;
+
+  factory VmNewConversationPage.by(
           [void Function(VmNewConversationPageBuilder) updates]) =
       _$VmNewConversationPage;
 
