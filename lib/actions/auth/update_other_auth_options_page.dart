@@ -31,6 +31,14 @@ abstract class UpdateOtherAuthOptionsPage extends Object
   UpdateOtherAuthOptionsPage._();
 
   factory UpdateOtherAuthOptionsPage(
+      {EmailAuthMode mode,
+      AuthStep step,
+      bool showPassword,
+      String email,
+      String password,
+      String repeatPassword}) = _$UpdateOtherAuthOptionsPage._;
+
+  factory UpdateOtherAuthOptionsPage.by(
           [void Function(UpdateOtherAuthOptionsPageBuilder) updates]) =
       _$UpdateOtherAuthOptionsPage;
 

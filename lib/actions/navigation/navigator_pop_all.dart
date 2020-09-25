@@ -14,8 +14,7 @@ abstract class NavigatorPopAll extends Object
     implements Built<NavigatorPopAll, NavigatorPopAllBuilder> {
   NavigatorPopAll._();
 
-  factory NavigatorPopAll([void Function(NavigatorPopAllBuilder) updates]) =
-      _$NavigatorPopAll;
+  factory NavigatorPopAll() = _$NavigatorPopAll;
 
   Object toJson() =>
       serializers.serializeWith(NavigatorPopAll.serializer, this);

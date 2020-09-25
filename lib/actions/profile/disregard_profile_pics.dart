@@ -14,9 +14,7 @@ abstract class DisregardProfilePics extends Object
     implements Built<DisregardProfilePics, DisregardProfilePicsBuilder> {
   DisregardProfilePics._();
 
-  factory DisregardProfilePics(
-          [void Function(DisregardProfilePicsBuilder) updates]) =
-      _$DisregardProfilePics;
+  factory DisregardProfilePics() = _$DisregardProfilePics;
 
   Object toJson() =>
       serializers.serializeWith(DisregardProfilePics.serializer, this);

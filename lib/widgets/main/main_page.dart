@@ -24,8 +24,7 @@ class MainPage extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              context.dispatch(
-                  NavigateTo((b) => b..location = '/new_conversation'));
+              context.dispatch(NavigateTo(location: '/new_conversation'));
             },
             child: Icon(Icons.add),
           ),
@@ -77,8 +76,8 @@ class NavBar extends StatelessWidget {
   }
 
   void _onItemTapped(BuildContext context, int index) {
-    context.dispatch(StoreNavBarSelection(
-        (b) => b..selection = NavBarSelection.valueOfIndex(index)));
+    context.dispatch(
+        StoreNavBarSelection(selection: NavBarSelection.valueOfIndex(index)));
   }
 }
 
@@ -119,7 +118,7 @@ class AccountButton extends StatelessWidget {
         size: 50,
       ),
       onPressed: () {
-        context.dispatch(NavigateTo((b) => b..location = '/profile'));
+        context.dispatch(NavigateTo(location: '/profile'));
       },
     );
   }

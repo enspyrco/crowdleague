@@ -14,8 +14,7 @@ abstract class ObserveMessages extends Object
     implements Built<ObserveMessages, ObserveMessagesBuilder> {
   ObserveMessages._();
 
-  factory ObserveMessages([void Function(ObserveMessagesBuilder) updates]) =
-      _$ObserveMessages;
+  factory ObserveMessages() = _$ObserveMessages;
 
   Object toJson() =>
       serializers.serializeWith(ObserveMessages.serializer, this);

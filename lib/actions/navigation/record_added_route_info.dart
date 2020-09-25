@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'record_added_route_info.g.dart';
 
@@ -17,7 +18,10 @@ abstract class RecordAddedRouteInfo extends Object
 
   RecordAddedRouteInfo._();
 
-  factory RecordAddedRouteInfo(
+  factory RecordAddedRouteInfo({@required RouteInfo info}) =
+      _$RecordAddedRouteInfo._;
+
+  factory RecordAddedRouteInfo.by(
           [void Function(RecordAddedRouteInfoBuilder) updates]) =
       _$RecordAddedRouteInfo;
 

@@ -65,9 +65,8 @@ void main() {
       final fakeNavKey = FakeGlobalKey(navigatorState);
       final service = NavigationService(fakeNavKey);
 
-      service.display(Problem((b) => b
-        ..message = 'message'
-        ..type = ProblemType.appleSignIn));
+      service
+          .display(Problem(message: 'message', type: ProblemType.appleSignIn));
 
       verify(navigatorState.overlay);
     }, skip: 'probably needs to be a widget test');

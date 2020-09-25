@@ -8,6 +8,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'vm_conversation_page.g.dart';
 
@@ -21,6 +22,11 @@ abstract class VmConversationPage
   VmConversationPage._();
 
   factory VmConversationPage(
+      {@required ConversationSummary summary,
+      @required BuiltList<Message> messages,
+      @required String messageText}) = _$VmConversationPage._;
+
+  factory VmConversationPage.by(
           [void Function(VmConversationPageBuilder) updates]) =
       _$VmConversationPage;
 

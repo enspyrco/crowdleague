@@ -14,9 +14,7 @@ abstract class RequestFCMPermissions extends Object
     implements Built<RequestFCMPermissions, RequestFCMPermissionsBuilder> {
   RequestFCMPermissions._();
 
-  factory RequestFCMPermissions(
-          [void Function(RequestFCMPermissionsBuilder) updates]) =
-      _$RequestFCMPermissions;
+  factory RequestFCMPermissions() = _$RequestFCMPermissions;
 
   Object toJson() =>
       serializers.serializeWith(RequestFCMPermissions.serializer, this);

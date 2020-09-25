@@ -2,6 +2,7 @@ import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_replaced_route_info.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 
@@ -12,16 +13,18 @@ class NavigationInfoRecorder extends NavigatorObserver {
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
-    store.dispatch(RecordAddedRouteInfo((b) => b
-      ..info.name = route.settings.name ?? route.runtimeType.toString()
-      ..info.arguments = route.settings.arguments));
+    store.dispatch(RecordAddedRouteInfo(
+        info: RouteInfo(
+            name: route.settings.name ?? route.runtimeType.toString(),
+            arguments: route.settings.arguments)));
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
-    store.dispatch(RecordRemovedRouteInfo((b) => b
-      ..info.name = route.settings.name ?? route.runtimeType.toString()
-      ..info.arguments = route.settings.arguments));
+    store.dispatch(RecordRemovedRouteInfo(
+        info: RouteInfo(
+            name: route.settings.name ?? route.runtimeType.toString(),
+            arguments: route.settings.arguments)));
   }
 
   /// <-- Copied from [NavigatorObserver]. -->
@@ -37,9 +40,10 @@ class NavigationInfoRecorder extends NavigatorObserver {
   /// bottommost route.
   @override
   void didRemove(Route<dynamic> route, Route<dynamic> previousRoute) {
-    store.dispatch(RecordRemovedRouteInfo((b) => b
-      ..info.name = route.settings.name ?? route.runtimeType.toString()
-      ..info.arguments = route.settings.arguments));
+    store.dispatch(RecordRemovedRouteInfo(
+        info: RouteInfo(
+            name: route.settings.name ?? route.runtimeType.toString(),
+            arguments: route.settings.arguments)));
   }
 
   /// <-- Copied from [NavigatorObserver]. -->
@@ -47,10 +51,12 @@ class NavigationInfoRecorder extends NavigatorObserver {
   /// The [Navigator] replaced oldRoute with newRoute.
   @override
   void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
-    store.dispatch(RecordReplacedRouteInfo((b) => b
-      ..oldInfo.name = oldRoute.settings.name ?? oldRoute.runtimeType.toString()
-      ..oldInfo.arguments = oldRoute.settings.arguments
-      ..newInfo.name = newRoute.settings.name ?? newRoute.runtimeType.toString()
-      ..newInfo.arguments = newRoute.settings.arguments));
+    store.dispatch(RecordReplacedRouteInfo(
+        oldInfo: RouteInfo(
+            name: oldRoute.settings.name ?? oldRoute.runtimeType.toString(),
+            arguments: oldRoute.settings.arguments),
+        newInfo: RouteInfo(
+            name: newRoute.settings.name ?? newRoute.runtimeType.toString(),
+            arguments: newRoute.settings.arguments)));
   }
 }

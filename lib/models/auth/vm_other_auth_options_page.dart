@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'vm_other_auth_options_page.g.dart';
 
@@ -22,6 +23,14 @@ abstract class VmOtherAuthOptionsPage
   VmOtherAuthOptionsPage._();
 
   factory VmOtherAuthOptionsPage(
+      {@required EmailAuthMode mode,
+      @required AuthStep step,
+      @required bool showPassword,
+      @required String email,
+      @required String password,
+      @required String repeatPassword}) = _$VmOtherAuthOptionsPage._;
+
+  factory VmOtherAuthOptionsPage.by(
           [void Function(VmOtherAuthOptionsPageBuilder) updates]) =
       _$VmOtherAuthOptionsPage;
 

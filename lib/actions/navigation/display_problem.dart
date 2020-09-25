@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/problem.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'display_problem.g.dart';
 
@@ -17,7 +18,9 @@ abstract class DisplayProblem extends Object
 
   DisplayProblem._();
 
-  factory DisplayProblem([void Function(DisplayProblemBuilder) updates]) =
+  factory DisplayProblem({@required Problem problem}) = _$DisplayProblem._;
+
+  factory DisplayProblem.by([void Function(DisplayProblemBuilder) updates]) =
       _$DisplayProblem;
 
   Object toJson() => serializers.serializeWith(DisplayProblem.serializer, this);

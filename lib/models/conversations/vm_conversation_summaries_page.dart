@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
+
+import 'conversation_summary.dart';
 
 part 'vm_conversation_summaries_page.g.dart';
 
@@ -18,6 +20,10 @@ abstract class VmConversationSummariesPage
   VmConversationSummariesPage._();
 
   factory VmConversationSummariesPage(
+          {@required BuiltList<ConversationSummary> summaries}) =
+      _$VmConversationSummariesPage._;
+
+  factory VmConversationSummariesPage.by(
           [void Function(VmConversationSummariesPageBuilder) updates]) =
       _$VmConversationSummariesPage;
 

@@ -9,6 +9,7 @@ import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/utils/redux/firestore_subscriptions.dart';
 import 'package:redux/redux.dart';
@@ -81,11 +82,12 @@ class DatabaseService {
         'uids': uids
       });
 
-      return StoreSelectedConversation((b) => b
-        ..summary.conversationId = docRef.id
-        ..summary.displayNames = ListBuilder(displayNames)
-        ..summary.photoURLs = ListBuilder(photoURLs)
-        ..summary.uids = ListBuilder(uids));
+      return StoreSelectedConversation(
+          summary: ConversationSummary(
+              conversationId: docRef.id,
+              displayNames: BuiltList(displayNames),
+              photoURLs: BuiltList(photoURLs),
+              uids: BuiltList(uids)));
     } catch (error, trace) {
       return AddProblem.from(
           message: error.toString(),
@@ -182,13 +184,15 @@ class DatabaseService {
     try {
       final collection = await _firestore.collection('leaguers');
       final snapshot = await collection.get();
-      final leaguers = snapshot.docs.map<Leaguer>((user) => Leaguer((b) => b
-        ..uid = user.id
-        ..displayName = user.data()['displayName'] as String ?? user.id
-        ..photoURL = user.data()['photoURL'] as String ??
-            'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'));
+      final leaguers = snapshot.docs
+          .map<Leaguer>((user) => Leaguer(
+              uid: user.id,
+              displayName: user.data()['displayName'] as String ?? user.id,
+              photoURL: user.data()['photoURL'] as String ??
+                  'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'))
+          .toBuiltList();
 
-      return StoreLeaguers((b) => b..leaguers.replace(leaguers));
+      return StoreLeaguers(leaguers: leaguers);
     } catch (error, trace) {
       return AddProblem.from(
           message: error.toString(),

@@ -36,11 +36,12 @@ extension ConnectAndConvert on FirebaseFirestore {
       }
 
       // convert the query snapshot to a list of ProcessingFailure
-      final failures = querySnapshot.docs.map<ProcessingFailure>(
-          (docSnapshot) => docSnapshot.toProcessingFailure());
+      final failures = querySnapshot.docs
+          .map<ProcessingFailure>(
+              (docSnapshot) => docSnapshot.toProcessingFailure())
+          .toBuiltList();
 
-      final action =
-          StoreProcessingFailures((b) => b..failures.replace(failures));
+      final action = StoreProcessingFailures(failures: failures);
       controller.add(action);
     });
   }
@@ -51,10 +52,12 @@ extension ConnectAndConvert on FirebaseFirestore {
         .where('uids', arrayContains: userId)
         .snapshots()
         .listen((querySnapshot) {
-      final summaries = querySnapshot.docs.map<ConversationSummary>(
-          (docSnapshot) => docSnapshot.toConversationSummary());
+      final summaries = querySnapshot.docs
+          .map<ConversationSummary>(
+              (docSnapshot) => docSnapshot.toConversationSummary())
+          .toBuiltList();
 
-      final action = StoreConversations((b) => b..summaries.replace(summaries));
+      final action = StoreConversations(summaries: summaries);
       controller.add(action);
     });
   }
@@ -65,10 +68,9 @@ extension ConnectAndConvert on FirebaseFirestore {
         .snapshots()
         .listen((querySnapshot) {
       controller.add(StoreMessages(
-        (b) => b
-          ..messages = ListBuilder<Message>(querySnapshot.docs.map<Message>(
-              (docSnapshot) => Message(
-                  (b) => b..text = docSnapshot.data()['text'] as String))),
+        messages: BuiltList<Message>(querySnapshot.docs.map<Message>(
+            (docSnapshot) =>
+                Message(text: docSnapshot.data()['text'] as String))),
       ));
     }, onError: (dynamic error, StackTrace trace) {
       controller.add(AddProblem.from(
@@ -96,13 +98,13 @@ extension ConnectAndConvert on FirebaseFirestore {
       try {
         final picIds = <ProfilePic>[];
         for (final docSnapshot in querySnapshot.docs) {
-          picIds.add(ProfilePic((b) => b
-            ..id = docSnapshot.id
-            ..deleting = docSnapshot.data()['deleting'] as bool ?? false
-            ..url =
-                'https://storage.googleapis.com/crowdleague-profile-pics/$userId/${docSnapshot.id}_200x200'));
+          picIds.add(ProfilePic(
+              id: docSnapshot.id,
+              deleting: docSnapshot.data()['deleting'] as bool ?? false,
+              url:
+                  'https://storage.googleapis.com/crowdleague-profile-pics/$userId/${docSnapshot.id}_200x200'));
         }
-        controller.add(StoreProfilePics((b) => b..profilePics.replace(picIds)));
+        controller.add(StoreProfilePics(profilePics: picIds.toBuiltList()));
       } catch (error, trace) {
         controller.add(AddProblem.from(
           message: error.toString(),
@@ -127,9 +129,8 @@ extension ConnectAndConvert on FirebaseFirestore {
     return doc('leaguers/$userId').snapshots().listen((docSnapshot) {
       try {
         final leaguer = docSnapshot.toLeaguer();
-        controller.add(UpdateProfilePage((b) => b
-          ..userId = leaguer.uid
-          ..leaguerPhotoURL = leaguer.photoURL));
+        controller.add(UpdateProfilePage(
+            userId: leaguer.uid, leaguerPhotoURL: leaguer.photoURL));
       } catch (error, trace) {
         controller.add(AddProblem.from(
           message: error.toString(),

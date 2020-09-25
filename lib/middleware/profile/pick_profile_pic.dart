@@ -19,10 +19,9 @@ class PickProfilePicMiddleware
             next(action);
 
             final filePath = await deviceService.pickProfilePic();
-            store.dispatch(
-                UpdateProfilePage((b) => b..pickingProfilePic = false));
+            store.dispatch(UpdateProfilePage(pickingProfilePic: false));
             if (filePath != null) {
-              store.dispatch(UploadProfilePic((b) => b..filePath = filePath));
+              store.dispatch(UploadProfilePic(filePath: filePath));
             }
           }
         });

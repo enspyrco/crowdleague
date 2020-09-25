@@ -8,6 +8,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_leaguers.g.dart';
 
@@ -18,7 +19,10 @@ abstract class StoreLeaguers extends Object
 
   StoreLeaguers._();
 
-  factory StoreLeaguers([void Function(StoreLeaguersBuilder) updates]) =
+  factory StoreLeaguers({@required BuiltList<Leaguer> leaguers}) =
+      _$StoreLeaguers._;
+
+  factory StoreLeaguers.by([void Function(StoreLeaguersBuilder) updates]) =
       _$StoreLeaguers;
 
   Object toJson() => serializers.serializeWith(StoreLeaguers.serializer, this);

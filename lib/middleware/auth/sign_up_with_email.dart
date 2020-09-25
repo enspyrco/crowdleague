@@ -12,15 +12,15 @@ class SignUpWithEmailMiddleware
           next(action);
 
           // set the UI to waiting
-          store.dispatch(UpdateOtherAuthOptionsPage(
-              (b) => b..step = AuthStep.signingUpWithEmail));
+          store.dispatch(
+              UpdateOtherAuthOptionsPage(step: AuthStep.signingUpWithEmail));
 
           // attempt sign up then dispatch resulting action
           authService
               .signUpWithEmail(store.state.otherAuthOptionsPage.email,
                   store.state.otherAuthOptionsPage.password)
               .then<dynamic>(store.dispatch)
-              .whenComplete(() => store.dispatch(UpdateOtherAuthOptionsPage(
-                  (b) => b..step = AuthStep.waitingForInput)));
+              .whenComplete(() => store.dispatch(
+                  UpdateOtherAuthOptionsPage(step: AuthStep.waitingForInput)));
         });
 }

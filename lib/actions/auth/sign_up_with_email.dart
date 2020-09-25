@@ -14,8 +14,7 @@ abstract class SignUpWithEmail extends Object
     implements Built<SignUpWithEmail, SignUpWithEmailBuilder> {
   SignUpWithEmail._();
 
-  factory SignUpWithEmail([void Function(SignUpWithEmailBuilder) updates]) =
-      _$SignUpWithEmail;
+  factory SignUpWithEmail() = _$SignUpWithEmail._;
 
   Object toJson() =>
       serializers.serializeWith(SignUpWithEmail.serializer, this);

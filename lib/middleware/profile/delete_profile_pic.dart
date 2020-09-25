@@ -25,8 +25,7 @@ class DeleteProfilePicMiddleware
             if (reaction != null) store.dispatch(reaction);
           } else {
             // action.pic.id
-            store.dispatch(UpdateProfilePage(
-                (b) => b..removeDeletingState = action.pic.toBuilder()));
+            store.dispatch(UpdateProfilePage(removeDeletingState: action.pic));
           }
         });
 }

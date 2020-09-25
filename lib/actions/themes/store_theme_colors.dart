@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/themes/theme_colors.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_theme_colors.g.dart';
 
@@ -17,8 +18,11 @@ abstract class StoreThemeColors extends Object
 
   StoreThemeColors._();
 
-  factory StoreThemeColors([void Function(StoreThemeColorsBuilder) updates]) =
-      _$StoreThemeColors;
+  factory StoreThemeColors({@required ThemeColors colors}) =
+      _$StoreThemeColors._;
+
+  factory StoreThemeColors.by(
+      [void Function(StoreThemeColorsBuilder) updates]) = _$StoreThemeColors;
 
   Object toJson() =>
       serializers.serializeWith(StoreThemeColors.serializer, this);

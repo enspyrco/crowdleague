@@ -14,9 +14,7 @@ abstract class ObserveConversations extends Object
     implements Built<ObserveConversations, ObserveConversationsBuilder> {
   ObserveConversations._();
 
-  factory ObserveConversations(
-          [void Function(ObserveConversationsBuilder) updates]) =
-      _$ObserveConversations;
+  factory ObserveConversations() = _$ObserveConversations;
 
   Object toJson() =>
       serializers.serializeWith(ObserveConversations.serializer, this);

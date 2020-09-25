@@ -1,9 +1,9 @@
-import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
-import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
@@ -21,7 +21,7 @@ void main() {
       );
 
       // dispatch action to add a problem
-      store.dispatch(AddProblem((b) => b.problem = mockProblem.toBuilder()));
+      store.dispatch(AddProblem(problem: mockProblem));
 
       // check that the store has the expected value
       expect(store.state.problems.length, 1);
@@ -37,7 +37,7 @@ void main() {
       );
 
       // dispatch action to store a user object
-      store.dispatch(StoreUser((b) => b.user = mockUser.toBuilder()));
+      store.dispatch(StoreUser(user: mockUser));
 
       // check that the store has the expected value
       expect(store.state.user, mockUser);
@@ -60,7 +60,7 @@ void main() {
       );
 
       // dispatch action to store auth state
-      store.dispatch(StoreUser((b) => b.user = mockUser.toBuilder()));
+      store.dispatch(StoreUser(user: mockUser));
 
       // check that the store has the expected value
       expect(store.state.user, mockUser);
@@ -74,8 +74,7 @@ void main() {
       );
 
       // dispatch action to store auth step
-      store.dispatch(
-          StoreAuthStep((b) => b..step = AuthStep.signingInWithApple));
+      store.dispatch(StoreAuthStep(step: AuthStep.signingInWithApple));
 
       // check that the store has the expected value
       expect(store.state.authPage.step, AuthStep.signingInWithApple);
