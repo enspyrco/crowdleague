@@ -1,4 +1,4 @@
-library signin_with_google;
+library sign_in_with_google;
 
 import 'dart:convert';
 
@@ -14,8 +14,7 @@ abstract class SignInWithGoogle extends Object
     implements Built<SignInWithGoogle, SignInWithGoogleBuilder> {
   SignInWithGoogle._();
 
-  factory SignInWithGoogle([void Function(SignInWithGoogleBuilder) updates]) =
-      _$SignInWithGoogle;
+  factory SignInWithGoogle() = _$SignInWithGoogle._;
 
   Object toJson() =>
       serializers.serializeWith(SignInWithGoogle.serializer, this);

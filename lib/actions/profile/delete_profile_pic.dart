@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'delete_profile_pic.g.dart';
 
@@ -17,8 +18,10 @@ abstract class DeleteProfilePic extends Object
 
   DeleteProfilePic._();
 
-  factory DeleteProfilePic([void Function(DeleteProfilePicBuilder) updates]) =
-      _$DeleteProfilePic;
+  factory DeleteProfilePic({@required ProfilePic pic}) = _$DeleteProfilePic._;
+
+  factory DeleteProfilePic.by(
+      [void Function(DeleteProfilePicBuilder) updates]) = _$DeleteProfilePic;
 
   Object toJson() =>
       serializers.serializeWith(DeleteProfilePic.serializer, this);

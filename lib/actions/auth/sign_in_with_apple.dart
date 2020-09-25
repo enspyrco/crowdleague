@@ -1,4 +1,4 @@
-library signin_with_apple;
+library sign_in_with_apple;
 
 import 'dart:convert';
 
@@ -14,8 +14,7 @@ abstract class SignInWithApple extends Object
     implements Built<SignInWithApple, SignInWithAppleBuilder> {
   SignInWithApple._();
 
-  factory SignInWithApple([void Function(SignInWithAppleBuilder) updates]) =
-      _$SignInWithApple;
+  factory SignInWithApple() = _$SignInWithApple._;
 
   Object toJson() =>
       serializers.serializeWith(SignInWithApple.serializer, this);

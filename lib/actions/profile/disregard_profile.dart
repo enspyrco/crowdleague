@@ -14,8 +14,7 @@ abstract class DisregardProfile extends Object
     implements Built<DisregardProfile, DisregardProfileBuilder> {
   DisregardProfile._();
 
-  factory DisregardProfile([void Function(DisregardProfileBuilder) updates]) =
-      _$DisregardProfile;
+  factory DisregardProfile() = _$DisregardProfile;
 
   Object toJson() =>
       serializers.serializeWith(DisregardProfile.serializer, this);

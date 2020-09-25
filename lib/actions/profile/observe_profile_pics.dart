@@ -14,9 +14,7 @@ abstract class ObserveProfilePics extends Object
     implements Built<ObserveProfilePics, ObserveProfilePicsBuilder> {
   ObserveProfilePics._();
 
-  factory ObserveProfilePics(
-          [void Function(ObserveProfilePicsBuilder) updates]) =
-      _$ObserveProfilePics;
+  factory ObserveProfilePics() = _$ObserveProfilePics;
 
   Object toJson() =>
       serializers.serializeWith(ObserveProfilePics.serializer, this);

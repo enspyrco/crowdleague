@@ -8,6 +8,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_conversations.g.dart';
 
@@ -19,6 +20,10 @@ abstract class StoreConversations extends Object
   StoreConversations._();
 
   factory StoreConversations(
+          {@required BuiltList<ConversationSummary> summaries}) =
+      _$StoreConversations._;
+
+  factory StoreConversations.by(
           [void Function(StoreConversationsBuilder) updates]) =
       _$StoreConversations;
 

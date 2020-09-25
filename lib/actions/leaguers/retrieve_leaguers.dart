@@ -14,8 +14,7 @@ abstract class RetrieveLeaguers extends Object
     implements Built<RetrieveLeaguers, RetrieveLeaguersBuilder> {
   RetrieveLeaguers._();
 
-  factory RetrieveLeaguers([void Function(RetrieveLeaguersBuilder) updates]) =
-      _$RetrieveLeaguers;
+  factory RetrieveLeaguers() = _$RetrieveLeaguers;
 
   Object toJson() =>
       serializers.serializeWith(RetrieveLeaguers.serializer, this);

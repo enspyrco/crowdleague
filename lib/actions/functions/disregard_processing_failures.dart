@@ -15,9 +15,7 @@ abstract class DisregardProcessingFailures extends Object
         Built<DisregardProcessingFailures, DisregardProcessingFailuresBuilder> {
   DisregardProcessingFailures._();
 
-  factory DisregardProcessingFailures(
-          [void Function(DisregardProcessingFailuresBuilder) updates]) =
-      _$DisregardProcessingFailures;
+  factory DisregardProcessingFailures() = _$DisregardProcessingFailures;
 
   Object toJson() =>
       serializers.serializeWith(DisregardProcessingFailures.serializer, this);

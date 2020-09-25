@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'navigate_to.g.dart';
 
@@ -16,7 +17,10 @@ abstract class NavigateTo extends Object
 
   NavigateTo._();
 
-  factory NavigateTo([void Function(NavigateToBuilder) updates]) = _$NavigateTo;
+  factory NavigateTo({@required String location}) = _$NavigateTo._;
+
+  factory NavigateTo.by([void Function(NavigateToBuilder) updates]) =
+      _$NavigateTo;
 
   Object toJson() => serializers.serializeWith(NavigateTo.serializer, this);
 

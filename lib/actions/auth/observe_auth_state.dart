@@ -14,8 +14,7 @@ abstract class ObserveAuthState extends Object
     implements Built<ObserveAuthState, ObserveAuthStateBuilder> {
   ObserveAuthState._();
 
-  factory ObserveAuthState([void Function(ObserveAuthStateBuilder) updates]) =
-      _$ObserveAuthState;
+  factory ObserveAuthState() = _$ObserveAuthState._;
 
   Object toJson() =>
       serializers.serializeWith(ObserveAuthState.serializer, this);

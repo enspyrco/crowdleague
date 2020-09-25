@@ -23,6 +23,10 @@ abstract class UpdateNewConversationPage extends Object
   UpdateNewConversationPage._();
 
   factory UpdateNewConversationPage(
+      {NewConversationPageLeaguersState state,
+      Leaguer selection}) = _$UpdateNewConversationPage._;
+
+  factory UpdateNewConversationPage.by(
           [void Function(UpdateNewConversationPageBuilder) updates]) =
       _$UpdateNewConversationPage;
 

@@ -14,9 +14,7 @@ abstract class PlumbDatabaseStream extends Object
     implements Built<PlumbDatabaseStream, PlumbDatabaseStreamBuilder> {
   PlumbDatabaseStream._();
 
-  factory PlumbDatabaseStream(
-          [void Function(PlumbDatabaseStreamBuilder) updates]) =
-      _$PlumbDatabaseStream;
+  factory PlumbDatabaseStream() = _$PlumbDatabaseStream;
 
   Object toJson() =>
       serializers.serializeWith(PlumbDatabaseStream.serializer, this);
