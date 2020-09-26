@@ -20,8 +20,8 @@ class CreateConversationMiddleware
 
           // if there was no problem, navigate to Conversation Page
           if (reaction.runtimeType != AddProblem) {
-            store.dispatch(NavigatorReplaceCurrent(
-                (b) => b..newLocation = '/conversation'));
+            store.dispatch(
+                NavigatorReplaceCurrent(newLocation: '/conversation'));
           }
         });
 }

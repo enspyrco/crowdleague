@@ -1,11 +1,11 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
-import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
+import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
 import 'package:crowdleague/actions/leaguers/retrieve_leaguers.dart';
+import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
-import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_leaguers_list.dart';
 import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_selections_list.dart';
@@ -54,8 +54,8 @@ class NewConversationPage extends StatelessWidget {
                 ? FloatingActionButton(
                     onPressed: () {
                       if (hasSelections) {
-                        context.dispatch(UpdateNewConversationPage((b) => b
-                          ..state = NewConversationPageLeaguersState.waiting));
+                        context.dispatch(UpdateNewConversationPage(
+                            state: NewConversationPageLeaguersState.waiting));
                         context.dispatch(CreateConversation());
                       }
                     },

@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'vm_auth_page.g.dart';
 
@@ -14,7 +15,10 @@ abstract class VmAuthPage implements Built<VmAuthPage, VmAuthPageBuilder> {
 
   VmAuthPage._();
 
-  factory VmAuthPage([void Function(VmAuthPageBuilder) updates]) = _$VmAuthPage;
+  factory VmAuthPage({@required AuthStep step}) = _$VmAuthPage._;
+
+  factory VmAuthPage.by([void Function(VmAuthPageBuilder) updates]) =
+      _$VmAuthPage;
 
   static VmAuthPageBuilder initBuilder() {
     return VmAuthPageBuilder()..step = AuthStep.waitingForInput;

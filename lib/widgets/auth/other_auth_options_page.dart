@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
-import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
-import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
+import 'package:crowdleague/extensions/extensions.dart';
+import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -106,7 +106,7 @@ class EmailTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
         onChanged: (value) {
-          context.dispatch(UpdateOtherAuthOptionsPage((b) => b..email = value));
+          context.dispatch(UpdateOtherAuthOptionsPage(email: value));
         },
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
@@ -132,8 +132,8 @@ class PasswordTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
         obscureText: !visible,
-        onChanged: (value) => context
-            .dispatch(UpdateOtherAuthOptionsPage((b) => b..password = value)),
+        onChanged: (value) =>
+            context.dispatch(UpdateOtherAuthOptionsPage(password: value)),
         decoration: InputDecoration(
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
@@ -161,8 +161,8 @@ class RepeatPasswordTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextField(
         obscureText: !visible,
-        onChanged: (value) => context.dispatch(
-            UpdateOtherAuthOptionsPage((b) => b..repeatPassword = value)),
+        onChanged: (value) =>
+            context.dispatch(UpdateOtherAuthOptionsPage(repeatPassword: value)),
         decoration: InputDecoration(
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
@@ -188,8 +188,7 @@ class PasswordSuffixIconButton extends StatelessWidget {
       child: IconButton(
         icon: (visible) ? Icon(Icons.close) : Icon(Icons.remove_red_eye),
         onPressed: () {
-          context.dispatch(
-              UpdateOtherAuthOptionsPage((b) => b..showPassword = !visible));
+          context.dispatch(UpdateOtherAuthOptionsPage(showPassword: !visible));
         },
       ),
     );
@@ -221,8 +220,8 @@ class EmailSignInChip extends StatelessWidget {
         label: Text('SIGN IN WITH EMAIL'),
         selected: _selected,
         onSelected: (bool selected) {
-          context.dispatch(UpdateOtherAuthOptionsPage(
-              (b) => b..mode = EmailAuthMode.signIn));
+          context
+              .dispatch(UpdateOtherAuthOptionsPage(mode: EmailAuthMode.signIn));
         });
   }
 }
@@ -238,8 +237,8 @@ class EmailSignUpChip extends StatelessWidget {
         label: Text('CREATE AN ACCOUNT'),
         selected: _selected,
         onSelected: (bool selected) {
-          context.dispatch(UpdateOtherAuthOptionsPage(
-              (b) => b..mode = EmailAuthMode.signUp));
+          context
+              .dispatch(UpdateOtherAuthOptionsPage(mode: EmailAuthMode.signUp));
         });
   }
 }

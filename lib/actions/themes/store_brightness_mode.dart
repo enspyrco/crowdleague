@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/themes/brightness_mode.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_brightness_mode.g.dart';
 
@@ -17,7 +18,10 @@ abstract class StoreBrightnessMode extends Object
 
   StoreBrightnessMode._();
 
-  factory StoreBrightnessMode(
+  factory StoreBrightnessMode({@required BrightnessMode mode}) =
+      _$StoreBrightnessMode._;
+
+  factory StoreBrightnessMode.by(
           [void Function(StoreBrightnessModeBuilder) updates]) =
       _$StoreBrightnessMode;
 

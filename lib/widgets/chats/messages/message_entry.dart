@@ -1,7 +1,7 @@
 import 'package:crowdleague/actions/conversations/save_message.dart';
 import 'package:crowdleague/actions/conversations/update_conversation_page.dart';
-import 'package:flutter/material.dart';
 import 'package:crowdleague/extensions/extensions.dart';
+import 'package:flutter/material.dart';
 
 class MessageEntry extends StatelessWidget {
   @override
@@ -42,8 +42,8 @@ class MessageTextField extends StatelessWidget {
             border: OutlineInputBorder(),
             labelText: 'Message',
           ),
-          onChanged: (value) => context
-              .dispatch(UpdateConversationPage((b) => b..messageText = value)),
+          onChanged: (value) =>
+              context.dispatch(UpdateConversationPage(messageText: value)),
         ),
       ),
     );

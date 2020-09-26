@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/enums/themes/theme_brightness.dart';
 import 'package:crowdleague/models/themes/theme_colors.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'theme_set.g.dart';
 
@@ -16,7 +17,11 @@ abstract class ThemeSet implements Built<ThemeSet, ThemeSetBuilder> {
 
   ThemeSet._();
 
-  factory ThemeSet([void Function(ThemeSetBuilder) updates]) = _$ThemeSet;
+  factory ThemeSet(
+      {@required ThemeColors colors,
+      @required ThemeBrightness brightness}) = _$ThemeSet._;
+
+  factory ThemeSet.by([void Function(ThemeSetBuilder) updates]) = _$ThemeSet;
 
   Object toJson() => serializers.serializeWith(ThemeSet.serializer, this);
 

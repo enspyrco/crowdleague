@@ -25,12 +25,12 @@ extension ConvertToReduxAction on StorageTaskEvent {
         break;
     }
 
-    return UpdateUploadTask((b) => b
-      ..type = convertedType
-      ..failure = snapshot.getUploadFailure()?.toBuilder()
-      ..bytesTransferred = snapshot.bytesTransferred
-      ..totalByteCount = snapshot.totalByteCount
-      ..uploadSessionUri = snapshot.uploadSessionUri
-      ..uuid = snapshot.storageMetadata.name);
+    return UpdateUploadTask(
+        type: convertedType,
+        failure: snapshot.getUploadFailure(),
+        bytesTransferred: snapshot.bytesTransferred,
+        totalByteCount: snapshot.totalByteCount,
+        uploadSessionUri: snapshot.uploadSessionUri,
+        uuid: snapshot.storageMetadata.name);
   }
 }

@@ -9,6 +9,7 @@ import 'package:crowdleague/enums/themes/theme_brightness.dart';
 import 'package:crowdleague/models/themes/theme_colors.dart';
 import 'package:crowdleague/models/themes/theme_set.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'settings.g.dart';
 
@@ -28,7 +29,12 @@ abstract class Settings implements Built<Settings, SettingsBuilder> {
       ..brightnessMode = BrightnessMode.light;
   }
 
-  factory Settings([void Function(SettingsBuilder) updates]) = _$Settings;
+  factory Settings(
+      {@required ThemeSet darkTheme,
+      @required ThemeSet lightTheme,
+      @required BrightnessMode brightnessMode}) = _$Settings._;
+
+  factory Settings.by([void Function(SettingsBuilder) updates]) = _$Settings;
 
   Object toJson() => serializers.serializeWith(Settings.serializer, this);
 

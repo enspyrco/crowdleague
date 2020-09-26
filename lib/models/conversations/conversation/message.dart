@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'message.g.dart';
 
@@ -13,7 +14,9 @@ abstract class Message implements Built<Message, MessageBuilder> {
 
   Message._();
 
-  factory Message([void Function(MessageBuilder) updates]) = _$Message;
+  factory Message({@required String text}) = _$Message._;
+
+  factory Message.by([void Function(MessageBuilder) updates]) = _$Message;
 
   Object toJson() => serializers.serializeWith(Message.serializer, this);
 
