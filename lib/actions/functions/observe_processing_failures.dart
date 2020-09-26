@@ -15,9 +15,7 @@ abstract class ObserveProcessingFailures extends Object
         Built<ObserveProcessingFailures, ObserveProcessingFailuresBuilder> {
   ObserveProcessingFailures._();
 
-  factory ObserveProcessingFailures(
-          [void Function(ObserveProcessingFailuresBuilder) updates]) =
-      _$ObserveProcessingFailures;
+  factory ObserveProcessingFailures() = _$ObserveProcessingFailures;
 
   Object toJson() =>
       serializers.serializeWith(ObserveProcessingFailures.serializer, this);

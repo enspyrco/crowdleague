@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'replace_route.g.dart';
 
@@ -17,7 +18,11 @@ abstract class ReplaceRoute extends Object
 
   ReplaceRoute._();
 
-  factory ReplaceRoute([void Function(ReplaceRouteBuilder) updates]) =
+  factory ReplaceRoute(
+      {@required String oldRouteName,
+      @required String newRouteName}) = _$ReplaceRoute._;
+
+  factory ReplaceRoute.by([void Function(ReplaceRouteBuilder) updates]) =
       _$ReplaceRoute;
 
   Object toJson() => serializers.serializeWith(ReplaceRoute.serializer, this);

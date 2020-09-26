@@ -14,8 +14,7 @@ abstract class SignOutUser extends Object
     implements Built<SignOutUser, SignOutUserBuilder> {
   SignOutUser._();
 
-  factory SignOutUser([void Function(SignOutUserBuilder) updates]) =
-      _$SignOutUser;
+  factory SignOutUser() = _$SignOutUser._;
 
   Object toJson() => serializers.serializeWith(SignOutUser.serializer, this);
 

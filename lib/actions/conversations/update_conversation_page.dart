@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'update_conversation_page.g.dart';
 
@@ -16,7 +17,10 @@ abstract class UpdateConversationPage extends Object
 
   UpdateConversationPage._();
 
-  factory UpdateConversationPage(
+  factory UpdateConversationPage({@required String messageText}) =
+      _$UpdateConversationPage._;
+
+  factory UpdateConversationPage.by(
           [void Function(UpdateConversationPageBuilder) updates]) =
       _$UpdateConversationPage;
 

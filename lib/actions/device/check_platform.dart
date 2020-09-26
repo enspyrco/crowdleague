@@ -18,9 +18,6 @@ abstract class CheckPlatform extends Object
 
   factory CheckPlatform() = _$CheckPlatform._;
 
-  factory CheckPlatform.by([void Function(CheckPlatformBuilder) updates]) =
-      _$CheckPlatform;
-
   Object toJson() => serializers.serializeWith(CheckPlatform.serializer, this);
 
   static CheckPlatform fromJson(String jsonString) => serializers

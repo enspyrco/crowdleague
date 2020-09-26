@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'select_profile_pic.g.dart';
 
@@ -16,8 +17,10 @@ abstract class SelectProfilePic extends Object
 
   SelectProfilePic._();
 
-  factory SelectProfilePic([void Function(SelectProfilePicBuilder) updates]) =
-      _$SelectProfilePic;
+  factory SelectProfilePic({@required String picId}) = _$SelectProfilePic._;
+
+  factory SelectProfilePic.by(
+      [void Function(SelectProfilePicBuilder) updates]) = _$SelectProfilePic;
 
   Object toJson() =>
       serializers.serializeWith(SelectProfilePic.serializer, this);

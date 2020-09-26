@@ -14,9 +14,7 @@ abstract class DisregardConversations extends Object
     implements Built<DisregardConversations, DisregardConversationsBuilder> {
   DisregardConversations._();
 
-  factory DisregardConversations(
-          [void Function(DisregardConversationsBuilder) updates]) =
-      _$DisregardConversations;
+  factory DisregardConversations() = _$DisregardConversations;
 
   Object toJson() =>
       serializers.serializeWith(DisregardConversations.serializer, this);

@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_auth_step.g.dart';
 
@@ -17,7 +18,9 @@ abstract class StoreAuthStep extends Object
 
   StoreAuthStep._();
 
-  factory StoreAuthStep([void Function(StoreAuthStepBuilder) updates]) =
+  factory StoreAuthStep({@required AuthStep step}) = _$StoreAuthStep._;
+
+  factory StoreAuthStep.by([void Function(StoreAuthStepBuilder) updates]) =
       _$StoreAuthStep;
 
   Object toJson() => serializers.serializeWith(StoreAuthStep.serializer, this);

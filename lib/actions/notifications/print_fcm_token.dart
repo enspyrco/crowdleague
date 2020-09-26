@@ -14,8 +14,7 @@ abstract class PrintFCMToken extends Object
     implements Built<PrintFCMToken, PrintFCMTokenBuilder> {
   PrintFCMToken._();
 
-  factory PrintFCMToken([void Function(PrintFCMTokenBuilder) updates]) =
-      _$PrintFCMToken;
+  factory PrintFCMToken() = _$PrintFCMToken;
 
   Object toJson() => serializers.serializeWith(PrintFCMToken.serializer, this);
 

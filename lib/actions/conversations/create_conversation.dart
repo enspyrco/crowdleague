@@ -14,9 +14,7 @@ abstract class CreateConversation extends Object
     implements Built<CreateConversation, CreateConversationBuilder> {
   CreateConversation._();
 
-  factory CreateConversation(
-          [void Function(CreateConversationBuilder) updates]) =
-      _$CreateConversation;
+  factory CreateConversation() = _$CreateConversation;
 
   Object toJson() =>
       serializers.serializeWith(CreateConversation.serializer, this);

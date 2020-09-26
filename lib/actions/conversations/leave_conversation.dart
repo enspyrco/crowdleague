@@ -16,8 +16,7 @@ abstract class LeaveConversation extends Object
 
   LeaveConversation._();
 
-  factory LeaveConversation([void Function(LeaveConversationBuilder) updates]) =
-      _$LeaveConversation;
+  factory LeaveConversation() = _$LeaveConversation;
 
   Object toJson() =>
       serializers.serializeWith(LeaveConversation.serializer, this);

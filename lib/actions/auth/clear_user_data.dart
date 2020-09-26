@@ -14,8 +14,7 @@ abstract class ClearUserData extends Object
     implements Built<ClearUserData, ClearUserDataBuilder> {
   ClearUserData._();
 
-  factory ClearUserData([void Function(ClearUserDataBuilder) updates]) =
-      _$ClearUserData;
+  factory ClearUserData() = _$ClearUserData._;
 
   Object toJson() => serializers.serializeWith(ClearUserData.serializer, this);
 

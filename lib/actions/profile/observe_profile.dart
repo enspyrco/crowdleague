@@ -14,8 +14,7 @@ abstract class ObserveProfile extends Object
     implements Built<ObserveProfile, ObserveProfileBuilder> {
   ObserveProfile._();
 
-  factory ObserveProfile([void Function(ObserveProfileBuilder) updates]) =
-      _$ObserveProfile;
+  factory ObserveProfile() = _$ObserveProfile;
 
   Object toJson() => serializers.serializeWith(ObserveProfile.serializer, this);
 

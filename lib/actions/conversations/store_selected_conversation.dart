@@ -7,6 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_selected_conversation.g.dart';
 
@@ -18,7 +19,10 @@ abstract class StoreSelectedConversation extends Object
 
   StoreSelectedConversation._();
 
-  factory StoreSelectedConversation(
+  factory StoreSelectedConversation({@required ConversationSummary summary}) =
+      _$StoreSelectedConversation._;
+
+  factory StoreSelectedConversation.by(
           [void Function(StoreSelectedConversationBuilder) updates]) =
       _$StoreSelectedConversation;
 

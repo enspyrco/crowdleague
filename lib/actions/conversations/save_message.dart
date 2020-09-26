@@ -14,8 +14,7 @@ abstract class SaveMessage extends Object
     implements Built<SaveMessage, SaveMessageBuilder> {
   SaveMessage._();
 
-  factory SaveMessage([void Function(SaveMessageBuilder) updates]) =
-      _$SaveMessage;
+  factory SaveMessage() = _$SaveMessage;
 
   Object toJson() => serializers.serializeWith(SaveMessage.serializer, this);
 

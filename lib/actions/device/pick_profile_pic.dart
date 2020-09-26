@@ -14,8 +14,7 @@ abstract class PickProfilePic extends Object
     implements Built<PickProfilePic, PickProfilePicBuilder> {
   PickProfilePic._();
 
-  factory PickProfilePic([void Function(PickProfilePicBuilder) updates]) =
-      _$PickProfilePic;
+  factory PickProfilePic() = _$PickProfilePic;
 
   Object toJson() => serializers.serializeWith(PickProfilePic.serializer, this);
 

@@ -14,8 +14,7 @@ abstract class DisregardMessages extends Object
     implements Built<DisregardMessages, DisregardMessagesBuilder> {
   DisregardMessages._();
 
-  factory DisregardMessages([void Function(DisregardMessagesBuilder) updates]) =
-      _$DisregardMessages;
+  factory DisregardMessages() = _$DisregardMessages;
 
   Object toJson() =>
       serializers.serializeWith(DisregardMessages.serializer, this);
