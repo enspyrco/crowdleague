@@ -33,6 +33,7 @@ class OtherAuthOptionsPage extends StatelessWidget {
             }
             return Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Flexible(
                     flex: 2,
@@ -74,19 +75,19 @@ class OtherAuthOptionsPage extends StatelessWidget {
                     flex: 1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: 20),
                         Divider(color: Colors.black),
-                        SizedBox(height: 50),
+                        SizedBox(height: 20),
                         Text(
                           'OR',
                           style: TextStyle(fontSize: 20),
                         ),
-                        SizedBox(height: 50),
+                        SizedBox(height: 20),
                         OtherPlatformSignInButton()
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             );
