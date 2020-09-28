@@ -141,8 +141,8 @@ void main() {
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
-      final alteredState =
-          initialAppState.rebuild((b) => b..platform = PlatformType.android);
+      final alteredState = initialAppState
+          .rebuild((b) => b..systemInfo.platform = PlatformType.android);
       // Create the test harness.
       final store = Store<AppState>(appReducer, initialState: alteredState);
       final wut = AuthPage();
@@ -163,8 +163,8 @@ void main() {
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
-      final alteredState =
-          initialAppState.rebuild((b) => b..platform = PlatformType.ios);
+      final alteredState = initialAppState
+          .rebuild((b) => b..systemInfo.platform = PlatformType.ios);
 
       // Create the test harness.
       final store = Store<AppState>(appReducer, initialState: alteredState);
@@ -186,8 +186,8 @@ void main() {
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
-      final alteredState =
-          initialAppState.rebuild((b) => b..platform = PlatformType.ios);
+      final alteredState = initialAppState
+          .rebuild((b) => b..systemInfo.platform = PlatformType.ios);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
@@ -214,8 +214,8 @@ void main() {
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
-      final alteredState =
-          initialAppState.rebuild((b) => b..platform = PlatformType.android);
+      final alteredState = initialAppState
+          .rebuild((b) => b..systemInfo.platform = PlatformType.android);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
