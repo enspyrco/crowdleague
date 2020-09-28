@@ -28,7 +28,23 @@ A Leaguer wants to
 
 - [ ] 
 
+## database 
+
+- [ ] 
+
+## storage 
+
+- [ ] 
+
+## cloud functions 
+
+- [ ]
+
 ## actions 
+
+- [ ] 
+
+## services 
 
 - [ ] 
 
@@ -44,22 +60,6 @@ A Leaguer wants to
 
 - [ ] 
 
-## services 
-
-- [ ] 
-
 ## widgets 
 
 - [ ] 
-
-## database 
-
-- [ ] 
-
-## storage 
-
-- [ ] 
-
-## cloud functions 
-
-- [ ]
