@@ -4,5 +4,7 @@ import 'package:redux/redux.dart';
 
 /// Return to the initial state, clearing all of the user's data
 class ClearUserDataReducer extends TypedReducer<AppState, ClearUserData> {
-  ClearUserDataReducer() : super((state, action) => AppState.init());
+  ClearUserDataReducer()
+      : super((state, action) => AppState.init()
+            .rebuild((b) => b..systemInfo.replace(state.systemInfo)));
 }
