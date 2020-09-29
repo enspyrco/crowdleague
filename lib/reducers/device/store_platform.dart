@@ -5,5 +5,5 @@ import 'package:redux/redux.dart';
 class StorePlatformReducer extends TypedReducer<AppState, StorePlatform> {
   StorePlatformReducer()
       : super((state, action) =>
-            state.rebuild((b) => b..platform = action.value));
+            state.rebuild((b) => b..systemInfo.platform = action.value));
 }

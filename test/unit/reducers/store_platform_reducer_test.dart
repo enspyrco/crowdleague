@@ -18,7 +18,7 @@ void main() {
       store.dispatch(StorePlatform(value: PlatformType.macOS));
 
       // check that the store has the expected value
-      expect(store.state.platform, PlatformType.macOS);
+      expect(store.state.systemInfo.platform, PlatformType.macOS);
     });
   });
 }
