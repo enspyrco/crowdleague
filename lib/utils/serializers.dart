@@ -67,6 +67,7 @@ import 'package:crowdleague/enums/themes/theme_brightness.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/app/problem.dart';
 import 'package:crowdleague/models/app/settings.dart';
+import 'package:crowdleague/models/app/system_info.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
@@ -130,6 +131,7 @@ part 'serializers.g.dart';
   PlatformType,
   StoreMessages,
   DisregardMessages,
+  SystemInfo,
   StoreBrightnessMode,
   StoreThemeColors,
   ObserveProfile,

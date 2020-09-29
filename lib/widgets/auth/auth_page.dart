@@ -150,7 +150,7 @@ class PlatformSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PlatformType>(
       distinct: true,
-      converter: (store) => store.state.platform,
+      converter: (store) => store.state.systemInfo.platform,
       builder: (context, platform) {
         return (platform == PlatformType.ios || platform == PlatformType.macOS)
             ? AppleSignInButton(

@@ -19,13 +19,13 @@ void main() {
           middleware: [CheckPlatformMiddleware(fakeService)]);
 
       // initial state
-      expect(store.state.platform, PlatformType.checking);
+      expect(store.state.systemInfo.platform, PlatformType.checking);
 
       // dispatch action to test middleware
       store.dispatch(CheckPlatform());
 
       // check store is correctly updated
-      expect(store.state.platform, PlatformType.macOS);
+      expect(store.state.systemInfo.platform, PlatformType.macOS);
     });
   });
 }

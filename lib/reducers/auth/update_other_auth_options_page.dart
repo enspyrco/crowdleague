@@ -8,7 +8,7 @@ import 'package:redux/redux.dart';
 class UpdateOtherAuthOptionsPageReducer
     extends TypedReducer<AppState, UpdateOtherAuthOptionsPage> {
   UpdateOtherAuthOptionsPageReducer()
-      : super((state, action) => state.rebuild((b) => state.rebuild((a) {
+      : super((state, action) => state.rebuild((a) {
               a.otherAuthOptionsPage.mode =
                   action.mode ?? a.otherAuthOptionsPage.mode;
               a.otherAuthOptionsPage.showPassword =
@@ -21,5 +21,5 @@ class UpdateOtherAuthOptionsPageReducer
                   action.password ?? a.otherAuthOptionsPage.password;
               a.otherAuthOptionsPage.repeatPassword = action.repeatPassword ??
                   a.otherAuthOptionsPage.repeatPassword;
-            })));
+            }));
 }
