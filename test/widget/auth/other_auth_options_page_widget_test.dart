@@ -87,6 +87,7 @@ void main() {
       // check correct action is dispatched
       expect(testMiddleware.received(SignInWithGoogle()), true);
     });
+
     testWidgets('dispatches SignInWithApple action on Android',
         (WidgetTester tester) async {
       // Setup the app state with expected values
