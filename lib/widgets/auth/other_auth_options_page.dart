@@ -60,15 +60,10 @@ class OtherAuthOptionsPage extends StatelessWidget {
                           RepeatPasswordTextField(
                             visible: vm.showPassword,
                           ),
+                        // SizedBox(height: 50), // commented out as hack to do widget test without overlay error
+                        if (vm.mode == EmailAuthMode.signIn) SignInButton(),
                         if (vm.mode == EmailAuthMode.signUp)
-                          // SizedBox(height: 50), // commented out as hack to do widget test without overlay error
-                          IndexedStack(
-                            index: vm.mode.index,
-                            children: [
-                              Center(child: SignInButton()),
-                              Center(child: CreateAccountButton()),
-                            ],
-                          ),
+                          CreateAccountButton(),
                       ],
                     ),
                   ),
