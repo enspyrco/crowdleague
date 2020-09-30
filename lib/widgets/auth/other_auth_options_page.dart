@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
@@ -195,14 +194,23 @@ class PasswordSuffixIconButton extends StatelessWidget {
 class OtherPlatformSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return (Platform.isIOS || Platform.isMacOS)
-        ? GoogleSignInButton(
-            onPressed: () => context.dispatch(SignInWithGoogle()),
-            darkMode: true, // default: false
-          )
-        : AppleSignInButton(
-            style: AppleButtonStyle.black,
-            onPressed: () => context.dispatch(SignInWithApple()));
+    return StoreConnector<AppState, PlatformType>(
+        distinct: true,
+        converter: (store) => store.state.systemInfo.platform,
+        builder: (context, platform) {
+          return (platform == PlatformType.ios ||
+                  platform == PlatformType.macOS)
+              ? GoogleSignInButton(
+                  onPressed: () => context.dispatch(SignInWithGoogle()),
+                  darkMode: true, // default: false
+                )
+              : AppleSignInButton(
+                  style: AppleButtonStyle.black,
+                  onPressed: () => context.dispatch(
+                    SignInWithApple(),
+                  ),
+                );
+        });
   }
 }
 
