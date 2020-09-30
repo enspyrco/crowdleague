@@ -32,6 +32,7 @@ class ProblemType extends EnumClass {
   static const ProblemType observeProcessingFailures =
       _$observeProcessingFailures;
   static const ProblemType processingFailure = _$processingFailure;
+  static const ProblemType initializationFailure = _$initializationFailure;
 
   const ProblemType._(String name) : super(name);
 

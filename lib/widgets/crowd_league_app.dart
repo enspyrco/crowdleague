@@ -28,9 +28,9 @@ class CrowdLeagueApp extends StatefulWidget {
 class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
   final _navKey = GlobalKey<NavigatorState>();
   Store<AppState> _store;
+  dynamic _error;
   bool _initializedFirebase = false;
-  bool _initializedReduxStore = false;
-  bool _error = false;
+  bool _initializedRedux = false;
 
   // Define an async function to initialize FlutterFire
   void initialize() async {
@@ -43,7 +43,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
       final services = ServicesBundle(navKey: _navKey);
       _store = await services.createStore();
       setState(() {
-        _initializedReduxStore = true;
+        _initializedRedux = true;
       });
 
       // dispatch initial actions
@@ -58,7 +58,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
       _store.dispatch(PlumbDatabaseStream());
     } catch (e) {
       setState(() {
-        _error = true;
+        _error = e;
       });
     }
   }
@@ -71,15 +71,16 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Show error message if initialization failed
-    if (_error) {
-      // TODO: display an error without using redux
-      print(_error);
+    if (_error != null) {
+      return ErrorPage(error: _error, trace: StackTrace.current);
     }
 
     // Show a loader until FlutterFire is initialized
-    if (!_initializedFirebase || !_initializedReduxStore) {
-      return CircularProgressIndicator();
+    if (!_initializedFirebase || !_initializedRedux) {
+      return InitializingIndicator(
+        firebaseDone: _initializedFirebase,
+        reduxDone: _initializedRedux,
+      );
     }
 
     return StoreProvider<AppState>(
@@ -120,5 +121,66 @@ class CheckAuth extends StatelessWidget {
         builder: (context, user) {
           return (user == null || user.id == null) ? AuthPage() : MainPage();
         });
+  }
+}
+
+class InitializingIndicator extends StatelessWidget {
+  final bool firebaseDone;
+  final bool reduxDone;
+  const InitializingIndicator({
+    @required this.firebaseDone,
+    @required this.reduxDone,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var message = '';
+    if (!firebaseDone && !reduxDone) {
+      message = 'Waiting for Redux & Firebase...';
+    } else if (!firebaseDone) {
+      message = 'Waiting for Firebase...';
+    } else if (!reduxDone) {
+      message = 'Waiting for Redux...';
+    }
+    return Material(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircularProgressIndicator(),
+            SizedBox(height: 30),
+            Text(message, textDirection: TextDirection.ltr)
+          ]),
+    );
+  }
+}
+
+class ErrorPage extends StatelessWidget {
+  final dynamic _error;
+  final StackTrace _trace;
+  const ErrorPage({
+    @required dynamic error,
+    @required StackTrace trace,
+    Key key,
+  })  : _error = error,
+        _trace = trace,
+        super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            SizedBox(height: 50),
+            Text('Looks like there was a problem.',
+                textDirection: TextDirection.ltr),
+            SizedBox(height: 20),
+            Text(_error.toString(), textDirection: TextDirection.ltr),
+            SizedBox(height: 50),
+            Text(_trace.toString(), textDirection: TextDirection.ltr),
+          ],
+        ),
+      ),
+    );
   }
 }
