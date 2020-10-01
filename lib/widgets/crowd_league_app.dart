@@ -95,7 +95,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
               theme: ThemeDataExt.from(settings.lightTheme),
               darkTheme: ThemeDataExt.from(settings.darkTheme),
               themeMode: ThemeModeExt.from(settings.brightnessMode),
-              home: CheckAuth(), // becomes the route named '/'
+              home: AuthOrMain(), // becomes the route named '/'
               routes: <String, WidgetBuilder>{
                 '/other_auth_options': (context) => OtherAuthOptionsPage(),
                 '/conversation': (context) => MessagesPage(),
@@ -108,8 +108,10 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
   }
 }
 
-class CheckAuth extends StatelessWidget {
-  const CheckAuth({
+/// A StoreConnector that builds either the AuthPage or MainPage depending on
+/// the auth state.
+class AuthOrMain extends StatelessWidget {
+  const AuthOrMain({
     Key key,
   }) : super(key: key);
 
@@ -124,6 +126,11 @@ class CheckAuth extends StatelessWidget {
   }
 }
 
+/// This widget is just a CircularProgressIndicator and some text, in a
+/// Material widget so it looks nice, as it is used outside of the MaterialApp.
+///
+/// It's a separate widget as the existing ProgressIndicator widget doesn't
+/// need to have it's contents in a Material widget.
 class InitializingIndicator extends StatelessWidget {
   final bool firebaseDone;
   final bool reduxDone;
@@ -155,6 +162,11 @@ class InitializingIndicator extends StatelessWidget {
   }
 }
 
+/// This widget just displays the available info if there is an error during
+/// intialization.
+///
+/// It's not particularly pretty but it shouldn't ever be seen and if it is,
+/// we just need to view the available info.
 class ErrorPage extends StatelessWidget {
   final dynamic _error;
   final StackTrace _trace;
