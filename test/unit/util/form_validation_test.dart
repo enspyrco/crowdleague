@@ -7,13 +7,22 @@ void main() {
     test('checks password is min 6 and max 30 characters', () {
       // valid password
       final password = 'test123';
-      final isValid = validPassword(password);
-      expect(isValid, true);
+      expect(validPassword(password), true);
 
       // invalid password
       final invalidPassword = 'te12';
-      final isNotValid = validPassword(invalidPassword);
-      expect(isNotValid, false);
+      expect(validPassword(invalidPassword), false);
+    });
+    test('checks repeatPassword matches password', () {
+      // valid repeatPassword
+      final password1 = 'test123';
+      final repeatPassword1 = 'test123';
+      expect(validRepeatPassword(password1, repeatPassword1), true);
+
+      // invalid repeatPassword
+      final password2 = 'te12';
+      final repeatPassword2 = 'fjdsbkf';
+      expect(validRepeatPassword(password2, repeatPassword2), false);
     });
   });
 }
