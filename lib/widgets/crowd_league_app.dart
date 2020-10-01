@@ -9,24 +9,32 @@ import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/utils/redux/navigation_info_recorder.dart';
 import 'package:crowdleague/utils/redux/services_bundle.dart';
+import 'package:crowdleague/utils/wrappers/firebase_wrapper.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
 import 'package:crowdleague/widgets/chats/messages/messages_page.dart';
 import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_page.dart';
 import 'package:crowdleague/widgets/main/main_page.dart';
 import 'package:crowdleague/widgets/profile/profile_page.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class CrowdLeagueApp extends StatefulWidget {
+  final FirebaseWrapper _firebase;
+  final ServicesBundle _redux;
+
+  CrowdLeagueApp(
+      {FirebaseWrapper firebase,
+      ServicesBundle redux,
+      GlobalKey<NavigatorState> navKey})
+      : _firebase = firebase ?? FirebaseWrapper(),
+        _redux = redux ?? ServicesBundle(navKey: GlobalKey<NavigatorState>());
   @override
   _CrowdLeagueAppState createState() => _CrowdLeagueAppState();
 }
 
 class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
-  final _navKey = GlobalKey<NavigatorState>();
   Store<AppState> _store;
   dynamic _error;
   bool _initializedFirebase = false;
@@ -35,13 +43,12 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
   // Define an async function to initialize FlutterFire
   void initialize() async {
     try {
-      await Firebase.initializeApp();
+      await widget._firebase.init();
       setState(() {
         _initializedFirebase = true;
       });
 
-      final services = ServicesBundle(navKey: _navKey);
-      _store = await services.createStore();
+      _store = await widget._redux.createStore();
       setState(() {
         _initializedRedux = true;
       });
@@ -90,7 +97,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
           converter: (store) => store.state.settings,
           builder: (context, settings) {
             return MaterialApp(
-              navigatorKey: _navKey,
+              navigatorKey: widget._redux.navKey,
               navigatorObservers: [NavigationInfoRecorder(_store)],
               theme: ThemeDataExt.from(settings.lightTheme),
               darkTheme: ThemeDataExt.from(settings.darkTheme),

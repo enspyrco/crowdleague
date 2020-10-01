@@ -36,6 +36,9 @@ class ServicesBundle {
     _firestoreSettings = firestoreSettings;
   }
 
+  /// Navigation Key
+  final GlobalKey<NavigatorState> _navKey;
+
   /// Services
   final AuthService _authService;
   final NavigationService _navigationService;
@@ -53,7 +56,8 @@ class ServicesBundle {
       NotificationsService notificationsService,
       StorageService storageService,
       DeviceService deviceService})
-      : _authService = authService ??
+      : _navKey = navKey,
+        _authService = authService ??
             AuthService(
               FirebaseAuth.instance,
               GoogleSignIn(scopes: <String>['email']),
@@ -73,6 +77,7 @@ class ServicesBundle {
         _deviceService =
             deviceService ?? DeviceService(imagePicker: ImagePicker());
 
+  GlobalKey<NavigatorState> get navKey => _navKey;
   AuthService get auth => _authService;
   NavigationService get navigation => _navigationService;
   DatabaseService get database => _databaseService;
