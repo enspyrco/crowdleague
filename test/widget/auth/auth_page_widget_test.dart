@@ -12,7 +12,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
-import '../../mocks/verify_dispatch_middleware.dart';
+import '../../utils/verify_dispatch_middleware.dart';
 
 void main() {
   group('AuthPage', () {
