@@ -26,12 +26,13 @@ class CrowdLeagueApp extends StatefulWidget {
 
   CrowdLeagueApp({FirebaseWrapper firebase, ServicesBundle redux})
       : _firebase = firebase ?? FirebaseWrapper(),
-        _redux = redux ?? ServicesBundle(navKey: GlobalKey<NavigatorState>());
+        _redux = redux;
   @override
   _CrowdLeagueAppState createState() => _CrowdLeagueAppState();
 }
 
 class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
+  ServicesBundle _redux;
   Store<AppState> _store;
   dynamic _error;
   bool _initializedFirebase = false;
@@ -46,8 +47,11 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
         _initializedFirebase = true;
       });
 
+      // use the injected services bundle if there is one or create one
+      _redux =
+          widget._redux ?? ServicesBundle(navKey: GlobalKey<NavigatorState>());
       // create the redux store and run any extra operations
-      _store = await widget._redux.createStore();
+      _store = await _redux.createStore();
       setState(() {
         _initializedRedux = true;
       });
@@ -96,7 +100,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
           converter: (store) => store.state.settings,
           builder: (context, settings) {
             return MaterialApp(
-              navigatorKey: widget._redux.navKey,
+              navigatorKey: _redux.navKey,
               navigatorObservers: [NavigationInfoRecorder(_store)],
               theme: ThemeDataExt.from(settings.lightTheme),
               darkTheme: ThemeDataExt.from(settings.darkTheme),
