@@ -24,10 +24,7 @@ class CrowdLeagueApp extends StatefulWidget {
   final FirebaseWrapper _firebase;
   final ServicesBundle _redux;
 
-  CrowdLeagueApp(
-      {FirebaseWrapper firebase,
-      ServicesBundle redux,
-      GlobalKey<NavigatorState> navKey})
+  CrowdLeagueApp({FirebaseWrapper firebase, ServicesBundle redux})
       : _firebase = firebase ?? FirebaseWrapper(),
         _redux = redux ?? ServicesBundle(navKey: GlobalKey<NavigatorState>());
   @override
@@ -43,11 +40,13 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
   // Define an async function to initialize FlutterFire
   void initialize() async {
     try {
+      // firebase must be initialised first so createStore() can run
       await widget._firebase.init();
       setState(() {
         _initializedFirebase = true;
       });
 
+      // create the redux store and run any extra operations
       _store = await widget._redux.createStore();
       setState(() {
         _initializedRedux = true;
@@ -150,9 +149,7 @@ class InitializingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var message = '';
-    if (!firebaseDone && !reduxDone) {
-      message = 'Waiting for Redux & Firebase...';
-    } else if (!firebaseDone) {
+    if (!firebaseDone) {
       message = 'Waiting for Firebase...';
     } else if (!reduxDone) {
       message = 'Waiting for Redux...';
