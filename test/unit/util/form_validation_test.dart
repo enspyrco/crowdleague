@@ -4,6 +4,19 @@ import 'package:test/test.dart';
 
 void main() {
   group('form validation', () {
+    test('checks for valid email', () {
+      // valid email
+      final email = 'test@email.com';
+      expect(validEmail(email), true);
+
+      // invalid email
+      final invalidEmail = 'test@@12.com';
+      expect(validEmail(invalidEmail), false);
+
+      // invalid email 2
+      final invalidEmail2 = 'te@12"".email';
+      expect(validEmail(invalidEmail2), false);
+    });
     test('checks password is min 6 and max 30 characters', () {
       // valid password
       final password = 'test123';
