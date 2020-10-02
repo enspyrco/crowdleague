@@ -5,13 +5,14 @@ import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
+import 'package:crowdleague/widgets/shared/waiting_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
-import '../../mocks/verify_dispatch_middleware.dart';
+import '../../utils/verify_dispatch_middleware.dart';
 
 void main() {
   group('AuthPage', () {

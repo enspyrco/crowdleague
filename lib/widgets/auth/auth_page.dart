@@ -5,6 +5,7 @@ import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/widgets/shared/waiting_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -41,21 +42,6 @@ class _AuthPageState extends State<AuthPage> {
                   return WaitingIndicator('Who the heck knows?');
               }
             }));
-  }
-}
-
-class WaitingIndicator extends StatelessWidget {
-  final String message;
-  const WaitingIndicator(
-    this.message, {
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[CircularProgressIndicator(), Text(message)]);
   }
 }
 
