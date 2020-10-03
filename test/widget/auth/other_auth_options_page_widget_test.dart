@@ -439,5 +439,37 @@ void main() {
       final waitingIndicator = find.byType(CircularProgressIndicator);
       expect(waitingIndicator, findsOneWidget);
     });
+
+    testWidgets('On sign in, prompts user to correct invalid form feilds',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState = initialAppState.rebuild((b) => b
+        ..otherAuthOptionsPage.password = '12'
+        ..otherAuthOptionsPage.email = 'invalid.@'
+        ..otherAuthOptionsPage.repeatPassword = 'invalid.@');
+      final testMiddleware = VerifyDispatchMiddleware();
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer,
+          initialState: alteredState, middleware: [testMiddleware]);
+      final wut = OtherAuthOptionsPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+
+      //
+      final invalidEmailText = find.text('please enter a valid email');
+      final invalidPasswordText =
+          find.text('password must be between 6 and 30 characters');
+      final invalidRepeatPasswordText = find.text('passwords do not match');
+      expect(invalidEmailText, findsOneWidget);
+      expect(invalidPasswordText, findsOneWidget);
+      expect(invalidRepeatPasswordText, findsOneWidget);
+    });
   });
 }
