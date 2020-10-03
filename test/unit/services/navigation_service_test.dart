@@ -1,12 +1,11 @@
-import 'package:crowdleague/enums/problem_type.dart';
-import 'package:crowdleague/models/app/problem.dart';
 import 'package:crowdleague/services/navigation_service.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/navigation/global_key_mocks.dart';
 import '../../mocks/navigation/navigator_state_mocks.dart';
+import '../../mocks/navigation/route_mocks.dart';
 
 /// The NavigationService unit tests
 
@@ -36,16 +35,29 @@ void main() {
     });
 
     test('popHome calls NavigatorState.popUntil with /', () {
-      final navigatorState = MockNavigatorState();
-      final fakeNavKey = FakeGlobalKey(navigatorState);
+      final mockNavigatorState = MockNavigatorState();
+      final fakeNavKey = FakeGlobalKey(mockNavigatorState);
       final service = NavigationService(fakeNavKey);
 
+      /// The service calls [popUntil(ModalRoute.withName('/'))]
+      /// [ModalRoute.withName('/')] returns a predicate that checks for the
+      /// following:
+      /// [!route.willHandlePopInternally]
+      /// [route is ModalRoute]
+      /// [route.settings.name == name']
+
+      /// Our stub just returns the values needed for the [withName()] predicate
+      final modalRouteStub =
+          ModalRouteStub<dynamic>(settings: RouteSettings(name: '/'));
+
+      // perform the action we are testing
       service.popHome();
 
-      verify(navigatorState.popUntil(ModalRoute.withName('/')));
-    },
-        skip:
-            'fails with "No matching calls" - maybe because ModalRoute.withName is a different object to the original call?');
+      /// verify that [popUntil()] was called with a predicate matching the stub
+      verify(mockNavigatorState.popUntil(argThat(predicate<RoutePredicate>(
+          (func) => func(modalRouteStub) == true,
+          'is a route predicate for \'/\''))));
+    });
 
     test('replaceCurrentWith calls NavigatorState.pushReplacementNamed', () {
       final navigatorState = MockNavigatorState();
@@ -56,22 +68,5 @@ void main() {
 
       verify(navigatorState.pushReplacementNamed('location'));
     });
-
-    // Fails assertion: 'context != null': is not true.
-    // This probably should be tested in a widget test where
-    // we can get a context
-    test('display uses NavigatorState.overlay.context', () {
-      final navigatorState = MockNavigatorState();
-      final fakeNavKey = FakeGlobalKey(navigatorState);
-      final service = NavigationService(fakeNavKey);
-
-      service
-          .display(Problem(message: 'message', type: ProblemType.appleSignIn));
-
-      verify(navigatorState.overlay);
-    }, skip: 'probably needs to be a widget test');
-
-    test('displayConfirmation calls NavigatorState.pushNamed', () {},
-        skip: 'same problem as testing display');
   });
 }
