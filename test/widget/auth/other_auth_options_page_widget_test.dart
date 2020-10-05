@@ -226,7 +226,7 @@ void main() {
       // Tap to show create account button
       await tester.tap(emailSignUpChip);
 
-      // check correct action is dispatched with empty form field values
+      // check correct action is dispatched with empty form feild values
       expect(
           testMiddleware.received(UpdateEmailAuthOptionsPage(
             mode: EmailAuthMode.signUp,
