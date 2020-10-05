@@ -1,13 +1,13 @@
-import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:redux/redux.dart';
 
 /// A single reducer for all OtherAuthOptionsViewModel members is less
 /// efficient but requires less code (actions and reducers)
 /// [UpdateOtherAuthOptions] contains values to be updated or null
-class UpdateOtherAuthOptionsPageReducer
-    extends TypedReducer<AppState, UpdateOtherAuthOptionsPage> {
-  UpdateOtherAuthOptionsPageReducer()
+class UpdateEmailAuthOptionsPageReducer
+    extends TypedReducer<AppState, UpdateEmailAuthOptionsPage> {
+  UpdateEmailAuthOptionsPageReducer()
       : super((state, action) => state.rebuild((a) {
               a.otherAuthOptionsPage.mode =
                   action.mode ?? a.otherAuthOptionsPage.mode;

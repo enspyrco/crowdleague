@@ -2,12 +2,13 @@ import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
-import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
+import 'package:crowdleague/widgets/auth/email_auth_options_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
@@ -145,8 +146,7 @@ void main() {
       expect(testMiddleware.received(SignInWithApple()), true);
     });
 
-    testWidgets(
-        'shows sign in UI when user lands on page, and after user taps sign in chip',
+    testWidgets('shows sign in UI when user taps sign in chip',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -155,7 +155,7 @@ void main() {
 
       // Create the test harness.
       final store = Store<AppState>(appReducer, initialState: alteredState);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -176,7 +176,7 @@ void main() {
       expect(signInButton, findsOneWidget);
     });
 
-    testWidgets('shows create account UI after user taps create account chip',
+    testWidgets('shows create account UI when user taps create account chip',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -185,7 +185,7 @@ void main() {
 
       // Create the test harness.
       final store = Store<AppState>(appReducer, initialState: alteredState);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -203,7 +203,7 @@ void main() {
     });
 
     testWidgets(
-        'dispatches UpdateOtherAuthOptionsPage(EmailAuthMode.signUn) action when tap sign in with email chip. Should clear form field values in redux store ',
+        'dispatches UpdateEmailAuthOptionsPage(EmailAuthMode.signUn) action when tap sign in with email chip, should clear form field values in redux store ',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -212,7 +212,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: initialAppState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -228,7 +228,7 @@ void main() {
 
       // check correct action is dispatched with empty form feild values
       expect(
-          testMiddleware.received(UpdateOtherAuthOptionsPage(
+          testMiddleware.received(UpdateEmailAuthOptionsPage(
             mode: EmailAuthMode.signUp,
             email: '',
             password: '',
@@ -238,7 +238,7 @@ void main() {
     });
 
     testWidgets(
-        'dispatches UpdateOtherAuthOptionsPage(EmailAuthMode.signIn) action when tap create an account chip, should clear form feild values in redux store',
+        'dispatches UpdateEmailAuthOptionsPage(EmailAuthMode.signIn) action when tap create an account chip, should clear form field values in redux store',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -247,7 +247,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: initialAppState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -261,9 +261,9 @@ void main() {
       // Tap to show create account button
       await tester.tap(emailSigninChip);
 
-      // check correct action is dispatched with empty form feild values
+      // check correct action is dispatched with empty form field values
       expect(
-          testMiddleware.received(UpdateOtherAuthOptionsPage(
+          testMiddleware.received(UpdateEmailAuthOptionsPage(
             mode: EmailAuthMode.signIn,
             email: '',
             password: '',
@@ -272,7 +272,7 @@ void main() {
           true);
     });
 
-    testWidgets('EmailTextField dispatches UpdateOtherAuthOptionsPage action ',
+    testWidgets('EmailTextField dispatches UpdateEmailAuthOptionsPage',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -281,7 +281,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: initialAppState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -298,12 +298,11 @@ void main() {
 
       // check correct action is dispatched
       expect(
-          testMiddleware.received(UpdateOtherAuthOptionsPage(email: testEmail)),
+          testMiddleware.received(UpdateEmailAuthOptionsPage(email: testEmail)),
           true);
     });
 
-    testWidgets(
-        'PasswordTextField dispatches UpdateOtherAuthOptionsPage action',
+    testWidgets('PasswordTextField dispatches UpdateEmailAuthOptionsPage',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -312,7 +311,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: initialAppState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -330,12 +329,11 @@ void main() {
       // check correct action is dispatched
       expect(
           testMiddleware
-              .received(UpdateOtherAuthOptionsPage(password: testPassword)),
+              .received(UpdateEmailAuthOptionsPage(password: testPassword)),
           true);
     });
 
-    testWidgets(
-        'RepeatPasswordTextField dispatches UpdateOtherAuthOptionsPage action',
+    testWidgets('RepeatPasswordTextField dispatches UpdateEmailAuthOptionsPage',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -346,7 +344,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: alteredState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -366,11 +364,11 @@ void main() {
       // check correct action is dispatched
       expect(
           testMiddleware.received(
-              UpdateOtherAuthOptionsPage(repeatPassword: testPassword)),
+              UpdateEmailAuthOptionsPage(repeatPassword: testPassword)),
           true);
     });
 
-    testWidgets('sign in button dispatches SignInWithEmail action',
+    testWidgets('sign in button dispatches SignInWithEmail',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -379,7 +377,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: initialAppState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -397,7 +395,7 @@ void main() {
       expect(testMiddleware.received(SignInWithEmail()), true);
     });
 
-    testWidgets('create account button dispatches SignUpWithEmail action',
+    testWidgets('create account button dispatches SignUpWithEmail',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -408,7 +406,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: alteredState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -436,7 +434,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: alteredState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 

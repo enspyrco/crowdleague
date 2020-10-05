@@ -11,7 +11,7 @@ import 'package:crowdleague/actions/auth/sign_out_user.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
-import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/actions/conversations/disregard_conversations.dart';
 import 'package:crowdleague/actions/conversations/disregard_messages.dart';
@@ -149,7 +149,7 @@ part 'serializers.g.dart';
   StoreUser,
   SystemInfo,
   UpdateNewConversationPage,
-  UpdateOtherAuthOptionsPage,
+  UpdateEmailAuthOptionsPage,
   UpdateProcessingFailure,
   UpdateProfilePage,
   UpdateUploadTask,

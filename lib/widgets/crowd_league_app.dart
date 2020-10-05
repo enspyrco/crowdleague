@@ -11,6 +11,7 @@ import 'package:crowdleague/utils/redux/navigation_info_recorder.dart';
 import 'package:crowdleague/utils/redux/services_bundle.dart';
 import 'package:crowdleague/utils/wrappers/firebase_wrapper.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
+import 'package:crowdleague/widgets/auth/email_auth_options_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
 import 'package:crowdleague/widgets/chats/messages/messages_page.dart';
 import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_page.dart';
@@ -108,6 +109,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
               home: AuthOrMain(), // becomes the route named '/'
               routes: <String, WidgetBuilder>{
                 '/other_auth_options': (context) => OtherAuthOptionsPage(),
+                '/email_auth_options': (context) => EmailAuthOptionsPage(),
                 '/conversation': (context) => MessagesPage(),
                 '/new_conversation': (context) => NewConversationPage(),
                 '/profile': (context) => ProfilePage()
