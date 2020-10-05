@@ -187,8 +187,12 @@ class EmailSignInChip extends StatelessWidget {
         label: Text('SIGN IN'),
         selected: _selected,
         onSelected: (bool selected) {
-          context
-              .dispatch(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signIn));
+          context.dispatch(UpdateEmailAuthOptionsPage(
+            mode: EmailAuthMode.signIn,
+            email: '',
+            password: '',
+            repeatPassword: '',
+          ));
         });
   }
 }
@@ -204,8 +208,12 @@ class EmailSignUpChip extends StatelessWidget {
         label: Text('CREATE'),
         selected: _selected,
         onSelected: (bool selected) {
-          context
-              .dispatch(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signUp));
+          context.dispatch(UpdateEmailAuthOptionsPage(
+            mode: EmailAuthMode.signUp,
+            email: '',
+            password: '',
+            repeatPassword: '',
+          ));
         });
   }
 }
