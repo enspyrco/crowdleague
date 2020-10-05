@@ -66,7 +66,10 @@ class PageContents extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                OtherOptionsButton(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [EmailOptionsButton(), OtherOptionsButton()],
+                ),
               ]),
         ),
       ],
@@ -174,7 +177,41 @@ class OtherOptionsButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Other Sign in Options',
+              'More Options',
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: 'SF Pro',
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EmailOptionsButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ButtonTheme(
+      height: 40.0,
+      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(3.0),
+        side: BorderSide(
+          color: Colors.black,
+        ),
+      ),
+      child: RaisedButton(
+        onPressed: () =>
+            context.dispatch(NavigateTo(location: '/email_auth_options')),
+        color: Colors.white,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Your Email',
               style: TextStyle(
                   fontSize: 16.0,
                   fontFamily: 'SF Pro',
