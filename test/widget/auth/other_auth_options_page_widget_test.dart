@@ -203,7 +203,7 @@ void main() {
     });
 
     testWidgets(
-        'dispatches UpdateOtherAuthOptionsPage(EmailAuthMode.signUp) action when tap sign in with email chip',
+        'dispatches UpdateOtherAuthOptionsPage(EmailAuthMode.signUn) action when tap sign in with email chip. Should clear form field values in redux store ',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -226,15 +226,19 @@ void main() {
       // Tap to show create account button
       await tester.tap(emailSignUpChip);
 
-      // check correct action is dispatched
+      // check correct action is dispatched with empty form feild values
       expect(
-          testMiddleware
-              .received(UpdateOtherAuthOptionsPage(mode: EmailAuthMode.signUp)),
+          testMiddleware.received(UpdateOtherAuthOptionsPage(
+            mode: EmailAuthMode.signUp,
+            email: '',
+            password: '',
+            repeatPassword: '',
+          )),
           true);
     });
 
     testWidgets(
-        'dispatches UpdateOtherAuthOptionsPage(EmailAuthMode.signIn) action when tap create an account chip',
+        'dispatches UpdateOtherAuthOptionsPage(EmailAuthMode.signIn) action when tap create an account chip, should clear form feild values in redux store',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -257,10 +261,14 @@ void main() {
       // Tap to show create account button
       await tester.tap(emailSigninChip);
 
-      // check correct action is dispatched
+      // check correct action is dispatched with empty form feild values
       expect(
-          testMiddleware
-              .received(UpdateOtherAuthOptionsPage(mode: EmailAuthMode.signIn)),
+          testMiddleware.received(UpdateOtherAuthOptionsPage(
+            mode: EmailAuthMode.signIn,
+            email: '',
+            password: '',
+            repeatPassword: '',
+          )),
           true);
     });
 
