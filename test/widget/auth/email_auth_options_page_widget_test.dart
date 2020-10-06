@@ -6,7 +6,6 @@ import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page.dart';
-import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +14,7 @@ import 'package:redux/redux.dart';
 import '../../utils/verify_dispatch_middleware.dart';
 
 void main() {
-  group('OtherAuthOptionsPage', () {
+  group('EmailAuthOptionsPage', () {
     testWidgets('displays without overflowing', (WidgetTester tester) async {
       // passing test indicates no overflowing as test suite uses a small device screen
 
@@ -24,7 +23,7 @@ void main() {
 
       // Create the test harness.
       final store = Store<AppState>(appReducer, initialState: initialAppState);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -32,11 +31,11 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final otherAuthOptionsPage = find.byType(OtherAuthOptionsPage);
+      final emailAuthOptionsPage = find.byType(EmailAuthOptionsPage);
 
       // Use the `findsOneWidget` matcher provided by flutter_test to verify
-      // that OtherAuthOptionsPage is shown
-      expect(otherAuthOptionsPage, findsOneWidget);
+      // that emailAuthOptionsPage is shown
+      expect(emailAuthOptionsPage, findsOneWidget);
     });
 
     testWidgets('shows sign in UI when user taps sign in chip',
