@@ -203,7 +203,7 @@ void main() {
     });
 
     testWidgets(
-        'dispatches UpdateEmailAuthOptionsPage(EmailAuthMode.signUn) action when tap sign in with email chip, should clear form field values in redux store ',
+        'dispatches UpdateEmailAuthOptionsPage(EmailAuthMode.signUp) action when tap create chip ',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -238,7 +238,7 @@ void main() {
     });
 
     testWidgets(
-        'dispatches UpdateEmailAuthOptionsPage(EmailAuthMode.signIn) action when tap create an account chip, should clear form field values in redux store',
+        'dispatches UpdateEmailAuthOptionsPage(EmailAuthMode.signIn) action when tap sign in chip',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -368,8 +368,31 @@ void main() {
           true);
     });
 
+    testWidgets('shows loading indicator when signing in/ signing up',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState = initialAppState.rebuild(
+          (b) => b..otherAuthOptionsPage.step = AuthStep.signingUpWithEmail);
+      final testMiddleware = VerifyDispatchMiddleware();
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer,
+          initialState: alteredState, middleware: [testMiddleware]);
+      final wut = EmailAuthOptionsPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final waitingIndicator = find.byType(CircularProgressIndicator);
+      expect(waitingIndicator, findsOneWidget);
+    });
+
     testWidgets(
-        'After input valid email/password, sign in button dispatches SignInWithEmail action',
+        'After input valid email/password, signInButton dispatches SignInWithEmail action',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -393,12 +416,6 @@ void main() {
       final passwordTextField = find.byType(PasswordTextField);
       expect(passwordTextField, findsOneWidget);
 
-      // Tap to validate empty form
-      await tester.tap(signInButton);
-
-      // Check that empty form is invalid
-      expect(testMiddleware.received(SignInWithEmail()), false);
-
       // Input valid email and password
       await tester.enterText(emailTextField, 'test@email.com');
       await tester.enterText(passwordTextField, 'password123');
@@ -410,32 +427,8 @@ void main() {
       expect(testMiddleware.received(SignInWithEmail()), true);
     });
 
-    testWidgets('shows loading indicator when signing in/ signing up',
-        (WidgetTester tester) async {
-      // Setup the app state with expected values
-      final initialAppState = AppState.init();
-      final alteredState = initialAppState.rebuild(
-          (b) => b..otherAuthOptionsPage.step = AuthStep.signingUpWithEmail);
-      final testMiddleware = VerifyDispatchMiddleware();
-
-      // Create the test harness.
-      final store = Store<AppState>(appReducer,
-          initialState: alteredState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
-      final harness =
-          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
-
-      // Tell the tester to build the widget tree.
-      await tester.pumpWidget(harness);
-
-      // Create the Finders.
-      final waitingIndicator = find.byType(CircularProgressIndicator);
-      expect(waitingIndicator, findsOneWidget);
-    });
-
-    // TODO: test is broken by overflow errors when show invalid formfeild errors on sign up
     testWidgets(
-        'After input valid email/password/repeatPassword, create account button dispatches SignUpWithEmail action',
+        'After input valid email/password/repeatPassword, createAccountButton dispatches SignUpWithEmail action',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -481,7 +474,66 @@ void main() {
       expect(testMiddleware.received(SignUpWithEmail()), true);
     });
 
-    // TODO: test is broken by overflow errors when show invalid formfeild errors on sign up
+    testWidgets(
+        'With no form input, CreateAccountButton does not dispatch SignUpWithEmail action',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState = initialAppState
+          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signUp);
+      final testMiddleware = VerifyDispatchMiddleware();
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer,
+          initialState: alteredState, middleware: [testMiddleware]);
+      final wut = EmailAuthOptionsPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final createAccountButton = find.byType(CreateAccountButton);
+      expect(createAccountButton, findsOneWidget);
+
+      // Tap to validate form
+      await tester.tap(createAccountButton);
+
+      // Check that empty form is invalid
+      expect(testMiddleware.received(SignUpWithEmail()), false);
+    });
+
+    testWidgets(
+        'With no form input, SignInButton does not dispatch SignUpWithEmail action',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState = initialAppState
+          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signIn);
+      final testMiddleware = VerifyDispatchMiddleware();
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer,
+          initialState: alteredState, middleware: [testMiddleware]);
+      final wut = EmailAuthOptionsPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final signInButton = find.byType(SignInButton);
+      expect(signInButton, findsOneWidget);
+
+      // Tap to validate form
+      await tester.tap(signInButton);
+
+      // Check that empty form is invalid
+      expect(testMiddleware.received(SignInWithEmail()), false);
+    });
+
     testWidgets('On sign up, prompt user to correct invalid form feilds',
         (WidgetTester tester) async {
       // Setup the app state with expected values
@@ -540,7 +592,7 @@ void main() {
       // Create the test harness.
       final store = Store<AppState>(appReducer,
           initialState: initialAppState, middleware: [testMiddleware]);
-      final wut = OtherAuthOptionsPage();
+      final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
 
@@ -573,6 +625,9 @@ void main() {
       // check formfield error messages are shown
       expect(invalidEmailText, findsOneWidget);
       expect(invalidPasswordText, findsOneWidget);
+
+      // check sign in button didnt dispatch SignInWithEmail action
+      expect(testMiddleware.received(SignInWithEmail()), false);
     });
   });
 }

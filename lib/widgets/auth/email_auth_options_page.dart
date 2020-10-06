@@ -6,6 +6,7 @@ import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
+import 'package:crowdleague/utils/form_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -37,35 +38,38 @@ class EmailAuthOptionsPage extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            EmailSignInChip(vm.mode == EmailAuthMode.signIn),
-                            EmailSignUpChip(vm.mode == EmailAuthMode.signUp)
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        EmailTextField(),
-                        SizedBox(height: 20),
-                        PasswordTextField(
-                          visible: vm.showPassword,
-                        ),
-                        SizedBox(height: 20),
-                        if (vm.mode == EmailAuthMode.signUp)
-                          RepeatPasswordTextField(
+                    child: Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              EmailSignInChip(vm.mode == EmailAuthMode.signIn),
+                              EmailSignUpChip(vm.mode == EmailAuthMode.signUp)
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          EmailTextField(),
+                          SizedBox(height: 20),
+                          PasswordTextField(
                             visible: vm.showPassword,
                           ),
-                        SizedBox(
-                            height:
-                                50), // TODO: was commented out as hack to do widget test without overlay error
-                        if (vm.mode == EmailAuthMode.signIn) SignInButton(),
-                        if (vm.mode == EmailAuthMode.signUp)
-                          CreateAccountButton(),
-                      ],
+                          SizedBox(height: 20),
+                          if (vm.mode == EmailAuthMode.signUp)
+                            RepeatPasswordTextField(
+                              visible: vm.showPassword,
+                              password: vm.password,
+                            ),
+                          SizedBox(
+                              height:
+                                  50), // TODO: was commented out as hack to do widget test without overlay error
+                          if (vm.mode == EmailAuthMode.signIn) SignInButton(),
+                          if (vm.mode == EmailAuthMode.signUp)
+                            CreateAccountButton(),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -85,7 +89,15 @@ class EmailTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value.isEmpty) {
+            'please enter email';
+          } else if (!validEmail(value)) {
+            return 'please enter a valid email';
+          }
+          return null;
+        },
         onChanged: (value) {
           context.dispatch(UpdateEmailAuthOptionsPage(email: value));
         },
@@ -111,7 +123,15 @@ class PasswordTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value.isEmpty) {
+            'please enter password';
+          } else if (!validPassword(value)) {
+            return 'password must be between 6 and 30 characters';
+          }
+          return null;
+        },
         obscureText: !visible,
         onChanged: (value) =>
             context.dispatch(UpdateEmailAuthOptionsPage(password: value)),
@@ -130,17 +150,27 @@ class PasswordTextField extends StatelessWidget {
 
 class RepeatPasswordTextField extends StatelessWidget {
   final bool visible;
+  final String password;
 
   const RepeatPasswordTextField({
     Key key,
     this.visible,
+    this.password,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'please enter password';
+          } else if (!validRepeatPassword(value, password)) {
+            return 'passwords do not match';
+          }
+          return null;
+        },
         obscureText: !visible,
         onChanged: (value) =>
             context.dispatch(UpdateEmailAuthOptionsPage(repeatPassword: value)),
@@ -187,6 +217,7 @@ class EmailSignInChip extends StatelessWidget {
         label: Text('SIGN IN'),
         selected: _selected,
         onSelected: (bool selected) {
+          Form.of(context).reset();
           context.dispatch(UpdateEmailAuthOptionsPage(
             mode: EmailAuthMode.signIn,
             email: '',
@@ -208,6 +239,7 @@ class EmailSignUpChip extends StatelessWidget {
         label: Text('CREATE'),
         selected: _selected,
         onSelected: (bool selected) {
+          Form.of(context).reset();
           context.dispatch(UpdateEmailAuthOptionsPage(
             mode: EmailAuthMode.signUp,
             email: '',
@@ -232,7 +264,9 @@ class SignInButton extends StatelessWidget {
       ),
       child: RaisedButton(
         onPressed: () {
-          context.dispatch(SignInWithEmail());
+          if (Form.of(context).validate()) {
+            context.dispatch(SignInWithEmail());
+          }
         },
         color: Colors.white,
         child: Row(
@@ -267,7 +301,9 @@ class CreateAccountButton extends StatelessWidget {
       ),
       child: RaisedButton(
         onPressed: () {
-          context.dispatch(SignUpWithEmail());
+          if (Form.of(context).validate()) {
+            context.dispatch(SignUpWithEmail());
+          }
         },
         color: Colors.white,
         child: Row(
