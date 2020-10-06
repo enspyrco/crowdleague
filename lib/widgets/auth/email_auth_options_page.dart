@@ -92,11 +92,12 @@ class EmailTextField extends StatelessWidget {
       child: TextFormField(
         validator: (value) {
           if (value.isEmpty) {
-            'please enter email';
+            return 'please enter email';
           } else if (!validEmail(value)) {
             return 'please enter a valid email';
+          } else {
+            return null;
           }
-          return null;
         },
         onChanged: (value) {
           context.dispatch(UpdateEmailAuthOptionsPage(email: value));
@@ -126,11 +127,12 @@ class PasswordTextField extends StatelessWidget {
       child: TextFormField(
         validator: (value) {
           if (value.isEmpty) {
-            'please enter password';
+            return 'please enter password';
           } else if (!validPassword(value)) {
             return 'password must be between 6 and 30 characters';
+          } else {
+            return null;
           }
-          return null;
         },
         obscureText: !visible,
         onChanged: (value) =>
@@ -168,8 +170,9 @@ class RepeatPasswordTextField extends StatelessWidget {
             return 'please enter password';
           } else if (!validRepeatPassword(value, password)) {
             return 'passwords do not match';
+          } else {
+            return null;
           }
-          return null;
         },
         obscureText: !visible,
         onChanged: (value) =>

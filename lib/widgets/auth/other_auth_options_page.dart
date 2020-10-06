@@ -1,7 +1,6 @@
 import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
-import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:flutter/material.dart';
