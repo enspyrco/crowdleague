@@ -15,8 +15,9 @@ class SignUpWithEmailMiddleware
           store.dispatch(
               UpdateOtherAuthOptionsPage(step: AuthStep.signingUpWithEmail));
 
+          // TODO: convert to async await style
           // attempt sign up then dispatch resulting action
-          authService
+          await authService
               .signUpWithEmail(store.state.otherAuthOptionsPage.email,
                   store.state.otherAuthOptionsPage.password)
               .then<dynamic>(store.dispatch)

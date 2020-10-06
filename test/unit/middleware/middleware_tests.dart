@@ -3,18 +3,18 @@
 
 // void main() {
 //   group('Middleware', () {
-//     test('_observeAuthState listens to stream and emits actions', () async {
-//       // setup a mock auth service to give a test response
-//       final mockAuthService = MockAuthService();
-//       when(mockAuthService.streamOfStateChanges).thenAnswer(
-//         (_) => Stream.fromIterable([
-//           StoreUser((b) => b.user
-//             ..uid = 'id'
-//             ..email = 'email'
-//             ..displayName = 'name'
-//             ..photoUrl = 'url')
-//         ]),
-//       );
+// test('_observeAuthState listens to stream and emits actions', () async {
+//   // setup a mock auth service to give a test response
+//   final mockAuthService = MockAuthService();
+//   when(mockAuthService.streamOfStateChanges).thenAnswer(
+//     (_) => Stream.fromIterable([
+//       StoreUser((b) => b.user
+//         ..uid = 'id'
+//         ..email = 'email'
+//         ..displayName = 'name'
+//         ..photoUrl = 'url')
+//     ]),
+//   );
 
 //       // create a basic store with the mocked out middleware
 //       final store = Store<AppState>(
