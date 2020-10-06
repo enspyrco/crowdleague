@@ -62,9 +62,7 @@ class EmailAuthOptionsPage extends StatelessWidget {
                               visible: vm.showPassword,
                               password: vm.password,
                             ),
-                          SizedBox(
-                              height:
-                                  50), // TODO: was commented out as hack to do widget test without overlay error
+                          SizedBox(height: 50),
                           if (vm.mode == EmailAuthMode.signIn) SignInButton(),
                           if (vm.mode == EmailAuthMode.signUp)
                             CreateAccountButton(),
