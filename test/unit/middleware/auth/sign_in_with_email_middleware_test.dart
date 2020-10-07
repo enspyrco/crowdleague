@@ -1,4 +1,5 @@
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
+import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/actions/device/check_platform.dart';
 import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/enums/auth_step.dart';
@@ -44,21 +45,23 @@ void main() {
           store.state.otherAuthOptionsPage.step, AuthStep.signingInWithEmail);
     });
 
+    // TODO: check for dispatched actions by passing a mock store and verifying store.dispatch(action)
     test('on successfull sign in, dispatches Navigator.popAll action',
         () async {
-      // init fakes
-      final fakeFirebaseAuth = FakeFirebaseAuth1();
-      final fakeGoogleSignIn = FakeGoogleSignIn();
-      final fakeAppleSignIn = FakeAppleSignIn();
-      final authService =
-          AuthService(fakeFirebaseAuth, fakeGoogleSignIn, fakeAppleSignIn);
-
+      final fakeAuthService = FakeAuthService();
       final testMiddleware = VerifyDispatchMiddleware();
+      final signInWithEmailMiddleware =
+          SignInWithEmailMiddleware(fakeAuthService);
 
       // create a basic store with mocked out middleware
       final store = Store<AppState>(appReducer,
           initialState: AppState.init(),
-          middleware: [SignInWithEmailMiddleware(authService), testMiddleware]);
+          middleware: [
+            testMiddleware,
+            signInWithEmailMiddleware,
+          ]);
+
+      signInWithEmailMiddleware(store, action, (action) => null);
 
       // initial state
       expect(store.state.problems.isEmpty, true);
@@ -66,7 +69,11 @@ void main() {
       // dispatch action to test middleware
       store.dispatch(SignInWithEmail());
 
-      // check that correct action is dispatched
+      // check that we are setting ui to loading indicator
+      expect(
+          testMiddleware.received(
+              UpdateOtherAuthOptionsPage(step: AuthStep.signingInWithEmail)),
+          true);
       expect(testMiddleware.received(NavigatorPopAll()), true);
     });
 
