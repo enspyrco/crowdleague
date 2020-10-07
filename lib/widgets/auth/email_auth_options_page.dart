@@ -165,7 +165,7 @@ class RepeatPasswordTextField extends StatelessWidget {
       child: TextFormField(
         validator: (value) {
           if (value.isEmpty) {
-            return 'please enter password';
+            return 'please enter password again';
           } else if (!validRepeatPassword(value, password)) {
             return 'passwords do not match';
           } else {

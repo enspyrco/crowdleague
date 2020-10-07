@@ -367,7 +367,7 @@ void main() {
     });
 
     testWidgets(
-        'With no form input, CreateAccountButton does not dispatch SignUpWithEmail action',
+        'With no form input, CreateAccountButton shows validation errors',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -389,25 +389,39 @@ void main() {
       final createAccountButton = find.byType(CreateAccountButton);
       expect(createAccountButton, findsOneWidget);
 
+      final emptyEmailFieldError = find.text('please enter email');
+      final emptyPasswordFieldError = find.text('please enter password');
+      final emptyRepeatPasswordFieldError =
+          find.text('please enter password again');
+      expect(emptyEmailFieldError, findsNothing);
+      expect(emptyPasswordFieldError, findsNothing);
+      expect(emptyRepeatPasswordFieldError, findsNothing);
+
       // Tap to validate form
       await tester.tap(createAccountButton);
 
-      // Check that empty form is invalid
+      // Wait for changes to show
+      await tester.pumpAndSettle();
+
+      // Check that form shows validation error messages
+      expect(emptyEmailFieldError, findsOneWidget);
+      expect(emptyPasswordFieldError, findsOneWidget);
+      expect(emptyRepeatPasswordFieldError, findsOneWidget);
+
+      // Check that SignUpWithEmail action does not get called
       expect(testMiddleware.received(SignUpWithEmail()), false);
     });
 
     testWidgets(
-        'With no form input, SignInButton does not dispatch SignUpWithEmail action',
+        'With no input in form fields, on tap sign in shows validation errors',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
-      final alteredState = initialAppState
-          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signIn);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
       final store = Store<AppState>(appReducer,
-          initialState: alteredState, middleware: [testMiddleware]);
+          initialState: initialAppState, middleware: [testMiddleware]);
       final wut = EmailAuthOptionsPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
@@ -418,11 +432,22 @@ void main() {
       // Create the Finders.
       final signInButton = find.byType(SignInButton);
       expect(signInButton, findsOneWidget);
+      final emptyEmailFieldError = find.text('please enter email');
+      final emptyPasswordFieldError = find.text('please enter password');
+      expect(emptyEmailFieldError, findsNothing);
+      expect(emptyPasswordFieldError, findsNothing);
 
       // Tap to validate form
       await tester.tap(signInButton);
 
-      // Check that empty form is invalid
+      // Wait for changes to show
+      await tester.pumpAndSettle();
+
+      // Check that form shows validation error messages
+      expect(emptyEmailFieldError, findsOneWidget);
+      expect(emptyPasswordFieldError, findsOneWidget);
+
+      // Check that SignInWithEmail action does not get called
       expect(testMiddleware.received(SignInWithEmail()), false);
     });
 
@@ -520,6 +545,64 @@ void main() {
 
       // check sign in button didnt dispatch SignInWithEmail action
       expect(testMiddleware.received(SignInWithEmail()), false);
+    });
+
+    testWidgets(
+        'After tap sign in with invalid details, form autovalidates on user input',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final testMiddleware = VerifyDispatchMiddleware();
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer,
+          initialState: initialAppState, middleware: [testMiddleware]);
+      final wut = EmailAuthOptionsPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final signInButton = find.byType(SignInButton);
+      expect(signInButton, findsOneWidget);
+      final emailTextField = find.byType(EmailTextField);
+      expect(emailTextField, findsOneWidget);
+      final passwordTextField = find.byType(PasswordTextField);
+      expect(passwordTextField, findsOneWidget);
+
+      // invalid fields finders
+      final invalidEmailText = find.text('please enter a valid email');
+      final invalidPasswordText =
+          find.text('password must be between 6 and 30 characters');
+      expect(invalidEmailText, findsNothing);
+      expect(invalidPasswordText, findsNothing);
+
+      // input invalid details
+      await tester.enterText(emailTextField, 'invalid_email');
+      await tester.enterText(passwordTextField, '123');
+
+      // submit invalid form
+      await tester.tap(signInButton);
+
+      // wait for changes to show
+      await tester.pumpAndSettle();
+
+      // check formfield error messages are shown
+      expect(invalidEmailText, findsOneWidget);
+      expect(invalidPasswordText, findsOneWidget);
+
+      // input valid details
+      await tester.enterText(emailTextField, 'valid@email.com');
+      await tester.enterText(passwordTextField, 'validPassword');
+
+      // autovalidation removes error messages
+      await tester.pumpAndSettle();
+
+      // check error messages are gone
+      expect(invalidEmailText, findsNothing);
+      expect(invalidPasswordText, findsNothing);
     });
   });
 }

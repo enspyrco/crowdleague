@@ -1,3 +1,4 @@
+// Regex pattern from https://stackoverflow.com/questions/59646163/email-validation-not-working-in-flutter-display-message-even-if-email-address-is
 final emailPattern =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 final validEmail = (String email) => RegExp(emailPattern).hasMatch(email);
