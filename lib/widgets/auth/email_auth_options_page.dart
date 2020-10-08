@@ -157,12 +157,7 @@ class PasswordTextField extends StatelessWidget {
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
           ),
-          errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0),
-              borderSide: BorderSide(color: Colors.red)),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0),
-              borderSide: BorderSide(color: Colors.green)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           labelText: 'Password',
         ),
