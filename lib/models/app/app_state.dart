@@ -12,7 +12,7 @@ import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/app/system_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
-import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
+import 'package:crowdleague/models/auth/vm_email_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/conversation/vm_conversation_page.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.dart';
@@ -34,7 +34,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   NavBarSelection get navBarSelection;
   BuiltMap<String, UploadTask> get uploadTasksMap;
   BuiltList<RouteInfo> get routes;
-  VmOtherAuthOptionsPage get otherAuthOptionsPage;
+  VmEmailAuthOptionsPage get emailAuthOptionsPage;
   VmAuthPage get authPage;
   VmConversationSummariesPage get conversationSummariesPage;
   VmConversationPage get conversationPage;
@@ -48,7 +48,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
     ..navBarSelection = NavBarSelection.home
     ..settings = Settings.initBuilder()
     ..authPage = VmAuthPage.initBuilder()
-    ..otherAuthOptionsPage = VmOtherAuthOptionsPage.initBuilder()
+    ..emailAuthOptionsPage = VmEmailAuthOptionsPage.initBuilder()
     ..newConversationsPage = VmNewConversationPage.initBuilder()
     ..profilePage = VmProfilePage.initBuilder()
     ..conversationPage.messageText = '');

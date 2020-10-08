@@ -17,8 +17,8 @@ class SignUpWithEmailMiddleware
 
           // attempt sign up then dispatch resulting action
           authService
-              .signUpWithEmail(store.state.otherAuthOptionsPage.email,
-                  store.state.otherAuthOptionsPage.password)
+              .signUpWithEmail(store.state.emailAuthOptionsPage.email,
+                  store.state.emailAuthOptionsPage.password)
               .then<dynamic>(store.dispatch)
               .whenComplete(() => store.dispatch(
                   UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput)));
