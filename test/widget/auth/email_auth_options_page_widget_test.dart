@@ -2,6 +2,7 @@ import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auto_validate.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
@@ -43,7 +44,7 @@ void main() {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
       final alteredState = initialAppState
-          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signIn);
+          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signIn);
 
       // Create the test harness.
       final store = Store<AppState>(appReducer, initialState: alteredState);
@@ -73,7 +74,7 @@ void main() {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
       final alteredState = initialAppState
-          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signUp);
+          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
 
       // Create the test harness.
       final store = Store<AppState>(appReducer, initialState: alteredState);
@@ -95,7 +96,7 @@ void main() {
     });
 
     testWidgets(
-        'dispatches UpdateEmailAuthOptionsPage(EmailAuthMode.signUp) action when tap create chip ',
+        'dispatches UpdateEmailAuthOptionsPage action when tap create chip ',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -125,12 +126,13 @@ void main() {
             email: '',
             password: '',
             repeatPassword: '',
+            autovalidate: AutoValidate.disabled,
           )),
           true);
     });
 
     testWidgets(
-        'dispatches UpdateEmailAuthOptionsPage(EmailAuthMode.signIn) action when tap sign in chip',
+        'dispatches UpdateEmailAuthOptionsPage action when tap sign in chip',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -160,6 +162,7 @@ void main() {
             email: '',
             password: '',
             repeatPassword: '',
+            autovalidate: AutoValidate.disabled,
           )),
           true);
     });
@@ -230,7 +233,7 @@ void main() {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
       final alteredState = initialAppState
-          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signUp);
+          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
@@ -265,7 +268,7 @@ void main() {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
       final alteredState = initialAppState.rebuild(
-          (b) => b..otherAuthOptionsPage.step = AuthStep.signingUpWithEmail);
+          (b) => b..emailAuthOptionsPage.step = AuthStep.signingUpWithEmail);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
@@ -325,7 +328,7 @@ void main() {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
       final alteredState = initialAppState
-          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signUp);
+          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
@@ -372,7 +375,7 @@ void main() {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
       final alteredState = initialAppState
-          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signUp);
+          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
@@ -456,7 +459,7 @@ void main() {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
       final alteredState = initialAppState
-          .rebuild((b) => b..otherAuthOptionsPage.mode = EmailAuthMode.signUp);
+          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
@@ -603,6 +606,73 @@ void main() {
       // check error messages are gone
       expect(invalidEmailText, findsNothing);
       expect(invalidPasswordText, findsNothing);
+    });
+    testWidgets(
+        'After tap create account with invalid details, form autovalidates on user input',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState = initialAppState
+          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
+      final testMiddleware = VerifyDispatchMiddleware();
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer,
+          initialState: alteredState, middleware: [testMiddleware]);
+      final wut = EmailAuthOptionsPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final createAccountButton = find.byType(CreateAccountButton);
+      expect(createAccountButton, findsOneWidget);
+      final emailTextField = find.byType(EmailTextField);
+      expect(emailTextField, findsOneWidget);
+      final passwordTextField = find.byType(PasswordTextField);
+      expect(passwordTextField, findsOneWidget);
+      final repeatPasswordTextField = find.byType(RepeatPasswordTextField);
+      expect(repeatPasswordTextField, findsOneWidget);
+
+      // invalid fields finders
+      final invalidEmailText = find.text('please enter a valid email');
+      final invalidPasswordText =
+          find.text('password must be between 6 and 30 characters');
+      final invalidRepeatPasswordText = find.text('passwords do not match');
+      expect(invalidEmailText, findsNothing);
+      expect(invalidPasswordText, findsNothing);
+      expect(invalidRepeatPasswordText, findsNothing);
+
+      // input invalid details
+      await tester.enterText(emailTextField, 'invalid_email');
+      await tester.enterText(passwordTextField, '123');
+      await tester.enterText(repeatPasswordTextField, '0');
+
+      // submit invalid form
+      await tester.tap(createAccountButton);
+
+      // wait for changes to show
+      await tester.pumpAndSettle();
+
+      // check formfield error messages are shown
+      expect(invalidEmailText, findsOneWidget);
+      expect(invalidPasswordText, findsOneWidget);
+      expect(invalidRepeatPasswordText, findsOneWidget);
+
+      // input valid details
+      await tester.enterText(emailTextField, 'valid@email.com');
+      await tester.enterText(passwordTextField, 'validPassword');
+      await tester.enterText(repeatPasswordTextField, 'validPassword');
+
+      // autovalidation removes error messages
+      await tester.pumpAndSettle();
+
+      // check error messages are gone
+      expect(invalidEmailText, findsNothing);
+      expect(invalidPasswordText, findsNothing);
+      expect(invalidRepeatPasswordText, findsNothing);
     });
   });
 }

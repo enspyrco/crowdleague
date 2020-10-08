@@ -2,13 +2,16 @@ import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auto_validate.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
+import 'package:crowdleague/models/auth/vm_email_auth_options_page.dart';
 import 'package:crowdleague/utils/form_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+
+import 'package:crowdleague/extensions/extensions.dart';
 
 class EmailAuthOptionsPage extends StatelessWidget {
   const EmailAuthOptionsPage({
@@ -25,9 +28,9 @@ class EmailAuthOptionsPage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        body: StoreConnector<AppState, VmOtherAuthOptionsPage>(
+        body: StoreConnector<AppState, VmEmailAuthOptionsPage>(
           distinct: true,
-          converter: (store) => store.state.otherAuthOptionsPage,
+          converter: (store) => store.state.emailAuthOptionsPage,
           builder: (context, vm) {
             if (vm.step != AuthStep.waitingForInput) {
               return Center(child: CircularProgressIndicator());
@@ -51,16 +54,22 @@ class EmailAuthOptionsPage extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: 20),
-                          EmailTextField(),
+                          EmailTextField(
+                            autovalidateMode:
+                                vm.autovalidate.toAutovalidateMode(),
+                          ),
                           SizedBox(height: 20),
                           PasswordTextField(
-                            visible: vm.showPassword,
-                          ),
+                              visible: vm.showPassword,
+                              autovalidateMode:
+                                  vm.autovalidate.toAutovalidateMode()),
                           SizedBox(height: 20),
                           if (vm.mode == EmailAuthMode.signUp)
                             RepeatPasswordTextField(
                               visible: vm.showPassword,
                               password: vm.password,
+                              autovalidateMode:
+                                  vm.autovalidate.toAutovalidateMode(),
                             ),
                           SizedBox(height: 50),
                           if (vm.mode == EmailAuthMode.signIn) SignInButton(),
@@ -79,8 +88,11 @@ class EmailAuthOptionsPage extends StatelessWidget {
 }
 
 class EmailTextField extends StatelessWidget {
+  final AutovalidateMode autovalidateMode;
+
   const EmailTextField({
     Key key,
+    @required this.autovalidateMode,
   }) : super(key: key);
 
   @override
@@ -97,8 +109,11 @@ class EmailTextField extends StatelessWidget {
             return null;
           }
         },
+        autovalidateMode: autovalidateMode,
         onChanged: (value) {
-          context.dispatch(UpdateEmailAuthOptionsPage(email: value));
+          context.dispatch(UpdateEmailAuthOptionsPage(
+            email: value,
+          ));
         },
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
@@ -112,10 +127,12 @@ class EmailTextField extends StatelessWidget {
 
 class PasswordTextField extends StatelessWidget {
   final bool visible;
+  final AutovalidateMode autovalidateMode;
 
   const PasswordTextField({
     Key key,
-    this.visible,
+    @required this.visible,
+    @required this.autovalidateMode,
   }) : super(key: key);
 
   @override
@@ -132,6 +149,7 @@ class PasswordTextField extends StatelessWidget {
             return null;
           }
         },
+        autovalidateMode: autovalidateMode,
         obscureText: !visible,
         onChanged: (value) =>
             context.dispatch(UpdateEmailAuthOptionsPage(password: value)),
@@ -139,7 +157,12 @@ class PasswordTextField extends StatelessWidget {
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
           ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              borderSide: BorderSide(color: Colors.red)),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              borderSide: BorderSide(color: Colors.green)),
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           labelText: 'Password',
         ),
@@ -151,11 +174,13 @@ class PasswordTextField extends StatelessWidget {
 class RepeatPasswordTextField extends StatelessWidget {
   final bool visible;
   final String password;
+  final AutovalidateMode autovalidateMode;
 
   const RepeatPasswordTextField({
     Key key,
-    this.visible,
-    this.password,
+    @required this.visible,
+    @required this.password,
+    @required this.autovalidateMode,
   }) : super(key: key);
 
   @override
@@ -173,13 +198,19 @@ class RepeatPasswordTextField extends StatelessWidget {
           }
         },
         obscureText: !visible,
+        autovalidateMode: autovalidateMode,
         onChanged: (value) =>
             context.dispatch(UpdateEmailAuthOptionsPage(repeatPassword: value)),
         decoration: InputDecoration(
           suffixIcon: PasswordSuffixIconButton(
             visible: visible,
           ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              borderSide: BorderSide(color: Colors.red)),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              borderSide: BorderSide(color: Colors.green)),
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           labelText: 'Repeat Password',
         ),
@@ -224,6 +255,7 @@ class EmailSignInChip extends StatelessWidget {
             email: '',
             password: '',
             repeatPassword: '',
+            autovalidate: AutoValidate.disabled,
           ));
         });
   }
@@ -246,6 +278,7 @@ class EmailSignUpChip extends StatelessWidget {
             email: '',
             password: '',
             repeatPassword: '',
+            autovalidate: AutoValidate.disabled,
           ));
         });
   }
@@ -267,6 +300,12 @@ class SignInButton extends StatelessWidget {
         onPressed: () {
           if (Form.of(context).validate()) {
             context.dispatch(SignInWithEmail());
+          } else if (!Form.of(context).validate()) {
+            // set form to autovalidate on user input
+            // validation would else occur only on form submit
+            context.dispatch(UpdateEmailAuthOptionsPage(
+              autovalidate: AutoValidate.onUserInteraction,
+            ));
           }
         },
         color: Colors.white,
@@ -304,6 +343,12 @@ class CreateAccountButton extends StatelessWidget {
         onPressed: () {
           if (Form.of(context).validate()) {
             context.dispatch(SignUpWithEmail());
+          } else if (!Form.of(context).validate()) {
+            // set form to autovalidate on user input
+            // validation would else occur only on form submit
+            context.dispatch(UpdateEmailAuthOptionsPage(
+              autovalidate: AutoValidate.onUserInteraction,
+            ));
           }
         },
         color: Colors.white,
