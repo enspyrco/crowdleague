@@ -1,4 +1,4 @@
-import 'package:crowdleague/actions/themes/store_theme_colors.dart';
+import 'package:crowdleague/actions/settings/store_theme_colors.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:redux/redux.dart';
 
