@@ -22,9 +22,9 @@ import 'package:crowdleague/reducers/profile/delete_profile_pic.dart';
 import 'package:crowdleague/reducers/profile/pick_profile_pic.dart';
 import 'package:crowdleague/reducers/profile/store_profile_pics.dart';
 import 'package:crowdleague/reducers/profile/update_profile_page.dart';
+import 'package:crowdleague/reducers/settings/store_brightness_mode.dart';
+import 'package:crowdleague/reducers/settings/store_theme_colors.dart';
 import 'package:crowdleague/reducers/storage/update_upload_task.dart';
-import 'package:crowdleague/reducers/themes/store_brightness_mode.dart';
-import 'package:crowdleague/reducers/themes/store_theme_colors.dart';
 import 'package:redux/redux.dart';
 
 /// Reducers specify how the application's state changes in response to actions

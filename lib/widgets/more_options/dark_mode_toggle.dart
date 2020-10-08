@@ -1,5 +1,5 @@
-import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
-import 'package:crowdleague/enums/themes/brightness_mode.dart';
+import 'package:crowdleague/actions/settings/store_brightness_mode.dart';
+import 'package:crowdleague/enums/settings/brightness_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 

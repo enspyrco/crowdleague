@@ -52,9 +52,9 @@ import 'package:crowdleague/actions/profile/select_profile_pic.dart';
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/actions/profile/upload_profile_pic.dart';
+import 'package:crowdleague/actions/settings/store_brightness_mode.dart';
+import 'package:crowdleague/actions/settings/store_theme_colors.dart';
 import 'package:crowdleague/actions/storage/update_upload_task.dart';
-import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
-import 'package:crowdleague/actions/themes/store_theme_colors.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/auto_validate.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
@@ -63,13 +63,12 @@ import 'package:crowdleague/enums/nav_bar_selection.dart';
 import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/enums/processing_failure_type.dart';
+import 'package:crowdleague/enums/settings/brightness_mode.dart';
+import 'package:crowdleague/enums/settings/theme_brightness.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
-import 'package:crowdleague/enums/themes/brightness_mode.dart';
-import 'package:crowdleague/enums/themes/theme_brightness.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/app/problem.dart';
-import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/app/system_info.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
@@ -87,10 +86,11 @@ import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
+import 'package:crowdleague/models/settings/settings.dart';
+import 'package:crowdleague/models/settings/theme_colors.dart';
+import 'package:crowdleague/models/settings/theme_set.dart';
 import 'package:crowdleague/models/storage/upload_failure.dart';
 import 'package:crowdleague/models/storage/upload_task.dart';
-import 'package:crowdleague/models/themes/theme_colors.dart';
-import 'package:crowdleague/models/themes/theme_set.dart';
 
 part 'serializers.g.dart';
 
@@ -102,6 +102,7 @@ part 'serializers.g.dart';
   AddProblem,
   AppState,
   AutoValidate,
+  BrightnessMode,
   CheckPlatform,
   ClearUserData,
   CreateConversation,
@@ -150,6 +151,7 @@ part 'serializers.g.dart';
   StoreThemeColors,
   StoreUser,
   SystemInfo,
+  ThemeBrightness,
   UpdateNewConversationPage,
   UpdateEmailAuthOptionsPage,
   UpdateProcessingFailure,

@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/enums/themes/brightness_mode.dart';
+import 'package:crowdleague/enums/settings/brightness_mode.dart';
 import 'package:crowdleague/utils/serializers.dart';
 import 'package:meta/meta.dart';
 
