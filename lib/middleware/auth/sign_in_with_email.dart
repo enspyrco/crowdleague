@@ -18,8 +18,8 @@ class SignInWithEmailMiddleware
           // attempt sign in then dispatch resulting action
           final dismissAuthPageOrDisplayProblem =
               await authService.signInWithEmail(
-                  store.state.otherAuthOptionsPage.email,
-                  store.state.otherAuthOptionsPage.password);
+                  store.state.emailAuthOptionsPage.email,
+                  store.state.emailAuthOptionsPage.password);
 
           store.dispatch(dismissAuthPageOrDisplayProblem);
 

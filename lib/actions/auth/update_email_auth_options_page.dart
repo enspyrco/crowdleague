@@ -6,6 +6,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auto_validate.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/utils/serializers.dart';
 
@@ -27,16 +28,20 @@ abstract class UpdateEmailAuthOptionsPage extends Object
   String get password;
   @nullable
   String get repeatPassword;
+  @nullable
+  AutoValidate get autovalidate;
 
   UpdateEmailAuthOptionsPage._();
 
-  factory UpdateEmailAuthOptionsPage(
-      {EmailAuthMode mode,
-      AuthStep step,
-      bool showPassword,
-      String email,
-      String password,
-      String repeatPassword}) = _$UpdateEmailAuthOptionsPage._;
+  factory UpdateEmailAuthOptionsPage({
+    EmailAuthMode mode,
+    AuthStep step,
+    bool showPassword,
+    String email,
+    String password,
+    String repeatPassword,
+    AutoValidate autovalidate,
+  }) = _$UpdateEmailAuthOptionsPage._;
 
   factory UpdateEmailAuthOptionsPage.by(
           [void Function(UpdateEmailAuthOptionsPageBuilder) updates]) =

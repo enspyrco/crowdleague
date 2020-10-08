@@ -7,3 +7,4 @@ export 'document_snapshot_extensions.dart';
 export 'firestore_extensions.dart';
 export 'built_value_extensions.dart';
 export 'storage_task_snapshot_extensions.dart';
+export 'auto_validate_extensions.dart';

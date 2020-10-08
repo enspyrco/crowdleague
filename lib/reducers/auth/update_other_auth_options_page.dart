@@ -9,17 +9,19 @@ class UpdateEmailAuthOptionsPageReducer
     extends TypedReducer<AppState, UpdateEmailAuthOptionsPage> {
   UpdateEmailAuthOptionsPageReducer()
       : super((state, action) => state.rebuild((a) {
-              a.otherAuthOptionsPage.mode =
-                  action.mode ?? a.otherAuthOptionsPage.mode;
-              a.otherAuthOptionsPage.showPassword =
-                  action.showPassword ?? a.otherAuthOptionsPage.showPassword;
-              a.otherAuthOptionsPage.step =
-                  action.step ?? a.otherAuthOptionsPage.step;
-              a.otherAuthOptionsPage.email =
-                  action.email ?? a.otherAuthOptionsPage.email;
-              a.otherAuthOptionsPage.password =
-                  action.password ?? a.otherAuthOptionsPage.password;
-              a.otherAuthOptionsPage.repeatPassword = action.repeatPassword ??
-                  a.otherAuthOptionsPage.repeatPassword;
+              a.emailAuthOptionsPage.mode =
+                  action.mode ?? a.emailAuthOptionsPage.mode;
+              a.emailAuthOptionsPage.showPassword =
+                  action.showPassword ?? a.emailAuthOptionsPage.showPassword;
+              a.emailAuthOptionsPage.step =
+                  action.step ?? a.emailAuthOptionsPage.step;
+              a.emailAuthOptionsPage.email =
+                  action.email ?? a.emailAuthOptionsPage.email;
+              a.emailAuthOptionsPage.password =
+                  action.password ?? a.emailAuthOptionsPage.password;
+              a.emailAuthOptionsPage.repeatPassword = action.repeatPassword ??
+                  a.emailAuthOptionsPage.repeatPassword;
+              a.emailAuthOptionsPage.autovalidate =
+                  action.autovalidate ?? a.emailAuthOptionsPage.autovalidate;
             }));
 }
