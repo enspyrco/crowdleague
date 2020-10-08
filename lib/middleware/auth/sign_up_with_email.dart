@@ -1,5 +1,5 @@
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
-import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
@@ -13,15 +13,15 @@ class SignUpWithEmailMiddleware
 
           // set the UI to waiting
           store.dispatch(
-              UpdateOtherAuthOptionsPage(step: AuthStep.signingUpWithEmail));
+              UpdateEmailAuthOptionsPage(step: AuthStep.signingUpWithEmail));
 
           // TODO: convert to async await style
           // attempt sign up then dispatch resulting action
-          await authService
-              .signUpWithEmail(store.state.otherAuthOptionsPage.email,
-                  store.state.otherAuthOptionsPage.password)
+          authService
+              .signUpWithEmail(store.state.emailAuthOptionsPage.email,
+                  store.state.emailAuthOptionsPage.password)
               .then<dynamic>(store.dispatch)
               .whenComplete(() => store.dispatch(
-                  UpdateOtherAuthOptionsPage(step: AuthStep.waitingForInput)));
+                  UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput)));
         });
 }

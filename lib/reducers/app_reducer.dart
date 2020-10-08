@@ -35,7 +35,7 @@ final appReducer =
   ClearUserDataReducer(),
   StoreAuthStepReducer(),
   StoreUserReducer(),
-  UpdateOtherAuthOptionsPageReducer(),
+  UpdateEmailAuthOptionsPageReducer(),
   // Conversations
   LeaveConversationReducer(),
   StoreConversationsReducer(),

@@ -11,7 +11,7 @@ import 'package:crowdleague/actions/auth/sign_out_user.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
-import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/actions/conversations/disregard_conversations.dart';
 import 'package:crowdleague/actions/conversations/disregard_messages.dart';
@@ -56,6 +56,7 @@ import 'package:crowdleague/actions/storage/update_upload_task.dart';
 import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
 import 'package:crowdleague/actions/themes/store_theme_colors.dart';
 import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auto_validate.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
 import 'package:crowdleague/enums/nav_bar_selection.dart';
@@ -73,7 +74,7 @@ import 'package:crowdleague/models/app/system_info.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
-import 'package:crowdleague/models/auth/vm_other_auth_options_page.dart';
+import 'package:crowdleague/models/auth/vm_email_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation/vm_conversation_page.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
@@ -100,6 +101,7 @@ part 'serializers.g.dart';
 @SerializersFor([
   AddProblem,
   AppState,
+  AutoValidate,
   CheckPlatform,
   ClearUserData,
   CreateConversation,
@@ -149,11 +151,12 @@ part 'serializers.g.dart';
   StoreUser,
   SystemInfo,
   UpdateNewConversationPage,
-  UpdateOtherAuthOptionsPage,
+  UpdateEmailAuthOptionsPage,
   UpdateProcessingFailure,
   UpdateProfilePage,
   UpdateUploadTask,
   UploadProfilePic,
+  VmEmailAuthOptionsPage
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())

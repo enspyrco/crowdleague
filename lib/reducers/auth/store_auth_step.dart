@@ -4,7 +4,9 @@ import 'package:redux/redux.dart';
 
 class StoreAuthStepReducer extends TypedReducer<AppState, StoreAuthStep> {
   StoreAuthStepReducer()
-      : super((state, action) => state.rebuild((b) => b
-          ..authPage.step = action.step
-          ..otherAuthOptionsPage.step = action.step));
+      : super((state, action) => state.rebuild(
+              (b) => b
+                ..authPage.step = action.step
+                ..emailAuthOptionsPage.step = action.step,
+            ));
 }
