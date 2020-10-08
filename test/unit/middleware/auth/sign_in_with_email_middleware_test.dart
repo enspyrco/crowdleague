@@ -9,6 +9,7 @@ import 'package:crowdleague/middleware/auth/sign_in_with_email.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/services/auth_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
@@ -16,6 +17,7 @@ import 'package:test/test.dart';
 import '../../../mocks/auth/apple_signin_mocks.dart';
 import '../../../mocks/auth/firebase_auth_mocks.dart';
 import '../../../mocks/auth/google_signin_mocks.dart';
+import '../../../mocks/redux_store_mocks.dart';
 import '../../../mocks/services/auth_service_mocks.dart';
 import '../../../utils/verify_dispatch_middleware.dart';
 
@@ -45,36 +47,30 @@ void main() {
           store.state.otherAuthOptionsPage.step, AuthStep.signingInWithEmail);
     });
 
-    // TODO: check for dispatched actions by passing a mock store and verifying store.dispatch(action)
     test('on successfull sign in, dispatches Navigator.popAll action',
         () async {
+      // init fakes
       final fakeAuthService = FakeAuthService();
-      final testMiddleware = VerifyDispatchMiddleware();
-      final signInWithEmailMiddleware =
-          SignInWithEmailMiddleware(fakeAuthService);
+      final fakeStore = FakeStore();
 
-      // create a basic store with mocked out middleware
-      final store = Store<AppState>(appReducer,
-          initialState: AppState.init(),
-          middleware: [
-            testMiddleware,
-            signInWithEmailMiddleware,
-          ]);
+      // setup middleware
+      SignInWithEmailMiddleware(fakeAuthService)(
+          fakeStore, SignInWithEmail(), (dynamic x) => x);
 
-      signInWithEmailMiddleware(store, action, (action) => null);
+      verify(fakeAuthService.signInWithEmail(any, any));
 
-      // initial state
-      expect(store.state.problems.isEmpty, true);
+      // // initial state
+      // expect(store.state.problems.isEmpty, true);
 
-      // dispatch action to test middleware
-      store.dispatch(SignInWithEmail());
+      // // dispatch action to test middleware
+      // store.dispatch(SignInWithEmail());
 
-      // check that we are setting ui to loading indicator
-      expect(
-          testMiddleware.received(
-              UpdateOtherAuthOptionsPage(step: AuthStep.signingInWithEmail)),
-          true);
-      expect(testMiddleware.received(NavigatorPopAll()), true);
+      // // check that we are setting ui to loading indicator
+      // expect(
+      //     testMiddleware.received(
+      //         UpdateOtherAuthOptionsPage(step: AuthStep.signingInWithEmail)),
+      //     true);
+      // expect(testMiddleware.received(NavigatorPopAll()), true);
     });
 
     test('on error signing in with firebase, dispatch addPropblem action',
