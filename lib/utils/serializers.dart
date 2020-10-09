@@ -36,6 +36,7 @@ import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
+import 'package:crowdleague/actions/navigation/push_page.dart';
 import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_replaced_route_info.dart';
@@ -127,6 +128,7 @@ part 'serializers.g.dart';
   PickProfilePic,
   PlatformType,
   PlumbDatabaseStream,
+  PushPage,
   PrintFCMToken,
   RecordAddedRouteInfo,
   RecordRemovedRouteInfo,

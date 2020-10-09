@@ -14,6 +14,7 @@ import 'package:crowdleague/reducers/conversations/update_conversations_page.dar
 import 'package:crowdleague/reducers/conversations/update_new_conversations_page.dart';
 import 'package:crowdleague/reducers/device/store_platform.dart';
 import 'package:crowdleague/reducers/leaguers/store_leaguers.dart';
+import 'package:crowdleague/reducers/navigation/push_page.dart';
 import 'package:crowdleague/reducers/navigation/record_added_route_info.dart';
 import 'package:crowdleague/reducers/navigation/record_removed_route_info.dart';
 import 'package:crowdleague/reducers/navigation/record_replaced_route_info.dart';
@@ -48,6 +49,7 @@ final appReducer =
   // Leaguers
   StoreLeaguersReducer(),
   // Navigation
+  PushPageReducer(),
   RecordAddedRouteInfoReducer(),
   RecordRemovedRouteInfoReducer(),
   RecordReplacedRouteInfoReducer(),

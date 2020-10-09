@@ -15,9 +15,6 @@ abstract class EmailAuthEntry
 
   factory EmailAuthEntry() = _$EmailAuthEntry._;
 
-  factory EmailAuthEntry.by([void Function(EmailAuthEntryBuilder) updates]) =
-      _$EmailAuthEntry;
-
   Object toJson() => serializers.serializeWith(EmailAuthEntry.serializer, this);
 
   static EmailAuthEntry fromJson(String jsonString) => serializers

@@ -107,9 +107,8 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
               distinct: true,
               converter: (store) => store.state.navigatorEntries,
               builder: (context, navigatorEntries) => Navigator(
-                pages: navigatorEntries.toPages(),
-                onPopPage: (route, dynamic result) => route.didPop(result),
-              ),
+                  pages: navigatorEntries.toPages(),
+                  onPopPage: (route, dynamic result) => route.didPop(result)),
             ),
           );
         },
