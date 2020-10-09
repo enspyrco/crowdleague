@@ -83,6 +83,7 @@ import 'package:crowdleague/models/conversations/new_conversation/vm_new_convers
 import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
+import 'package:crowdleague/models/navigation/entries/navigator_entry.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
@@ -114,6 +115,7 @@ part 'serializers.g.dart';
   DisregardProfilePics,
   LeaveConversation,
   NavigateTo,
+  NavigatorEntry,
   NavigatorReplaceCurrent,
   NavigatorPopAll,
   ObserveAuthState,
