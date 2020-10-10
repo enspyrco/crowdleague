@@ -14,11 +14,11 @@ part 'push_page.g.dart';
 abstract class PushPage extends Object
     with ReduxAction
     implements Built<PushPage, PushPageBuilder> {
-  PageData get entry;
+  PageData get data;
 
   PushPage._();
 
-  factory PushPage({@required PageData entry}) = _$PushPage._;
+  factory PushPage({@required PageData data}) = _$PushPage._;
 
   factory PushPage.by([void Function(PushPageBuilder) updates]) = _$PushPage;
 

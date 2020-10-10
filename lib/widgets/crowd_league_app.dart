@@ -105,9 +105,9 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
             themeMode: ThemeModeExt.from(settings.brightnessMode),
             home: StoreConnector<AppState, BuiltList<PageData>>(
               distinct: true,
-              converter: (store) => store.state.navigatorEntries,
-              builder: (context, navigatorEntries) => Navigator(
-                  pages: navigatorEntries.toPages(),
+              converter: (store) => store.state.pagesData,
+              builder: (context, pagesData) => Navigator(
+                  pages: pagesData.toPages(),
                   onPopPage: (route, dynamic result) => route.didPop(result)),
             ),
           );

@@ -32,7 +32,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   SystemInfo get systemInfo;
   @nullable
   User get user;
-  BuiltList<PageData> get navigatorEntries;
+  BuiltList<PageData> get pagesData;
   Settings get settings;
   NavBarSelection get navBarSelection;
   BuiltMap<String, UploadTask> get uploadTasksMap;
@@ -48,7 +48,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   factory AppState.init() => AppState((a) => a
     ..systemInfo.platform = PlatformType.checking
-    ..navigatorEntries = ListBuilder<PageData>(<PageData>[InitialPageData()])
+    ..pagesData = ListBuilder<PageData>(<PageData>[InitialPageData()])
     ..navBarSelection = NavBarSelection.home
     ..settings = Settings.initBuilder()
     ..authPage = VmAuthPage.initBuilder()

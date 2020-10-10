@@ -5,5 +5,5 @@ import 'package:redux/redux.dart';
 class PushPageReducer extends TypedReducer<AppState, PushPage> {
   PushPageReducer()
       : super((state, action) =>
-            state.rebuild((b) => b..navigatorEntries.add(action.entry)));
+            state.rebuild((b) => b..pagesData.add(action.data)));
 }
