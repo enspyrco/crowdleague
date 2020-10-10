@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
 import 'package:crowdleague/actions/device/check_platform.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/extensions/extensions.dart';
@@ -108,7 +109,17 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
               converter: (store) => store.state.pagesData,
               builder: (context, pagesData) => Navigator(
                   pages: pagesData.toPages(),
-                  onPopPage: (route, dynamic result) => route.didPop(result)),
+                  onPopPage: (route, dynamic result) {
+                    if (!route.didPop(result)) {
+                      return false;
+                    }
+
+                    if (route.isCurrent) {
+                      _store.dispatch(RemoveCurrentPage());
+                    }
+
+                    return true;
+                  }),
             ),
           );
         },

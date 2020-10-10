@@ -1,12 +1,12 @@
 import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
-import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/navigation/push_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/navigation/page_data/email_auth_page_data.dart';
+import 'package:crowdleague/models/navigation/page_data/other_auth_options_page_data.dart';
 import 'package:crowdleague/widgets/shared/waiting_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
@@ -173,7 +173,7 @@ class OtherOptionsButton extends StatelessWidget {
       ),
       child: RaisedButton(
         onPressed: () =>
-            context.dispatch(NavigateTo(location: '/other_auth_options')),
+            context.dispatch(PushPage(data: OtherAuthOptionsPageData())),
         color: Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -206,7 +206,7 @@ class EmailOptionsButton extends StatelessWidget {
         ),
       ),
       child: RaisedButton(
-        onPressed: () => context.dispatch(PushPage(entry: EmailAuthPageData())),
+        onPressed: () => context.dispatch(PushPage(data: EmailAuthPageData())),
         color: Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.min,
