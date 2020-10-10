@@ -76,8 +76,13 @@ void main() {
       // init fakes
       final mockAuthService = MockAuthService();
       final stubStore = StubStore(null, initialState: AppState.init());
+      final problem = AddProblem.from(
+        message: '',
+        type: ProblemType.emailSignIn,
+        traceString: '',
+      );
       when(mockAuthService.signInWithEmail(any, any))
-          .thenAnswer((_) async => AddProblem());
+          .thenAnswer((_) async => problem);
 
       // setup middleware
       await SignInWithEmailMiddleware(mockAuthService)(
@@ -86,7 +91,7 @@ void main() {
       // check that correct actions are called
       final actionsInOrderOfCall = <ReduxAction>[
         UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
-        AddProblem(),
+        problem,
         UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput)
       ];
       expect(stubStore.dispatchedActions, actionsInOrderOfCall);
