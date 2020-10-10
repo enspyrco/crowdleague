@@ -11,9 +11,11 @@ class SignInWithEmailMiddleware
       : super((store, action, next) async {
           next(action);
 
+          // store.dispatch(action)
+
           // set the UI to waiting
-          store.dispatch(
-              UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail));
+          // store.dispatch(
+          //     UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail));
 
           // attempt sign in then dispatch resulting action
           final dismissAuthPageOrDisplayProblem =

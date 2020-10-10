@@ -1,5 +1,4 @@
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
-import 'package:crowdleague/actions/auth/update_other_auth_options_page.dart';
 import 'package:crowdleague/actions/device/check_platform.dart';
 import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/enums/auth_step.dart';
@@ -37,14 +36,14 @@ void main() {
           middleware: [SignInWithEmailMiddleware(authService)]);
 
       // initial state
-      expect(store.state.otherAuthOptionsPage.step, AuthStep.waitingForInput);
+      expect(store.state.emailAuthOptionsPage.step, AuthStep.waitingForInput);
 
       // dispatch action to test middleware
       store.dispatch(SignInWithEmail());
 
       // check store is correctly updated
       expect(
-          store.state.otherAuthOptionsPage.step, AuthStep.signingInWithEmail);
+          store.state.emailAuthOptionsPage.step, AuthStep.signingInWithEmail);
     });
 
     test('on successfull sign in, dispatches Navigator.popAll action',
