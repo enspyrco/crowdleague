@@ -7,7 +7,7 @@ import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/auth/user.dart';
-import 'package:crowdleague/models/navigation/entries/navigator_entry.dart';
+import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/settings/settings.dart';
 import 'package:crowdleague/utils/redux/navigation_info_recorder.dart';
 import 'package:crowdleague/utils/redux/services_bundle.dart';
@@ -103,7 +103,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
             theme: ThemeDataExt.from(settings.lightTheme),
             darkTheme: ThemeDataExt.from(settings.darkTheme),
             themeMode: ThemeModeExt.from(settings.brightnessMode),
-            home: StoreConnector<AppState, BuiltList<NavigatorEntry>>(
+            home: StoreConnector<AppState, BuiltList<PageData>>(
               distinct: true,
               converter: (store) => store.state.navigatorEntries,
               builder: (context, navigatorEntries) => Navigator(

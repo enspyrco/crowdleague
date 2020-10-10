@@ -16,8 +16,8 @@ import 'package:crowdleague/models/conversations/conversation/vm_conversation_pa
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
-import 'package:crowdleague/models/navigation/entries/initial_entry.dart';
-import 'package:crowdleague/models/navigation/entries/navigator_entry.dart';
+import 'package:crowdleague/models/navigation/page_data/initial_page_data.dart';
+import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:crowdleague/models/settings/settings.dart';
@@ -32,7 +32,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   SystemInfo get systemInfo;
   @nullable
   User get user;
-  BuiltList<NavigatorEntry> get navigatorEntries;
+  BuiltList<PageData> get navigatorEntries;
   Settings get settings;
   NavBarSelection get navBarSelection;
   BuiltMap<String, UploadTask> get uploadTasksMap;
@@ -48,8 +48,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   factory AppState.init() => AppState((a) => a
     ..systemInfo.platform = PlatformType.checking
-    ..navigatorEntries =
-        ListBuilder<NavigatorEntry>(<NavigatorEntry>[InitialEntry()])
+    ..navigatorEntries = ListBuilder<PageData>(<PageData>[InitialPageData()])
     ..navBarSelection = NavBarSelection.home
     ..settings = Settings.initBuilder()
     ..authPage = VmAuthPage.initBuilder()
