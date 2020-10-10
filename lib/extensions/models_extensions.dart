@@ -1,11 +1,15 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/models/navigation/page_data/email_auth_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/initial_page_data.dart';
+import 'package:crowdleague/models/navigation/page_data/messages_page_data.dart';
+import 'package:crowdleague/models/navigation/page_data/new_conversation_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/other_auth_options_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/profile_page_data.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page.dart';
 import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
+import 'package:crowdleague/widgets/chats/messages/messages_page.dart';
+import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_page.dart';
 import 'package:crowdleague/widgets/crowd_league_app.dart';
 import 'package:crowdleague/widgets/profile/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +29,11 @@ extension NavigatorEntriesExt on BuiltList<PageData> {
     OtherAuthOptionsPageData(): MaterialPage<OtherAuthOptionsPage>(
         key: ValueKey(OtherAuthOptionsPage), child: OtherAuthOptionsPage()),
     ProfilePageData(): MaterialPage<ProfilePage>(
-        key: ValueKey(ProfilePage), child: ProfilePage())
+        key: ValueKey(ProfilePage), child: ProfilePage()),
+    NewConversationPageData(): MaterialPage<NewConversationPage>(
+        key: ValueKey(NewConversationPage), child: NewConversationPage()),
+    MessagesPageData(): MaterialPage<MessagesPage>(
+        key: ValueKey(MessagesPage), child: MessagesPage())
   };
 
   List<MaterialPage> toPages() =>
