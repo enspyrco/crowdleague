@@ -37,7 +37,7 @@ jobs:
     - name: Install Flutter tool
       uses: subosito/flutter-action@v1
       with:
-        channel: 'master' # or: 'stable' or 'beta'
+        channel: 'stable' # or: 'stable' or 'beta'
 
     ##############################################
     # get dependencies & generate code
