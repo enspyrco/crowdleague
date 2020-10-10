@@ -11,11 +11,9 @@ class SignInWithEmailMiddleware
       : super((store, action, next) async {
           next(action);
 
-          // store.dispatch(action)
-
           // set the UI to waiting
-          // store.dispatch(
-          //     UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail));
+          await store.dispatch(
+              UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail));
 
           // attempt sign in then dispatch resulting action
           final dismissAuthPageOrDisplayProblem =
@@ -23,10 +21,10 @@ class SignInWithEmailMiddleware
                   store.state.emailAuthOptionsPage.email,
                   store.state.emailAuthOptionsPage.password);
 
-          store.dispatch(dismissAuthPageOrDisplayProblem);
+          await store.dispatch(dismissAuthPageOrDisplayProblem);
 
           // finish by resetting the UI of the auth page
-          store.dispatch(
+          await store.dispatch(
               UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput));
         });
 }
