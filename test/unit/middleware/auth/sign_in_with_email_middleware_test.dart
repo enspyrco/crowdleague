@@ -2,7 +2,6 @@ import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
-import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/middleware/auth/sign_in_with_email.dart';
@@ -17,49 +16,57 @@ void main() {
   group('SignInWithEmailMiddleware', () {
     test('on successfull sign with firebase, dispatches correct actions',
         () async {
-      // init fakes
+      // initialize test store/services
       final mockAuthService = MockAuthService();
-      final stubStore = StubStore(null, initialState: AppState.init());
+      final testStore =
+          DispatchVerifyingStore(null, initialState: AppState.init());
+
+      // sign user in successfully
       when(mockAuthService.signInWithEmail(any, any))
           .thenAnswer((_) async => NavigatorPopAll());
 
       // setup middleware
       await SignInWithEmailMiddleware(mockAuthService)(
-          stubStore, SignInWithEmail(), (dynamic x) => x);
+          testStore, SignInWithEmail(), (dynamic x) => x);
 
-      // check that correct actions are called
-      final actionsInOrderOfCall = <ReduxAction>[
-        UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
-        NavigatorPopAll(),
-        UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput)
-      ];
-      expect(stubStore.dispatchedActions, actionsInOrderOfCall);
+      // check that correct actions are called in desired order
+      verifyInOrder<dynamic>(<dynamic>[
+        testStore.dispatch(
+            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail)),
+        testStore.dispatch(NavigatorPopAll()),
+        testStore.dispatch(
+            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput))
+      ]);
     });
 
     test('on error signing in with firebase, dispatches correct actions',
         () async {
-      // init fakes
+      // initialize test store/services
       final mockAuthService = MockAuthService();
-      final stubStore = StubStore(null, initialState: AppState.init());
+      final testStore =
+          DispatchVerifyingStore(null, initialState: AppState.init());
       final problem = AddProblem.from(
         message: '',
         type: ProblemType.emailSignIn,
         traceString: '',
       );
+
+      // create firebase sign in error
       when(mockAuthService.signInWithEmail(any, any))
           .thenAnswer((_) async => problem);
 
       // setup middleware
       await SignInWithEmailMiddleware(mockAuthService)(
-          stubStore, SignInWithEmail(), (dynamic x) => x);
+          testStore, SignInWithEmail(), (dynamic x) => x);
 
-      // check that correct actions are called
-      final actionsInOrderOfCall = <ReduxAction>[
-        UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
-        problem,
-        UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput)
-      ];
-      expect(stubStore.dispatchedActions, actionsInOrderOfCall);
+      // check that correct actions are called in desired order
+      verifyInOrder<dynamic>(<dynamic>[
+        testStore.dispatch(
+            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail)),
+        testStore.dispatch(problem),
+        testStore.dispatch(
+            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput))
+      ]);
     });
   });
 }

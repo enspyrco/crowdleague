@@ -14,7 +14,7 @@ class FakeStore extends Fake implements Store<AppState> {
 
 class MockStore extends Mock implements Store<AppState> {}
 
-class StubStore implements Store<AppState> {
+class DispatchVerifyingStore implements Store<AppState> {
   @override
   var reducer;
   AppState _state;
@@ -35,7 +35,7 @@ class StubStore implements Store<AppState> {
   @override
   Future teardown() => _changeController.close();
 
-  StubStore(
+  DispatchVerifyingStore(
     this.reducer, {
     AppState initialState,
     List<Middleware<AppState>> middleware = const [],
