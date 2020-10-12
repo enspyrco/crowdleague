@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 import '../../../mocks/redux_store_mocks.dart';
 import '../../../mocks/services/auth_service_mocks.dart';
-import '../../util/util_testing_functions.dart';
+import '../../util/testing_utils.dart';
 
 void main() {
   group('SignInWithAppleMiddleware', () {
@@ -21,7 +21,7 @@ void main() {
       // setup middleware
       final mut = SignInWithAppleMiddleware(mockAuthService);
 
-      mut(testStore, SignInWithApple(), iDispatcher);
+      mut(testStore, SignInWithApple(), testDispatcher);
 
       // check that middleware is listening to stream
       verify(mockAuthService.appleSignInStream).called(1);

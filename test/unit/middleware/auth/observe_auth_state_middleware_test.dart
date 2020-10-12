@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 
 import '../../../mocks/redux_store_mocks.dart';
 import '../../../mocks/services/auth_service_mocks.dart';
-import '../../util/util_testing_functions.dart';
+import '../../util/testing_utils.dart';
 
 void main() {
   group('ObserveAuthStateMiddleware', () {
@@ -32,7 +32,7 @@ void main() {
 
       // setup middleware
       await ObserveAuthStateMiddleware(mockAuthService)(
-          testStore, ObserveAuthState(), iDispatcher);
+          testStore, ObserveAuthState(), testDispatcher);
 
       // check that correct actions are called in desired order
       verifyInOrder<dynamic>(<dynamic>[
