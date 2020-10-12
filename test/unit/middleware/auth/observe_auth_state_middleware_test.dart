@@ -7,7 +7,7 @@ import 'package:crowdleague/models/auth/user.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../../../mocks/redux_store_mocks.dart';
+import '../../../mocks/redux/redux_store_mocks.dart';
 import '../../../mocks/services/auth_service_mocks.dart';
 import '../../util/testing_utils.dart';
 

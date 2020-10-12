@@ -8,7 +8,7 @@ import 'package:crowdleague/middleware/auth/sign_in_with_email.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../../../mocks/redux_store_mocks.dart';
+import '../../../mocks/redux/redux_store_mocks.dart';
 import '../../../mocks/services/auth_service_mocks.dart';
 import '../../util/testing_utils.dart';
 
