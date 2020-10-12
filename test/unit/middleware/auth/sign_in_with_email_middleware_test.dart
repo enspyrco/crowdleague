@@ -5,12 +5,12 @@ import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/middleware/auth/sign_in_with_email.dart';
-import 'package:crowdleague/models/app/app_state.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../../../mocks/redux_store_mocks.dart';
 import '../../../mocks/services/auth_service_mocks.dart';
+import '../../util/util_testing_functions.dart';
 
 void main() {
   group('SignInWithEmailMiddleware', () {
@@ -18,8 +18,7 @@ void main() {
         () async {
       // initialize test store/services
       final mockAuthService = MockAuthService();
-      final testStore =
-          DispatchVerifyingStore(null, initialState: AppState.init());
+      final testStore = DispatchVerifyingStore();
 
       // sign user in successfully
       when(mockAuthService.signInWithEmail(any, any))
@@ -27,7 +26,7 @@ void main() {
 
       // setup middleware
       await SignInWithEmailMiddleware(mockAuthService)(
-          testStore, SignInWithEmail(), (dynamic x) => x);
+          testStore, SignInWithEmail(), iDispatcher);
 
       // check that correct actions are called in desired order
       verifyInOrder<dynamic>(<dynamic>[
@@ -43,8 +42,7 @@ void main() {
         () async {
       // initialize test store/services
       final mockAuthService = MockAuthService();
-      final testStore =
-          DispatchVerifyingStore(null, initialState: AppState.init());
+      final testStore = DispatchVerifyingStore();
       final problem = AddProblem.from(
         message: '',
         type: ProblemType.emailSignIn,
@@ -57,7 +55,7 @@ void main() {
 
       // setup middleware
       await SignInWithEmailMiddleware(mockAuthService)(
-          testStore, SignInWithEmail(), (dynamic x) => x);
+          testStore, SignInWithEmail(), iDispatcher);
 
       // check that correct actions are called in desired order
       verifyInOrder<dynamic>(<dynamic>[

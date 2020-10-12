@@ -36,6 +36,5 @@ class FakeAuthService extends Fake implements AuthService {
 
 class MockAuthService extends Mock implements AuthService {
   // @override
-  // Stream<ReduxAction> get appleSignInStream =>
-  //     Stream.fromIterable([ReduxAction()]);
+  // Stream<ReduxAction> get appleSignInStream => Stream.fromIterable([]);
 }

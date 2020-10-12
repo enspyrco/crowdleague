@@ -3,13 +3,13 @@ import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/middleware/auth/observe_auth_state.dart';
-import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../../../mocks/redux_store_mocks.dart';
 import '../../../mocks/services/auth_service_mocks.dart';
+import '../../util/util_testing_functions.dart';
 
 void main() {
   group('ObserveAuthStateMiddleware', () {
@@ -17,8 +17,7 @@ void main() {
         () async {
       // initialize test store/services
       final mockAuthService = MockAuthService();
-      final testStore =
-          DispatchVerifyingStore(null, initialState: AppState.init());
+      final testStore = DispatchVerifyingStore();
       final testUser = User(
         id: 'test123',
         displayName: 'test_user',
@@ -33,7 +32,7 @@ void main() {
 
       // setup middleware
       await ObserveAuthStateMiddleware(mockAuthService)(
-          testStore, ObserveAuthState(), (dynamic x) => x);
+          testStore, ObserveAuthState(), iDispatcher);
 
       // check that correct actions are called in desired order
       verifyInOrder<dynamic>(<dynamic>[

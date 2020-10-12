@@ -17,7 +17,8 @@ class MockStore extends Mock implements Store<AppState> {}
 class DispatchVerifyingStore implements Store<AppState> {
   @override
   var reducer;
-  AppState _state;
+
+  final AppState _state;
   List<ReduxAction> dispatchedActions = <ReduxAction>[];
   final StreamController<AppState> _changeController;
 
@@ -35,12 +36,8 @@ class DispatchVerifyingStore implements Store<AppState> {
   @override
   Future teardown() => _changeController.close();
 
-  DispatchVerifyingStore(
-    this.reducer, {
-    AppState initialState,
-    List<Middleware<AppState>> middleware = const [],
-    bool distinct = false,
-  }) : _changeController = StreamController.broadcast() {
-    _state = initialState;
-  }
+  DispatchVerifyingStore({AppState initialState})
+      : _state = initialState ?? AppState.init(),
+        _changeController = StreamController.broadcast(),
+        reducer = null;
 }
