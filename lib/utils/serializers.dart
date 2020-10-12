@@ -36,9 +36,11 @@ import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/navigate_to.dart';
 import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
 import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
+import 'package:crowdleague/actions/navigation/push_page.dart';
 import 'package:crowdleague/actions/navigation/record_added_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_removed_route_info.dart';
 import 'package:crowdleague/actions/navigation/record_replaced_route_info.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/navigation/remove_problem.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
@@ -83,6 +85,7 @@ import 'package:crowdleague/models/conversations/new_conversation/vm_new_convers
 import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
+import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
@@ -114,6 +117,7 @@ part 'serializers.g.dart';
   DisregardProfilePics,
   LeaveConversation,
   NavigateTo,
+  PageData,
   NavigatorReplaceCurrent,
   NavigatorPopAll,
   ObserveAuthState,
@@ -125,11 +129,13 @@ part 'serializers.g.dart';
   PickProfilePic,
   PlatformType,
   PlumbDatabaseStream,
+  PushPage,
   PrintFCMToken,
   RecordAddedRouteInfo,
   RecordRemovedRouteInfo,
   RecordReplacedRouteInfo,
   RequestFCMPermissions,
+  RemoveCurrentPage,
   RemoveProblem,
   RetrieveLeaguers,
   SelectProfilePic,
