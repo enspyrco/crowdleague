@@ -5,7 +5,8 @@ import 'package:mockito/mockito.dart';
 class FakeAuthService extends Fake implements AuthService {
   @override
   // TODO: implement appleSignInStream
-  Stream<ReduxAction> get appleSignInStream => throw UnimplementedError();
+  Stream<ReduxAction> get appleSignInStream =>
+      Stream.fromIterable([ReduxAction()]);
 
   @override
   // TODO: implement googleSignInStream
@@ -33,4 +34,8 @@ class FakeAuthService extends Fake implements AuthService {
   Stream<ReduxAction> get streamOfStateChanges => Stream.fromIterable([]);
 }
 
-class MockAuthService extends Mock implements AuthService {}
+class MockAuthService extends Mock implements AuthService {
+  // @override
+  // Stream<ReduxAction> get appleSignInStream =>
+  //     Stream.fromIterable([ReduxAction()]);
+}

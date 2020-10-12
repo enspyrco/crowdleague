@@ -97,6 +97,7 @@ class AuthService {
       );
 
       // use the credential to sign in to firebase
+      // successful sign in will update the onAuthStateChanged stream
       await FirebaseAuth.instance.signInWithCredential(credential);
 
       // we are signed in so reset the UI and pop anything on top of home
