@@ -12,7 +12,7 @@ class SignUpWithEmailMiddleware
           next(action);
 
           // set the UI to waiting
-          await store.dispatch(
+          store.dispatch(
               UpdateEmailAuthOptionsPage(step: AuthStep.signingUpWithEmail));
 
           // attempt sign up then dispatch resulting action
@@ -21,10 +21,10 @@ class SignUpWithEmailMiddleware
                   store.state.emailAuthOptionsPage.email,
                   store.state.emailAuthOptionsPage.password);
 
-          await store.dispatch(dismissAuthPageOrDisplayProblem);
+          store.dispatch(dismissAuthPageOrDisplayProblem);
 
           // finish by resetting the UI of the auth page
-          await store.dispatch(
+          store.dispatch(
               UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput));
         });
 }
