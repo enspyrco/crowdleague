@@ -14,7 +14,7 @@ class FakeAuthService extends Fake implements AuthService {
 
   @override
   Future<ReduxAction> signInWithEmail(String email, String password) {
-    // TODO: implement signOut
+    // TODO: implement signInWithEmail
     throw UnimplementedError();
   }
 
@@ -26,7 +26,8 @@ class FakeAuthService extends Fake implements AuthService {
 
   @override
   Future<ReduxAction> signUpWithEmail(String email, String password) async {
-    // return Future.value(NavigatorPopAll());
+    // TODO: implement signUpWithEmail
+    throw UnimplementedError();
   }
 
   @override
@@ -34,7 +35,4 @@ class FakeAuthService extends Fake implements AuthService {
   Stream<ReduxAction> get streamOfStateChanges => Stream.fromIterable([]);
 }
 
-class MockAuthService extends Mock implements AuthService {
-  // @override
-  // Stream<ReduxAction> get appleSignInStream => Stream.fromIterable([]);
-}
+class MockAuthService extends Mock implements AuthService {}
