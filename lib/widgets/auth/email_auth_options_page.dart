@@ -11,8 +11,6 @@ import 'package:crowdleague/utils/form_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:crowdleague/extensions/extensions.dart';
-
 class EmailAuthOptionsPage extends StatelessWidget {
   const EmailAuthOptionsPage({
     Key key,
@@ -46,14 +44,6 @@ class EmailAuthOptionsPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              EmailSignInChip(vm.mode == EmailAuthMode.signIn),
-                              EmailSignUpChip(vm.mode == EmailAuthMode.signUp)
-                            ],
-                          ),
-                          SizedBox(height: 20),
                           EmailTextField(
                             autovalidateMode:
                                 vm.autovalidate.toAutovalidateMode(),
@@ -71,10 +61,11 @@ class EmailAuthOptionsPage extends StatelessWidget {
                               autovalidateMode:
                                   vm.autovalidate.toAutovalidateMode(),
                             ),
-                          SizedBox(height: 50),
+                          SizedBox(height: 30),
                           if (vm.mode == EmailAuthMode.signIn) SignInButton(),
                           if (vm.mode == EmailAuthMode.signUp)
                             CreateAccountButton(),
+                          SwitchModeText(vm.mode)
                         ],
                       ),
                     ),
@@ -233,52 +224,6 @@ class PasswordSuffixIconButton extends StatelessWidget {
   }
 }
 
-class EmailSignInChip extends StatelessWidget {
-  final bool _selected;
-
-  EmailSignInChip(this._selected);
-
-  @override
-  Widget build(BuildContext context) {
-    return ChoiceChip(
-        label: Text('SIGN IN'),
-        selected: _selected,
-        onSelected: (bool selected) {
-          Form.of(context).reset();
-          context.dispatch(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signIn,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          ));
-        });
-  }
-}
-
-class EmailSignUpChip extends StatelessWidget {
-  final bool _selected;
-
-  EmailSignUpChip(this._selected);
-
-  @override
-  Widget build(BuildContext context) {
-    return ChoiceChip(
-        label: Text('CREATE'),
-        selected: _selected,
-        onSelected: (bool selected) {
-          Form.of(context).reset();
-          context.dispatch(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signUp,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          ));
-        });
-  }
-}
-
 class SignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -362,5 +307,71 @@ class CreateAccountButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class SwitchModeText extends StatelessWidget {
+  final EmailAuthMode mode;
+
+  SwitchModeText(this.mode);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 30),
+        if (mode == EmailAuthMode.signIn)
+          (Text('DON\'T HAVE AN ACCOUNT?', style: TextStyle(fontSize: 15))),
+        if (mode == EmailAuthMode.signUp)
+          (Text('ALREADY HAVE AN ACCOUNT?', style: TextStyle(fontSize: 15))),
+        SizedBox(height: 15),
+        if (mode == EmailAuthMode.signIn) CreateAccountLink(),
+        if (mode == EmailAuthMode.signUp) SignInLink()
+      ],
+    );
+  }
+}
+
+class SignInLink extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        child: Text('SIGN IN',
+            style: TextStyle(
+                fontSize: 15,
+                decoration: TextDecoration.underline,
+                color: Colors.blue)),
+        onTap: () {
+          Form.of(context).reset();
+          context.dispatch(UpdateEmailAuthOptionsPage(
+            mode: EmailAuthMode.signIn,
+            email: '',
+            password: '',
+            repeatPassword: '',
+            autovalidate: AutoValidate.disabled,
+          ));
+        });
+  }
+}
+
+class CreateAccountLink extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        child: Text('CREATE ACCOUNT',
+            style: TextStyle(
+                fontSize: 15,
+                decoration: TextDecoration.underline,
+                color: Colors.blue)),
+        onTap: () {
+          Form.of(context).reset();
+          context.dispatch(UpdateEmailAuthOptionsPage(
+            mode: EmailAuthMode.signUp,
+            email: '',
+            password: '',
+            repeatPassword: '',
+            autovalidate: AutoValidate.disabled,
+          ));
+        });
   }
 }

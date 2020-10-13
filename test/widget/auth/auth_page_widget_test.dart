@@ -240,14 +240,13 @@ void main() {
       expect(testMiddleware.received(SignInWithGoogle()), true);
     });
 
-    testWidgets('shows "Sign In with Apple" button on Android',
+    testWidgets('shows "Sign In with Apple" FAB on Android',
         (WidgetTester tester) async {
       // Setup the app state with expected values
-      final initialAppState = AppState.init();
-      final alteredState = initialAppState
+      final initialAppState = AppState.init()
           .rebuild((b) => b..systemInfo.platform = PlatformType.android);
       // Create the test harness.
-      final store = Store<AppState>(appReducer, initialState: alteredState);
+      final store = Store<AppState>(appReducer, initialState: initialAppState);
       final wut = AuthPage();
       final harness =
           StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
@@ -256,13 +255,13 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final appleSignInButton = find.byType(AppleSignInButton);
+      final appleSignInFAB = find.byType(AppleSignInFAB);
 
-      // dispatch action to set platform to android
-      expect(appleSignInButton, findsOneWidget);
+      // check the button is found
+      expect(appleSignInFAB, findsOneWidget);
     });
 
-    testWidgets('shows "Sign In with Google" button on iOS',
+    testWidgets('shows "Sign In with Google" FAB on iOS',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -279,10 +278,10 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final googleSignInButton = find.byType(GoogleSignInButton);
+      final googleSignInFAB = find.byType(GoogleSignInFAB);
 
       // dispatch action to set platform to android
-      expect(googleSignInButton, findsOneWidget);
+      expect(googleSignInFAB, findsOneWidget);
     });
 
     testWidgets('dispatches SignInWithGoogle action on iOS',
@@ -304,7 +303,7 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final otherPlatFormSignInButton = find.byType(OtherPlatformSignInButton);
+      final otherPlatFormSignInButton = find.byType(OtherDefaultProviderButton);
       expect(otherPlatFormSignInButton, findsOneWidget);
 
       // Tap to sign in
@@ -333,7 +332,7 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final otherPlatFormSignInButton = find.byType(OtherPlatformSignInButton);
+      final otherPlatFormSignInButton = find.byType(OtherDefaultProviderButton);
       expect(otherPlatFormSignInButton, findsOneWidget);
 
       // Tap to sign in

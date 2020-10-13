@@ -1,3 +1,5 @@
+import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
+import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/actions/navigation/push_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
@@ -6,8 +8,8 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/navigation/page_data/email_auth_page_data.dart';
 import 'package:crowdleague/widgets/shared/waiting_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -62,12 +64,15 @@ class PageContents extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 PlatformSignInButton(),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [EmailOptionsButton(), OtherProviderButton()],
+                  children: [
+                    EmailOptionsButton(),
+                    OtherDefaultProviderButton(),
+                    TwitterSignInButton(),
+                    FacebookSignInButton()
+                  ],
                 ),
               ]),
         ),
@@ -141,33 +146,22 @@ class PlatformSignInButton extends StatelessWidget {
       converter: (store) => store.state.systemInfo.platform,
       builder: (context, platform) {
         return (platform == PlatformType.ios || platform == PlatformType.macOS)
-            ? SignInButton(
-                Buttons.Google,
-                mini: true,
-                onPressed: () {},
+            ? AppleSignInButton(
+                style: AppleButtonStyle.black,
+                onPressed: () => context.dispatch(
+                  SignInWithApple(),
+                ),
               )
-            : SignInButton(
-                Buttons.Email,
-                mini: true,
-                shape: CircleBorder(),
-                onPressed: () {},
+            : GoogleSignInButton(
+                onPressed: () => context.dispatch(SignInWithGoogle()),
+                darkMode: true, // default: false
               );
-        // ? AppleSignInButton(
-        //     style: AppleButtonStyle.black,
-        //     onPressed: () => context.dispatch(
-        //       SignInWithApple(),
-        //     ),
-        //   )
-        // : GoogleSignInButton(
-        //     onPressed: () => context.dispatch(SignInWithGoogle()),
-        //     darkMode: true, // default: false
-        //   );
       },
     );
   }
 }
 
-class OtherProviderButton extends StatelessWidget {
+class OtherDefaultProviderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PlatformType>(
@@ -176,59 +170,69 @@ class OtherProviderButton extends StatelessWidget {
         builder: (context, platform) {
           return (platform == PlatformType.ios ||
                   platform == PlatformType.macOS)
-              ? SignInButton(
-                  Buttons.Apple,
-                  mini: true,
-                  onPressed: () {},
-                )
-              : SignInButton(
-                  Buttons.Google,
-                  mini: true,
-                  onPressed: () {},
-                );
-
-          // ? GoogleSignInButton(
-          //     onPressed: () => context.dispatch(SignInWithGoogle()),
-          //     darkMode: true,
-          //     // default: false
-          //   )
-          // : AppleSignInButton(
-          //     style: AppleButtonStyle.black,
-          //     onPressed: () => context.dispatch(SignInWithApple()),
-          //   );
+              ? GoogleSignInFAB()
+              : AppleSignInFAB();
         });
+  }
+}
+
+class GoogleSignInFAB extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+        child: ImageIcon(AssetImage('assets/images/google_logo.png')),
+        elevation: 1,
+        mini: true,
+        onPressed: () => context.dispatch(SignInWithGoogle()));
+  }
+}
+
+class AppleSignInFAB extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+        child: ImageIcon(AssetImage('assets/images/apple_logo_black.png')),
+        elevation: 1,
+        mini: true,
+        onPressed: () => context.dispatch(SignInWithApple()));
   }
 }
 
 class EmailOptionsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ButtonTheme(
-      height: 40.0,
-      padding: EdgeInsets.only(left: 30.0, right: 30.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(3.0),
-        side: BorderSide(
-          color: Colors.black,
-        ),
-      ),
-      child: RaisedButton(
-        onPressed: () => context.dispatch(PushPage(data: EmailAuthPageData())),
-        color: Colors.white,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Your Email',
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontFamily: 'SF Pro',
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black),
-            ),
-          ],
-        ),
-      ),
+    return FloatingActionButton(
+        child: Icon(Icons.email),
+        elevation: 1,
+        mini: true,
+        onPressed: () => context.dispatch(PushPage(data: EmailAuthPageData())));
+  }
+}
+
+class TwitterSignInButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.5,
+      child: FloatingActionButton(
+          child: ImageIcon(AssetImage('assets/images/twitter_logo.png')),
+          elevation: 1,
+          mini: true,
+          onPressed: null),
+    );
+  }
+}
+
+class FacebookSignInButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.5,
+      child: FloatingActionButton(
+          child: ImageIcon(AssetImage('assets/images/facebook_logo.png')),
+          elevation: 1,
+          mini: true,
+          onPressed: null),
     );
   }
 }
