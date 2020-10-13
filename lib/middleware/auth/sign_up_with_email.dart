@@ -12,16 +12,19 @@ class SignUpWithEmailMiddleware
           next(action);
 
           // set the UI to waiting
-          store.dispatch(
+          await store.dispatch(
               UpdateEmailAuthOptionsPage(step: AuthStep.signingUpWithEmail));
 
-          // TODO: convert to async await style
           // attempt sign up then dispatch resulting action
-          authService
-              .signUpWithEmail(store.state.emailAuthOptionsPage.email,
-                  store.state.emailAuthOptionsPage.password)
-              .then<dynamic>(store.dispatch)
-              .whenComplete(() => store.dispatch(
-                  UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput)));
+          final dismissAuthPageOrDisplayProblem =
+              await authService.signUpWithEmail(
+                  store.state.emailAuthOptionsPage.email,
+                  store.state.emailAuthOptionsPage.password);
+
+          await store.dispatch(dismissAuthPageOrDisplayProblem);
+
+          // finish by resetting the UI of the auth page
+          await store.dispatch(
+              UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput));
         });
 }
