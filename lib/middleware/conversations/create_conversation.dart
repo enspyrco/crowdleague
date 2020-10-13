@@ -1,6 +1,6 @@
 import 'package:crowdleague/actions/conversations/create_conversation.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/actions/navigation/navigator_replace_current.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:redux/redux.dart';
@@ -20,8 +20,7 @@ class CreateConversationMiddleware
 
           // if there was no problem, navigate to Conversation Page
           if (reaction.runtimeType != AddProblem) {
-            store.dispatch(
-                NavigatorReplaceCurrent(newLocation: '/conversation'));
+            store.dispatch(RemoveCurrentPage());
           }
         });
 }

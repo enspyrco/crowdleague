@@ -1,22 +1,20 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
 import 'package:crowdleague/actions/device/check_platform.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/app/settings.dart';
 import 'package:crowdleague/models/auth/user.dart';
+import 'package:crowdleague/models/navigation/page_data/page_data.dart';
+import 'package:crowdleague/models/settings/settings.dart';
 import 'package:crowdleague/utils/redux/navigation_info_recorder.dart';
 import 'package:crowdleague/utils/redux/services_bundle.dart';
 import 'package:crowdleague/utils/wrappers/firebase_wrapper.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
-import 'package:crowdleague/widgets/auth/email_auth_options_page.dart';
-import 'package:crowdleague/widgets/auth/other_auth_options_page.dart';
-import 'package:crowdleague/widgets/chats/messages/messages_page.dart';
-import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_page.dart';
 import 'package:crowdleague/widgets/main/main_page.dart';
-import 'package:crowdleague/widgets/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -97,25 +95,35 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
     return StoreProvider<AppState>(
       store: _store,
       child: StoreConnector<AppState, Settings>(
-          distinct: true,
-          converter: (store) => store.state.settings,
-          builder: (context, settings) {
-            return MaterialApp(
-              navigatorKey: _redux.navKey,
-              navigatorObservers: [NavigationInfoRecorder(_store)],
-              theme: ThemeDataExt.from(settings.lightTheme),
-              darkTheme: ThemeDataExt.from(settings.darkTheme),
-              themeMode: ThemeModeExt.from(settings.brightnessMode),
-              home: AuthOrMain(), // becomes the route named '/'
-              routes: <String, WidgetBuilder>{
-                '/other_auth_options': (context) => OtherAuthOptionsPage(),
-                '/email_auth_options': (context) => EmailAuthOptionsPage(),
-                '/conversation': (context) => MessagesPage(),
-                '/new_conversation': (context) => NewConversationPage(),
-                '/profile': (context) => ProfilePage()
-              },
-            );
-          }),
+        distinct: true,
+        converter: (store) => store.state.settings,
+        builder: (context, settings) {
+          return MaterialApp(
+            navigatorKey: _redux.navKey,
+            navigatorObservers: [NavigationInfoRecorder(_store)],
+            theme: ThemeDataExt.from(settings.lightTheme),
+            darkTheme: ThemeDataExt.from(settings.darkTheme),
+            themeMode: ThemeModeExt.from(settings.brightnessMode),
+            home: StoreConnector<AppState, BuiltList<PageData>>(
+              distinct: true,
+              converter: (store) => store.state.pagesData,
+              builder: (context, pagesData) => Navigator(
+                  pages: pagesData.toPages(),
+                  onPopPage: (route, dynamic result) {
+                    if (!route.didPop(result)) {
+                      return false;
+                    }
+
+                    if (route.isCurrent) {
+                      _store.dispatch(RemoveCurrentPage());
+                    }
+
+                    return true;
+                  }),
+            ),
+          );
+        },
+      ),
     );
   }
 }
