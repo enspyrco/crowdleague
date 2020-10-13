@@ -1,10 +1,12 @@
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/services/auth_service.dart';
+import 'package:mockito/mockito.dart';
 
-class FakeAuthService implements AuthService {
+class FakeAuthService extends Fake implements AuthService {
   @override
   // TODO: implement appleSignInStream
-  Stream<ReduxAction> get appleSignInStream => throw UnimplementedError();
+  Stream<ReduxAction> get appleSignInStream =>
+      Stream.fromIterable([ReduxAction()]);
 
   @override
   // TODO: implement googleSignInStream
@@ -23,7 +25,7 @@ class FakeAuthService implements AuthService {
   }
 
   @override
-  Future<ReduxAction> signUpWithEmail(String email, String password) {
+  Future<ReduxAction> signUpWithEmail(String email, String password) async {
     // TODO: implement signUpWithEmail
     throw UnimplementedError();
   }
@@ -32,3 +34,5 @@ class FakeAuthService implements AuthService {
   // TODO: implement streamOfStateChanges
   Stream<ReduxAction> get streamOfStateChanges => Stream.fromIterable([]);
 }
+
+class MockAuthService extends Mock implements AuthService {}

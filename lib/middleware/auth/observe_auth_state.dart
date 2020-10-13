@@ -6,7 +6,7 @@ import 'package:redux/redux.dart';
 class ObserveAuthStateMiddleware
     extends TypedMiddleware<AppState, ObserveAuthState> {
   ObserveAuthStateMiddleware(AuthService authService)
-      : super((store, action, next) async {
+      : super((store, action, next) {
           next(action);
 
           // listen to the stream that emits actions on any auth change
