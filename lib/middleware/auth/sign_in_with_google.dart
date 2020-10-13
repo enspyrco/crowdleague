@@ -6,7 +6,7 @@ import 'package:redux/redux.dart';
 class SignInWithGoogleMiddleware
     extends TypedMiddleware<AppState, SignInWithGoogle> {
   SignInWithGoogleMiddleware(AuthService authService)
-      : super((store, action, next) async {
+      : super((store, action, next) {
           next(action);
 
           // sign in and listen to the stream and dispatch actions
