@@ -53,7 +53,7 @@ jobs:
     - name: Run tests and save coverage
       # run on PR for status check and on push for coverage
       if: ${{ github.base_ref == 'dev' || github.ref == 'refs/heads/dev' }}
-      run: flutter test --coverage && ./.scripts/lcov.sh && lcov --remove coverage/lcov.info 'lib/models/*' -o coverage/lcov.info
+      run: flutter test --coverage && brew install lcov && lcov --remove coverage/lcov.info 'lib/models/*' -o coverage/lcov.info
 
     - name: Coveralls
       # run on push to dev branch, for the coverage
