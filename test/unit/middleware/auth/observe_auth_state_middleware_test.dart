@@ -31,8 +31,8 @@ void main() {
           Stream.fromIterable([StoreUser(user: testUser), ClearUserData()]));
 
       // setup middleware
-      await ObserveAuthStateMiddleware(mockAuthService)(
-          testStore, ObserveAuthState(), testDispatcher);
+      final mut = ObserveAuthStateMiddleware(mockAuthService);
+      await mut(testStore, ObserveAuthState(), testDispatcher);
 
       // check that correct actions are called in desired order
       verifyInOrder<dynamic>(<dynamic>[

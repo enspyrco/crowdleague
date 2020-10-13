@@ -25,8 +25,8 @@ void main() {
           .thenAnswer((_) async => NavigatorPopAll());
 
       // setup middleware
-      await SignInWithEmailMiddleware(mockAuthService)(
-          testStore, SignInWithEmail(), testDispatcher);
+      final mut = SignInWithEmailMiddleware(mockAuthService);
+      await mut(testStore, SignInWithEmail(), testDispatcher);
 
       // check that correct actions are called in desired order
       verifyInOrder<dynamic>(<dynamic>[
@@ -54,8 +54,8 @@ void main() {
           .thenAnswer((_) async => problem);
 
       // setup middleware
-      await SignInWithEmailMiddleware(mockAuthService)(
-          testStore, SignInWithEmail(), testDispatcher);
+      final mut = SignInWithEmailMiddleware(mockAuthService);
+      await mut(testStore, SignInWithEmail(), testDispatcher);
 
       // check that correct actions are called in desired order
       verifyInOrder<dynamic>(<dynamic>[
