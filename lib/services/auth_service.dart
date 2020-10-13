@@ -191,7 +191,7 @@ class AuthService {
       await FirebaseAuth.instance.signOut();
       await _googleSignIn.signOut();
       // TODO: add sign out for sign in with apple provider
-      // see Issue #6 https://github.com/nickmeinhold/crowdleague_public/issues/6
+      // see Issue #232 https://github.com/crowdleague/crowdleague/issues/232
     } catch (error, trace) {
       return AddProblem.from(
         message: error.toString(),
