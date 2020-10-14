@@ -11,8 +11,6 @@ import 'package:crowdleague/utils/form_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:crowdleague/extensions/extensions.dart';
-
 class EmailAuthOptionsPage extends StatelessWidget {
   const EmailAuthOptionsPage({
     Key key,
@@ -100,15 +98,11 @@ class EmailTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextFormField(
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'please enter email';
-          } else if (!validEmail(value)) {
-            return 'please enter a valid email';
-          } else {
-            return null;
-          }
-        },
+        validator: (value) => (value.isEmpty)
+            ? 'please enter email'
+            : (!validEmail(value))
+                ? 'please enter a valid email'
+                : null,
         autovalidateMode: autovalidateMode,
         onChanged: (value) {
           context.dispatch(UpdateEmailAuthOptionsPage(
@@ -140,15 +134,11 @@ class PasswordTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextFormField(
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'please enter password';
-          } else if (!validPassword(value)) {
-            return 'password must be between 6 and 30 characters';
-          } else {
-            return null;
-          }
-        },
+        validator: (value) => (value.isEmpty)
+            ? 'please enter password'
+            : (!validPassword(value))
+                ? 'password must be between 6 and 30 characters'
+                : null,
         autovalidateMode: autovalidateMode,
         obscureText: !visible,
         onChanged: (value) =>
@@ -183,15 +173,11 @@ class RepeatPasswordTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       child: TextFormField(
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'please enter password again';
-          } else if (!validRepeatPassword(value, password)) {
-            return 'passwords do not match';
-          } else {
-            return null;
-          }
-        },
+        validator: (value) => (value.isEmpty)
+            ? 'please enter password again'
+            : (!validRepeatPassword(value, password))
+                ? 'passwords do not match'
+                : null,
         obscureText: !visible,
         autovalidateMode: autovalidateMode,
         onChanged: (value) =>
