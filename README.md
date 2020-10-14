@@ -11,7 +11,7 @@ Be in a league of your own...
 [![Firebase Projecct](https://img.shields.io/badge/firebase%20-%23039BE5.svg?&style=for-the-badge&logo=firebase)](https://console.firebase.google.com/u/0/project/crowdleague1/overview)
 
 
-[Google Play Console](https://play.google.com/apps/publish/?account=6095168526928626772#AppDashboardPlace:p=tmp.06172670794154685202.1586081744174.6623537&appid=4973683335528364155) | [App Store Connect](https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1506440961)
+[Google Play Console](https://play.google.com/console/developers/6095168526928626772/app/4973683335528364155/app-dashboard) | [App Store Connect](https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1506440961)
 
 ## Quick Start
 - Add the missing Firebase config files, see: [Setup > Get missing files](https://github.com/crowdleague/crowdleague/wiki/Setup#get-missing-files)
