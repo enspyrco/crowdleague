@@ -5,7 +5,6 @@ import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
-import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/utils/redux/store_operation.dart';
@@ -13,7 +12,6 @@ import 'package:crowdleague/utils/wrappers/apple_signin_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
@@ -36,34 +34,26 @@ class ServicesBundle {
     _firestoreSettings = firestoreSettings;
   }
 
-  /// Navigation Key
-  final GlobalKey<NavigatorState> _navKey;
-
   /// Services
   final AuthService _authService;
-  final NavigationService _navigationService;
   final DatabaseService _databaseService;
   final NotificationsService _notificationsService;
   final StorageService _storageService;
   final DeviceService _deviceService;
 
   ServicesBundle(
-      {@required GlobalKey<NavigatorState> navKey,
-      List<Middleware> extraMiddlewares,
+      {List<Middleware> extraMiddlewares,
       AuthService authService,
-      NavigationService navigationService,
       DatabaseService databaseService,
       NotificationsService notificationsService,
       StorageService storageService,
       DeviceService deviceService})
-      : _navKey = navKey,
-        _authService = authService ??
+      : _authService = authService ??
             AuthService(
               FirebaseAuth.instance,
               GoogleSignIn(scopes: <String>['email']),
               AppleSignInWrapper(),
             ),
-        _navigationService = navigationService ?? NavigationService(navKey),
         _databaseService =
             databaseService ?? DatabaseService(FirebaseFirestore.instance),
         _notificationsService =
@@ -77,9 +67,7 @@ class ServicesBundle {
         _deviceService =
             deviceService ?? DeviceService(imagePicker: ImagePicker());
 
-  GlobalKey<NavigatorState> get navKey => _navKey;
   AuthService get auth => _authService;
-  NavigationService get navigation => _navigationService;
   DatabaseService get database => _databaseService;
   NotificationsService get notifications => _notificationsService;
   StorageService get storage => _storageService;
@@ -92,7 +80,6 @@ class ServicesBundle {
       middleware: [
         ...createAppMiddleware(
             authService: _authService,
-            navigationService: _navigationService,
             databaseService: _databaseService,
             notificationsService: _notificationsService,
             storageService: _storageService,

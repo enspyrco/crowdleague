@@ -1,7 +1,7 @@
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/middleware/auth/sign_up_with_email.dart';
@@ -23,7 +23,7 @@ void main() {
 
       // sign user in successfully
       when(mockAuthService.signUpWithEmail(any, any))
-          .thenAnswer((_) async => NavigatorPopAll());
+          .thenAnswer((_) async => RemoveCurrentPage());
 
       // setup middleware
       await SignUpWithEmailMiddleware(mockAuthService)(
@@ -33,7 +33,7 @@ void main() {
       verifyInOrder<dynamic>(<dynamic>[
         testStore.dispatch(
             UpdateEmailAuthOptionsPage(step: AuthStep.signingUpWithEmail)),
-        testStore.dispatch(NavigatorPopAll()),
+        testStore.dispatch(RemoveCurrentPage()),
         testStore.dispatch(
             UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput))
       ]);

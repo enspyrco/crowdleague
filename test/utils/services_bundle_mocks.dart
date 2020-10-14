@@ -5,7 +5,6 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
-import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/utils/redux/services_bundle.dart';
@@ -25,7 +24,6 @@ class FakeServicesBundle extends ServicesBundle {
       GlobalKey<NavigatorState> navKey})
       : _reduxCompleter = completer,
         super(
-            navKey: navKey ?? GlobalKey<NavigatorState>(),
             authService: FakeAuthService(),
             databaseService: FakeDatabaseService(),
             storageService:
@@ -45,13 +43,6 @@ class FakeServicesBundle extends ServicesBundle {
   @override
   // TODO: implement device
   DeviceService get device => throw UnimplementedError();
-
-  @override
-  GlobalKey<NavigatorState> get navKey => super.navKey;
-
-  @override
-  // TODO: implement navigation
-  NavigationService get navigation => throw UnimplementedError();
 
   @override
   // TODO: implement notifications

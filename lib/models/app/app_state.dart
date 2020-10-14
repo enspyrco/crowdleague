@@ -18,7 +18,6 @@ import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.
 import 'package:crowdleague/models/functions/processing_failure.dart';
 import 'package:crowdleague/models/navigation/page_data/initial_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
-import 'package:crowdleague/models/navigation/route_info.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:crowdleague/models/settings/settings.dart';
 import 'package:crowdleague/models/storage/upload_task.dart';
@@ -36,7 +35,6 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   Settings get settings;
   NavBarSelection get navBarSelection;
   BuiltMap<String, UploadTask> get uploadTasksMap;
-  BuiltList<RouteInfo> get routes;
   VmEmailAuthOptionsPage get emailAuthOptionsPage;
   VmAuthPage get authPage;
   VmConversationSummariesPage get conversationSummariesPage;

@@ -20,8 +20,8 @@ import 'package:flutter/material.dart';
 /// gone with a big map for now and may come back to optimize in future.
 extension NavigatorEntriesExt on BuiltList<PageData> {
   static final Map<PageData, MaterialPage> _pagesMap = {
-    InitialPageData(): MaterialPage<AuthOrMain>(
-        key: ValueKey(AuthOrMain), child: AuthOrMain()),
+    InitialPageData(): MaterialPage<InitialPage>(
+        key: ValueKey(InitialPage), child: InitialPage()),
     EmailAuthPageData(): MaterialPage<EmailAuthOptionsPage>(
         key: ValueKey(EmailAuthOptionsPage), child: EmailAuthOptionsPage()),
     ProfilePageData(): MaterialPage<ProfilePage>(

@@ -1,7 +1,7 @@
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
@@ -58,7 +58,7 @@ void main() {
             StoreAuthStep(step: AuthStep.signingInWithGoogle),
             StoreAuthStep(step: AuthStep.signingInWithFirebase),
             StoreAuthStep(step: AuthStep.waitingForInput),
-            NavigatorPopAll()
+            RemoveCurrentPage()
           ]));
     });
 

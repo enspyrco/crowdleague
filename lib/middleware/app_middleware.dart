@@ -16,13 +16,8 @@ import 'package:crowdleague/middleware/conversations/observe_messages.dart';
 import 'package:crowdleague/middleware/conversations/save_message.dart';
 import 'package:crowdleague/middleware/device/check_platform.dart';
 import 'package:crowdleague/middleware/leaguers/retrieve_leaguers.dart';
-import 'package:crowdleague/middleware/navigation/display_problem.dart';
-import 'package:crowdleague/middleware/navigation/navigate_to.dart';
-import 'package:crowdleague/middleware/navigation/navigator_pop_all.dart';
-import 'package:crowdleague/middleware/navigation/navigator_replace_current.dart';
 import 'package:crowdleague/middleware/notifications/print_f_c_m_token.dart';
 import 'package:crowdleague/middleware/notifications/request_f_c_m_permissions.dart';
-import 'package:crowdleague/middleware/profile/delete_profile_pic.dart';
 import 'package:crowdleague/middleware/profile/disregard_profile.dart';
 import 'package:crowdleague/middleware/profile/disregard_profile_pics.dart';
 import 'package:crowdleague/middleware/profile/observe_profile.dart';
@@ -35,7 +30,6 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
-import 'package:crowdleague/services/navigation_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:redux/redux.dart';
@@ -51,7 +45,6 @@ import 'package:redux/redux.dart';
 ///
 List<Middleware<AppState>> createAppMiddleware(
     {AuthService authService,
-    NavigationService navigationService,
     DatabaseService databaseService,
     NotificationsService notificationsService,
     StorageService storageService,
@@ -76,16 +69,10 @@ List<Middleware<AppState>> createAppMiddleware(
     CheckPlatformMiddleware(deviceService),
     // Leaguers
     RetrieveLeaguersMiddleware(databaseService),
-    // Navigation
-    DisplayProblemMiddleware(navigationService),
-    NavigateToMiddleware(navigationService),
-    NavigatorPopAllMiddleware(navigationService),
-    NavigatorReplaceCurrentMiddleware(navigationService),
     // Notifications
     PrintFCMTokenMiddleware(notificationsService),
     RequestFCMPermissionsMiddleware(notificationsService),
     // Profile
-    DeleteProfilePicMiddleware(databaseService, navigationService),
     DisregardProfilePicsMiddleware(databaseService),
     DisregardProfileMiddleware(databaseService),
     ObserveProfilePicsMiddleware(databaseService),
