@@ -4,7 +4,7 @@ CrowdLeague is a platform for crowd sourcing sports leagues.
 
 Be in a league of your own...
 
-![Github Actions](https://github.com/nickmeinhold/crowdleague/workflows/Github%20Actions/badge.svg)
+![Github Actions](https://github.com/crowdleague/crowdleague/workflows/tests/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/crowdleague/crowdleague/badge.svg?branch=dev)](https://coveralls.io/github/crowdleague/crowdleague?branch=dev)
 
 [![GitHub Project](https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/crowdleague/crowdleague) 
