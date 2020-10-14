@@ -18,7 +18,7 @@
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
-.vscode/
+#.vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -62,3 +62,5 @@ ios/Flutter/.last_build_id
 ios/fastlane/report.xml
 # credential for admin SDK to use when running functions locally for testing
 functions/firebase-functions-admin-key.json
+# don't mess with a person's vscode settings 
+.vscode/settings.json

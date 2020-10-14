@@ -1,4 +1,4 @@
-name: Github Actions
+name: tests
 
 on:
   pull_request:
@@ -37,7 +37,7 @@ jobs:
     - name: Install Flutter tool
       uses: subosito/flutter-action@v1
       with:
-        channel: 'stable' # or: 'stable' or 'beta'
+        channel: 'dev' # or: 'stable' or 'beta'
 
     ##############################################
     # get dependencies & generate code
@@ -53,7 +53,8 @@ jobs:
     - name: Run tests and save coverage
       # run on PR for status check and on push for coverage
       if: ${{ github.base_ref == 'dev' || github.ref == 'refs/heads/dev' }}
-      run: flutter test --coverage
+      run: flutter test --coverage && brew install lcov && lcov --remove coverage/lcov.info 'lib/models/*' 'lib/actions/*' 'lib/enums/*' -o coverage/lcov.info
+
     - name: Coveralls
       # run on push to dev branch, for the coverage
       if: ${{ github.base_ref == 'dev' || github.ref == 'refs/heads/dev' }}
