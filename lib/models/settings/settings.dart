@@ -23,9 +23,9 @@ abstract class Settings implements Built<Settings, SettingsBuilder> {
   static SettingsBuilder initBuilder() {
     return SettingsBuilder()
       ..darkTheme.brightness = ThemeBrightness.dark
-      ..darkTheme.colors = ThemeColors.crowdleague.toBuilder()
+      ..darkTheme.colors = ThemeColors.greyscale.toBuilder()
       ..lightTheme.brightness = ThemeBrightness.light
-      ..lightTheme.colors = ThemeColors.crowdleague.toBuilder()
+      ..lightTheme.colors = ThemeColors.greyscale.toBuilder()
       ..brightnessMode = BrightnessMode.light;
   }
 

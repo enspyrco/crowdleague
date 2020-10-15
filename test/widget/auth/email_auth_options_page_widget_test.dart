@@ -96,7 +96,7 @@ void main() {
     });
 
     testWidgets(
-        'dispatches UpdateEmailAuthOptionsPage action when tap create chip ',
+        'dispatches UpdateEmailAuthOptionsPage action on tappping CREATE ACCOUNT link',
         (WidgetTester tester) async {
       // Setup the app state with expected values
       final initialAppState = AppState.init();
@@ -113,11 +113,11 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final emailSignUpChip = find.byType(EmailSignUpChip);
-      expect(emailSignUpChip, findsOneWidget);
+      final createAccountLink = find.byType(CreateAccountLink);
+      expect(createAccountLink, findsOneWidget);
 
       // Tap to show create account button
-      await tester.tap(emailSignUpChip);
+      await tester.tap(createAccountLink);
 
       // check correct action is dispatched with empty form feild values
       expect(
@@ -132,10 +132,11 @@ void main() {
     });
 
     testWidgets(
-        'dispatches UpdateEmailAuthOptionsPage action when tap sign in chip',
+        'dispatches UpdateEmailAuthOptionsPage action on tapping SIGN IN link',
         (WidgetTester tester) async {
       // Setup the app state with expected values
-      final initialAppState = AppState.init();
+      final initialAppState = AppState.init()
+          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create the test harness.
@@ -149,11 +150,11 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final emailSigninChip = find.byType(EmailSignInChip);
-      expect(emailSigninChip, findsOneWidget);
+      final signInLink = find.byType(SignInLink);
+      expect(signInLink, findsOneWidget);
 
       // Tap to show create account button
-      await tester.tap(emailSigninChip);
+      await tester.tap(signInLink);
 
       // check correct action is dispatched with empty form field values
       expect(

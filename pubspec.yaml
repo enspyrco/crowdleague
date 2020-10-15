@@ -47,6 +47,11 @@ flutter:
 
   assets:
     - assets/images/logo-300-greyscale.png
+    - assets/images/facebook_logo.png
+    - assets/images/twitter_logo.png
+    - assets/images/google_logo.png
+    - assets/images/apple_logo_black.png
+    - assets/images/apple_logo_white.png
 
   fonts:
     - family: maticons # workaround to get full set of material icons

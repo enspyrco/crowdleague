@@ -239,5 +239,107 @@ void main() {
       // check correct action is dispatched
       expect(testMiddleware.received(SignInWithGoogle()), true);
     });
+
+    testWidgets('shows "Sign In with Apple" FAB on Android',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init()
+          .rebuild((b) => b..systemInfo.platform = PlatformType.android);
+      // Create the test harness.
+      final store = Store<AppState>(appReducer, initialState: initialAppState);
+      final wut = AuthPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final appleSignInFAB = find.byType(AppleSignInFAB);
+
+      // check the button is found
+      expect(appleSignInFAB, findsOneWidget);
+    });
+
+    testWidgets('shows "Sign In with Google" FAB on iOS',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState = initialAppState
+          .rebuild((b) => b..systemInfo.platform = PlatformType.ios);
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer, initialState: alteredState);
+      final wut = AuthPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final googleSignInFAB = find.byType(GoogleSignInFAB);
+
+      // dispatch action to set platform to android
+      expect(googleSignInFAB, findsOneWidget);
+    });
+
+    testWidgets('dispatches SignInWithGoogle action on iOS',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState = initialAppState
+          .rebuild((b) => b..systemInfo.platform = PlatformType.ios);
+      final testMiddleware = VerifyDispatchMiddleware();
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer,
+          initialState: alteredState, middleware: [testMiddleware]);
+      final wut = AuthPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final otherPlatFormSignInButton = find.byType(OtherDefaultProviderButton);
+      expect(otherPlatFormSignInButton, findsOneWidget);
+
+      // Tap to sign in
+      await tester.tap(otherPlatFormSignInButton);
+
+      // check correct action is dispatched
+      expect(testMiddleware.received(SignInWithGoogle()), true);
+    });
+
+    testWidgets('dispatches SignInWithApple action on Android',
+        (WidgetTester tester) async {
+      // Setup the app state with expected values
+      final initialAppState = AppState.init();
+      final alteredState = initialAppState
+          .rebuild((b) => b..systemInfo.platform = PlatformType.android);
+      final testMiddleware = VerifyDispatchMiddleware();
+
+      // Create the test harness.
+      final store = Store<AppState>(appReducer,
+          initialState: alteredState, middleware: [testMiddleware]);
+      final wut = AuthPage();
+      final harness =
+          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness);
+
+      // Create the Finders.
+      final otherPlatFormSignInButton = find.byType(OtherDefaultProviderButton);
+      expect(otherPlatFormSignInButton, findsOneWidget);
+
+      // Tap to sign in
+      await tester.tap(otherPlatFormSignInButton);
+
+      // check correct action is dispatched
+      expect(testMiddleware.received(SignInWithApple()), true);
+    });
   });
 }
