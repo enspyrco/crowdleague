@@ -10,7 +10,6 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/settings/settings.dart';
-import 'package:crowdleague/utils/redux/navigation_info_recorder.dart';
 import 'package:crowdleague/utils/redux/services_bundle.dart';
 import 'package:crowdleague/utils/wrappers/firebase_wrapper.dart';
 import 'package:crowdleague/widgets/auth/auth_page.dart';
@@ -47,8 +46,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
       });
 
       // use the injected services bundle if there is one or create one
-      _redux =
-          widget._redux ?? ServicesBundle(navKey: GlobalKey<NavigatorState>());
+      _redux = widget._redux ?? ServicesBundle();
       // create the redux store and run any extra operations
       _store = await _redux.createStore();
       setState(() {
@@ -99,8 +97,6 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
         converter: (store) => store.state.settings,
         builder: (context, settings) {
           return MaterialApp(
-            navigatorKey: _redux.navKey,
-            navigatorObservers: [NavigationInfoRecorder(_store)],
             theme: ThemeDataExt.from(settings.lightTheme),
             darkTheme: ThemeDataExt.from(settings.darkTheme),
             themeMode: ThemeModeExt.from(settings.brightnessMode),
@@ -130,8 +126,8 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
 
 /// A StoreConnector that builds either the AuthPage or MainPage depending on
 /// the auth state.
-class AuthOrMain extends StatelessWidget {
-  const AuthOrMain({
+class InitialPage extends StatelessWidget {
+  const InitialPage({
     Key key,
   }) : super(key: key);
 

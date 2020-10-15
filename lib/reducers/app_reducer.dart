@@ -5,7 +5,7 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/auth/clear_user_data.dart';
 import 'package:crowdleague/reducers/auth/store_auth_step.dart';
 import 'package:crowdleague/reducers/auth/store_user.dart';
-import 'package:crowdleague/reducers/auth/update_other_auth_options_page.dart';
+import 'package:crowdleague/reducers/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/reducers/conversations/leave_conversation.dart';
 import 'package:crowdleague/reducers/conversations/store_conversations.dart';
 import 'package:crowdleague/reducers/conversations/store_messages.dart';
@@ -15,9 +15,6 @@ import 'package:crowdleague/reducers/conversations/update_new_conversations_page
 import 'package:crowdleague/reducers/device/store_platform.dart';
 import 'package:crowdleague/reducers/leaguers/store_leaguers.dart';
 import 'package:crowdleague/reducers/navigation/push_page.dart';
-import 'package:crowdleague/reducers/navigation/record_added_route_info.dart';
-import 'package:crowdleague/reducers/navigation/record_removed_route_info.dart';
-import 'package:crowdleague/reducers/navigation/record_replaced_route_info.dart';
 import 'package:crowdleague/reducers/navigation/remove_current_page.dart';
 import 'package:crowdleague/reducers/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/reducers/profile/delete_profile_pic.dart';
@@ -52,9 +49,6 @@ final appReducer =
   // Navigation
   PushPageReducer(),
   RemoveCurrentPageReducer(),
-  RecordAddedRouteInfoReducer(),
-  RecordRemovedRouteInfoReducer(),
-  RecordReplacedRouteInfoReducer(),
   StoreNavBarSelectionReducer(),
   // Profile
   DeleteProfilePicReducer(),

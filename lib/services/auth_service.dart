@@ -3,7 +3,7 @@ import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
@@ -63,7 +63,7 @@ class AuthService {
 
       // we are signed in so reset the UI and pop anything on top of home
       yield StoreAuthStep(step: AuthStep.waitingForInput);
-      yield NavigatorPopAll();
+      yield RemoveCurrentPage();
     } catch (error, trace) {
       // reset the UI and display an alert
 
@@ -102,7 +102,7 @@ class AuthService {
 
       // we are signed in so reset the UI and pop anything on top of home
       yield StoreAuthStep(step: AuthStep.waitingForInput);
-      yield NavigatorPopAll();
+      yield RemoveCurrentPage();
     } on SignInWithAppleAuthorizationException catch (e) {
       // reset the UI and display an alert (if not canceled)
       yield StoreAuthStep(step: AuthStep.waitingForInput);
@@ -149,7 +149,7 @@ class AuthService {
 
       // successful sign in will update the onAuthStateChanged stream
       // but we should navigate back to home
-      return NavigatorPopAll();
+      return RemoveCurrentPage();
     } catch (error, trace) {
       return AddProblem.from(
         message: error.toString(),
@@ -176,7 +176,7 @@ class AuthService {
 
       // successful sign up will update the onAuthStateChanged stream
       // but we should navigate back to home
-      return NavigatorPopAll();
+      return RemoveCurrentPage();
     } catch (error, trace) {
       return AddProblem.from(
         message: error.toString(),
