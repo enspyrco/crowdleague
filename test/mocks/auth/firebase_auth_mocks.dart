@@ -15,11 +15,9 @@ class FakeFirebaseAuthPeriodic extends Fake implements FirebaseAuth {
 
 class FakeFirebaseAuthWithError extends Fake implements FirebaseAuth {
   @override
-  Stream<auth.User> authStateChanges() => Stream.fromIterable([FakeAuthUser()]);
-
-  @override
   Future<UserCredential> signInWithCredential(AuthCredential credential) =>
-      null;
+      throw FirebaseAuthException(
+          code: 'user-not-found', message: 'test error: cant find user');
 }
 
 class FakeFirebaseAuth1 extends Fake implements FirebaseAuth {

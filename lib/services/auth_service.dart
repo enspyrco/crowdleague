@@ -153,6 +153,13 @@ class AuthService {
       // successful sign in will update the onAuthStateChanged stream
       // but we should navigate back to home
       yield RemoveCurrentPage();
+    } on FirebaseAuthException catch (e) {
+      yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
+      yield AddProblem.from(
+        message: e.message.toString(),
+        type: ProblemType.emailSignIn,
+        info: BuiltMap({'code': e.code}),
+      );
     } catch (error, trace) {
       // reset UI
       yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
@@ -187,6 +194,13 @@ class AuthService {
       // successful sign up will update the onAuthStateChanged stream
       // but we should navigate back to home
       yield RemoveCurrentPage();
+    } on FirebaseAuthException catch (e) {
+      yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
+      yield AddProblem.from(
+        message: e.message.toString(),
+        type: ProblemType.emailSignIn,
+        info: BuiltMap({'code': e.code}),
+      );
     } catch (error, trace) {
       // reset UI
       yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);

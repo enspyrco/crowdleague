@@ -1,22 +1,30 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
+import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/services/auth_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/auth/apple_signin_mocks.dart';
 import '../../mocks/auth/firebase_auth_mocks.dart';
 import '../../mocks/auth/google_signin_mocks.dart';
+import '../../mocks/mock_firebase_platform.dart';
 
 // TODO: test that sign streams close when sign in has finished
 // TODO: test that sign streams close when sign in errors
 // TODO: test sign out - dispatches a StoreProblem action on error
 
 void main() {
+  // set up firebase
+  setUp(() {
+    Firebase.delegatePackingProperty = MockFirebasePlatform();
+  });
   group('Auth Service', () {
     // has a method that returns a stream that emits user
 
@@ -145,6 +153,49 @@ void main() {
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: AppleSignIn.signIn')),
             emitsDone,
+          ]));
+    });
+
+    test(
+        'emailSignInStream emits UpdateEmailAuthOptionsPage actions at each stage of successful sign in',
+        () {
+      final service = AuthService(FakeFirebaseAuth1(), null, null);
+
+      expect(
+          service.emailSignInStream('test@email.com', 'test_password'),
+          emitsInOrder(<dynamic>[
+            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
+            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
+            RemoveCurrentPage()
+          ]));
+    });
+
+    test(
+        'emailSignInStream catches firebaseAuthExceptions and emits StoreProblem actions',
+        () async {
+      final service = AuthService(FakeFirebaseAuthWithError(), null, null);
+
+      /// The service will emit the google sign in step then the google signin
+      /// object throws and the service catches the exception then emits
+      /// an action to reset the auth step then emits a problem with
+      /// info about the exception.
+      ///
+      /// We use a [TypeMatcher] as it's difficult to create the expected
+      /// [Problem] due to the [Problem.trace] member
+      expect(
+          service.emailSignInStream('test@email.com', 'test_password'),
+          emitsInOrder(<dynamic>[
+            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
+            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
+            TypeMatcher<AddProblem>()
+              ..having((p) => p.problem.type, 'type', ProblemType.emailSignIn)
+              ..having(
+                  (p) => p.problem.info,
+                  'info',
+                  BuiltMap<String, Object>(
+                      {'code': 'test error: cant find user'}))
+              ..having((p) => p.problem.message, 'message',
+                  equals('firebase auth exception error')),
           ]));
     });
   });
