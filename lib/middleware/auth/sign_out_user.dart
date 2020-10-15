@@ -9,9 +9,9 @@ class SignOutUserMiddleware extends TypedMiddleware<AppState, SignOutUser> {
           next(action);
 
           // sign out and dispatch the resulting problem if there is one
-          final actionAfterSignout = await authService.signOut();
+          final problemSigningOut = await authService.signOut();
 
           // dispatch action to show any errors from signing out
-          if (actionAfterSignout != null) store.dispatch(actionAfterSignout);
+          if (problemSigningOut != null) store.dispatch(problemSigningOut);
         });
 }
