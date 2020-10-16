@@ -17,9 +17,6 @@ import '../../mocks/auth/firebase_auth_mocks.dart';
 import '../../mocks/auth/google_signin_mocks.dart';
 import '../../mocks/mock_firebase_platform.dart';
 
-// TODO: test that sign streams close when sign in has finished
-// TODO: test that sign streams close when sign in errors
-
 void main() {
   // set up firebase
   setUp(() {
