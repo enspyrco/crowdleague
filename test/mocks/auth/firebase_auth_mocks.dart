@@ -27,9 +27,12 @@ class FakeFirebaseAuthThrows extends Fake implements FirebaseAuth {
   Future<UserCredential> signInWithCredential(AuthCredential credential) =>
       throw Exception('firebaseAuth.signIn');
   @override
-  Future<void> signOut() {
-    throw Exception('firebaseAuth.signOut');
-  }
+  Future<void> signOut() => throw Exception('firebaseAuth.signOut');
+
+  @override
+  Future<auth.UserCredential> signInWithEmailAndPassword(
+          {String email, String password}) =>
+      throw Exception('firebaseAuth.signInWithEmailAndPassword');
 }
 
 class FakeFirebaseAuth1 extends Fake implements FirebaseAuth {
@@ -38,6 +41,11 @@ class FakeFirebaseAuth1 extends Fake implements FirebaseAuth {
 
   @override
   Future<UserCredential> signInWithCredential(AuthCredential credential) =>
+      Future.value(FakeAuthCredential());
+
+  @override
+  Future<auth.UserCredential> signInWithEmailAndPassword(
+          {String email, String password}) =>
       Future.value(FakeAuthCredential());
 }
 

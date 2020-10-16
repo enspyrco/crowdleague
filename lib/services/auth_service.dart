@@ -146,8 +146,8 @@ class AuthService {
   Stream<ReduxAction> emailSignInStream(String email, String password) async* {
     yield UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail);
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      await _fireAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       // reset UI
       yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
       // successful sign in will update the onAuthStateChanged stream
@@ -215,7 +215,6 @@ class AuthService {
 
   Future<ReduxAction> signOut() async {
     try {
-      // await FirebaseAuth.instance.signOut();
       await _fireAuth.signOut();
       await _googleSignIn.signOut();
       // TODO: add sign out for sign in with apple provider

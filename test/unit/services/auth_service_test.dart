@@ -59,11 +59,12 @@ void main() {
 
       expect(
           service.googleSignInStream,
-          emitsInOrder(<ReduxAction>[
+          emitsInOrder(<dynamic>[
             StoreAuthStep(step: AuthStep.signingInWithGoogle),
             StoreAuthStep(step: AuthStep.signingInWithFirebase),
             StoreAuthStep(step: AuthStep.waitingForInput),
-            RemoveCurrentPage()
+            RemoveCurrentPage(),
+            emitsDone
           ]));
     });
 
@@ -88,6 +89,7 @@ void main() {
               ..having((p) => p.problem.type, 'type', ProblemType.googleSignIn)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: GoogleSignIn.signIn')),
+            emitsDone
           ]));
     });
 
@@ -102,6 +104,7 @@ void main() {
           emitsInOrder(<dynamic>[
             StoreAuthStep(step: AuthStep.signingInWithApple),
             StoreAuthStep(step: AuthStep.waitingForInput),
+            emitsDone
           ]));
     });
 
@@ -127,6 +130,7 @@ void main() {
               ..having((p) => p.problem.type, 'type', ProblemType.appleSignIn)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: AppleSignIn.signIn')),
+            emitsDone
           ]));
     });
 
@@ -163,7 +167,8 @@ void main() {
           emitsInOrder(<dynamic>[
             UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
             UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
-            RemoveCurrentPage()
+            RemoveCurrentPage(),
+            emitsDone,
           ]));
     });
 
@@ -192,6 +197,7 @@ void main() {
                       {'code': 'test error: cant find user'}))
               ..having((p) => p.problem.message, 'message',
                   equals('firebase auth exception error')),
+            emitsDone
           ]));
     });
 
@@ -212,6 +218,7 @@ void main() {
               ..having((p) => p.problem.type, 'type', ProblemType.emailSignIn)
               ..having((p) => p.problem.message, 'message',
                   equals('firebase auth exception error')),
+            emitsDone
           ]));
     });
 
@@ -240,7 +247,7 @@ void main() {
         MockAppleSignIn(),
       );
       final testAddProblem = AddProblem.from(
-        message: 'GoogleSignIn.signOut',
+        message: 'Exception: GoogleSignIn.signOut',
         type: ProblemType.signOut,
         traceString: '',
       );
@@ -259,7 +266,7 @@ void main() {
         MockAppleSignIn(),
       );
       final testAddProblem = AddProblem.from(
-        message: 'GoogleSignIn.signIn',
+        message: 'Exception: firebaseAuth.signOut',
         type: ProblemType.signOut,
         traceString: '',
       );
