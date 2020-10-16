@@ -5,13 +5,13 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/enums/processing_failure_type.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'processing_failure.g.dart';
 
 abstract class ProcessingFailure
     implements Built<ProcessingFailure, ProcessingFailureBuilder> {
-  ProcessingFailure._();
   String get id;
   bool get seen;
   ProcessingFailureType get type;
@@ -19,8 +19,18 @@ abstract class ProcessingFailure
   Object get data;
   String get message;
 
-  factory ProcessingFailure([void Function(ProcessingFailureBuilder) updates]) =
-      _$ProcessingFailure;
+  ProcessingFailure._();
+
+  factory ProcessingFailure(
+      {@required String id,
+      @required bool seen,
+      @required ProcessingFailureType type,
+      @required DateTime createdOn,
+      @required Object data,
+      @required String message}) = _$ProcessingFailure._;
+
+  factory ProcessingFailure.by(
+      [void Function(ProcessingFailureBuilder) updates]) = _$ProcessingFailure;
 
   Object toJson() =>
       serializers.serializeWith(ProcessingFailure.serializer, this);

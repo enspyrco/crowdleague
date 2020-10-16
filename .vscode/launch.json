@@ -5,22 +5,9 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Main",
+            "name": "crowdleague",
             "request": "launch",
-            "type": "dart",
-            "program": "lib/main.dart"
-        },
-        {
-            "name": "MainRDT",
-            "type": "dart",
-            "request": "launch",
-            "program": "lib/main_rdt.dart",
-        },
-        {
-            "name": "LocalRDT",
-            "type": "dart",
-            "request": "launch",
-            "program": "lib/main_local_rdt.dart",
+            "type": "dart"
         }
     ]
 }

@@ -4,10 +4,10 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/enums/nav_bar_selection.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_nav_bar_selection.g.dart';
 
@@ -18,7 +18,10 @@ abstract class StoreNavBarSelection extends Object
 
   StoreNavBarSelection._();
 
-  factory StoreNavBarSelection(
+  factory StoreNavBarSelection({@required NavBarSelection selection}) =
+      _$StoreNavBarSelection._;
+
+  factory StoreNavBarSelection.by(
           [void Function(StoreNavBarSelectionBuilder) updates]) =
       _$StoreNavBarSelection;
 

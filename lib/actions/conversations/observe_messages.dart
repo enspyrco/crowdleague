@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'observe_messages.g.dart';
 
@@ -15,8 +14,7 @@ abstract class ObserveMessages extends Object
     implements Built<ObserveMessages, ObserveMessagesBuilder> {
   ObserveMessages._();
 
-  factory ObserveMessages([void Function(ObserveMessagesBuilder) updates]) =
-      _$ObserveMessages;
+  factory ObserveMessages() = _$ObserveMessages;
 
   Object toJson() =>
       serializers.serializeWith(ObserveMessages.serializer, this);

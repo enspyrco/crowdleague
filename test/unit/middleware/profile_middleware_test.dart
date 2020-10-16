@@ -1,5 +1,5 @@
 import 'package:crowdleague/actions/device/pick_profile_pic.dart';
-import 'package:crowdleague/middleware/profile_middleware.dart';
+import 'package:crowdleague/middleware/profile/pick_profile_pic.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:mockito/mockito.dart';
@@ -19,9 +19,7 @@ void main() {
       // create a basic store with mocked out middleware
       final store = Store<AppState>(appReducer,
           initialState: AppState.init(),
-          middleware: createProfileMiddleware(
-            deviceService: mockService,
-          ));
+          middleware: [PickProfilePicMiddleware(mockService)]);
 
       // dispatch action to test middleware
       store.dispatch(PickProfilePic());
@@ -50,9 +48,7 @@ void main() {
       // create a basic store with mocked out middleware
       final store = Store<AppState>(appReducer,
           initialState: initialState,
-          middleware: createProfileMiddleware(
-            deviceService: mockDeviceService,
-          ));
+          middleware: [PickProfilePicMiddleware(mockDeviceService)]);
 
       // dispatch action to test middleware
       store.dispatch(PickProfilePic());

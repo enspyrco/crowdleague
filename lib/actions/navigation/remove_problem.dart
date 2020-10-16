@@ -4,10 +4,10 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/problem.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'remove_problem.g.dart';
 
@@ -18,7 +18,9 @@ abstract class RemoveProblem extends Object
 
   RemoveProblem._();
 
-  factory RemoveProblem([void Function(RemoveProblemBuilder) updates]) =
+  factory RemoveProblem({@required Problem problem}) = _$RemoveProblem._;
+
+  factory RemoveProblem.by([void Function(RemoveProblemBuilder) updates]) =
       _$RemoveProblem;
 
   Object toJson() => serializers.serializeWith(RemoveProblem.serializer, this);

@@ -9,13 +9,14 @@ import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
-import 'package:crowdleague/utils/firestore_subscriptions.dart';
+import 'package:crowdleague/utils/redux/firestore_subscriptions.dart';
 import 'package:redux/redux.dart';
 
 class DatabaseService {
-  /// The [Firestore] instance, the current implementation of the database
-  final Firestore _firestore;
+  /// The [FirebaseFirestore] instance, the current implementation of the database
+  final FirebaseFirestore _firestore;
 
   /// The [FirestoreSubscriptions] object holds the subscriptions to the
   /// firestore streams, used to cancel streams when we want to stop listening
@@ -33,13 +34,13 @@ class DatabaseService {
   /// connect the [_storeController] to the redux [Store]
   Stream<ReduxAction> get storeStream => _storeController.stream;
 
-  DatabaseService(Firestore firestore) : _firestore = firestore;
+  DatabaseService(FirebaseFirestore firestore) : _firestore = firestore;
 
   //////////////////////////////////////////////////////////////////////////////
   /// PROCESSING FAILURES
   //////////////////////////////////////////////////////////////////////////////
 
-  /// Connect to the [Firestore], and add any new [ProcessingFailure]s to the
+  /// Connect to the [FirebaseFirestore], and add any new [ProcessingFailure]s to the
   /// app state via [StoreProcessingFailures] actions
   ///
   /// Also display any new [ProcessingFailure]s via [AddProblem] actions
@@ -81,11 +82,12 @@ class DatabaseService {
         'uids': uids
       });
 
-      return StoreSelectedConversation((b) => b
-        ..summary.conversationId = docRef.documentID
-        ..summary.displayNames = ListBuilder(displayNames)
-        ..summary.photoURLs = ListBuilder(photoURLs)
-        ..summary.uids = ListBuilder(uids));
+      return StoreSelectedConversation(
+          summary: ConversationSummary(
+              conversationId: docRef.id,
+              displayNames: BuiltList(displayNames),
+              photoURLs: BuiltList(photoURLs),
+              uids: BuiltList(uids)));
     } catch (error, trace) {
       return AddProblem.from(
           message: error.toString(),
@@ -170,8 +172,8 @@ class DatabaseService {
 
   Future<void> leaveConversation(String userId, String conversationId) {
     return _firestore
-        .document('/conversations/$conversationId/leave/$userId')
-        .setData(<String, dynamic>{'timestamp': FieldValue.serverTimestamp()});
+        .doc('/conversations/$conversationId/leave/$userId')
+        .set(<String, dynamic>{'timestamp': FieldValue.serverTimestamp()});
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -181,15 +183,16 @@ class DatabaseService {
   Future<ReduxAction> get retrieveLeaguers async {
     try {
       final collection = await _firestore.collection('leaguers');
-      final snapshot = await collection.getDocuments();
-      final leaguers = snapshot.documents.map<
-          Leaguer>((user) => Leaguer((b) => b
-        ..uid = user.documentID
-        ..displayName = user.data['displayName'] as String ?? user.documentID
-        ..photoURL = user.data['photoURL'] as String ??
-            'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'));
+      final snapshot = await collection.get();
+      final leaguers = snapshot.docs
+          .map<Leaguer>((user) => Leaguer(
+              uid: user.id,
+              displayName: user.data()['displayName'] as String ?? user.id,
+              photoURL: user.data()['photoURL'] as String ??
+                  'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'))
+          .toBuiltList();
 
-      return StoreLeaguers((b) => b..leaguers.replace(leaguers));
+      return StoreLeaguers(leaguers: leaguers);
     } catch (error, trace) {
       return AddProblem.from(
           message: error.toString(),
@@ -200,10 +203,10 @@ class DatabaseService {
 
   Future<ReduxAction> updateLeaguer(String userId, String picId) async {
     try {
-      final docRef = await _firestore.document('/leaguers/$userId');
+      final docRef = await _firestore.doc('/leaguers/$userId');
       final picURL =
           'https://storage.googleapis.com/crowdleague-profile-pics/$userId/${picId}_200x200';
-      await docRef.updateData(<String, dynamic>{'photoURL': picURL});
+      await docRef.update(<String, dynamic>{'photoURL': picURL});
       return null;
     } catch (error, trace) {
       return AddProblem.from(
@@ -273,9 +276,7 @@ class DatabaseService {
   /// ... or dispatches an AddProblem action
   Future<ReduxAction> deleteProfilePic(String userId, String picId) async {
     try {
-      await _firestore
-          .document('leaguers/$userId/profile_pics/$picId')
-          .delete();
+      await _firestore.doc('leaguers/$userId/profile_pics/$picId').delete();
       return null;
     } catch (error, trace) {
       return AddProblem.from(

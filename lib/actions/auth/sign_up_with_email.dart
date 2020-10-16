@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'sign_up_with_email.g.dart';
 
@@ -15,8 +14,7 @@ abstract class SignUpWithEmail extends Object
     implements Built<SignUpWithEmail, SignUpWithEmailBuilder> {
   SignUpWithEmail._();
 
-  factory SignUpWithEmail([void Function(SignUpWithEmailBuilder) updates]) =
-      _$SignUpWithEmail;
+  factory SignUpWithEmail() = _$SignUpWithEmail._;
 
   Object toJson() =>
       serializers.serializeWith(SignUpWithEmail.serializer, this);

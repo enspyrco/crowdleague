@@ -5,13 +5,17 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'vm_profile_page.g.dart';
 
 abstract class VmProfilePage
     implements Built<VmProfilePage, VmProfilePageBuilder> {
+  bool get pickingProfilePic;
+  bool get selectingProfilePic;
+  BuiltList<ProfilePic> get profilePics;
   @nullable
   String get userId;
   @nullable
@@ -19,13 +23,17 @@ abstract class VmProfilePage
   @nullable
   String get uploadingProfilePicId;
 
-  bool get pickingProfilePic;
-  bool get selectingProfilePic;
-  BuiltList<ProfilePic> get profilePics;
-
   VmProfilePage._();
 
-  factory VmProfilePage([void Function(VmProfilePageBuilder) updates]) =
+  factory VmProfilePage(
+      {@required bool pickingProfilePic,
+      @required bool selectingProfilePic,
+      @required BuiltList<ProfilePic> profilePics,
+      String userId,
+      String leaguerPhotoURL,
+      String uploadingProfilePicId}) = _$VmProfilePage._;
+
+  factory VmProfilePage.by([void Function(VmProfilePageBuilder) updates]) =
       _$VmProfilePage;
 
   static VmProfilePageBuilder initBuilder() => VmProfilePageBuilder()

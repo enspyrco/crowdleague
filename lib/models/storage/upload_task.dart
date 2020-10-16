@@ -5,8 +5,9 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/storage/upload_failure.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'upload_task.g.dart';
 
@@ -28,7 +29,17 @@ abstract class UploadTask implements Built<UploadTask, UploadTaskBuilder> {
 
   UploadTask._();
 
-  factory UploadTask([void Function(UploadTaskBuilder) updates]) = _$UploadTask;
+  factory UploadTask(
+      {@required String uuid,
+      @required String filePath,
+      @required UploadTaskState state,
+      UploadFailure failure,
+      int bytesTransferred,
+      int totalByteCount,
+      Uri uploadSessionUri}) = _$UploadTask._;
+
+  factory UploadTask.by([void Function(UploadTaskBuilder) updates]) =
+      _$UploadTask;
 
   Object toJson() => serializers.serializeWith(UploadTask.serializer, this);
 

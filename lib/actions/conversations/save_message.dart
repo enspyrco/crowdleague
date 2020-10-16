@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'save_message.g.dart';
 
@@ -15,8 +14,7 @@ abstract class SaveMessage extends Object
     implements Built<SaveMessage, SaveMessageBuilder> {
   SaveMessage._();
 
-  factory SaveMessage([void Function(SaveMessageBuilder) updates]) =
-      _$SaveMessage;
+  factory SaveMessage() = _$SaveMessage;
 
   Object toJson() => serializers.serializeWith(SaveMessage.serializer, this);
 

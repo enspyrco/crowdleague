@@ -5,15 +5,13 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_profile_pics.g.dart';
 
-/// Members:
-/// - BuiltList<ProfilePic> profilePics
 abstract class StoreProfilePics extends Object
     with ReduxAction
     implements Built<StoreProfilePics, StoreProfilePicsBuilder> {
@@ -21,8 +19,11 @@ abstract class StoreProfilePics extends Object
 
   StoreProfilePics._();
 
-  factory StoreProfilePics([void Function(StoreProfilePicsBuilder) updates]) =
-      _$StoreProfilePics;
+  factory StoreProfilePics({@required BuiltList<ProfilePic> profilePics}) =
+      _$StoreProfilePics._;
+
+  factory StoreProfilePics.by(
+      [void Function(StoreProfilePicsBuilder) updates]) = _$StoreProfilePics;
 
   Object toJson() =>
       serializers.serializeWith(StoreProfilePics.serializer, this);

@@ -3,39 +3,39 @@ import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
-import 'package:crowdleague/utils/apple_signin_object.dart';
+import 'package:crowdleague/extensions/extensions.dart';
+import 'package:crowdleague/utils/wrappers/apple_signin_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:crowdleague/extensions/extensions.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
   final FirebaseAuth _fireAuth;
   final GoogleSignIn _googleSignIn;
-  final AppleSignInObject _appleSignIn;
+  final AppleSignInWrapper _appleSignIn;
 
   AuthService(this._fireAuth, this._googleSignIn, this._appleSignIn);
 
-  // Map FirebaseUser objects emitted by FirebaseAuth to a StoreUser action,
+  // Map auth.User objects emitted by FirebaseAuth to a StoreUser action,
   // which can be dispatched by the store.
-  // If the FirebaseUser or the uid field is null, create an empty StoreUser
+  // If the auth.User or the uid field is null, create an empty StoreUser
   // object that will set the user field of the AppState to null.
   Stream<ReduxAction> get streamOfStateChanges {
-    return _fireAuth.onAuthStateChanged.map<ReduxAction>((firebaseUser) {
+    return _fireAuth.authStateChanges().map<ReduxAction>((firebaseUser) {
       if (firebaseUser == null) {
         return ClearUserData();
       }
-      return StoreUser((b) => b..user.replace(firebaseUser.toUser()));
+      return StoreUser(user: firebaseUser.toUser());
     });
   }
 
   Stream<ReduxAction> get googleSignInStream async* {
     // signal to change UI
-    yield StoreAuthStep((b) => b..step = AuthStep.signingInWithGoogle);
+    yield StoreAuthStep(step: AuthStep.signingInWithGoogle);
 
     try {
       final googleUser = await _googleSignIn.signIn();
@@ -43,16 +43,16 @@ class AuthService {
       // if the user canceled signin, an error is thrown but it gets swallowed
       // by the signIn() method so we need to reset the UI and close the stream
       if (googleUser == null) {
-        yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+        yield StoreAuthStep(step: AuthStep.waitingForInput);
         return;
       }
 
       // signal to change UI
-      yield StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase);
+      yield StoreAuthStep(step: AuthStep.signingInWithFirebase);
 
       final googleAuth = await googleUser.authentication;
 
-      final credential = GoogleAuthProvider.getCredential(
+      final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
@@ -62,12 +62,12 @@ class AuthService {
       await _fireAuth.signInWithCredential(credential);
 
       // we are signed in so reset the UI and pop anything on top of home
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
-      yield NavigatorPopAll();
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
+      yield RemoveCurrentPage();
     } catch (error, trace) {
       // reset the UI and display an alert
 
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
       // errors with code kSignInCanceledError are swallowed by the
       // GoogleSignIn.signIn() method so we can assume anything caught here
       // is a problem and send to the store for display
@@ -81,30 +81,31 @@ class AuthService {
 
   Stream<ReduxAction> get appleSignInStream async* {
     // signal to change UI
-    yield StoreAuthStep((b) => b..step = AuthStep.signingInWithApple);
+    yield StoreAuthStep(step: AuthStep.signingInWithApple);
 
     try {
       // get an AuthorizationCredentialAppleID
       final appleIdCredential = await _appleSignIn.getAppleIDCredential();
 
       // signal to change UI
-      yield StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase);
+      yield StoreAuthStep(step: AuthStep.signingInWithFirebase);
 
       // get an OAuthCredential
-      final credential = OAuthProvider(providerId: 'apple.com').getCredential(
+      final credential = OAuthProvider('apple.com').credential(
         idToken: appleIdCredential.identityToken,
         accessToken: appleIdCredential.authorizationCode,
       );
 
       // use the credential to sign in to firebase
+      // successful sign in will update the onAuthStateChanged stream
       await FirebaseAuth.instance.signInWithCredential(credential);
 
       // we are signed in so reset the UI and pop anything on top of home
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
-      yield NavigatorPopAll();
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
+      yield RemoveCurrentPage();
     } on SignInWithAppleAuthorizationException catch (e) {
       // reset the UI and display an alert (if not canceled)
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
       switch (e.code) {
         case AuthorizationErrorCode.canceled:
           break;
@@ -117,7 +118,7 @@ class AuthService {
     } catch (error, trace) {
       // reset the UI and display an alert
 
-      yield StoreAuthStep((b) => b..step = AuthStep.waitingForInput);
+      yield StoreAuthStep(step: AuthStep.waitingForInput);
       // any specific errors are caught and dealt with so we can assume
       // anything caught here is a problem and send to the store for display
       yield AddProblem.from(
@@ -148,7 +149,7 @@ class AuthService {
 
       // successful sign in will update the onAuthStateChanged stream
       // but we should navigate back to home
-      return NavigatorPopAll();
+      return RemoveCurrentPage();
     } catch (error, trace) {
       return AddProblem.from(
         message: error.toString(),
@@ -175,7 +176,7 @@ class AuthService {
 
       // successful sign up will update the onAuthStateChanged stream
       // but we should navigate back to home
-      return NavigatorPopAll();
+      return RemoveCurrentPage();
     } catch (error, trace) {
       return AddProblem.from(
         message: error.toString(),
@@ -190,7 +191,7 @@ class AuthService {
       await FirebaseAuth.instance.signOut();
       await _googleSignIn.signOut();
       // TODO: add sign out for sign in with apple provider
-      // see Issue #6 https://github.com/nickmeinhold/crowdleague_public/issues/6
+      // see Issue #232 https://github.com/crowdleague/crowdleague/issues/232
     } catch (error, trace) {
       return AddProblem.from(
         message: error.toString(),

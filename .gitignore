@@ -62,3 +62,5 @@ ios/Flutter/.last_build_id
 ios/fastlane/report.xml
 # credential for admin SDK to use when running functions locally for testing
 functions/firebase-functions-admin-key.json
+# don't mess with a person's vscode settings 
+.vscode/settings.json

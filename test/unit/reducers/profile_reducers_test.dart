@@ -1,7 +1,9 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/reducers/profile_reducers.dart';
+import 'package:crowdleague/models/profile/profile_pic.dart';
+import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
 
@@ -17,7 +19,7 @@ void main() {
       // create a basic store with the profile reducers and the initial state
       final store = Store<AppState>(
         combineReducers<AppState>(
-            <AppState Function(AppState, dynamic)>[...profileReducers]),
+            <AppState Function(AppState, dynamic)>[appReducer]),
         initialState: AppState.init(),
       );
 
@@ -26,47 +28,48 @@ void main() {
       expect(store.state.profilePage.profilePics.length, 0);
 
       // dispatch action to update the profile page 'selecting' state
-      store.dispatch(UpdateProfilePage((b) => b.selectingProfilePic = true));
+      store.dispatch(UpdateProfilePage(selectingProfilePic: true));
 
       // check that 'selecting' state was not updated
       expect(store.state.profilePage.selectingProfilePic, false);
 
       // store a list with a single profile pic
-      store.dispatch(
-          StoreProfilePics((b) => b..profilePics.add(mockProfilePic1)));
+      store.dispatch(StoreProfilePics(
+          profilePics: BuiltList(<ProfilePic>[mockProfilePic1])));
 
       // check list size is now 1
       expect(store.state.profilePage.profilePics.length, 1);
 
       // dispatch action to update the profile page 'selecting' state
-      store.dispatch(UpdateProfilePage((b) => b.selectingProfilePic = true));
+      store.dispatch(UpdateProfilePage(selectingProfilePic: true));
 
       // check that 'selecting' state was still not updated
       expect(store.state.profilePage.selectingProfilePic, false);
 
       // store a list with two profile pics
       store.dispatch(StoreProfilePics(
-          (b) => b..profilePics.addAll([mockProfilePic1, mockProfilePic2])));
+          profilePics:
+              BuiltList(<ProfilePic>[mockProfilePic1, mockProfilePic2])));
 
       // check list size is now 2
       expect(store.state.profilePage.profilePics.length, 2);
 
       // dispatch action to update the profile page 'selecting' state
-      store.dispatch(UpdateProfilePage((b) => b.selectingProfilePic = true));
+      store.dispatch(UpdateProfilePage(selectingProfilePic: true));
 
       // check that the 'selecting' state has now been set
       expect(store.state.profilePage.selectingProfilePic, true);
 
       // store a list with one profile pic
-      store.dispatch(
-          StoreProfilePics((b) => b..profilePics.add(mockProfilePic2)));
+      store.dispatch(StoreProfilePics(
+          profilePics: BuiltList(<ProfilePic>[mockProfilePic2])));
 
       // check list size is now 1 and 'selecting' state is still true
       expect(store.state.profilePage.profilePics.length, 1);
       expect(store.state.profilePage.selectingProfilePic, true);
 
       // dispatch action to update the profile page 'selecting' state
-      store.dispatch(UpdateProfilePage((b) => b.selectingProfilePic = false));
+      store.dispatch(UpdateProfilePage(selectingProfilePic: false));
 
       // check that the 'selecting' state was set
       expect(store.state.profilePage.selectingProfilePic, false);

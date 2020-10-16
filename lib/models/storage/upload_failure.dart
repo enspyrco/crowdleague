@@ -4,7 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'upload_failure.g.dart';
 
@@ -15,7 +16,10 @@ abstract class UploadFailure
 
   UploadFailure._();
 
-  factory UploadFailure([void Function(UploadFailureBuilder) updates]) =
+  factory UploadFailure({@required int code, @required String description}) =
+      _$UploadFailure._;
+
+  factory UploadFailure.by([void Function(UploadFailureBuilder) updates]) =
       _$UploadFailure;
 
   Object toJson() => serializers.serializeWith(UploadFailure.serializer, this);

@@ -1,8 +1,10 @@
-import 'package:crowdleague/actions/navigation/navigate_to.dart';
+import 'package:crowdleague/actions/navigation/push_page.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
+import 'package:crowdleague/enums/nav_bar_selection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/enums/nav_bar_selection.dart';
+import 'package:crowdleague/models/navigation/page_data/new_conversation_page_data.dart';
+import 'package:crowdleague/models/navigation/page_data/profile_page_data.dart';
 import 'package:crowdleague/widgets/chats/conversations/conversations_page.dart';
 import 'package:crowdleague/widgets/more_options/more_options_page.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +25,8 @@ class MainPage extends StatelessWidget {
             selection: selection,
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              context.dispatch(
-                  NavigateTo((b) => b..location = '/new_conversation'));
-            },
+            onPressed: () =>
+                context.dispatch(PushPage(data: NewConversationPageData())),
             child: Icon(Icons.add),
           ),
           bottomNavigationBar: NavBar(selectedIndex: selection.index),
@@ -55,19 +55,19 @@ class NavBar extends StatelessWidget {
               fontFamily: 'maticons',
             ),
           ),
-          title: Text('Home'),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.business),
-          title: Text('Business'),
+          label: 'Business',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.message),
-          title: Text('Conversations'),
+          label: 'Conversations',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.more_vert),
-          title: Text('More'),
+          label: 'More',
         ),
       ],
       type: BottomNavigationBarType.fixed,
@@ -77,8 +77,8 @@ class NavBar extends StatelessWidget {
   }
 
   void _onItemTapped(BuildContext context, int index) {
-    context.dispatch(StoreNavBarSelection(
-        (b) => b..selection = NavBarSelection.valueOfIndex(index)));
+    context.dispatch(
+        StoreNavBarSelection(selection: NavBarSelection.valueOfIndex(index)));
   }
 }
 
@@ -119,7 +119,7 @@ class AccountButton extends StatelessWidget {
         size: 50,
       ),
       onPressed: () {
-        context.dispatch(NavigateTo((b) => b..location = '/profile'));
+        context.dispatch(PushPage(data: ProfilePageData()));
       },
     );
   }

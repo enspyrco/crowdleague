@@ -24,9 +24,11 @@ void main() {
 
     // Close the connection to the driver after the tests have completed.
     tearDownAll(() async {
-      if (driver != null) {
-        await driver.close();
-      }
+      // commented out so app can be manually used after test finishes
+      // TODO: uncomment when test is no longer used for local dev
+      // if (driver != null) {
+      //   await driver.close();
+      // }
     });
 
     test('Sign in', () async {

@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_processing_failures.g.dart';
 
@@ -20,6 +20,10 @@ abstract class StoreProcessingFailures extends Object
   StoreProcessingFailures._();
 
   factory StoreProcessingFailures(
+          {@required BuiltList<ProcessingFailure> failures}) =
+      _$StoreProcessingFailures._;
+
+  factory StoreProcessingFailures.by(
           [void Function(StoreProcessingFailuresBuilder) updates]) =
       _$StoreProcessingFailures;
 

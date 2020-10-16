@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'plumb_database_stream.g.dart';
 
@@ -15,9 +14,7 @@ abstract class PlumbDatabaseStream extends Object
     implements Built<PlumbDatabaseStream, PlumbDatabaseStreamBuilder> {
   PlumbDatabaseStream._();
 
-  factory PlumbDatabaseStream(
-          [void Function(PlumbDatabaseStreamBuilder) updates]) =
-      _$PlumbDatabaseStream;
+  factory PlumbDatabaseStream() = _$PlumbDatabaseStream;
 
   Object toJson() =>
       serializers.serializeWith(PlumbDatabaseStream.serializer, this);

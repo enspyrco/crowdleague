@@ -1,5 +1,5 @@
-import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
+import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +13,8 @@ class LeaguerTile extends StatelessWidget {
     return ListTile(
       leading: Image.network(leaguer.photoURL),
       title: Text(leaguer.displayName),
-      onTap: () => context.dispatch(
-          UpdateNewConversationPage((b) => b..selection.replace(leaguer))),
+      onTap: () =>
+          context.dispatch(UpdateNewConversationPage(selection: leaguer)),
     );
   }
 }

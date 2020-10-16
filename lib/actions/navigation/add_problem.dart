@@ -9,7 +9,7 @@ import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/app/problem.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 import 'package:meta/meta.dart';
 
 part 'add_problem.g.dart';
@@ -21,7 +21,10 @@ abstract class AddProblem extends Object
 
   AddProblem._();
 
-  factory AddProblem([void Function(AddProblemBuilder) updates]) = _$AddProblem;
+  factory AddProblem({@required Problem problem}) = _$AddProblem._;
+
+  factory AddProblem.by([void Function(AddProblemBuilder) updates]) =
+      _$AddProblem;
 
   factory AddProblem.from({
     @required String message,
@@ -29,14 +32,13 @@ abstract class AddProblem extends Object
     String traceString,
     BuiltMap<String, Object> info,
     AppState state,
-  }) {
-    return AddProblem((b) => b
-      ..problem.message = message
-      ..problem.type = type
-      ..problem.trace = traceString
-      ..problem.info = info?.toBuilder()
-      ..problem.state = state?.toBuilder());
-  }
+  }) =>
+      AddProblem.by((b) => b
+        ..problem.message = message
+        ..problem.type = type
+        ..problem.trace = traceString
+        ..problem.info = info?.toBuilder()
+        ..problem.state = state?.toBuilder());
 
   Object toJson() => serializers.serializeWith(AddProblem.serializer, this);
 

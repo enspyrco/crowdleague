@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'create_conversation.g.dart';
 
@@ -15,9 +14,7 @@ abstract class CreateConversation extends Object
     implements Built<CreateConversation, CreateConversationBuilder> {
   CreateConversation._();
 
-  factory CreateConversation(
-          [void Function(CreateConversationBuilder) updates]) =
-      _$CreateConversation;
+  factory CreateConversation() = _$CreateConversation;
 
   Object toJson() =>
       serializers.serializeWith(CreateConversation.serializer, this);

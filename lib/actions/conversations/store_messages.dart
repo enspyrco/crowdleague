@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'store_messages.g.dart';
 
@@ -19,7 +19,10 @@ abstract class StoreMessages extends Object
 
   StoreMessages._();
 
-  factory StoreMessages([void Function(StoreMessagesBuilder) updates]) =
+  factory StoreMessages({@required BuiltList<Message> messages}) =
+      _$StoreMessages._;
+
+  factory StoreMessages.by([void Function(StoreMessagesBuilder) updates]) =
       _$StoreMessages;
 
   Object toJson() => serializers.serializeWith(StoreMessages.serializer, this);

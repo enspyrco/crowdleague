@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'clear_user_data.g.dart';
 
@@ -15,8 +14,7 @@ abstract class ClearUserData extends Object
     implements Built<ClearUserData, ClearUserDataBuilder> {
   ClearUserData._();
 
-  factory ClearUserData([void Function(ClearUserDataBuilder) updates]) =
-      _$ClearUserData;
+  factory ClearUserData() = _$ClearUserData._;
 
   Object toJson() => serializers.serializeWith(ClearUserData.serializer, this);
 

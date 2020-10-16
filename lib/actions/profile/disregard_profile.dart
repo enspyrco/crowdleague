@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'disregard_profile.g.dart';
 
@@ -15,8 +14,7 @@ abstract class DisregardProfile extends Object
     implements Built<DisregardProfile, DisregardProfileBuilder> {
   DisregardProfile._();
 
-  factory DisregardProfile([void Function(DisregardProfileBuilder) updates]) =
-      _$DisregardProfile;
+  factory DisregardProfile() = _$DisregardProfile;
 
   Object toJson() =>
       serializers.serializeWith(DisregardProfile.serializer, this);

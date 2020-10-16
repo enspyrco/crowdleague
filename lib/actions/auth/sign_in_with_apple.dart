@@ -1,12 +1,11 @@
-library signin_with_apple;
+library sign_in_with_apple;
 
 import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'sign_in_with_apple.g.dart';
 
@@ -15,8 +14,7 @@ abstract class SignInWithApple extends Object
     implements Built<SignInWithApple, SignInWithAppleBuilder> {
   SignInWithApple._();
 
-  factory SignInWithApple([void Function(SignInWithAppleBuilder) updates]) =
-      _$SignInWithApple;
+  factory SignInWithApple() = _$SignInWithApple._;
 
   Object toJson() =>
       serializers.serializeWith(SignInWithApple.serializer, this);

@@ -5,9 +5,10 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'vm_new_conversation_leaguers.g.dart';
 
@@ -20,6 +21,11 @@ abstract class VmNewConversationLeaguers
   VmNewConversationLeaguers._();
 
   factory VmNewConversationLeaguers(
+          {@required BuiltList<Leaguer> leaguers,
+          @required NewConversationPageLeaguersState state}) =
+      _$VmNewConversationLeaguers._;
+
+  factory VmNewConversationLeaguers.by(
           [void Function(VmNewConversationLeaguersBuilder) updates]) =
       _$VmNewConversationLeaguers;
 

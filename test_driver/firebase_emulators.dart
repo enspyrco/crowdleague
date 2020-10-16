@@ -1,69 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crowdleague/middleware/app_middleware.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/reducers/app_reducer.dart';
-import 'package:crowdleague/services/auth_service.dart';
-import 'package:crowdleague/services/database_service.dart';
-import 'package:crowdleague/services/device_service.dart';
-import 'package:crowdleague/services/navigation_service.dart';
-import 'package:crowdleague/services/notifications_service.dart';
-import 'package:crowdleague/utils/apple_signin_object.dart';
+import 'package:crowdleague/utils/redux/services_bundle.dart';
+import 'package:crowdleague/utils/redux/store_operation.dart';
 import 'package:crowdleague/widgets/crowd_league_app.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:redux/redux.dart';
-
-import 'mocks/storage_service_mocks.dart';
+import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
 Future<void> main() async {
   enableFlutterDriverExtension();
-  WidgetsFlutterBinding.ensureInitialized();
 
-  await Firestore.instance.settings(
-    host: 'localhost:8081',
-    sslEnabled: false,
-    persistenceEnabled: false,
-  );
+  // Create the rdt middleware that connects to the rdt server.
+  final _rdtMiddleware = RemoteDevToolsMiddleware<AppState>('localhost:8000');
 
-  /// we use a [GlobalKey] to allow navigation from a service
-  /// ie. without a [BuildContext])
-  ///
-  /// The [GlobalKey] is created here and passed to the [NavigationService] as
-  /// well as passed in to the [CrowdLeagueApp] widget so it can be used by the
-  /// [MaterialApp] widget
-  final navKey = GlobalKey<NavigatorState>();
+  // Create an operation for the services bundle to run on the store.
+  final _rdtOperation = StoreOperation((store) async {
+    _rdtMiddleware.store = store; // give middleware access to the store
+    await _rdtMiddleware.connect();
+  });
 
-  // Create services
-  final authService = AuthService(
-    FirebaseAuth.instance,
-    GoogleSignIn(scopes: <String>['email']),
-    AppleSignInObject(),
-  );
-  final navigationService = NavigationService(navKey);
-  final databaseService = DatabaseService(Firestore.instance);
-  final notificationsService = NotificationsService(FirebaseMessaging());
-  final storageService = FakeStorageService();
-  final deviceService = DeviceService(imagePicker: ImagePicker());
+  // Settings to make the firestore package use the local emulator
+  final _firestoreSettings = Settings(
+      host: 'localhost:8080', sslEnabled: false, persistenceEnabled: false);
 
-  // Create the redux store
-  final store = Store<AppState>(
-    appReducer,
-    initialState: AppState.init(),
-    middleware: [
-      ...createAppMiddleware(
-          authService: authService,
-          navigationService: navigationService,
-          databaseService: databaseService,
-          notificationsService: notificationsService,
-          storageService: storageService,
-          deviceService: deviceService),
-    ],
-  );
+  // Setup the services bundle to use a different bucket and with an extra
+  // middleware that sends each action and state to the rdt server for display.
+  ServicesBundle.setup(
+      bucketName: 'gs://profile-pics-prototyping',
+      extraMiddlewares: [_rdtMiddleware],
+      storeOperations: [_rdtOperation],
+      firestoreSettings: _firestoreSettings);
 
-  // Fire up the app
-  runApp(CrowdLeagueApp(store, navKey));
+  runApp(CrowdLeagueApp());
 }

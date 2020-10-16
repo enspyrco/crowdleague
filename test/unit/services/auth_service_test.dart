@@ -1,11 +1,10 @@
-import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
-import 'package:crowdleague/actions/navigation/navigator_pop_all.dart';
+import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
-import 'package:crowdleague/models/app/problem.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:test/test.dart';
 
@@ -56,10 +55,10 @@ void main() {
       expect(
           service.googleSignInStream,
           emitsInOrder(<ReduxAction>[
-            StoreAuthStep((b) => b..step = AuthStep.signingInWithGoogle),
-            StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase),
-            StoreAuthStep((b) => b..step = AuthStep.waitingForInput),
-            NavigatorPopAll()
+            StoreAuthStep(step: AuthStep.signingInWithGoogle),
+            StoreAuthStep(step: AuthStep.signingInWithFirebase),
+            StoreAuthStep(step: AuthStep.waitingForInput),
+            RemoveCurrentPage()
           ]));
     });
 
@@ -78,8 +77,8 @@ void main() {
       expect(
           service.googleSignInStream,
           emitsInOrder(<dynamic>[
-            StoreAuthStep((b) => b..step = AuthStep.signingInWithGoogle),
-            StoreAuthStep((b) => b..step = AuthStep.waitingForInput),
+            StoreAuthStep(step: AuthStep.signingInWithGoogle),
+            StoreAuthStep(step: AuthStep.waitingForInput),
             TypeMatcher<AddProblem>()
               ..having((p) => p.problem.type, 'type', ProblemType.googleSignIn)
               ..having((p) => p.problem.message, 'message',
@@ -96,8 +95,8 @@ void main() {
       expect(
           service.appleSignInStream,
           emitsInOrder(<dynamic>[
-            StoreAuthStep((b) => b..step = AuthStep.signingInWithApple),
-            StoreAuthStep((b) => b..step = AuthStep.waitingForInput),
+            StoreAuthStep(step: AuthStep.signingInWithApple),
+            StoreAuthStep(step: AuthStep.waitingForInput),
           ]));
     });
 
@@ -116,9 +115,9 @@ void main() {
       expect(
           service.appleSignInStream,
           emitsInOrder(<dynamic>[
-            StoreAuthStep((b) => b..step = AuthStep.signingInWithApple),
-            StoreAuthStep((b) => b..step = AuthStep.signingInWithFirebase),
-            StoreAuthStep((b) => b..step = AuthStep.waitingForInput),
+            StoreAuthStep(step: AuthStep.signingInWithApple),
+            StoreAuthStep(step: AuthStep.signingInWithFirebase),
+            StoreAuthStep(step: AuthStep.waitingForInput),
             TypeMatcher<AddProblem>()
               ..having((p) => p.problem.type, 'type', ProblemType.appleSignIn)
               ..having((p) => p.problem.message, 'message',

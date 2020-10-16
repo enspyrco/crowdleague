@@ -4,7 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'provider_info.g.dart';
 
@@ -34,7 +35,15 @@ abstract class ProviderInfo
 
   ProviderInfo._();
 
-  factory ProviderInfo([void Function(ProviderInfoBuilder) updates]) =
+  factory ProviderInfo(
+      {@required String providerId,
+      @required String uid,
+      String displayName,
+      String photoURL,
+      String email,
+      String phoneNumber}) = _$ProviderInfo._;
+
+  factory ProviderInfo.by([void Function(ProviderInfoBuilder) updates]) =
       _$ProviderInfo;
 
   Object toJson() => serializers.serializeWith(ProviderInfo.serializer, this);

@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'observe_profile.g.dart';
 
@@ -15,8 +14,7 @@ abstract class ObserveProfile extends Object
     implements Built<ObserveProfile, ObserveProfileBuilder> {
   ObserveProfile._();
 
-  factory ObserveProfile([void Function(ObserveProfileBuilder) updates]) =
-      _$ObserveProfile;
+  factory ObserveProfile() = _$ObserveProfile;
 
   Object toJson() => serializers.serializeWith(ObserveProfile.serializer, this);
 

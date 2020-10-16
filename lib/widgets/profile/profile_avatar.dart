@@ -28,8 +28,7 @@ class ProfileAvatar extends StatelessWidget {
               child: CircleAvatar(
                   radius: 45, backgroundImage: Image.network(_photoURL).image),
               onTap: () {
-                context.dispatch(
-                    UpdateProfilePage((b) => b..selectingProfilePic = true));
+                context.dispatch(UpdateProfilePage(selectingProfilePic: true));
               },
               onDoubleTap: () {
                 context.dispatch(PickProfilePic());

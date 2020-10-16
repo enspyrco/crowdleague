@@ -40,8 +40,6 @@ extension StorageTaskSnapshotExt on StorageTaskSnapshot {
         description = 'Really Unkown';
     }
 
-    return UploadFailure((b) => b
-      ..code = error
-      ..description = description);
+    return UploadFailure(code: error, description: description);
   }
 }

@@ -4,9 +4,9 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'acknowledge_processing_failure.g.dart';
 
@@ -20,7 +20,10 @@ abstract class AcknowledgeProcessingFailure extends Object
 
   AcknowledgeProcessingFailure._();
 
-  factory AcknowledgeProcessingFailure(
+  factory AcknowledgeProcessingFailure({@required String id}) =
+      _$AcknowledgeProcessingFailure._;
+
+  factory AcknowledgeProcessingFailure.by(
           [void Function(AcknowledgeProcessingFailureBuilder) updates]) =
       _$AcknowledgeProcessingFailure;
 

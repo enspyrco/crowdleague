@@ -1,7 +1,7 @@
-import 'package:crowdleague/actions/themes/store_brightness_mode.dart';
-import 'package:crowdleague/enums/themes/brightness_mode.dart';
-import 'package:flutter/material.dart';
+import 'package:crowdleague/actions/settings/store_brightness_mode.dart';
+import 'package:crowdleague/enums/settings/brightness_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
+import 'package:flutter/material.dart';
 
 class DarkModeToggle extends StatefulWidget {
   @override
@@ -21,14 +21,11 @@ class _DarkModeToggleState extends State<DarkModeToggle> {
       ],
       onPressed: (int index) {
         if (index == BrightnessMode.dark.index) {
-          context.dispatch(
-              StoreBrightnessMode((b) => b..mode = BrightnessMode.dark));
+          context.dispatch(StoreBrightnessMode(mode: BrightnessMode.dark));
         } else if (index == BrightnessMode.light.index) {
-          context.dispatch(
-              StoreBrightnessMode((b) => b..mode = BrightnessMode.light));
+          context.dispatch(StoreBrightnessMode(mode: BrightnessMode.light));
         } else if (index == BrightnessMode.system.index) {
-          context.dispatch(
-              StoreBrightnessMode((b) => b..mode = BrightnessMode.system));
+          context.dispatch(StoreBrightnessMode(mode: BrightnessMode.system));
         }
         setState(() {
           for (var i = 0; i < 3; i++) {

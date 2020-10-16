@@ -6,7 +6,8 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'user.g.dart';
 
@@ -30,7 +31,14 @@ abstract class User implements Built<User, UserBuilder> {
 
   User._();
 
-  factory User([void Function(UserBuilder) updates]) = _$User;
+  factory User(
+      {@required String id,
+      @required String displayName,
+      @required String photoURL,
+      @required String email,
+      @required BuiltList<ProviderInfo> providers}) = _$User._;
+
+  factory User.by([void Function(UserBuilder) updates]) = _$User;
 
   Object toJson() => serializers.serializeWith(User.serializer, this);
 

@@ -5,7 +5,8 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'conversation_summary.g.dart';
 
@@ -19,6 +20,12 @@ abstract class ConversationSummary
   ConversationSummary._();
 
   factory ConversationSummary(
+      {@required String conversationId,
+      @required BuiltList<String> uids,
+      @required BuiltList<String> photoURLs,
+      @required BuiltList<String> displayNames}) = _$ConversationSummary._;
+
+  factory ConversationSummary.by(
           [void Function(ConversationSummaryBuilder) updates]) =
       _$ConversationSummary;
 

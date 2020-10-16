@@ -7,9 +7,9 @@ assignees: ''
 
 ---
 
-## user goal & interactions 
+## User flow 
 
-Goal
+A Leaguer wants to 
 - 
 
 ## designs 
@@ -28,7 +28,23 @@ Goal
 
 - [ ] 
 
+## database 
+
+- [ ] 
+
+## storage 
+
+- [ ] 
+
+## cloud functions 
+
+- [ ]
+
 ## actions 
+
+- [ ] 
+
+## services 
 
 - [ ] 
 
@@ -44,22 +60,6 @@ Goal
 
 - [ ] 
 
-## services 
-
-- [ ] 
-
 ## widgets 
 
 - [ ] 
-
-## database 
-
-- [ ] 
-
-## storage 
-
-- [ ] 
-
-## cloud functions 
-
-- [ ]

@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'observe_processing_failures.g.dart';
 
@@ -16,9 +15,7 @@ abstract class ObserveProcessingFailures extends Object
         Built<ObserveProcessingFailures, ObserveProcessingFailuresBuilder> {
   ObserveProcessingFailures._();
 
-  factory ObserveProcessingFailures(
-          [void Function(ObserveProcessingFailuresBuilder) updates]) =
-      _$ObserveProcessingFailures;
+  factory ObserveProcessingFailures() = _$ObserveProcessingFailures;
 
   Object toJson() =>
       serializers.serializeWith(ObserveProcessingFailures.serializer, this);

@@ -4,7 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'leaguer.g.dart';
 
@@ -17,7 +18,10 @@ abstract class Leaguer implements Built<Leaguer, LeaguerBuilder> {
 
   Leaguer._();
 
-  factory Leaguer([void Function(LeaguerBuilder) updates]) = _$Leaguer;
+  factory Leaguer({@required String uid, String displayName, String photoURL}) =
+      _$Leaguer._;
+
+  factory Leaguer.by([void Function(LeaguerBuilder) updates]) = _$Leaguer;
 
   Object toJson() => serializers.serializeWith(Leaguer.serializer, this);
 

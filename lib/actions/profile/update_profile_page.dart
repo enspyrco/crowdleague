@@ -4,10 +4,9 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'update_profile_page.g.dart';
 
@@ -29,8 +28,16 @@ abstract class UpdateProfilePage extends Object
 
   UpdateProfilePage._();
 
-  factory UpdateProfilePage([void Function(UpdateProfilePageBuilder) updates]) =
-      _$UpdateProfilePage;
+  factory UpdateProfilePage(
+      {String userId,
+      String leaguerPhotoURL,
+      bool selectingProfilePic,
+      bool pickingProfilePic,
+      String uploadingProfilePicId,
+      ProfilePic removeDeletingState}) = _$UpdateProfilePage._;
+
+  factory UpdateProfilePage.by(
+      [void Function(UpdateProfilePageBuilder) updates]) = _$UpdateProfilePage;
 
   Object toJson() =>
       serializers.serializeWith(UpdateProfilePage.serializer, this);

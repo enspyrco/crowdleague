@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'retrieve_leaguers.g.dart';
 
@@ -15,8 +14,7 @@ abstract class RetrieveLeaguers extends Object
     implements Built<RetrieveLeaguers, RetrieveLeaguersBuilder> {
   RetrieveLeaguers._();
 
-  factory RetrieveLeaguers([void Function(RetrieveLeaguersBuilder) updates]) =
-      _$RetrieveLeaguers;
+  factory RetrieveLeaguers() = _$RetrieveLeaguers;
 
   Object toJson() =>
       serializers.serializeWith(RetrieveLeaguers.serializer, this);

@@ -17,15 +17,15 @@ import 'package:crowdleague/models/profile/profile_pic.dart';
 
 import 'extensions.dart';
 
-extension ConnectAndConvert on Firestore {
+extension ConnectAndConvert on FirebaseFirestore {
   StreamSubscription<QuerySnapshot> connectToProcessingFailures(
       String userId, StreamController<ReduxAction> controller) {
     return collection('users/$userId/processing_failures')
         .snapshots()
         .listen((querySnapshot) {
-      for (final change in querySnapshot.documentChanges) {
+      for (final change in querySnapshot.docChanges) {
         if (change.type == DocumentChangeType.added) {
-          final failure = change.document.toProcessingFailure();
+          final failure = change.doc.toProcessingFailure();
           final action = AddProblem.from(
               message: failure.message,
               type: ProblemType.processingFailure,
@@ -36,11 +36,12 @@ extension ConnectAndConvert on Firestore {
       }
 
       // convert the query snapshot to a list of ProcessingFailure
-      final failures = querySnapshot.documents.map<ProcessingFailure>(
-          (docSnapshot) => docSnapshot.toProcessingFailure());
+      final failures = querySnapshot.docs
+          .map<ProcessingFailure>(
+              (docSnapshot) => docSnapshot.toProcessingFailure())
+          .toBuiltList();
 
-      final action =
-          StoreProcessingFailures((b) => b..failures.replace(failures));
+      final action = StoreProcessingFailures(failures: failures);
       controller.add(action);
     });
   }
@@ -51,10 +52,12 @@ extension ConnectAndConvert on Firestore {
         .where('uids', arrayContains: userId)
         .snapshots()
         .listen((querySnapshot) {
-      final summaries = querySnapshot.documents.map<ConversationSummary>(
-          (docSnapshot) => docSnapshot.toConversationSummary());
+      final summaries = querySnapshot.docs
+          .map<ConversationSummary>(
+              (docSnapshot) => docSnapshot.toConversationSummary())
+          .toBuiltList();
 
-      final action = StoreConversations((b) => b..summaries.replace(summaries));
+      final action = StoreConversations(summaries: summaries);
       controller.add(action);
     });
   }
@@ -65,10 +68,9 @@ extension ConnectAndConvert on Firestore {
         .snapshots()
         .listen((querySnapshot) {
       controller.add(StoreMessages(
-        (b) => b
-          ..messages = ListBuilder<Message>(querySnapshot.documents
-              .map<Message>((docSnapshot) => Message(
-                  (b) => b..text = docSnapshot.data['text'] as String))),
+        messages: BuiltList<Message>(querySnapshot.docs.map<Message>(
+            (docSnapshot) =>
+                Message(text: docSnapshot.data()['text'] as String))),
       ));
     }, onError: (dynamic error, StackTrace trace) {
       controller.add(AddProblem.from(
@@ -89,20 +91,20 @@ extension ConnectAndConvert on Firestore {
   StreamSubscription<QuerySnapshot> connectToProfilePics(
       String userId, StreamController<ReduxAction> controller) {
     return collection('/leaguers')
-        .document('$userId')
+        .doc('$userId')
         .collection('profile_pics/')
         .snapshots()
         .listen((querySnapshot) {
       try {
         final picIds = <ProfilePic>[];
-        for (final docSnapshot in querySnapshot.documents) {
-          picIds.add(ProfilePic((b) => b
-            ..id = docSnapshot.documentID
-            ..deleting = docSnapshot.data['deleting'] as bool ?? false
-            ..url =
-                'https://storage.googleapis.com/crowdleague-profile-pics/$userId/${docSnapshot.documentID}_200x200'));
+        for (final docSnapshot in querySnapshot.docs) {
+          picIds.add(ProfilePic(
+              id: docSnapshot.id,
+              deleting: docSnapshot.data()['deleting'] as bool ?? false,
+              url:
+                  'https://storage.googleapis.com/crowdleague-profile-pics/$userId/${docSnapshot.id}_200x200'));
         }
-        controller.add(StoreProfilePics((b) => b..profilePics.replace(picIds)));
+        controller.add(StoreProfilePics(profilePics: picIds.toBuiltList()));
       } catch (error, trace) {
         controller.add(AddProblem.from(
           message: error.toString(),
@@ -124,12 +126,11 @@ extension ConnectAndConvert on Firestore {
   /// and adding all events to the controller
   StreamSubscription<DocumentSnapshot> connectToProfile(
       String userId, StreamController<ReduxAction> controller) {
-    return document('leaguers/$userId').snapshots().listen((docSnapshot) {
+    return doc('leaguers/$userId').snapshots().listen((docSnapshot) {
       try {
         final leaguer = docSnapshot.toLeaguer();
-        controller.add(UpdateProfilePage((b) => b
-          ..userId = leaguer.uid
-          ..leaguerPhotoURL = leaguer.photoURL));
+        controller.add(UpdateProfilePage(
+            userId: leaguer.uid, leaguerPhotoURL: leaguer.photoURL));
       } catch (error, trace) {
         controller.add(AddProblem.from(
           message: error.toString(),

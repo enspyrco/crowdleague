@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/app/serializers.dart';
+import 'package:crowdleague/utils/serializers.dart';
 
 part 'sign_out_user.g.dart';
 
@@ -15,8 +14,7 @@ abstract class SignOutUser extends Object
     implements Built<SignOutUser, SignOutUserBuilder> {
   SignOutUser._();
 
-  factory SignOutUser([void Function(SignOutUserBuilder) updates]) =
-      _$SignOutUser;
+  factory SignOutUser() = _$SignOutUser._;
 
   Object toJson() => serializers.serializeWith(SignOutUser.serializer, this);
 
