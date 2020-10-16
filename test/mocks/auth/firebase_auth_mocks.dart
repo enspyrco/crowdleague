@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mockito/mockito.dart';
 
+class MockFireBaseAuth extends Mock implements FirebaseAuth {}
+
 class FakeFirebaseAuthPeriodic extends Fake implements FirebaseAuth {
   @override
   Stream<auth.User> get onAuthStateChanged =>
@@ -13,11 +15,21 @@ class FakeFirebaseAuthPeriodic extends Fake implements FirebaseAuth {
       });
 }
 
-class FakeFirebaseAuthWithError extends Fake implements FirebaseAuth {
+class FakeFirebaseAuthSignInException extends Fake implements FirebaseAuth {
   @override
   Future<UserCredential> signInWithCredential(AuthCredential credential) =>
       throw FirebaseAuthException(
           code: 'user-not-found', message: 'test error: cant find user');
+}
+
+class FakeFirebaseAuthThrows extends Fake implements FirebaseAuth {
+  @override
+  Future<UserCredential> signInWithCredential(AuthCredential credential) =>
+      throw Exception('firebaseAuth.signIn');
+  @override
+  Future<void> signOut() {
+    throw Exception('firebaseAuth.signOut');
+  }
 }
 
 class FakeFirebaseAuth1 extends Fake implements FirebaseAuth {

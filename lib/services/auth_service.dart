@@ -215,7 +215,8 @@ class AuthService {
 
   Future<ReduxAction> signOut() async {
     try {
-      await FirebaseAuth.instance.signOut();
+      // await FirebaseAuth.instance.signOut();
+      await _fireAuth.signOut();
       await _googleSignIn.signOut();
       // TODO: add sign out for sign in with apple provider
       // see Issue #232 https://github.com/crowdleague/crowdleague/issues/232

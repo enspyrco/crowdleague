@@ -1,6 +1,8 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mockito/mockito.dart';
 
+class MockGoogleSignIn extends Mock implements GoogleSignIn {}
+
 // When the user cancels during the signin process, the Future returned
 // by signIn completes with null
 class FakeGoogleSignInCancels extends Fake implements GoogleSignIn {
@@ -21,6 +23,11 @@ class FakeGoogleSignInThrows extends Fake implements GoogleSignIn {
   @override
   Future<GoogleSignInAccount> signIn() {
     throw Exception('GoogleSignIn.signIn');
+  }
+
+  @override
+  Future<GoogleSignInAccount> signOut() {
+    throw Exception('GoogleSignIn.signOut');
   }
 }
 

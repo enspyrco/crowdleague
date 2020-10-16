@@ -9,6 +9,7 @@ import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/auth/apple_signin_mocks.dart';
@@ -18,7 +19,6 @@ import '../../mocks/mock_firebase_platform.dart';
 
 // TODO: test that sign streams close when sign in has finished
 // TODO: test that sign streams close when sign in errors
-// TODO: test sign out - dispatches a StoreProblem action on error
 
 void main() {
   // set up firebase
@@ -173,13 +173,12 @@ void main() {
     test(
         'emailSignInStream catches firebaseAuthExceptions and emits StoreProblem actions',
         () async {
-      final service = AuthService(FakeFirebaseAuthWithError(), null, null);
+      // init service to throw firebaseAuthException on sign in
+      final service =
+          AuthService(FakeFirebaseAuthSignInException(), null, null);
 
-      /// The service will emit the google sign in step then the google signin
-      /// object throws and the service catches the exception then emits
-      /// an action to reset the auth step then emits a problem with
-      /// info about the exception.
-      ///
+      /// Check that authService emits [AddProblem] action with info
+      /// from caught [firebaseAuthException].
       /// We use a [TypeMatcher] as it's difficult to create the expected
       /// [Problem] due to the [Problem.trace] member
       expect(
@@ -197,6 +196,81 @@ void main() {
               ..having((p) => p.problem.message, 'message',
                   equals('firebase auth exception error')),
           ]));
+    });
+
+    test('emailSignInStream catches errors and emits StoreProblem actions',
+        () async {
+      // Init service that throws exception when signing in with firebase
+      final service = AuthService(FakeFirebaseAuthThrows(), null, null);
+
+      /// Check that emailSignInStream emits addProblem action with info from caught error.
+      /// We use a [TypeMatcher] as it's difficult to create the expected
+      /// [Problem] due to the [Problem.trace] member
+      expect(
+          service.emailSignInStream('test@email.com', 'test_password'),
+          emitsInOrder(<dynamic>[
+            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
+            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
+            TypeMatcher<AddProblem>()
+              ..having((p) => p.problem.type, 'type', ProblemType.emailSignIn)
+              ..having((p) => p.problem.message, 'message',
+                  equals('firebase auth exception error')),
+          ]));
+    });
+
+    test('signOut signs out of all providers', () async {
+      // init all auth providers
+      final mockFireBaseAuth = MockFireBaseAuth();
+      final mockGoogleSignIn = MockGoogleSignIn();
+      final mockAppleSignIn = MockAppleSignIn();
+      final authService =
+          AuthService(mockFireBaseAuth, mockGoogleSignIn, mockAppleSignIn);
+
+      await authService.signOut();
+
+      verify(mockFireBaseAuth.signOut());
+      verify(mockGoogleSignIn.signOut());
+      // TODO: add apple sign in when #232 is completed. https://github.com/crowdleague/crowdleague/issues/232
+      // e.g verify(mockAppleSignIn.signOut());
+    });
+
+    test(
+        'signOut catches errors signing out of google and returns AddProblem action ',
+        () async {
+      final authService = AuthService(
+        MockFireBaseAuth(),
+        FakeGoogleSignInThrows(),
+        MockAppleSignIn(),
+      );
+      final testAddProblem = AddProblem.from(
+        message: 'GoogleSignIn.signOut',
+        type: ProblemType.signOut,
+        traceString: '',
+      );
+
+      final error = await authService.signOut() as AddProblem;
+
+      expect(error.problem.type, testAddProblem.problem.type);
+      expect(error.problem.message, testAddProblem.problem.message);
+    });
+    test(
+        'signOut catches errors signing out of firebase and returns AddProblem action ',
+        () async {
+      final authService = AuthService(
+        FakeFirebaseAuthThrows(),
+        MockGoogleSignIn(),
+        MockAppleSignIn(),
+      );
+      final testAddProblem = AddProblem.from(
+        message: 'GoogleSignIn.signIn',
+        type: ProblemType.signOut,
+        traceString: '',
+      );
+
+      final error = await authService.signOut() as AddProblem;
+
+      expect(error.problem.type, testAddProblem.problem.type);
+      expect(error.problem.message, testAddProblem.problem.message);
     });
   });
 }

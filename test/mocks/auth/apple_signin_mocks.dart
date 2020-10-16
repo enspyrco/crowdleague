@@ -2,6 +2,8 @@ import 'package:crowdleague/utils/wrappers/apple_signin_wrapper.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+class MockAppleSignIn extends Mock implements AppleSignInWrapper {}
+
 class FakeAppleSignIn extends Fake implements AppleSignInWrapper {
   @override
   Future<AuthorizationCredentialAppleID> getAppleIDCredential() {
