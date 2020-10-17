@@ -1,22 +1,26 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
+import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
-import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/services/auth_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/auth/apple_signin_mocks.dart';
 import '../../mocks/auth/firebase_auth_mocks.dart';
 import '../../mocks/auth/google_signin_mocks.dart';
-
-// TODO: test that sign streams close when sign in has finished
-// TODO: test that sign streams close when sign in errors
-// TODO: test sign out - dispatches a StoreProblem action on error
+import '../../mocks/mock_firebase_platform.dart';
 
 void main() {
+  // set up firebase
+  setUp(() {
+    Firebase.delegatePackingProperty = MockFirebasePlatform();
+  });
   group('Auth Service', () {
     // has a method that returns a stream that emits user
 
@@ -54,15 +58,16 @@ void main() {
 
       expect(
           service.googleSignInStream,
-          emitsInOrder(<ReduxAction>[
+          emitsInOrder(<dynamic>[
             StoreAuthStep(step: AuthStep.signingInWithGoogle),
             StoreAuthStep(step: AuthStep.signingInWithFirebase),
             StoreAuthStep(step: AuthStep.waitingForInput),
-            RemoveCurrentPage()
+            RemoveCurrentPage(),
+            emitsDone
           ]));
     });
 
-    test('googleSignInStream catches errors and emits StoreProblem actions',
+    test('googleSignInStream catches errors and emits AddProblem actions',
         () async {
       final service =
           AuthService(FakeFirebaseAuth1(), FakeGoogleSignInThrows(), null);
@@ -83,6 +88,7 @@ void main() {
               ..having((p) => p.problem.type, 'type', ProblemType.googleSignIn)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: GoogleSignIn.signIn')),
+            emitsDone
           ]));
     });
 
@@ -97,6 +103,7 @@ void main() {
           emitsInOrder(<dynamic>[
             StoreAuthStep(step: AuthStep.signingInWithApple),
             StoreAuthStep(step: AuthStep.waitingForInput),
+            emitsDone
           ]));
     });
 
@@ -122,11 +129,12 @@ void main() {
               ..having((p) => p.problem.type, 'type', ProblemType.appleSignIn)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: AppleSignIn.signIn')),
+            emitsDone
           ]));
     });
 
     // test that errors are handled by being passed to the store
-    test('appleSignInStream catches errors and emits StoreProblem actions',
+    test('appleSignInStream catches errors and emits AddProblem actions',
         () async {
       final service =
           AuthService(FakeFirebaseAuth1(), null, FakeAppleSignInThrows());
@@ -146,6 +154,127 @@ void main() {
                   equals('Exception: AppleSignIn.signIn')),
             emitsDone,
           ]));
+    });
+
+    test(
+        'emailSignInStream emits UpdateEmailAuthOptionsPage actions at each stage of successful sign in',
+        () {
+      final service = AuthService(FakeFirebaseAuth1(), null, null);
+
+      expect(
+          service.emailSignInStream('test@email.com', 'test_password'),
+          emitsInOrder(<dynamic>[
+            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
+            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
+            RemoveCurrentPage(),
+            emitsDone,
+          ]));
+    });
+
+    test(
+        'emailSignInStream catches firebaseAuthExceptions and emits AddProblem actions',
+        () async {
+      // init service to throw firebaseAuthException on sign in
+      final service =
+          AuthService(FakeFirebaseAuthSignInException(), null, null);
+
+      /// Check that authService emits [AddProblem] action with info
+      /// from caught [firebaseAuthException].
+      /// We use a [TypeMatcher] as it's difficult to create the expected
+      /// [Problem] due to the [Problem.trace] member
+      expect(
+          service.emailSignInStream('test@email.com', 'test_password'),
+          emitsInOrder(<dynamic>[
+            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
+            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
+            TypeMatcher<AddProblem>()
+              ..having((p) => p.problem.type, 'type', ProblemType.emailSignIn)
+              ..having(
+                  (p) => p.problem.info,
+                  'info',
+                  BuiltMap<String, Object>(
+                      {'code': 'test error: cant find user'}))
+              ..having((p) => p.problem.message, 'message',
+                  equals('firebase auth exception error')),
+            emitsDone
+          ]));
+    });
+
+    test('emailSignInStream catches errors and emits AddProblem actions',
+        () async {
+      // Init service that throws exception when signing in with firebase
+      final service = AuthService(FakeFirebaseAuthThrows(), null, null);
+
+      /// Check that emailSignInStream emits AddProblem action with info from caught error.
+      /// We use a [TypeMatcher] as it's difficult to create the expected
+      /// [Problem] due to the [Problem.trace] member
+      expect(
+          service.emailSignInStream('test@email.com', 'test_password'),
+          emitsInOrder(<dynamic>[
+            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
+            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
+            TypeMatcher<AddProblem>()
+              ..having((p) => p.problem.type, 'type', ProblemType.emailSignIn)
+              ..having((p) => p.problem.message, 'message',
+                  equals('firebase auth exception error')),
+            emitsDone
+          ]));
+    });
+
+    test('signOut signs out of all providers', () async {
+      // init all auth providers
+      final mockFireBaseAuth = MockFireBaseAuth();
+      final mockGoogleSignIn = MockGoogleSignIn();
+      final mockAppleSignIn = MockAppleSignIn();
+      final authService =
+          AuthService(mockFireBaseAuth, mockGoogleSignIn, mockAppleSignIn);
+
+      await authService.signOut();
+
+      verify(mockFireBaseAuth.signOut());
+      verify(mockGoogleSignIn.signOut());
+      // TODO: add apple sign in when #232 is completed. https://github.com/crowdleague/crowdleague/issues/232
+      // e.g verify(mockAppleSignIn.signOut());
+    });
+
+    test(
+        'signOut catches errors signing out of google and returns AddProblem action ',
+        () async {
+      final authService = AuthService(
+        MockFireBaseAuth(),
+        FakeGoogleSignInThrows(),
+        MockAppleSignIn(),
+      );
+      final testAddProblem = AddProblem.from(
+        message: 'Exception: GoogleSignIn.signOut',
+        type: ProblemType.signOut,
+        traceString: '',
+      );
+
+      final error = await authService.signOut() as AddProblem;
+
+      expect(error.problem.type, testAddProblem.problem.type);
+      expect(error.problem.message, testAddProblem.problem.message);
+    });
+
+    test(
+        'signOut catches errors signing out of firebase and returns AddProblem action ',
+        () async {
+      final authService = AuthService(
+        FakeFirebaseAuthThrows(),
+        MockGoogleSignIn(),
+        MockAppleSignIn(),
+      );
+      final testAddProblem = AddProblem.from(
+        message: 'Exception: firebaseAuth.signOut',
+        type: ProblemType.signOut,
+        traceString: '',
+      );
+
+      final error = await authService.signOut() as AddProblem;
+
+      expect(error.problem.type, testAddProblem.problem.type);
+      expect(error.problem.message, testAddProblem.problem.message);
     });
   });
 }
