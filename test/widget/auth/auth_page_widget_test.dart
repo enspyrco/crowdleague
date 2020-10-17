@@ -4,7 +4,15 @@ import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
-import 'package:crowdleague/widgets/auth/auth_page.dart';
+import 'package:crowdleague/widgets/auth/auth_page/auth_page.dart';
+import 'package:crowdleague/widgets/auth/auth_page/buttons/apple_sign_in_fab.dart';
+import 'package:crowdleague/widgets/auth/auth_page/buttons/auth_buttons.dart';
+import 'package:crowdleague/widgets/auth/auth_page/buttons/google_sign_in_fab.dart';
+import 'package:crowdleague/widgets/auth/auth_page/buttons/other_provider_fab.dart';
+import 'package:crowdleague/widgets/auth/auth_page/buttons/platform_sign_in_button.dart';
+import 'package:crowdleague/widgets/auth/auth_page/static_elements/crowd_league_logo.dart';
+import 'package:crowdleague/widgets/auth/auth_page/static_elements/explanation_text.dart';
+import 'package:crowdleague/widgets/auth/auth_page/static_elements/tag_line_text.dart';
 import 'package:crowdleague/widgets/shared/waiting_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
@@ -33,11 +41,16 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final defaultAuthPageUI = find.byType(PageContents);
+      final explanationText = find.byType(ExplanationText);
+      final crowdLeagueLogo = find.byType(CrowdLeagueLogo);
+      final taglineText = find.byType(TaglineText);
+      final authButtons = find.byType(AuthButtons);
 
-      // Use the `findsOneWidget` matcher provided by flutter_test to verify
-      // that the default AuthPage UI is shown
-      expect(defaultAuthPageUI, findsOneWidget);
+      // verify that the AuthPage UI is shown
+      expect(explanationText, findsOneWidget);
+      expect(crowdLeagueLogo, findsOneWidget);
+      expect(taglineText, findsOneWidget);
+      expect(authButtons, findsOneWidget);
     });
 
     testWidgets('displays without overflowing', (WidgetTester tester) async {
@@ -303,7 +316,7 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final otherPlatFormSignInButton = find.byType(OtherDefaultProviderButton);
+      final otherPlatFormSignInButton = find.byType(OtherProviderFAB);
       expect(otherPlatFormSignInButton, findsOneWidget);
 
       // Tap to sign in
@@ -332,7 +345,7 @@ void main() {
       await tester.pumpWidget(harness);
 
       // Create the Finders.
-      final otherPlatFormSignInButton = find.byType(OtherDefaultProviderButton);
+      final otherPlatFormSignInButton = find.byType(OtherProviderFAB);
       expect(otherPlatFormSignInButton, findsOneWidget);
 
       // Tap to sign in

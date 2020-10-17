@@ -6,10 +6,10 @@ import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/navigation/page_data/messages_page_data.dart';
 import 'package:flutter/material.dart';
 
-class ConversationTile extends StatelessWidget {
+class ConversationSummaryTile extends StatelessWidget {
   final ConversationSummary summary;
 
-  ConversationTile({@required this.summary, Key key}) : super(key: key);
+  ConversationSummaryTile({@required this.summary, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

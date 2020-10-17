@@ -8,6 +8,7 @@ import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:crowdleague/models/storage/upload_task.dart';
 import 'package:crowdleague/widgets/profile/background_photo.dart';
 import 'package:crowdleague/widgets/profile/profile_avatar.dart';
+import 'package:crowdleague/widgets/profile/profile_pic_upload_progress_indicator.dart';
 import 'package:crowdleague/widgets/profile/profile_pics_list.dart';
 import 'package:crowdleague/widgets/profile/uploading_profile_avatar.dart';
 import 'package:flutter/material.dart';
@@ -86,40 +87,6 @@ class ProfilePage extends StatelessWidget {
               ],
             );
           }),
-    );
-  }
-}
-
-class ProfilePicUploadProgressIndicator extends StatelessWidget {
-  final UploadTask task;
-
-  const ProfilePicUploadProgressIndicator(
-    this.task, {
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (task.state == UploadTaskState.processing) {
-      return CircularProgressIndicator(
-        value: null,
-        strokeWidth: 8,
-      );
-    }
-
-    final hasValues =
-        task.bytesTransferred != null && task.totalByteCount != null;
-    double progress; // show indeterminate unless there are valid values
-    if (hasValues) {
-      progress = task.bytesTransferred / task.totalByteCount;
-      if (progress < 0.1) {
-        // or a small progress value
-        progress = null;
-      }
-    }
-    return CircularProgressIndicator(
-      value: progress,
-      strokeWidth: 8,
     );
   }
 }
