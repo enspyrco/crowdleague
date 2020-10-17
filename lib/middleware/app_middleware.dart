@@ -18,6 +18,7 @@ import 'package:crowdleague/middleware/device/check_platform.dart';
 import 'package:crowdleague/middleware/leaguers/retrieve_leaguers.dart';
 import 'package:crowdleague/middleware/notifications/print_f_c_m_token.dart';
 import 'package:crowdleague/middleware/notifications/request_f_c_m_permissions.dart';
+import 'package:crowdleague/middleware/profile/delete_profile_pic.dart';
 import 'package:crowdleague/middleware/profile/disregard_profile.dart';
 import 'package:crowdleague/middleware/profile/disregard_profile_pics.dart';
 import 'package:crowdleague/middleware/profile/observe_profile.dart';
@@ -73,6 +74,7 @@ List<Middleware<AppState>> createAppMiddleware(
     PrintFCMTokenMiddleware(notificationsService),
     RequestFCMPermissionsMiddleware(notificationsService),
     // Profile
+    DeleteProfilePicMiddleware(databaseService),
     DisregardProfilePicsMiddleware(databaseService),
     DisregardProfileMiddleware(databaseService),
     ObserveProfilePicsMiddleware(databaseService),

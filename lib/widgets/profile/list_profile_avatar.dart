@@ -3,6 +3,7 @@ import 'package:crowdleague/actions/profile/select_profile_pic.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
+import 'package:crowdleague/widgets/shared/confirmation_alert.dart';
 import 'package:flutter/material.dart';
 
 class ListProfileAvatar extends StatelessWidget {
@@ -30,8 +31,13 @@ class ListProfileAvatar extends StatelessWidget {
               context.dispatch(UpdateProfilePage(
                   leaguerPhotoURL: _pic.url, selectingProfilePic: false));
             },
-            onLongPress: () {
-              context.dispatch(DeleteProfilePic(pic: _pic));
+            onLongPress: () async {
+              final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (BuildContext context) => ConfirmationAlert(
+                      question: 'Are you sure you want to delete the pic?'));
+
+              if (confirmed) context.dispatch(DeleteProfilePic(pic: _pic));
             },
           )
         ],
