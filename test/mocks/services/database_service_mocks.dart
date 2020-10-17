@@ -11,82 +11,57 @@ class FakeDatabaseService implements DatabaseService {
   @override
   Future<ReduxAction> createConversation(
       String userId, BuiltList<Leaguer> leaguers) {
-    // TODO: implement createConversation
     throw UnimplementedError();
   }
 
   @override
   Future<ReduxAction> deleteProfilePic(String userId, String picId) {
-    // TODO: implement deleteProfilePic
     throw UnimplementedError();
   }
 
   @override
-  void disregardConversations() {
-    // TODO: implement disregardConversations
-  }
+  void disregardConversations() {}
 
   @override
-  void disregardMessages(Store<AppState> store) {
-    // TODO: implement disregardMessages
-  }
+  void disregardMessages(Store<AppState> store) {}
 
   @override
-  void disregardProfile() {
-    // TODO: implement disregardProfile
-  }
+  void disregardProfile() {}
 
   @override
-  void disregardProfilePics() {
-    // TODO: implement disregardProfilePics
-  }
+  void disregardProfilePics() {}
 
   @override
   Future<void> leaveConversation(String userId, String conversationId) {
-    // TODO: implement leaveConversation
     throw UnimplementedError();
   }
 
   @override
-  void observeConversations(String userId) {
-    // TODO: implement observeConversations
-  }
+  void observeConversations(String userId) {}
 
   @override
-  void observeMessages(String conversationId) {
-    // TODO: implement observeMessages
-  }
+  void observeMessages(String conversationId) {}
 
   @override
-  void observeProcessingFailures(String userId) {
-    // TODO: implement observeProcessingFailures
-  }
+  void observeProcessingFailures(String userId) {}
 
   @override
-  void observeProfile(String userId) {
-    // TODO: implement observeProfile
-  }
+  void observeProfile(String userId) {}
 
   @override
-  void observeProfilePics(String userId) {
-    // TODO: implement observeProfilePics
-  }
+  void observeProfilePics(String userId) {}
 
   @override
-  // TODO: implement retrieveLeaguers
   Future<ReduxAction> get retrieveLeaguers => throw UnimplementedError();
 
   @override
-  void saveMessage(Store<AppState> store) {
-    // TODO: implement saveMessage
-  }
+  void saveMessage(Store<AppState> store) {}
 
   @override
   Stream<ReduxAction> get storeStream => StreamController<ReduxAction>().stream;
 
   @override
   Future<ReduxAction> updateLeaguer(String userId, String picId) {
-    // TODO: implement updateLeaguer
     throw UnimplementedError();
   }
 }

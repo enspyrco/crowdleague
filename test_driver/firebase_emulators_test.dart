@@ -1,10 +1,6 @@
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
-// e2e tests
-// TODO: Check that signing in with google sets the profile pic url
-//   - difficult as there is no local emulator for auth service yet
-
 void main() {
   group('CrowdLeague App', () {
     // First, define the Finders and use them to locate widgets from the
@@ -24,8 +20,7 @@ void main() {
 
     // Close the connection to the driver after the tests have completed.
     tearDownAll(() async {
-      // commented out so app can be manually used after test finishes
-      // TODO: uncomment when test is no longer used for local dev
+      // Commented out so app can be manually used after test finishes.
       // if (driver != null) {
       //   await driver.close();
       // }

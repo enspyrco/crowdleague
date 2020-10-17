@@ -42,9 +42,6 @@ void main() {
       // check that the store has the expected value
       expect(store.state.user, mockUser);
 
-      // TODO: make a mock AppState full of random data rather than just
-      // changing the user object
-
       // dispatch action to store auth state
       store.dispatch(ClearUserData());
 

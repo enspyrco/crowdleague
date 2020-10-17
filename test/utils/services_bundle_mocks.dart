@@ -30,25 +30,20 @@ class FakeServicesBundle extends ServicesBundle {
                 FakeStorageService(StreamController<ReduxAction>()));
 
   @override
-  // TODO: implement auth
   AuthService get auth => throw UnimplementedError();
 
   @override
   Future<Store<AppState>> createStore() => _reduxCompleter.future;
 
   @override
-  // TODO: implement database
   DatabaseService get database => throw UnimplementedError();
 
   @override
-  // TODO: implement device
   DeviceService get device => throw UnimplementedError();
 
   @override
-  // TODO: implement notifications
   NotificationsService get notifications => throw UnimplementedError();
 
   @override
-  // TODO: implement storage
   StorageService get storage => throw UnimplementedError();
 }

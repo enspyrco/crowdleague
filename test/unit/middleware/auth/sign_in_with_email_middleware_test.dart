@@ -1,9 +1,4 @@
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
-import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/actions/navigation/remove_current_page.dart';
-import 'package:crowdleague/enums/auth_step.dart';
-import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/middleware/auth/sign_in_with_email.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:mockito/mockito.dart';
