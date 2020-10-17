@@ -4,7 +4,6 @@ import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
-import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/services/auth_service.dart';
@@ -68,7 +67,7 @@ void main() {
           ]));
     });
 
-    test('googleSignInStream catches errors and emits StoreProblem actions',
+    test('googleSignInStream catches errors and emits AddProblem actions',
         () async {
       final service =
           AuthService(FakeFirebaseAuth1(), FakeGoogleSignInThrows(), null);
@@ -135,7 +134,7 @@ void main() {
     });
 
     // test that errors are handled by being passed to the store
-    test('appleSignInStream catches errors and emits StoreProblem actions',
+    test('appleSignInStream catches errors and emits AddProblem actions',
         () async {
       final service =
           AuthService(FakeFirebaseAuth1(), null, FakeAppleSignInThrows());
@@ -173,7 +172,7 @@ void main() {
     });
 
     test(
-        'emailSignInStream catches firebaseAuthExceptions and emits StoreProblem actions',
+        'emailSignInStream catches firebaseAuthExceptions and emits AddProblem actions',
         () async {
       // init service to throw firebaseAuthException on sign in
       final service =
@@ -201,12 +200,12 @@ void main() {
           ]));
     });
 
-    test('emailSignInStream catches errors and emits StoreProblem actions',
+    test('emailSignInStream catches errors and emits AddProblem actions',
         () async {
       // Init service that throws exception when signing in with firebase
       final service = AuthService(FakeFirebaseAuthThrows(), null, null);
 
-      /// Check that emailSignInStream emits addProblem action with info from caught error.
+      /// Check that emailSignInStream emits AddProblem action with info from caught error.
       /// We use a [TypeMatcher] as it's difficult to create the expected
       /// [Problem] due to the [Problem.trace] member
       expect(
@@ -257,6 +256,7 @@ void main() {
       expect(error.problem.type, testAddProblem.problem.type);
       expect(error.problem.message, testAddProblem.problem.message);
     });
+
     test(
         'signOut catches errors signing out of firebase and returns AddProblem action ',
         () async {
