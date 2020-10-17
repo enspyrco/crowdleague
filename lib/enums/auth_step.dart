@@ -6,7 +6,6 @@ import 'package:crowdleague/utils/serializers.dart';
 part 'auth_step.g.dart';
 
 class AuthStep extends EnumClass {
-  static Serializer<AuthStep> get serializer => _$authStepSerializer;
   static const AuthStep waitingForInput = _$waitingForInput;
   static const AuthStep signingInWithEmail = _$signingInWithEmail;
   static const AuthStep signingUpWithEmail = _$signingUpWithEmail;
@@ -14,20 +13,22 @@ class AuthStep extends EnumClass {
   static const AuthStep signingInWithApple = _$signingInWithApple;
   static const AuthStep signingInWithFirebase = _$signingInWithFirebase;
 
-  static const Map<AuthStep, int> _$indexMap = {
+  const AuthStep._(String name) : super(name);
+
+  static final _$indexMap = BuiltMap<AuthStep, int>({
     waitingForInput: 0,
     signingInWithEmail: 1,
     signingUpWithEmail: 2,
     signingInWithGoogle: 3,
     signingInWithApple: 4,
     signingInWithFirebase: 5,
-  };
-
-  const AuthStep._(String name) : super(name);
-
+  });
   int get index => _$indexMap[this];
+
   static BuiltSet<AuthStep> get values => _$values;
   static AuthStep valueOf(String name) => _$valueOf(name);
+
+  static Serializer<AuthStep> get serializer => _$authStepSerializer;
 
   Object toJson() => serializers.serializeWith(AuthStep.serializer, this);
 }
