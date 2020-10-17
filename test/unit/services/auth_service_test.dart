@@ -233,8 +233,7 @@ void main() {
 
       verify(mockFireBaseAuth.signOut());
       verify(mockGoogleSignIn.signOut());
-      // TODO: add apple sign in when #232 is completed. https://github.com/crowdleague/crowdleague/issues/232
-      // e.g verify(mockAppleSignIn.signOut());
+      // Sign in with Apple does not have a sign out feature, see #32: https://github.com/crowdleague/crowdleague/issues/32
     });
 
     test(

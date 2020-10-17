@@ -40,8 +40,6 @@ class FakeStorageService extends Fake implements StorageService {
     //   yield action;
     // }
 
-    // TODO: run a profile pic upload and record the actions and replicate here
-
     // an example that ended in an error
     yield UpdateUploadTask(
         type: UploadTaskUpdateType.progress,

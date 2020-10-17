@@ -31,7 +31,7 @@ void main() {
     //   await driver.waitFor(buttonFinder);
     //   await driver.tap(buttonFinder);
     //   // had to set waitUntilNoTransientCallbacks or the call times out
-    //   // TODO: need to get to the bottom of this, see issue #15
+    //   // - see issue #15
     //   await screenshot(driver, config, 'myscreenshot2',
     //       waitUntilNoTransientCallbacks: false);
     // });

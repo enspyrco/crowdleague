@@ -12,7 +12,6 @@ class NotificationsService {
         print('onMessage: $message');
         // _showItemDialog(message);
       },
-      // TODO: remove when #2180 is merged
       onBackgroundMessage: Platform.isAndroid ? backgroundMessageHandler : null,
       // onBackgroundMessage: backgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
