@@ -7,13 +7,12 @@ import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/settings/settings.dart';
 import 'package:crowdleague/utils/redux/services_bundle.dart';
 import 'package:crowdleague/utils/wrappers/firebase_wrapper.dart';
-import 'package:crowdleague/widgets/auth/auth_page.dart';
-import 'package:crowdleague/widgets/main/main_page.dart';
+import 'package:crowdleague/widgets/app/initializing_error_page.dart';
+import 'package:crowdleague/widgets/app/initializing_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -79,7 +78,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
   @override
   Widget build(BuildContext context) {
     if (_error != null) {
-      return ErrorPage(error: _error, trace: StackTrace.current);
+      return InitializingErrorPage(error: _error, trace: StackTrace.current);
     }
 
     // Show a loader until FlutterFire is initialized
@@ -119,93 +118,6 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-/// A StoreConnector that builds either the AuthPage or MainPage depending on
-/// the auth state.
-class InitialPage extends StatelessWidget {
-  const InitialPage({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, User>(
-        distinct: true,
-        converter: (store) => store.state.user,
-        builder: (context, user) {
-          return (user == null || user.id == null) ? AuthPage() : MainPage();
-        });
-  }
-}
-
-/// This widget is just a CircularProgressIndicator and some text, in a
-/// Material widget so it looks nice, as it is used outside of the MaterialApp.
-///
-/// It's a separate widget as the existing ProgressIndicator widget doesn't
-/// need to have it's contents in a Material widget.
-class InitializingIndicator extends StatelessWidget {
-  final bool firebaseDone;
-  final bool reduxDone;
-  const InitializingIndicator({
-    @required this.firebaseDone,
-    @required this.reduxDone,
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var message = '';
-    if (!firebaseDone) {
-      message = 'Waiting for Firebase...';
-    } else if (!reduxDone) {
-      message = 'Waiting for Redux...';
-    }
-    return Material(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(),
-            SizedBox(height: 30),
-            Text(message, textDirection: TextDirection.ltr)
-          ]),
-    );
-  }
-}
-
-/// This widget just displays the available info if there is an error during
-/// intialization.
-///
-/// It's not particularly pretty but it shouldn't ever be seen and if it is,
-/// we just need to view the available info.
-class ErrorPage extends StatelessWidget {
-  final dynamic _error;
-  final StackTrace _trace;
-  const ErrorPage({
-    @required dynamic error,
-    @required StackTrace trace,
-    Key key,
-  })  : _error = error,
-        _trace = trace,
-        super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            SizedBox(height: 50),
-            Text('Looks like there was a problem.',
-                textDirection: TextDirection.ltr),
-            SizedBox(height: 20),
-            Text(_error.toString(), textDirection: TextDirection.ltr),
-            SizedBox(height: 50),
-            Text(_trace.toString(), textDirection: TextDirection.ltr),
-          ],
-        ),
       ),
     );
   }
