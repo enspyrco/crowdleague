@@ -19,62 +19,55 @@ class EmailAuthOptionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(
-            color: Colors.black,
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
         ),
-        body: StoreConnector<AppState, VmEmailAuthOptionsPage>(
-          distinct: true,
-          converter: (store) => store.state.emailAuthOptionsPage,
-          builder: (context, vm) {
-            if (vm.step != AuthStep.waitingForInput) {
-              return Center(child: CircularProgressIndicator());
-            }
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: Form(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(height: 20),
-                          EmailTextField(
-                            autovalidateMode:
-                                vm.autovalidate.toAutovalidateMode(),
-                          ),
-                          SizedBox(height: 20),
-                          PasswordTextField(
-                              visible: vm.showPassword,
-                              autovalidateMode:
-                                  vm.autovalidate.toAutovalidateMode()),
-                          SizedBox(height: 20),
-                          if (vm.mode == EmailAuthMode.signUp)
-                            RepeatPasswordTextField(
-                              visible: vm.showPassword,
-                              password: vm.password,
-                              autovalidateMode:
-                                  vm.autovalidate.toAutovalidateMode(),
-                            ),
-                          SizedBox(height: 30),
-                          if (vm.mode == EmailAuthMode.signIn) SignInButton(),
-                          if (vm.mode == EmailAuthMode.signUp)
-                            CreateAccountButton(),
-                          SwitchModeText(vm.mode)
-                        ],
-                      ),
+      ),
+      body: StoreConnector<AppState, VmEmailAuthOptionsPage>(
+        distinct: true,
+        converter: (store) => store.state.emailAuthOptionsPage,
+        builder: (context, vm) {
+          if (vm.step != AuthStep.waitingForInput) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return SingleChildScrollView(
+            // this padding provides some space when the keyboard comes up
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+              child: Form(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 20),
+                    EmailTextField(
+                      autovalidateMode: vm.autovalidate.toAutovalidateMode(),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    PasswordTextField(
+                      visible: vm.showPassword,
+                      autovalidateMode: vm.autovalidate.toAutovalidateMode(),
+                    ),
+                    SizedBox(height: 20),
+                    if (vm.mode == EmailAuthMode.signUp)
+                      RepeatPasswordTextField(
+                        visible: vm.showPassword,
+                        password: vm.password,
+                        autovalidateMode: vm.autovalidate.toAutovalidateMode(),
+                      ),
+                    SizedBox(height: 30),
+                    if (vm.mode == EmailAuthMode.signIn) SignInButton(),
+                    if (vm.mode == EmailAuthMode.signUp) CreateAccountButton(),
+                    SwitchModeText(vm.mode)
+                  ],
+                ),
               ),
-            );
-          },
-        ));
+            ),
+          );
+        },
+      ),
+    );
   }
 }
 
