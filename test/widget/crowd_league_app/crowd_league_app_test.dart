@@ -9,8 +9,8 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/widgets/app/crowd_league_app.dart';
 import 'package:crowdleague/widgets/app/initializing_indicator.dart';
+import 'package:crowdleague/widgets/auth/auth_page/auth_page.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/email_options_fab.dart';
-import 'package:crowdleague/widgets/auth/auth_page/static_elements/crowd_league_logo.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/email_auth_options_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -122,9 +122,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final logoFinder = find.byType(CrowdLeagueLogo);
+      final initialPageFinder = find.byType(AuthPage);
 
-      expect(logoFinder, findsOneWidget);
+      expect(initialPageFinder, findsOneWidget);
 
       final fabFinder = find.byType(EmailOptionsFAB);
 
@@ -132,9 +132,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final switchModeTextFinder = find.byType(SwitchModeText);
+      final nextPageFinder = find.byType(EmailAuthOptionsPage);
 
-      expect(switchModeTextFinder, findsOneWidget);
+      expect(nextPageFinder, findsOneWidget);
     });
   });
 }
