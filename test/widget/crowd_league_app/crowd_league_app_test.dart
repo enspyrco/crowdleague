@@ -9,6 +9,9 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/widgets/app/crowd_league_app.dart';
 import 'package:crowdleague/widgets/app/initializing_indicator.dart';
+import 'package:crowdleague/widgets/auth/auth_page/buttons/email_options_fab.dart';
+import 'package:crowdleague/widgets/auth/auth_page/static_elements/crowd_league_logo.dart';
+import 'package:crowdleague/widgets/auth/email_auth_options_page/email_auth_options_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
@@ -18,7 +21,7 @@ import '../../utils/services_bundle_mocks.dart';
 import '../../utils/verify_dispatch_middleware.dart';
 
 void main() {
-  group('CrowddLeagueApp', () {
+  group('CrowdLeagueApp', () {
     testWidgets('shows expected UI while initializing',
         (WidgetTester tester) async {
       // create a fake(ish) a services bundle
@@ -89,6 +92,49 @@ void main() {
       expect(middleware.received(PrintFCMToken()), true);
       expect(middleware.received(CheckPlatform()), true);
       expect(middleware.received(PlumbDatabaseStream()), true);
+    });
+
+    ///
+    testWidgets('navigates to EmailAuthOptionsPage on FAB tap',
+        (WidgetTester tester) async {
+      // create a fake(ish) a services bundle
+      final reduxCompleter = Completer<Store<AppState>>();
+      final redux = FakeServicesBundle(completer: reduxCompleter);
+
+      // create a fake firebase wrapper with a supplied completer
+      final firebaseCompleter = Completer<FirebaseApp>();
+      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
+
+      // the widget under test
+      final wut = CrowdLeagueApp(redux: redux, firebase: firebase);
+
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(wut);
+
+      // complete the firebase future
+      firebaseCompleter.complete();
+
+      // setup a mock store and complete the redux future with the store
+      final middleware = VerifyDispatchMiddleware();
+      final store = Store<AppState>(appReducer,
+          initialState: AppState.init(), middleware: [middleware]);
+      reduxCompleter.complete(store);
+
+      await tester.pumpAndSettle();
+
+      final logoFinder = find.byType(CrowdLeagueLogo);
+
+      expect(logoFinder, findsOneWidget);
+
+      final fabFinder = find.byType(EmailOptionsFAB);
+
+      await tester.tap(fabFinder);
+
+      await tester.pumpAndSettle();
+
+      final switchModeTextFinder = find.byType(SwitchModeText);
+
+      expect(switchModeTextFinder, findsOneWidget);
     });
   });
 }
