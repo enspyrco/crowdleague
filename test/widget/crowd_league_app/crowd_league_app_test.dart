@@ -150,7 +150,7 @@ void main() {
       final testMiddleware = VerifyDispatchMiddleware();
 
       // Create redux store.
-      final store = Store<AppState>(null,
+      final store = Store<AppState>(appReducer,
           initialState: initialAppState, middleware: [testMiddleware]);
 
       // the widget under test
