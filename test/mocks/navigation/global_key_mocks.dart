@@ -11,10 +11,8 @@ class FakeGlobalKey implements GlobalKey<NavigatorState> {
   NavigatorState get currentState => mockNavigatorState;
 
   @override
-  // TODO: implement currentContext
   BuildContext get currentContext => throw UnimplementedError();
 
   @override
-  // TODO: implement currentWidget
   Widget get currentWidget => throw UnimplementedError();
 }

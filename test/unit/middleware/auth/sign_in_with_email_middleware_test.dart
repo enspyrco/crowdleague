@@ -1,70 +1,47 @@
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
-import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/actions/navigation/remove_current_page.dart';
-import 'package:crowdleague/enums/auth_step.dart';
-import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/middleware/auth/sign_in_with_email.dart';
+import 'package:crowdleague/models/app/app_state.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../../../mocks/redux/redux_action_mocks.dart';
 import '../../../mocks/redux/redux_store_mocks.dart';
 import '../../../mocks/services/auth_service_mocks.dart';
 import '../../util/testing_utils.dart';
 
 void main() {
   group('SignInWithEmailMiddleware', () {
-    test('on successfull sign with firebase, dispatches correct actions',
-        () async {
-      // initialize test store/services
+    test('dispatches actions emitted by authService.emailSignInStream', () {
+      // initialize test services
       final mockAuthService = MockAuthService();
-      final testStore = DispatchVerifyingStore();
 
-      // sign user in successfully
-      when(mockAuthService.signInWithEmail(any, any))
-          .thenAnswer((_) async => RemoveCurrentPage());
+      // build state with email and password
+      final testEmail = 'test@email.com';
+      final testPassword = 'test_password';
+      final testAppState = AppState.init().rebuild((b) => b
+        ..emailAuthOptionsPage.email = testEmail
+        ..emailAuthOptionsPage.password = testPassword);
 
-      // setup middleware
+      // build test store
+      final testStore = DispatchVerifyingStore(initialState: testAppState);
+      final testAction = MockReduxAction();
+
+      // return a stream that emits a redux action from emailSignInStream
+      when(mockAuthService.emailSignInStream(testEmail, testPassword))
+          .thenAnswer((_) => Stream.fromIterable([testAction]));
+
+      // setup middleware and invoke the middleware
       final mut = SignInWithEmailMiddleware(mockAuthService);
-      await mut(testStore, SignInWithEmail(), testDispatcher);
+      mut(testStore, SignInWithEmail(), testDispatcher);
 
-      // check that correct actions are called in desired order
-      verifyInOrder<dynamic>(<dynamic>[
-        testStore.dispatch(
-            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail)),
-        testStore.dispatch(RemoveCurrentPage()),
-        testStore.dispatch(
-            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput))
-      ]);
-    });
-
-    test('on error signing in with firebase, dispatches correct actions',
-        () async {
-      // initialize test store/services
-      final mockAuthService = MockAuthService();
-      final testStore = DispatchVerifyingStore();
-      final problem = AddProblem.from(
-        message: '',
-        type: ProblemType.emailSignIn,
-        traceString: '',
-      );
-
-      // create firebase sign in error
-      when(mockAuthService.signInWithEmail(any, any))
-          .thenAnswer((_) async => problem);
-
-      // setup middleware
-      final mut = SignInWithEmailMiddleware(mockAuthService);
-      await mut(testStore, SignInWithEmail(), testDispatcher);
-
-      // check that correct actions are called in desired order
-      verifyInOrder<dynamic>(<dynamic>[
-        testStore.dispatch(
-            UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail)),
-        testStore.dispatch(problem),
-        testStore.dispatch(
-            UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput))
-      ]);
+      // check that the service's stream emits the expected action and the store
+      // dispatched the same action
+      mockAuthService
+          .emailSignInStream(testEmail, testPassword)
+          .listen(expectAsync1((action) {
+            expect(action, equals(testAction));
+            expect(testStore.dispatchedActions.contains(testAction), true);
+          }, count: 1));
     });
   });
 }

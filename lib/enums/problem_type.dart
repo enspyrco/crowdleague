@@ -6,8 +6,6 @@ import 'package:crowdleague/utils/serializers.dart';
 part 'problem_type.g.dart';
 
 class ProblemType extends EnumClass {
-  static Serializer<ProblemType> get serializer => _$problemTypeSerializer;
-
   static const ProblemType googleSignIn = _$googleSignIn;
   static const ProblemType appleSignIn = _$appleSignIn;
   static const ProblemType emailSignIn = _$emailSignIn;
@@ -37,6 +35,8 @@ class ProblemType extends EnumClass {
 
   static BuiltSet<ProblemType> get values => _$values;
   static ProblemType valueOf(String name) => _$valueOf(name);
+
+  static Serializer<ProblemType> get serializer => _$problemTypeSerializer;
 
   Object toJson() => serializers.serializeWith(ProblemType.serializer, this);
 }

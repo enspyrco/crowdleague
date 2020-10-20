@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/actions/auth/store_user.dart';
+import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
@@ -142,16 +143,28 @@ class AuthService {
   ///  * `ERROR_USER_DISABLED` - If the user has been disabled (for example, in the Firebase console)
   ///  * `ERROR_TOO_MANY_REQUESTS` - If there was too many attempts to sign in as this user.
   ///  * `ERROR_OPERATION_NOT_ALLOWED` - Indicates that Email & Password accounts are not enabled.
-  Future<ReduxAction> signInWithEmail(String email, String password) async {
+  Stream<ReduxAction> emailSignInStream(String email, String password) async* {
+    yield UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail);
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-
+      await _fireAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      // reset UI
+      yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
       // successful sign in will update the onAuthStateChanged stream
       // but we should navigate back to home
-      return RemoveCurrentPage();
+      yield RemoveCurrentPage();
+    } on FirebaseAuthException catch (e) {
+      yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
+      yield AddProblem.from(
+        message: e.message.toString(),
+        type: ProblemType.emailSignIn,
+        info: BuiltMap({'code': e.code}),
+      );
     } catch (error, trace) {
-      return AddProblem.from(
+      // reset UI
+      yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
+      // display problem
+      yield AddProblem.from(
         message: error.toString(),
         type: ProblemType.emailSignIn,
         traceString: trace.toString(),
@@ -169,16 +182,30 @@ class AuthService {
   ///  * `ERROR_WEAK_PASSWORD` - If the password is not strong enough.
   ///  * `ERROR_INVALID_EMAIL` - If the email address is malformed.
   ///  * `ERROR_EMAIL_ALREADY_IN_USE` - If the email is already in use by a different account.
-  Future<ReduxAction> signUpWithEmail(String email, String password) async {
+  Stream<ReduxAction> emailSignUpStream(String email, String password) async* {
+    // set the UI to waiting
+    yield UpdateEmailAuthOptionsPage(step: AuthStep.signingUpWithEmail);
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
+      // reset UI
+      yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
       // successful sign up will update the onAuthStateChanged stream
       // but we should navigate back to home
-      return RemoveCurrentPage();
+      yield RemoveCurrentPage();
+    } on FirebaseAuthException catch (e) {
+      yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
+      yield AddProblem.from(
+        message: e.message.toString(),
+        type: ProblemType.emailSignIn,
+        info: BuiltMap({'code': e.code}),
+      );
     } catch (error, trace) {
-      return AddProblem.from(
+      // reset UI
+      yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
+      // display problem
+      yield AddProblem.from(
         message: error.toString(),
         type: ProblemType.emailSignUp,
         traceString: trace.toString(),
@@ -188,10 +215,8 @@ class AuthService {
 
   Future<ReduxAction> signOut() async {
     try {
-      await FirebaseAuth.instance.signOut();
+      await _fireAuth.signOut();
       await _googleSignIn.signOut();
-      // TODO: add sign out for sign in with apple provider
-      // see Issue #232 https://github.com/crowdleague/crowdleague/issues/232
     } catch (error, trace) {
       return AddProblem.from(
         message: error.toString(),

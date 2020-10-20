@@ -5,10 +5,10 @@ import 'package:crowdleague/models/navigation/page_data/messages_page_data.dart'
 import 'package:crowdleague/models/navigation/page_data/new_conversation_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/profile_page_data.dart';
-import 'package:crowdleague/widgets/auth/email_auth_options_page.dart';
-import 'package:crowdleague/widgets/chats/messages/messages_page.dart';
-import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_page.dart';
-import 'package:crowdleague/widgets/crowd_league_app.dart';
+import 'package:crowdleague/widgets/app/initial_page.dart';
+import 'package:crowdleague/widgets/auth/email_auth_options_page/email_auth_options_page.dart';
+import 'package:crowdleague/widgets/conversations/conversation_page/conversation_page.dart';
+import 'package:crowdleague/widgets/conversations/new_conversation_page/new_conversation_page.dart';
 import 'package:crowdleague/widgets/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 

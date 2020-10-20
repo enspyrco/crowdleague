@@ -7,8 +7,8 @@ import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
-import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_leaguers_list.dart';
-import 'package:crowdleague/widgets/chats/new_conversation/new_conversation_selections_list.dart';
+import 'package:crowdleague/widgets/conversations/new_conversation_page/new_conversation_leaguers_list.dart';
+import 'package:crowdleague/widgets/conversations/new_conversation_page/new_conversation_selections_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -28,20 +28,17 @@ class NewConversationPage extends StatelessWidget {
               distinct: true,
               converter: (store) =>
                   store.state.newConversationsPage.selectionsVM.selections,
-              builder: (context, vm) {
-                return NewConversationSelectionsList(items: vm);
-              },
+              builder: (context, vm) =>
+                  NewConversationSelectionsList(items: vm),
             ),
             StoreConnector<AppState, VmNewConversationLeaguers>(
               onInit: (store) => store.dispatch(RetrieveLeaguers()),
               distinct: true,
               converter: (store) => store.state.newConversationsPage.leaguersVM,
-              builder: (context, vm) {
-                if (vm.state == NewConversationPageLeaguersState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return NewConversationLeaguersList(items: vm.leaguers);
-              },
+              builder: (context, vm) =>
+                  (vm.state == NewConversationPageLeaguersState.waiting)
+                      ? Center(child: CircularProgressIndicator())
+                      : NewConversationLeaguersList(items: vm.leaguers),
             ),
           ],
         ),
