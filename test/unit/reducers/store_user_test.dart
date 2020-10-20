@@ -29,17 +29,16 @@ void main() {
       final testUser = mockUser;
 
       // Create a basic store with the app reducers
-      final initialAppState = AppState.init();
       final store = Store<AppState>(
         appReducer,
-        initialState: initialAppState,
+        initialState: AppState.init(),
       );
 
       // Dispatch action
       store.dispatch(StoreUser(user: testUser));
 
       // Check that the store has the expected value
-      expect(store.state.pagesData, initialAppState.pagesData);
+      expect(store.state.pagesData, AppState.init().pagesData);
     });
   });
 }
