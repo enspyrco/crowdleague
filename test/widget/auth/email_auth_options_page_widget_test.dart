@@ -371,6 +371,8 @@ void main() {
       // Tap to validate valid form
       await tester.tap(createAccountButton);
 
+      // TODO: figure out why validator is returning false after input valid details + tap createAccount btn
+
       // Check that form is valid and action is dispatched
       expect(testMiddleware.received(SignUpWithEmail()), true);
     });
