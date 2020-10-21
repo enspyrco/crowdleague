@@ -1,44 +1,37 @@
 import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/reducers/app_reducer.dart';
-import 'package:redux/redux.dart';
+import 'package:crowdleague/reducers/auth/store_user.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/models/user_mocks.dart';
 
 void main() {
   group('StoreUserReducer', () {
-    test('Adds new user to store', () {
-      // Init mocks
-      final testUser = mockUser;
+    test('adds new user to store', () {
+      // Setup an initial app state
+      final initialState = AppState.init();
 
-      // Create a basic store with the app reducers
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init(),
-      );
+      // Create the reducer.
+      final rut = StoreUserReducer();
 
-      // Dispatch action
-      store.dispatch(StoreUser(user: testUser));
+      // Invoke the reducer to get a new state.
+      final newState = rut.reducer(initialState, StoreUser(user: mockUser));
 
-      // Check that the store has the expected value
-      expect(store.state.user, testUser);
+      // Check that the new state has the new user.
+      expect(newState.user, mockUser);
     });
-    test('Resets navigation stack', () {
-      // Init mocks
-      final testUser = mockUser;
+    test('resets navigation stack', () {
+      // Setup an initial app state .
+      final initialState = AppState.init();
 
-      // Create a basic store with the app reducers
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init(),
-      );
+      // Create the reducer.
+      final rut = StoreUserReducer();
 
-      // Dispatch action
-      store.dispatch(StoreUser(user: testUser));
+      // Invoke the reducer to get a new state.
+      final newState = rut.reducer(initialState, StoreUser(user: mockUser));
 
-      // Check that the store has the expected value
-      expect(store.state.pagesData, AppState.init().pagesData);
+      // Check that the new state has null for the user.
+      expect(newState.pagesData, initialState.pagesData);
     });
   });
 }

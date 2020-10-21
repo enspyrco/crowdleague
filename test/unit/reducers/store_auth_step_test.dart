@@ -1,43 +1,42 @@
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/reducers/app_reducer.dart';
-import 'package:redux/redux.dart';
+import 'package:crowdleague/reducers/auth/store_auth_step.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('StoreAuthStepReducer', () {
-    test('Updates step for emailAuthOptionsPage', () {
+    test('updates step for emailAuthOptionsPage', () {
+      // Setup an initial app state
+      final initialState = AppState.init();
+
+      // Create the reducer.
+      final rut = StoreAuthStepReducer();
+
       // Create data for action
       final testStep = AuthStep.waitingForInput;
 
-      // Create a basic store with the app reducers
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init(),
-      );
+      // Invoke the reducer to get a new state.
+      final newState = rut.reducer(initialState, StoreAuthStep(step: testStep));
 
-      // Dispatch action to clear user data
-      store.dispatch(StoreAuthStep(step: testStep));
-
-      // Check that the store has the expected value
-      expect(store.state.emailAuthOptionsPage.step, testStep);
+      // Check that the new state has the new user.
+      expect(newState.emailAuthOptionsPage.step, testStep);
     });
     test('Updates step for authPage', () {
+      // Setup an initial app state
+      final initialState = AppState.init();
+
+      // Create the reducer.
+      final rut = StoreAuthStepReducer();
+
       // Create data for action
       final testStep = AuthStep.waitingForInput;
 
-      // Create a basic store with the app reducers
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init(),
-      );
+      // Invoke the reducer to get a new state.
+      final newState = rut.reducer(initialState, StoreAuthStep(step: testStep));
 
-      // Dispatch action to clear user data
-      store.dispatch(StoreAuthStep(step: testStep));
-
-      // Check that the store has the expected value
-      expect(store.state.authPage.step, testStep);
+      // Check that the new state has the new user.
+      expect(newState.authPage.step, testStep);
     });
   });
 }
