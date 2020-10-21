@@ -3,22 +3,16 @@ import 'dart:async';
 import 'package:crowdleague/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
 import 'package:crowdleague/actions/device/check_platform.dart';
-import 'package:crowdleague/actions/navigation/push_page.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/navigation/page_data/profile_page_data.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/widgets/app/crowd_league_app.dart';
 import 'package:crowdleague/widgets/app/initializing_indicator.dart';
 import 'package:crowdleague/widgets/auth/auth_page/auth_page.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/email_options_fab.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/email_auth_options_page.dart';
-import 'package:crowdleague/widgets/main/account_button.dart';
-import 'package:crowdleague/widgets/main/main_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
@@ -100,76 +94,55 @@ void main() {
       expect(middleware.received(PlumbDatabaseStream()), true);
     });
 
-    testWidgets('navigates to EmailAuthOptionsPage on FAB tap',
+    testWidgets(
+        'navigates to EmailAuthOptionsPage on FAB tap when user not signed in',
         (WidgetTester tester) async {
-      // create a fake(ish) a services bundle
+      // Create a fake(ish) a services bundle.
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeServicesBundle(completer: reduxCompleter);
 
-      // create a fake firebase wrapper with a supplied completer
+      // Create a fake firebase wrapper with a supplied completer.
       final firebaseCompleter = Completer<FirebaseApp>();
       final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
 
-      // the widget under test
-      final wut = CrowdLeagueApp(redux: redux, firebase: firebase);
+      // Widget being tested.
+      final widgetUnderTest = CrowdLeagueApp(redux: redux, firebase: firebase);
 
-      // build the widget tree
-      await tester.pumpWidget(wut);
+      // Build the widget tree.
+      await tester.pumpWidget(widgetUnderTest);
 
-      // complete the firebase future
+      // Complete the firebase future.
       firebaseCompleter.complete();
 
-      // setup a mock store and complete the redux future with the store
+      // Setup a mock store and complete the redux future with the store.
       final middleware = VerifyDispatchMiddleware();
       final store = Store<AppState>(appReducer,
           initialState: AppState.init(), middleware: [middleware]);
       reduxCompleter.complete(store);
 
-      // build widget tree and wait for animations to complete
+      // Build the widget tree and wait for animations to complete.
       await tester.pumpAndSettle();
 
+      // Starting location of test.
       final initialPageFinder = find.byType(AuthPage);
 
+      // Verify starting location.
       expect(initialPageFinder, findsOneWidget);
 
+      // Find the button to tap.
       final fabFinder = find.byType(EmailOptionsFAB);
 
+      // Tap the button.
       await tester.tap(fabFinder);
 
+      // Wait for actions and animations to finish.
       await tester.pumpAndSettle();
 
+      // Ending location of test.
       final nextPageFinder = find.byType(EmailAuthOptionsPage);
 
+      // Verify ending location.
       expect(nextPageFinder, findsOneWidget);
-    });
-
-    testWidgets('navigates to profile page on profile avatar tap',
-        (WidgetTester tester) async {
-      // Setup the app state with expected values
-      final initialAppState = AppState.init();
-      final testMiddleware = VerifyDispatchMiddleware();
-
-      // Create redux store.
-      final store = Store<AppState>(appReducer,
-          initialState: initialAppState, middleware: [testMiddleware]);
-
-      // the widget under test
-      final wut = MainPage();
-
-      // Create the test harness.
-      final harness =
-          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
-
-      // build the widget tree
-      await tester.pumpWidget(harness);
-
-      final accountButtonFinder = find.byType(AccountButton);
-
-      await tester.tap(accountButtonFinder);
-
-      await tester.pumpAndSettle();
-
-      expect(testMiddleware.received(PushPage(data: ProfilePageData())), true);
     });
   });
 }
