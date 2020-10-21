@@ -1,25 +1,36 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/clear_user_data.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/auth/provider_info.dart';
+import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
+import 'package:crowdleague/reducers/auth/clear_user_data.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('ClearUserDataReducer', () {
-    test('Clears any user data from state', () {
-      // Create a basic store with the app reducers
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init(),
-      );
+    test('clears any user data from the app state', () {
+      // Setup an initial app state with a user.
+      final initialState = AppState.init().rebuild((b) => b
+        ..user.replace(User(
+            id: 'id',
+            displayName: 'name',
+            photoURL: 'url',
+            email: 'email',
+            providers: BuiltList<ProviderInfo>())));
 
-      // Dispatch action to clear user data
-      store.dispatch(ClearUserData());
+      // Create the reducer.
+      final rut = ClearUserDataReducer();
 
-      // Check that the store has the expected value
-      expect(store.state.user, null);
+      // Invoke the reducer to get a new state.
+      final newState = rut.reducer(initialState, ClearUserData());
+
+      // Check that the new state has null for the user.
+      expect(newState.user, null);
     });
-    test('Resets navigation stack', () {
+
+    test('resets navigation stack', () {
       // Create a basic store with the app reducers
       final store = Store<AppState>(
         appReducer,
