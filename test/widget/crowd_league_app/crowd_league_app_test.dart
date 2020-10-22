@@ -19,6 +19,7 @@ import 'package:crowdleague/widgets/main/account_button.dart';
 import 'package:crowdleague/widgets/main/main_page.dart';
 import 'package:crowdleague/widgets/profile/profile_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
@@ -151,7 +152,7 @@ void main() {
       expect(nextPageFinder, findsOneWidget);
     });
 
-    testWidgets('navigates to ProfilePage on FAB tap when user signed in',
+    testWidgets('MainPage navigates to ProfilePage on FAB tap',
         (WidgetTester tester) async {
       // Create a fake(ish) services bundle.
       final reduxCompleter = Completer<Store<AppState>>();
@@ -170,6 +171,8 @@ void main() {
       // Complete the firebase future.
       firebaseCompleter.complete();
 
+      await tester.pump();
+
       // Create user for user sign in.
       final user = User(
           id: '1234',
@@ -179,15 +182,13 @@ void main() {
           providers: BuiltList<ProviderInfo>());
 
       // Setup a mock store and complete the redux future with the store.
-      final middleware = VerifyDispatchMiddleware();
-      final store = Store<AppState>(appReducer,
-          initialState: AppState.init().rebuild((b) => b..user.replace(user)),
-          middleware: [middleware]);
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState.init().rebuild((b) => b..user.replace(user)),
+      );
       reduxCompleter.complete(store);
 
-      // Build the widget tree and wait for animations to complete.
-      await tester.pumpAndSettle();
-
+      await tester.pump();
       // Starting location of test.
       final initialPageFinder = find.byType(MainPage);
 
@@ -200,11 +201,68 @@ void main() {
       // Tap the button.
       await tester.tap(fabFinder);
 
-      // Wait for actions and animations to finish.
-      await tester.pumpAndSettle();
-
       // Ending location of test.
       final nextPageFinder = find.byType(ProfilePage);
+
+      await tester.pump();
+
+      // Verify ending location.
+      expect(nextPageFinder, findsOneWidget);
+    });
+
+    testWidgets('MainPage navigates to "home page" on button tap',
+        (WidgetTester tester) async {
+      // Create a fake(ish) services bundle.
+      final reduxCompleter = Completer<Store<AppState>>();
+      final redux = FakeServicesBundle(completer: reduxCompleter);
+
+      // Create a fake firebase wrapper with a supplied completer.
+      final firebaseCompleter = Completer<FirebaseApp>();
+      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
+
+      // Widget being tested.
+      final widgetUnderTest = CrowdLeagueApp(redux: redux, firebase: firebase);
+
+      // Build the widget tree.
+      await tester.pumpWidget(widgetUnderTest);
+
+      // Complete the firebase future.
+      firebaseCompleter.complete();
+
+      await tester.pump();
+
+      // Create user for user sign in.
+      final user = User(
+          id: '1234',
+          displayName: 'bob',
+          photoURL: 'photo.com',
+          email: 'test@email.com',
+          providers: BuiltList<ProviderInfo>());
+
+      // Setup a mock store and complete the redux future with the store.
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState.init().rebuild((b) => b..user.replace(user)),
+      );
+      reduxCompleter.complete(store);
+
+      await tester.pump();
+      // Starting location of test.
+      final initialPageFinder = find.byType(MainPage);
+
+      // Verify starting location.
+      expect(initialPageFinder, findsOneWidget);
+
+      // Find the button to tap.
+      final buttonFinder = find.byIcon(Icons.sports_basketball);
+
+      // Tap the button.
+      await tester.tap(buttonFinder);
+
+      // Ending location of test.
+      final nextPageFinder = find.byWidget(Center(child: Text('Home Page')));
+
+      await tester.pump();
 
       // Verify ending location.
       expect(nextPageFinder, findsOneWidget);
