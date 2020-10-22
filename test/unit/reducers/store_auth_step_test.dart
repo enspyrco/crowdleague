@@ -6,36 +6,39 @@ import 'package:test/test.dart';
 
 void main() {
   group('StoreAuthStepReducer', () {
-    test('updates step for emailAuthOptionsPage', () {
+    test('updates AuthStep value in EmailAuthOptionsPage', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.emailAuthOptionsPage.step, AuthStep.waitingForInput);
 
       // Create the reducer.
       final rut = StoreAuthStepReducer();
 
       // Create data for action
-      final testStep = AuthStep.waitingForInput;
+      final testStep = AuthStep.signingInWithEmail;
 
       // Invoke the reducer to get a new state.
       final newState = rut.reducer(initialState, StoreAuthStep(step: testStep));
 
-      // Check that the new state has the new user.
+      // Check that the new state has the updated AuthStep value.
       expect(newState.emailAuthOptionsPage.step, testStep);
     });
-    test('Updates step for authPage', () {
+
+    test('updates AuthStep value in AuthPage', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.authPage.step, AuthStep.waitingForInput);
 
       // Create the reducer.
       final rut = StoreAuthStepReducer();
 
       // Create data for action
-      final testStep = AuthStep.waitingForInput;
+      final testStep = AuthStep.signingInWithApple;
 
       // Invoke the reducer to get a new state.
       final newState = rut.reducer(initialState, StoreAuthStep(step: testStep));
 
-      // Check that the new state has the new user.
+      // Check that the new state has the updated AuthStep value.
       expect(newState.authPage.step, testStep);
     });
   });

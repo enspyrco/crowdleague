@@ -8,34 +8,26 @@ import 'package:test/test.dart';
 
 void main() {
   group('UpdateEmailAuthOptionsPageReducer', () {
-    test('updates store.emailAuthOptionsPage.mode', () {
+    test('updates state.emailAuthOptionsPage.mode', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.emailAuthOptionsPage.mode, EmailAuthMode.signIn);
 
       // Create the reducer.
       final rut = UpdateEmailAuthOptionsPageReducer();
 
-      // Create data to send with action
-      final testSignUpMode = EmailAuthMode.signUp;
-      final testSignInMode = EmailAuthMode.signIn;
-
       // Invoke the reducer to get a new state.
       final newStateSignUp = rut.reducer(
-          initialState, UpdateEmailAuthOptionsPage(mode: testSignUpMode));
+          initialState, UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signUp));
 
-      // Check that the new state has the new user.
-      expect(newStateSignUp.emailAuthOptionsPage.mode, testSignUpMode);
-
-      // Invoke the reducer to get a new state.
-      final newStateSignIn = rut.reducer(
-          initialState, UpdateEmailAuthOptionsPage(mode: testSignInMode));
-
-      // Check that the new state has the new user.
-      expect(newStateSignIn.emailAuthOptionsPage.mode, testSignInMode);
+      // Check that the new state has the updated emailAuthMode.
+      expect(newStateSignUp.emailAuthOptionsPage.mode, EmailAuthMode.signUp);
     });
-    test('updates store.emailAuthOptionsPage.showPassword', () {
+
+    test('updates state.emailAuthOptionsPage.showPassword', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.emailAuthOptionsPage.showPassword, false);
 
       // Create the reducer.
       final rut = UpdateEmailAuthOptionsPageReducer();
@@ -44,29 +36,30 @@ void main() {
       final newStateSignUp = rut.reducer(
           initialState, UpdateEmailAuthOptionsPage(showPassword: true));
 
-      // Check that the new state has the new user.
+      // Check that the new state has the updated showPassword value.
       expect(newStateSignUp.emailAuthOptionsPage.showPassword, true);
     });
-    test('updates store.emailAuthOptionsPage.step', () {
+
+    test('updates state.emailAuthOptionsPage.step', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.emailAuthOptionsPage.step, AuthStep.waitingForInput);
 
       // Create the reducer.
       final rut = UpdateEmailAuthOptionsPageReducer();
 
-      // Create data for action
-      final testStep = AuthStep.waitingForInput;
-
       // Invoke the reducer to get a new state.
-      final newState =
-          rut.reducer(initialState, UpdateEmailAuthOptionsPage(step: testStep));
+      final newState = rut.reducer(initialState,
+          UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail));
 
-      // Check that the new state has the new user.
-      expect(newState.emailAuthOptionsPage.step, testStep);
+      // Check that the new state has the updated authStep value.
+      expect(newState.emailAuthOptionsPage.step, AuthStep.signingInWithEmail);
     });
-    test('updates store.emailAuthOptionsPage.email', () {
+
+    test('updates state.emailAuthOptionsPage.email', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.emailAuthOptionsPage.email, '');
 
       // Create the reducer.
       final rut = UpdateEmailAuthOptionsPageReducer();
@@ -78,12 +71,14 @@ void main() {
       final newState = rut.reducer(
           initialState, UpdateEmailAuthOptionsPage(email: testEmail));
 
-      // Check that the new state has the new user.
+      // Check that the new state has the new email.
       expect(newState.emailAuthOptionsPage.email, testEmail);
     });
-    test('updates store.emailAuthOptionsPage.password', () {
+
+    test('updates state.emailAuthOptionsPage.password', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.emailAuthOptionsPage.password, '');
 
       // Create the reducer.
       final rut = UpdateEmailAuthOptionsPageReducer();
@@ -95,12 +90,14 @@ void main() {
       final newState = rut.reducer(
           initialState, UpdateEmailAuthOptionsPage(password: testPassword));
 
-      // Check that the new state has the new user.
+      // Check that the new state has the new password.
       expect(newState.emailAuthOptionsPage.password, testPassword);
     });
-    test('updates store.emailAuthOptionsPage.repeatPassword', () {
+
+    test('updates state.emailAuthOptionsPage.repeatPassword', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.emailAuthOptionsPage.repeatPassword, '');
 
       // Create the reducer.
       final rut = UpdateEmailAuthOptionsPageReducer();
@@ -112,13 +109,15 @@ void main() {
       final newState = rut.reducer(initialState,
           UpdateEmailAuthOptionsPage(repeatPassword: testRepeatPassword));
 
-      // Check that the new state has the new user.
+      // Check that the new state has the updated repeat password value.
       expect(newState.emailAuthOptionsPage.repeatPassword, testRepeatPassword);
     });
 
-    test('updates store.emailAuthOptionsPage.autovalidate', () {
+    test('updates state.emailAuthOptionsPage.autovalidate', () {
       // Setup an initial app state
       final initialState = AppState.init();
+      expect(initialState.emailAuthOptionsPage.autovalidate,
+          AutoValidate.disabled);
 
       // Create the reducer.
       final rut = UpdateEmailAuthOptionsPageReducer();
@@ -129,7 +128,7 @@ void main() {
           UpdateEmailAuthOptionsPage(
               autovalidate: AutoValidate.onUserInteraction));
 
-      // Check that the new state has the new user.
+      // Check that the new state has the updated autovalidate value.
       expect(newState.emailAuthOptionsPage.autovalidate,
           AutoValidate.onUserInteraction);
     });
