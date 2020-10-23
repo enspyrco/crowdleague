@@ -1,6 +1,5 @@
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/middleware/auth/sign_up_with_email.dart';
-import 'package:crowdleague/models/app/app_state.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -18,12 +17,12 @@ void main() {
       // build state with email and password
       final testEmail = 'test@email.com';
       final testPassword = 'test_password';
-      final testAppState = AppState.init().rebuild((b) => b
-        ..emailAuthOptionsPage.email = testEmail
-        ..emailAuthOptionsPage.password = testPassword);
 
-      // build test store
-      final testStore = DispatchVerifyingStore(initialState: testAppState);
+      // Create a fake store and an action to push around.
+      final fakeStore = FakeStore(
+          updates: (b) => b
+            ..emailAuthOptionsPage.email = testEmail
+            ..emailAuthOptionsPage.password = testPassword);
       final testAction = MockReduxAction();
 
       // return a stream that emits a redux action from emailSignUpStream
@@ -32,7 +31,7 @@ void main() {
 
       // setup middleware and invoke the middleware
       final mut = SignUpWithEmailMiddleware(mockAuthService);
-      mut(testStore, SignUpWithEmail(), testDispatcher);
+      mut(fakeStore, SignUpWithEmail(), testDispatcher);
 
       // check that the service's stream emits the expected action and the store
       // dispatched the same action
@@ -40,7 +39,7 @@ void main() {
           .emailSignUpStream(testEmail, testPassword)
           .listen(expectAsync1((action) {
             expect(action, equals(testAction));
-            expect(testStore.dispatchedActions.contains(testAction), true);
+            expect(fakeStore.dispatchedActions.contains(testAction), true);
           }, count: 1));
     });
   });
