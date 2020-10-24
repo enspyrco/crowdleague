@@ -9,6 +9,8 @@ import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/buttons/create_account_button.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/buttons/sign_in_button.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/email_auth_options_page.dart';
+import 'package:crowdleague/widgets/auth/email_auth_options_page/links/create_account_link.dart';
+import 'package:crowdleague/widgets/auth/email_auth_options_page/links/sign_in_link.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/text_fields/email_text_field.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/text_fields/password_text_field.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/text_fields/repeat_password_text_field.dart';
