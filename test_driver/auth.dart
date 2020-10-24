@@ -1,11 +1,20 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:crowdleague/utils/redux/services_bundle.dart';
 import 'package:crowdleague/utils/redux/store_operation.dart';
 import 'package:crowdleague/widgets/app/crowd_league_app.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
+import 'package:redux/redux.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
+
+import 'mocks/services_bundle_mocks.dart';
+import 'mocks/utils/verify_dispatch_middleware.dart';
+import 'mocks/wrappers/firebase_wrapper_mocks.dart';
 
 Future<void> main() async {
   enableFlutterDriverExtension();
@@ -31,5 +40,22 @@ Future<void> main() async {
       storeOperations: [_rdtOperation],
       firestoreSettings: _firestoreSettings);
 
-  runApp(CrowdLeagueApp());
+  // create a fake(ish) a services bundle
+  final reduxCompleter = Completer<Store<AppState>>();
+  final redux = FakeServicesBundle(completer: reduxCompleter);
+
+  // create a fake firebase wrapper with a supplied completer
+  final firebaseCompleter = Completer<FirebaseApp>();
+  final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
+
+  final middleware = VerifyDispatchMiddleware();
+  final store = Store<AppState>(appReducer,
+      initialState: AppState.init(), middleware: [middleware]);
+
+  // complete the firebase future and verfiy text has changed as expected
+  firebaseCompleter.complete();
+  // complete the redux completer and verify
+  reduxCompleter.complete(store);
+
+  runApp(CrowdLeagueApp(firebase: firebase, redux: redux));
 }
