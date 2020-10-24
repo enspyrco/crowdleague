@@ -13,10 +13,9 @@ import 'package:redux/redux.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
 import 'mocks/services_bundle_mocks.dart';
-import 'mocks/utils/verify_dispatch_middleware.dart';
 import 'mocks/wrappers/firebase_wrapper_mocks.dart';
 
-Future<void> main() async {
+void main() {
   enableFlutterDriverExtension();
 
   // Create the rdt middleware that connects to the rdt server.
@@ -48,9 +47,7 @@ Future<void> main() async {
   final firebaseCompleter = Completer<FirebaseApp>();
   final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
 
-  final middleware = VerifyDispatchMiddleware();
-  final store = Store<AppState>(appReducer,
-      initialState: AppState.init(), middleware: [middleware]);
+  final store = Store<AppState>(appReducer, initialState: AppState.init());
 
   // complete the firebase future and verfiy text has changed as expected
   firebaseCompleter.complete();

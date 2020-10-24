@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('CrowdLeague App', () {
-    final buttonFinder = find.byType('PlatformSignInButton'); // EmailOptionsFAB
+    final buttonFinder = find.byType('EmailOptionsFAB');
 
     FlutterDriver driver;
 
@@ -14,9 +14,9 @@ void main() {
 
     // Close the connection to the driver after the tests have completed.
     tearDownAll(() async {
-      // if (driver != null) {
-      //   await driver.close();
-      // }
+      if (driver != null) {
+        await driver.close();
+      }
     });
 
     test('Sign in', () async {
