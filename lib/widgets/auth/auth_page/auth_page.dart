@@ -1,9 +1,9 @@
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/auth_buttons.dart';
-import 'package:crowdleague/widgets/auth/auth_page/static_elements/crowd_league_logo.dart';
-import 'package:crowdleague/widgets/auth/auth_page/static_elements/explanation_text.dart';
-import 'package:crowdleague/widgets/auth/auth_page/static_elements/tag_line_text.dart';
+import 'package:crowdleague/widgets/auth/auth_page/images/crowd_league_logo.dart';
+import 'package:crowdleague/widgets/auth/auth_page/text/explanation_text.dart';
+import 'package:crowdleague/widgets/auth/auth_page/text/tag_line_text.dart';
 import 'package:crowdleague/widgets/shared/waiting_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
