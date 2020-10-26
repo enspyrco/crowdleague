@@ -9,7 +9,7 @@ import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/settings/settings.dart';
-import 'package:crowdleague/utils/redux/services_bundle.dart';
+import 'package:crowdleague/utils/redux/redux_bundle.dart';
 import 'package:crowdleague/utils/wrappers/firebase_wrapper.dart';
 import 'package:crowdleague/widgets/app/initializing_error_page.dart';
 import 'package:crowdleague/widgets/app/initializing_indicator.dart';
@@ -19,9 +19,9 @@ import 'package:redux/redux.dart';
 
 class CrowdLeagueApp extends StatefulWidget {
   final FirebaseWrapper _firebase;
-  final ServicesBundle _redux;
+  final ReduxBundle _redux;
 
-  CrowdLeagueApp({FirebaseWrapper firebase, ServicesBundle redux})
+  CrowdLeagueApp({FirebaseWrapper firebase, ReduxBundle redux})
       : _firebase = firebase ?? FirebaseWrapper(),
         _redux = redux;
   @override
@@ -29,7 +29,7 @@ class CrowdLeagueApp extends StatefulWidget {
 }
 
 class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
-  ServicesBundle _redux;
+  ReduxBundle _redux;
   Store<AppState> _store;
   dynamic _error;
   bool _initializedFirebase = false;
@@ -45,7 +45,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
       });
 
       // use the injected services bundle if there is one or create one
-      _redux = widget._redux ?? ServicesBundle();
+      _redux = widget._redux ?? ReduxBundle();
       // create the redux store and run any extra operations
       _store = await _redux.createStore();
       setState(() {

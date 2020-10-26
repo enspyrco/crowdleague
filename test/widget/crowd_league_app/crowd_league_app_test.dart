@@ -35,7 +35,7 @@ void main() {
         (WidgetTester tester) async {
       // create a fake(ish) a services bundle
       final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeServicesBundle(completer: reduxCompleter);
+      final redux = FakeReduxBundle(completer: reduxCompleter);
 
       // create a fake firebase wrapper with a supplied completer
       final firebaseCompleter = Completer<FirebaseApp>();
@@ -73,7 +73,7 @@ void main() {
         (WidgetTester tester) async {
       // create a fake(ish) a services bundle
       final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeServicesBundle(completer: reduxCompleter);
+      final redux = FakeReduxBundle(completer: reduxCompleter);
 
       // create a fake firebase wrapper with a supplied completer
       final firebaseCompleter = Completer<FirebaseApp>();
@@ -108,7 +108,7 @@ void main() {
         (WidgetTester tester) async {
       // Create a fake(ish) services bundle.
       final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeServicesBundle(completer: reduxCompleter);
+      final redux = FakeReduxBundle(completer: reduxCompleter);
 
       // Create a fake firebase wrapper with a supplied completer.
       final firebaseCompleter = Completer<FirebaseApp>();
@@ -124,9 +124,7 @@ void main() {
       firebaseCompleter.complete();
 
       // Setup a mock store and complete the redux future with the store.
-      final middleware = VerifyDispatchMiddleware();
-      final store = Store<AppState>(appReducer,
-          initialState: AppState.init(), middleware: [middleware]);
+      final store = Store<AppState>(appReducer, initialState: AppState.init());
       reduxCompleter.complete(store);
 
       // Build the widget tree and wait for animations to complete.
@@ -158,7 +156,7 @@ void main() {
         (WidgetTester tester) async {
       // Create a fake(ish) services bundle.
       final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeServicesBundle(completer: reduxCompleter);
+      final redux = FakeReduxBundle(completer: reduxCompleter);
 
       // Create a fake firebase wrapper with a supplied completer.
       final firebaseCompleter = Completer<FirebaseApp>();
@@ -216,7 +214,7 @@ void main() {
         (WidgetTester tester) async {
       // Create a fake(ish) services bundle.
       final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeServicesBundle(completer: reduxCompleter);
+      final redux = FakeReduxBundle(completer: reduxCompleter);
 
       // Create a fake firebase wrapper with a supplied completer.
       final firebaseCompleter = Completer<FirebaseApp>();
@@ -274,7 +272,7 @@ void main() {
         (WidgetTester tester) async {
       // Create a fake(ish) services bundle.
       final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeServicesBundle(completer: reduxCompleter);
+      final redux = FakeReduxBundle(completer: reduxCompleter);
 
       // Create a fake firebase wrapper with a supplied completer.
       final firebaseCompleter = Completer<FirebaseApp>();
@@ -332,7 +330,7 @@ void main() {
         (WidgetTester tester) async {
       // Create a fake(ish) services bundle.
       final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeServicesBundle(completer: reduxCompleter);
+      final redux = FakeReduxBundle(completer: reduxCompleter);
 
       // Create a fake firebase wrapper with a supplied completer.
       final firebaseCompleter = Completer<FirebaseApp>();
@@ -390,7 +388,7 @@ void main() {
         (WidgetTester tester) async {
       // Create a fake(ish) services bundle.
       final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeServicesBundle(completer: reduxCompleter);
+      final redux = FakeReduxBundle(completer: reduxCompleter);
 
       // Create a fake firebase wrapper with a supplied completer.
       final firebaseCompleter = Completer<FirebaseApp>();

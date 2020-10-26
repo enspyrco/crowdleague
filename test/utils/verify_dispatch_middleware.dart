@@ -7,11 +7,13 @@ import 'package:redux/redux.dart';
 ///
 /// [actions] is a static/class member so that it can be accessed in the
 /// anonymous funciton that is created in the class initializer
+///
+/// When writing widget tests, do not rely on state changing as [NextDispatcher] is not being called,
+/// so the real middleware(s) will not be triggered and state will not be updated.
 class VerifyDispatchMiddleware extends TypedMiddleware<AppState, ReduxAction> {
   static List<ReduxAction> actions = [];
   VerifyDispatchMiddleware()
       : super((store, action, next) async {
-          next(action);
           actions.add(action);
         }) {
     actions.clear();

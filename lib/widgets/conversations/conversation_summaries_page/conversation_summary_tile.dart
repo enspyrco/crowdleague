@@ -21,7 +21,7 @@ class ConversationSummaryTile extends StatelessWidget {
         context.dispatch(
             LeaveConversation(conversationId: summary.conversationId));
 
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
                 'Leaving conversation with id: ${summary.conversationId}')));
       },

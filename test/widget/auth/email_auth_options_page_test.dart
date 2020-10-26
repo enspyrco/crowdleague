@@ -1,6 +1,7 @@
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
+import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/auto_validate.dart';
 import 'package:crowdleague/enums/email_auth_mode.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
+import '../../mocks/redux/redux_store_mocks.dart';
 import '../../utils/verify_dispatch_middleware.dart';
 
 void main() {
@@ -331,50 +333,93 @@ void main() {
     });
 
     testWidgets(
-        'After input valid email/password/repeatPassword, createAccountButton dispatches SignUpWithEmail action',
+        'CreateAccountButton only dispatches when all textfields are valid',
         (WidgetTester tester) async {
-      // Setup the app state with expected values
-      final initialAppState = AppState.init();
-      final alteredState = initialAppState
-          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
-      final testMiddleware = VerifyDispatchMiddleware();
-
-      // Create the test harness.
-      final store = Store<AppState>(appReducer,
-          initialState: alteredState, middleware: [testMiddleware]);
+      // Setup a fake store and test harness with intial values.
+      final fakeStore = FakeStore(
+          updates: (b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
       final wut = EmailAuthOptionsPage();
-      final harness =
-          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+      final harness = StoreProvider<AppState>(
+          store: fakeStore, child: MaterialApp(home: wut));
 
       // Tell the tester to build the widget tree.
       await tester.pumpWidget(harness);
 
-      // Create the Finders.
+      // Create Finders for text fields and create account button.
       final createAccountButton = find.byType(CreateAccountButton);
-      expect(createAccountButton, findsOneWidget);
       final emailTextField = find.byType(EmailTextField);
-      expect(emailTextField, findsOneWidget);
       final passwordTextField = find.byType(PasswordTextField);
-      expect(passwordTextField, findsOneWidget);
       final repeatPasswordTextField = find.byType(RepeatPasswordTextField);
+
+      // Check that all the expected widgets are present.
+      expect(createAccountButton, findsOneWidget);
+      expect(emailTextField, findsOneWidget);
+      expect(passwordTextField, findsOneWidget);
       expect(repeatPasswordTextField, findsOneWidget);
 
-      // Tap to validate form
+      // Create Finders for the text shown by the textfields when invalid.
+      final invalidEmailText = find.text('please enter a valid email');
+      final invalidPasswordText =
+          find.text('password must be between 6 and 30 characters');
+      final invalidRepeatPasswordText = find.text('passwords do not match');
+
+      // Input invalid details.
+      await tester.enterText(emailTextField, 'invalid_email');
+      await tester.enterText(passwordTextField, '123');
+      await tester.enterText(repeatPasswordTextField, '12345');
+
+      // Submit invalid form.
       await tester.tap(createAccountButton);
 
-      // Check that empty form is invalid
-      expect(testMiddleware.received(SignUpWithEmail()), false);
+      // Check that the widget dispatched the expected action.
+      expect(
+          fakeStore.dispatchedActions,
+          contains(UpdateEmailAuthOptionsPage(
+              autovalidate: AutoValidate.onUserInteraction)));
 
-      // Input valid email and password
+      // Update the state in response to the actions.
+      fakeStore.updateState((b) => b
+        ..emailAuthOptionsPage.autovalidate = AutoValidate.onUserInteraction);
+
+      await tester.pumpAndSettle();
+
+      // Check formfield error messages are shown.
+      expect(invalidEmailText, findsOneWidget);
+      expect(invalidPasswordText, findsOneWidget);
+      expect(invalidRepeatPasswordText, findsOneWidget);
+
+      // Input valid email and password.
       await tester.enterText(emailTextField, 'test@email.com');
       await tester.enterText(passwordTextField, 'password123');
       await tester.enterText(repeatPasswordTextField, 'password123');
 
-      // Tap to validate valid form
+      // Check that the widget dispatched the expected actions.
+      expect(
+          fakeStore.dispatchedActions,
+          containsAll(<ReduxAction>[
+            UpdateEmailAuthOptionsPage(email: 'test@email.com'),
+            UpdateEmailAuthOptionsPage(password: 'password123'),
+            UpdateEmailAuthOptionsPage(repeatPassword: 'password123')
+          ]));
+
+      // Update the state in response to the actions.
+      fakeStore.updateState((b) => b
+        ..emailAuthOptionsPage.email = 'test@email.com'
+        ..emailAuthOptionsPage.password = 'password123'
+        ..emailAuthOptionsPage.repeatPassword = 'password123');
+
+      await tester.pumpAndSettle();
+
+      // Check that invalid messages are gone
+      expect(invalidEmailText, findsNothing);
+      expect(invalidPasswordText, findsNothing);
+      expect(invalidRepeatPasswordText, findsNothing);
+
+      // Tap to validate valid form.
       await tester.tap(createAccountButton);
 
       // Check that form is valid and action is dispatched
-      expect(testMiddleware.received(SignUpWithEmail()), true);
+      expect(fakeStore.dispatchedActions, contains(SignUpWithEmail()));
     });
 
     testWidgets(
@@ -558,93 +603,85 @@ void main() {
       expect(testMiddleware.received(SignInWithEmail()), false);
     });
 
-    testWidgets(
-        'After tap sign in with invalid details, form autovalidates on user input',
+    testWidgets('form autovalidates after a sign in attempt',
         (WidgetTester tester) async {
-      // Setup the app state with expected values
-      final initialAppState = AppState.init();
-      final testMiddleware = VerifyDispatchMiddleware();
-
-      // Create the test harness.
-      final store = Store<AppState>(appReducer,
-          initialState: initialAppState, middleware: [testMiddleware]);
+      // Setup test doubles.
+      final fakeStore = FakeStore();
       final wut = EmailAuthOptionsPage();
-      final harness =
-          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+      final harness = StoreProvider<AppState>(
+          store: fakeStore, child: MaterialApp(home: wut));
 
       // Tell the tester to build the widget tree.
       await tester.pumpWidget(harness);
 
-      // Create the Finders.
+      // Create Finders for the text fields and check they are present.
       final signInButton = find.byType(SignInButton);
-      expect(signInButton, findsOneWidget);
       final emailTextField = find.byType(EmailTextField);
-      expect(emailTextField, findsOneWidget);
       final passwordTextField = find.byType(PasswordTextField);
+      expect(signInButton, findsOneWidget);
+      expect(emailTextField, findsOneWidget);
       expect(passwordTextField, findsOneWidget);
 
-      // invalid fields finders
+      // Create Finders for the invalid text and check they are not present.
       final invalidEmailText = find.text('please enter a valid email');
       final invalidPasswordText =
           find.text('password must be between 6 and 30 characters');
       expect(invalidEmailText, findsNothing);
       expect(invalidPasswordText, findsNothing);
 
-      // input invalid details
+      // Input invalid details.
       await tester.enterText(emailTextField, 'invalid_email');
       await tester.enterText(passwordTextField, '123');
 
-      // submit invalid form
+      // Attempt signing in.
       await tester.tap(signInButton);
 
-      // wait for changes to show
       await tester.pumpAndSettle();
 
-      // check formfield error messages are shown
+      // Check formfield error messages are shown.
       expect(invalidEmailText, findsOneWidget);
       expect(invalidPasswordText, findsOneWidget);
 
-      // input valid details
+      fakeStore.updateState((b) => b
+        ..emailAuthOptionsPage.autovalidate = AutoValidate.onUserInteraction);
+
+      // Enter valid details.
       await tester.enterText(emailTextField, 'valid@email.com');
       await tester.enterText(passwordTextField, 'validPassword');
 
-      // autovalidation removes error messages
+      // Let autovalidation remove error messages.
       await tester.pumpAndSettle();
 
-      // check error messages are gone
+      // Check error messages are gone.
       expect(invalidEmailText, findsNothing);
       expect(invalidPasswordText, findsNothing);
     });
+
     testWidgets(
         'After tap create account with invalid details, form autovalidates on user input',
         (WidgetTester tester) async {
-      // Setup the app state with expected values
-      final initialAppState = AppState.init();
-      final alteredState = initialAppState
-          .rebuild((b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
-      final testMiddleware = VerifyDispatchMiddleware();
-
-      // Create the test harness.
-      final store = Store<AppState>(appReducer,
-          initialState: alteredState, middleware: [testMiddleware]);
+      // Setup the test doubles.
+      final fakeStore = FakeStore(
+          updates: (b) => b..emailAuthOptionsPage.mode = EmailAuthMode.signUp);
       final wut = EmailAuthOptionsPage();
-      final harness =
-          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+      final harness = StoreProvider<AppState>(
+          store: fakeStore, child: MaterialApp(home: wut));
 
-      // Tell the tester to build the widget tree.
+      // Build the widget tree.
       await tester.pumpWidget(harness);
 
-      // Create the Finders.
+      // Create Finders for the text fields and create account button and check
+      // they are present.
       final createAccountButton = find.byType(CreateAccountButton);
-      expect(createAccountButton, findsOneWidget);
       final emailTextField = find.byType(EmailTextField);
-      expect(emailTextField, findsOneWidget);
       final passwordTextField = find.byType(PasswordTextField);
-      expect(passwordTextField, findsOneWidget);
       final repeatPasswordTextField = find.byType(RepeatPasswordTextField);
+      expect(createAccountButton, findsOneWidget);
+      expect(emailTextField, findsOneWidget);
+      expect(passwordTextField, findsOneWidget);
       expect(repeatPasswordTextField, findsOneWidget);
 
-      // invalid fields finders
+      // Create Finders for the invalid text and check they are not present.
       final invalidEmailText = find.text('please enter a valid email');
       final invalidPasswordText =
           find.text('password must be between 6 and 30 characters');
@@ -653,31 +690,55 @@ void main() {
       expect(invalidPasswordText, findsNothing);
       expect(invalidRepeatPasswordText, findsNothing);
 
-      // input invalid details
+      // Enter invalid details.
       await tester.enterText(emailTextField, 'invalid_email');
       await tester.enterText(passwordTextField, '123');
       await tester.enterText(repeatPasswordTextField, '0');
 
-      // submit invalid form
+      // Attempt to create account.
       await tester.tap(createAccountButton);
 
-      // wait for changes to show
+      // Check that the widget dispatched the expected action.
+      expect(
+          fakeStore.dispatchedActions,
+          contains(UpdateEmailAuthOptionsPage(
+              autovalidate: AutoValidate.onUserInteraction)));
+
+      // Update the state in response to the action.
+      fakeStore.updateState((b) => b
+        ..emailAuthOptionsPage.autovalidate = AutoValidate.onUserInteraction);
+
       await tester.pumpAndSettle();
 
-      // check formfield error messages are shown
+      // Check formfield error messages are shown.
       expect(invalidEmailText, findsOneWidget);
       expect(invalidPasswordText, findsOneWidget);
       expect(invalidRepeatPasswordText, findsOneWidget);
 
-      // input valid details
+      // Enter valid details.
       await tester.enterText(emailTextField, 'valid@email.com');
       await tester.enterText(passwordTextField, 'validPassword');
       await tester.enterText(repeatPasswordTextField, 'validPassword');
 
-      // autovalidation removes error messages
+      // Check that the widget dispatched the expected actions.
+      expect(
+          fakeStore.dispatchedActions,
+          containsAll(<ReduxAction>[
+            UpdateEmailAuthOptionsPage(email: 'valid@email.com'),
+            UpdateEmailAuthOptionsPage(password: 'validPassword'),
+            UpdateEmailAuthOptionsPage(repeatPassword: 'validPassword')
+          ]));
+
+      // Update the state in response to the actions.
+      fakeStore.updateState((b) => b
+        ..emailAuthOptionsPage.email = 'valid@email.com'
+        ..emailAuthOptionsPage.password = 'validPassword'
+        ..emailAuthOptionsPage.repeatPassword = 'validPassword');
+
+      // Let autovalidation remove error messages.
       await tester.pumpAndSettle();
 
-      // check error messages are gone
+      // Check error messages are gone.
       expect(invalidEmailText, findsNothing);
       expect(invalidPasswordText, findsNothing);
       expect(invalidRepeatPasswordText, findsNothing);
