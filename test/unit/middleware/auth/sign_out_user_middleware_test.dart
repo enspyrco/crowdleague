@@ -14,7 +14,7 @@ void main() {
     test('on error signing out, dispatches correct actions', () async {
       // initialize test store/services
       final mockAuthService = MockAuthService();
-      final testStore = DispatchVerifyingStore();
+      final testStore = FakeStore();
       final problem = AddProblem.from(
         message: '',
         type: ProblemType.signOut,
@@ -36,7 +36,7 @@ void main() {
     test('on successful sign out, does not dispatch any actions', () async {
       // initialize test store/services
       final mockAuthService = MockAuthService();
-      final testStore = DispatchVerifyingStore();
+      final testStore = FakeStore();
 
       // return error signing out user
       when(mockAuthService.signOut()).thenAnswer((_) async => null);
