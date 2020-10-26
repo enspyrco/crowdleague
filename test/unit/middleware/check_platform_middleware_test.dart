@@ -12,7 +12,7 @@ void main() {
     test('gets platform value and dispatches store action', () async {
       // initialize mock services/store
       final fakeDeviceService = FakeDeviceService();
-      final testStore = DispatchVerifyingStore();
+      final testStore = FakeStore();
 
       // setup middleware
       final mut = CheckPlatformMiddleware(fakeDeviceService);

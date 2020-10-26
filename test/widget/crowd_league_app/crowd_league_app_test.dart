@@ -124,9 +124,7 @@ void main() {
       firebaseCompleter.complete();
 
       // Setup a mock store and complete the redux future with the store.
-      final middleware = VerifyDispatchMiddleware();
-      final store = Store<AppState>(appReducer,
-          initialState: AppState.init(), middleware: [middleware]);
+      final store = Store<AppState>(appReducer, initialState: AppState.init());
       reduxCompleter.complete(store);
 
       // Build the widget tree and wait for animations to complete.
