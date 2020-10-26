@@ -57,13 +57,13 @@ void main() {
       await driver.waitForAbsent(passwordValidationText);
 
       // submit form
-      // await driver.tap(emailSignInButton);
+      await driver.tap(emailSignInButton);
 
-      // // observe signing in with firebase text
-      // await driver.waitForAbsent(signInWithFirebaseText);
+      // observe signing in with firebase text
+      await driver.waitForAbsent(signInWithFirebaseText);
 
-      // // observe navigation to home screen
-      // await driver.waitFor(homePage);
+      // observe navigation to home screen
+      await driver.waitFor(homePage);
     });
 
     // test('Create an account', () async {

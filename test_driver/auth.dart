@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
-import 'package:crowdleague/utils/redux/services_bundle.dart';
+import 'package:crowdleague/utils/redux/redux_bundle.dart';
 import 'package:crowdleague/utils/redux/store_operation.dart';
 import 'package:crowdleague/widgets/app/crowd_league_app.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,7 +33,7 @@ void main() {
 
   // Setup the services bundle to use a different bucket and with an extra
   // middleware that sends each action and state to the rdt server for display.
-  ServicesBundle.setup(
+  ReduxBundle.setup(
       bucketName: 'gs://profile-pics-prototyping',
       extraMiddlewares: [_rdtMiddleware],
       storeOperations: [_rdtOperation],
@@ -41,7 +41,7 @@ void main() {
 
   // create a fake(ish) a services bundle
   final reduxCompleter = Completer<Store<AppState>>();
-  final redux = FakeServicesBundle(completer: reduxCompleter);
+  final redux = FakeReduxBundle(completer: reduxCompleter);
 
   // create a fake firebase wrapper with a supplied completer
   final firebaseCompleter = Completer<FirebaseApp>();
