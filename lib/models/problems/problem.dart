@@ -10,7 +10,7 @@ import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/utils/serializers.dart';
 import 'package:meta/meta.dart';
 
-part '../app/problem.g.dart';
+part 'problem.g.dart';
 
 abstract class Problem implements Built<Problem, ProblemBuilder> {
   ProblemType get type;
