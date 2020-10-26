@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/utils/redux/services_bundle.dart';
+import 'package:crowdleague/utils/redux/redux_bundle.dart';
 import 'package:crowdleague/utils/redux/store_operation.dart';
 import 'package:crowdleague/widgets/app/crowd_league_app.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ Future<void> main() async {
 
   // Setup the services bundle to use a different bucket and with an extra
   // middleware that sends each action and state to the rdt server for display.
-  ServicesBundle.setup(
+  ReduxBundle.setup(
       bucketName: 'gs://profile-pics-prototyping',
       extraMiddlewares: [_rdtMiddleware],
       storeOperations: [_rdtOperation],

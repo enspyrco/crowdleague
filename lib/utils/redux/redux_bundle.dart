@@ -17,7 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
 
 /// Services can be injected, or if missing are given default values
-class ServicesBundle {
+class ReduxBundle {
   static var _bucketName = 'gs://crowdleague-profile-pics';
   static var _extraMiddlewares = <Middleware>[];
   static var _storeOperations = <StoreOperation>[];
@@ -41,7 +41,7 @@ class ServicesBundle {
   final StorageService _storageService;
   final DeviceService _deviceService;
 
-  ServicesBundle(
+  ReduxBundle(
       {List<Middleware> extraMiddlewares,
       AuthService authService,
       DatabaseService databaseService,

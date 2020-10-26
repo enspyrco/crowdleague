@@ -6,8 +6,8 @@ typedef Operation = Future<void> Function(Store<AppState> store);
 /// An object that can be created with an arbitrary function and will run the
 /// function on a given [Store].
 ///
-/// [StoreOperation] objects can be added to the [ServicesBundle] class and will
-/// be used by any [ServicesBundle] object when [createStore()] is called
+/// [StoreOperation] objects can be added to the [ReduxBundle] class and will
+/// be used by any [ReduxBundle] object when [createStore()] is called
 class StoreOperation {
   final Operation _operation;
 

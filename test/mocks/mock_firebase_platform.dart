@@ -6,5 +6,5 @@ import 'package:mockito/mockito.dart';
 ///
 /// The usual method of wrapping [Firebase.instance] and injecting a mock
 /// doesn't work because [Firebase] needs to be setup before the
-/// [ServicesBundle] can be used.
+/// [ReduxBundle] can be used.
 class MockFirebasePlatform extends Mock implements FirebasePlatform {}
