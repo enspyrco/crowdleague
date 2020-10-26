@@ -39,7 +39,7 @@ void main() {
           .emailSignUpStream(testEmail, testPassword)
           .listen(expectAsync1((action) {
             expect(action, equals(testAction));
-            expect(fakeStore.dispatchedActions.contains(testAction), true);
+            expect(fakeStore.dispatchedActions, contains(testAction));
           }, count: 1));
     });
   });
