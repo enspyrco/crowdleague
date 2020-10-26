@@ -13,7 +13,7 @@ void main() {
     test('dispatches actions emitted by authService.appleSignInStream', () {
       // initialize test store/services
       final mockAuthService = MockAuthService();
-      final testStore = DispatchVerifyingStore();
+      final testStore = FakeStore();
       final testAction = MockReduxAction();
 
       // return a stream that emits a redux action from appleSignInStream

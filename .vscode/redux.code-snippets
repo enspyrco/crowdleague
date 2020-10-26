@@ -1,4 +1,11 @@
 {
+    "better rebuild autocomplete": {
+        "prefix": "reb",
+        "body": [
+            "rebuild((b) => b.",
+      ],
+      "description": "better rebuild autocomplete"
+    },
     "import meta": {
         "prefix": "meta import",
         "body": [

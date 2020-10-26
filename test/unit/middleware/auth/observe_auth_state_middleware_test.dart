@@ -17,7 +17,7 @@ void main() {
         () async {
       // initialize test store/services
       final mockAuthService = MockAuthService();
-      final testStore = DispatchVerifyingStore();
+      final testStore = FakeStore();
       final testUser = User(
         id: 'test123',
         displayName: 'test_user',

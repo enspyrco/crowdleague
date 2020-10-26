@@ -16,12 +16,7 @@ class NavBar extends StatelessWidget {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Text(
-            'sports_basketball',
-            style: TextStyle(
-              fontFamily: 'maticons',
-            ),
-          ),
+          icon: Icon(Icons.sports_basketball),
           label: 'Home',
         ),
         BottomNavigationBarItem(
