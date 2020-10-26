@@ -26,7 +26,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
 import '../../mocks/wrappers/firebase_wrapper_mocks.dart';
-import '../../utils/services_bundle_mocks.dart';
+import '../../utils/redux_bundle_mocks.dart';
 import '../../utils/verify_dispatch_middleware.dart';
 
 void main() {
