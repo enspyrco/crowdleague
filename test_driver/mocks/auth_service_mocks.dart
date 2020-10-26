@@ -28,7 +28,7 @@ class FakeAuthService extends Fake implements AuthService {
 
   @override
   Stream<ReduxAction> get streamOfStateChanges {
-    controller.add(StoreUser(user: null));
+    // controller.add(StoreUser(user: null));
     controller.add(StoreUser(
       user: User(
           id: 'id',
