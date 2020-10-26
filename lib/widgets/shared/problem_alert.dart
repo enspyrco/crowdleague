@@ -1,4 +1,4 @@
-import 'package:crowdleague/models/app/problem.dart';
+import 'package:crowdleague/models/problems/problem.dart';
 import 'package:flutter/material.dart';
 
 class ProblemAlert extends StatelessWidget {
