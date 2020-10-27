@@ -11,7 +11,7 @@ class FakeStore implements Store<AppState> {
       : _state = (updates == null)
             ? AppState.init()
             : AppState.init().rebuild(updates),
-        _changeController = StreamController<AppState>();
+        _changeController = StreamController<AppState>.broadcast();
 
   // The list of dispatched actions that can be queried by a test.
   List<ReduxAction> dispatchedActions = <ReduxAction>[];
