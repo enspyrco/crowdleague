@@ -6,7 +6,7 @@ import 'package:crowdleague/widgets/app/crowd_league_app.dart';
 import 'package:flutter/material.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
-Future<void> main() async {
+void main() {
   // enableFlutterDriverExtension() was removed to allow us to manually
   // interact with the app
 

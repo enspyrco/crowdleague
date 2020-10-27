@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
-Future<void> main() async {
+void main() {
   enableFlutterDriverExtension();
 
   // Create the rdt middleware that connects to the rdt server.
