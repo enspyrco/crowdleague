@@ -7,8 +7,9 @@ import 'package:crowdleague/widgets/app/crowd_league_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 
-import 'mocks/auth_service_mocks.dart';
+import 'mocks/services/auth_service_mocks.dart';
 import 'mocks/services/database_service_mocks.dart';
+import 'mocks/services/notifications_service_mocks.dart';
 import 'mocks/services/storage_service_mocks.dart';
 
 void main() {
@@ -26,6 +27,7 @@ void main() {
 
   // create a fake redux bundle
   final redux = ReduxBundle(
+      notificationsService: FakeNotificationsService(),
       authService: FakeAuthService(),
       databaseService: FakeDatabaseService(),
       storageService: FakeStorageService(StreamController<ReduxAction>()));
