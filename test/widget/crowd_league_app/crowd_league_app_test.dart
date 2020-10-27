@@ -26,14 +26,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
 import '../../mocks/wrappers/firebase_wrapper_mocks.dart';
-import '../../utils/services_bundle_mocks.dart';
+import '../../utils/redux_bundle_mocks.dart';
 import '../../utils/verify_dispatch_middleware.dart';
 
 void main() {
   group('CrowdLeagueApp', () {
     testWidgets('shows expected UI while initializing',
         (WidgetTester tester) async {
-      // create a fake(ish) a services bundle
+      // create a fake(ish) a redux bundle
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeReduxBundle(completer: reduxCompleter);
 
@@ -71,7 +71,7 @@ void main() {
 
     testWidgets('dispatches actions after initialization',
         (WidgetTester tester) async {
-      // create a fake(ish) a services bundle
+      // create a fake(ish) a redux bundle
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeReduxBundle(completer: reduxCompleter);
 
@@ -106,7 +106,7 @@ void main() {
     testWidgets(
         'navigates to EmailAuthOptionsPage on FAB tap when user not signed in',
         (WidgetTester tester) async {
-      // Create a fake(ish) services bundle.
+      // Create a fake(ish) redux bundle.
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeReduxBundle(completer: reduxCompleter);
 
@@ -154,7 +154,7 @@ void main() {
 
     testWidgets('MainPage navigates to ProfilePage on FAB tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) services bundle.
+      // Create a fake(ish) redux bundle.
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeReduxBundle(completer: reduxCompleter);
 
@@ -212,7 +212,7 @@ void main() {
 
     testWidgets('MainPage navigates to "home page" on button tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) services bundle.
+      // Create a fake(ish) redux bundle.
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeReduxBundle(completer: reduxCompleter);
 
@@ -270,7 +270,7 @@ void main() {
 
     testWidgets('MainPage navigates to "business page" on button tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) services bundle.
+      // Create a fake(ish) redux bundle.
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeReduxBundle(completer: reduxCompleter);
 
@@ -328,7 +328,7 @@ void main() {
 
     testWidgets('MainPage navigates to ConversationSummariesPage on button tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) services bundle.
+      // Create a fake(ish) redux bundle.
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeReduxBundle(completer: reduxCompleter);
 
@@ -386,7 +386,7 @@ void main() {
 
     testWidgets('MainPage navigates to MoreOptionsPage on button tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) services bundle.
+      // Create a fake(ish) redux bundle.
       final reduxCompleter = Completer<Store<AppState>>();
       final redux = FakeReduxBundle(completer: reduxCompleter);
 

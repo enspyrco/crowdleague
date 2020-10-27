@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
-Future<void> main() async {
+void main() {
   enableFlutterDriverExtension();
 
   // Create the rdt middleware that connects to the rdt server.
   final _rdtMiddleware = RemoteDevToolsMiddleware<AppState>('localhost:8000');
 
-  // Create an operation for the services bundle to run on the store.
+  // Create an operation for the redux bundle to run on the store.
   final _rdtOperation = StoreOperation((store) async {
     _rdtMiddleware.store = store; // give middleware access to the store
     await _rdtMiddleware.connect();
@@ -23,7 +23,7 @@ Future<void> main() async {
   final _firestoreSettings = Settings(
       host: 'localhost:8080', sslEnabled: false, persistenceEnabled: false);
 
-  // Setup the services bundle to use a different bucket and with an extra
+  // Setup the redux bundle to use a different bucket and with an extra
   // middleware that sends each action and state to the rdt server for display.
   ReduxBundle.setup(
       bucketName: 'gs://profile-pics-prototyping',

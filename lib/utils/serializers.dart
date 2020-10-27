@@ -78,6 +78,8 @@ import 'package:crowdleague/models/conversations/new_conversation/vm_new_convers
 import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
+import 'package:crowdleague/models/navigation/page_data/email_auth_page_data.dart';
+import 'package:crowdleague/models/navigation/page_data/initial_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/problems/problem.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
@@ -108,8 +110,11 @@ part 'serializers.g.dart';
   DisregardProcessingFailures,
   DisregardProfile,
   DisregardProfilePics,
+  EmailAuthPageData,
+  InitialPageData,
   LeaveConversation,
   PageData,
+  PushPage,
   ObserveAuthState,
   ObserveConversations,
   ObserveMessages,
