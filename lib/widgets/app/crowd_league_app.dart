@@ -44,7 +44,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
         _initializedFirebase = true;
       });
 
-      // use the injected services bundle if there is one or create one
+      // use the injected redux bundle if there is one or create one
       _redux = widget._redux ?? ReduxBundle();
       // create the redux store and run any extra operations
       _store = await _redux.createStore();
