@@ -54,12 +54,12 @@ void main() {
       expect(initializingIndicatorFinder, findsOneWidget);
 
       // verify the expected text is shown, indicating waiting for both
-      expect(find.text('Waiting for Firebase...'), findsOneWidget);
+      expect(find.text('Enticing a ghost into the machine...'), findsOneWidget);
 
       // complete the firebase future and verfiy text has changed as expected
       firebaseCompleter.complete();
       await tester.pump();
-      expect(find.text('Waiting for Redux...'), findsOneWidget);
+      expect(find.text('Plumbing the pipes...'), findsOneWidget);
 
       // complete the redux completer and verify
       reduxCompleter.complete();
