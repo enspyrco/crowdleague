@@ -18,11 +18,13 @@ class PlatformSignInButton extends StatelessWidget {
         return (platform == PlatformType.ios || platform == PlatformType.macOS)
             ? AppleSignInButton(
                 style: AppleButtonStyle.black,
+                greyScale: true,
                 onPressed: () => context.dispatch(SignInWithApple()),
               )
             : GoogleSignInButton(
                 onPressed: () => context.dispatch(SignInWithGoogle()),
-                darkMode: true, // default: false
+                greyScale: true,
+                darkMode: false,
               );
       },
     );

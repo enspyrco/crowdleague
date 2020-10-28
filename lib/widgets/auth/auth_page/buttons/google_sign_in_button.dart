@@ -10,6 +10,7 @@ class GoogleSignInButton extends StatelessWidget {
   final String text;
   final TextStyle textStyle;
   final bool darkMode;
+  final bool greyScale;
   final double borderRadius;
   final VoidCallback onPressed;
   final Color splashColor;
@@ -24,6 +25,7 @@ class GoogleSignInButton extends StatelessWidget {
       this.textStyle,
       this.splashColor,
       this.darkMode = false,
+      this.greyScale = false,
       // Google doesn't specify a border radius, but this looks about right.
       this.borderRadius = defaultBorderRadius,
       this.centered = false,
@@ -62,12 +64,13 @@ class GoogleSignInButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(borderRadius),
             ),
             child: Center(
-              child: Image(
-                image: AssetImage('assets/images/google_logo.png'),
-                height: 18.0,
-                width: 18.0,
-              ),
-            ),
+                child: Image(
+              image: greyScale
+                  ? AssetImage('assets/images/google_logo_greyscale.png')
+                  : AssetImage('assets/images/google_logo.png'),
+              height: 18.0,
+              width: 18.0,
+            )),
           ),
         ),
 

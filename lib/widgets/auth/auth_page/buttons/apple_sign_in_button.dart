@@ -9,6 +9,7 @@ enum AppleButtonStyle { white, whiteOutline, black }
 class AppleSignInButton extends StatelessWidget {
   final String text;
   final AppleButtonStyle style;
+  final bool greyScale;
   final double borderRadius;
   final VoidCallback onPressed;
   final TextStyle textStyle;
@@ -25,6 +26,7 @@ class AppleSignInButton extends StatelessWidget {
       this.textStyle,
       this.splashColor,
       this.style = AppleButtonStyle.white,
+      this.greyScale = false,
       // Apple doesn't specify a border radius, but this looks about right.
       this.borderRadius = defaultBorderRadius,
       this.centered = false,
@@ -35,8 +37,11 @@ class AppleSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StretchableButton(
-      buttonColor:
-          style == AppleButtonStyle.black ? Colors.black : Colors.white,
+      buttonColor: greyScale
+          ? Colors.grey[800]
+          : style == AppleButtonStyle.black
+              ? Colors.black
+              : Colors.white,
       borderRadius: borderRadius,
       splashColor: splashColor,
       buttonBorderColor:
