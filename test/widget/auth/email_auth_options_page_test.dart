@@ -130,13 +130,8 @@ void main() {
 
       // check correct action is dispatched with empty form feild values
       expect(
-          testMiddleware.received(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signUp,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          )),
+          testMiddleware
+              .received(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signUp)),
           true);
     });
 
@@ -167,13 +162,8 @@ void main() {
 
       // check correct action is dispatched with empty form field values
       expect(
-          testMiddleware.received(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signIn,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          )),
+          testMiddleware
+              .received(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signIn)),
           true);
     });
 
