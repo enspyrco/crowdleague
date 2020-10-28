@@ -21,24 +21,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
 import '../../utils/verify_dispatch_middleware.dart';
+import '../../utils/widget_test_harness.dart';
 
 void main() {
   group('AuthPage', () {
     testWidgets('shows default UI while waiting for user input',
         (WidgetTester tester) async {
-      // Setup the app state with expected values
-      final initialAppState = AppState.init();
-      final alteredState = initialAppState
-          .rebuild((b) => b..authPage.step = AuthStep.waitingForInput);
+      // Setup a test harness.
+      final harness = WidgetTestHarness(widgetUnderTest: AuthPage());
 
-      // Create the test harness.
-      final store = Store<AppState>(appReducer, initialState: alteredState);
-      final wut = AuthPage();
-      final harness =
-          StoreProvider<AppState>(store: store, child: MaterialApp(home: wut));
+      // Check that we are in the expected initial state.
+      expect(harness.state.authPage.step, AuthStep.waitingForInput);
 
       // Tell the tester to build the widget tree.
-      await tester.pumpWidget(harness);
+      await tester.pumpWidget(harness.widget);
 
       // Create the Finders.
       final explanationText = find.byType(ExplanationText);
