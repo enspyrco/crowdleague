@@ -39,11 +39,11 @@ class _AuthPageState extends State<AuthPage> {
                 case AuthStep.signingInWithGoogle:
                   return WaitingIndicator('Contacting Google...');
                 case AuthStep.signingInWithEmail:
-                  return WaitingIndicator('Signing In With Email...');
+                  return WaitingIndicator('Signing In with Email...');
                 case AuthStep.signingUpWithEmail:
-                  return WaitingIndicator('Signing Up With Email...');
+                  return WaitingIndicator('Creating your Account...');
                 case AuthStep.signingInWithFirebase:
-                  return WaitingIndicator('Signing in with Firebase...');
+                  return WaitingIndicator('Signing in with CrowdLeague...');
                 default:
                   return WaitingIndicator('Auth Step was null... huh?');
               }
