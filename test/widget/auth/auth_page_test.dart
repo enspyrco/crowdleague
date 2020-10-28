@@ -143,7 +143,7 @@ void main() {
 
       // check that correct waiting text is shown
       final firebaseWaitingIndicatorText =
-          find.text('Signing in with Firebase...');
+          find.text('Signing in with CrowdLeague...');
       expect(firebaseWaitingIndicatorText, findsOneWidget);
     });
 
