@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../data/users_data.dart';
-import '../../utils/completable_app_mocks.dart';
+import '../../utils/completable_app_widget_harness.dart';
 
 void main() {
   group('CrowdLeagueApp', () {
