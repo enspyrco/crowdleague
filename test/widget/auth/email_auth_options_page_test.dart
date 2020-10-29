@@ -506,6 +506,7 @@ void main() {
       // Setup a test harness.
       final harness =
           WidgetTestHarness(widgetUnderTest: EmailAuthOptionsPage());
+
       // Tell the tester to build the widget tree.
       await tester.pumpWidget(harness.widget);
 
