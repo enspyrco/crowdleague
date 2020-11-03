@@ -17,18 +17,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-class CrowdLeagueApp extends StatefulWidget {
+class AppWidget extends StatefulWidget {
   final FirebaseWrapper _firebase;
   final ReduxBundle _redux;
 
-  CrowdLeagueApp({FirebaseWrapper firebase, ReduxBundle redux})
+  AppWidget({FirebaseWrapper firebase, ReduxBundle redux})
       : _firebase = firebase ?? FirebaseWrapper(),
         _redux = redux;
   @override
-  _CrowdLeagueAppState createState() => _CrowdLeagueAppState();
+  _AppWidgetState createState() => _AppWidgetState();
 }
 
-class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
+class _AppWidgetState extends State<AppWidget> {
   ReduxBundle _redux;
   Store<AppState> _store;
   dynamic _error;

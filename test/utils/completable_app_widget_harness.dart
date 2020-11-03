@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/widgets/app/crowd_league_app.dart';
+import 'package:crowdleague/widgets/app/app_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
@@ -12,22 +12,22 @@ import '../mocks/wrappers/firebase_wrapper_mocks.dart';
 import 'redux_bundle_mocks.dart';
 
 /// A test harness to wrap the widget under test, (in this case the
-/// CrowdLeagueApp widget), and provide all the functionality
+/// AppWidget), and provide all the functionality
 /// that a test may want in order to interact with the widget, including
 /// completing the firebase and redux futures that are awaited in the
-/// CrowdLeagueApp widget.
+/// AppWidget.
 class CompletableAppWidgetHarness {
   final _firebaseCompleter = Completer<FirebaseApp>();
   final _reduxCompleter = Completer<Store<AppState>>();
 
   FakeFirebaseWrapper _firebase;
   FakeReduxBundle _redux;
-  CrowdLeagueApp _appWidget;
+  AppWidget _appWidget;
 
   CompletableAppWidgetHarness() {
     _firebase = FakeFirebaseWrapper(completer: _firebaseCompleter);
     _redux = FakeReduxBundle(completer: _reduxCompleter);
-    _appWidget = CrowdLeagueApp(firebase: _firebase, redux: _redux);
+    _appWidget = AppWidget(firebase: _firebase, redux: _redux);
   }
 
   Widget get widget => _appWidget;
@@ -36,10 +36,10 @@ class CompletableAppWidgetHarness {
   void completeRedux() => _reduxCompleter.complete();
 }
 
-/// A test harness that wraps CrowdLeagueApp widget to provide the
+/// A test harness that wraps AppWidget to provide the
 /// functionality that a test may want in order to interact with the widget,
 /// including completing the firebase and redux futures that are awaited in the
-/// CrowdLeagueApp widget.
+/// AppWidget.
 ///
 /// The harness also holds a [Store], that can be setup by passing reducers and
 /// updates to the initial app state.
@@ -49,7 +49,7 @@ class CompletableAppWidgetHarnessWithStore {
 
   FakeFirebaseWrapper _firebase;
   FakeReduxBundle _redux;
-  CrowdLeagueApp _appWidget;
+  AppWidget _appWidget;
 
   Store<AppState> _store;
 
@@ -58,7 +58,7 @@ class CompletableAppWidgetHarnessWithStore {
       Function(AppStateBuilder) appStateUpdates}) {
     _firebase = FakeFirebaseWrapper(completer: _firebaseCompleter);
     _redux = FakeReduxBundle(completer: _reduxCompleter);
-    _appWidget = CrowdLeagueApp(firebase: _firebase, redux: _redux);
+    _appWidget = AppWidget(firebase: _firebase, redux: _redux);
 
     _store = Store<AppState>(combineReducers(reducers ?? []),
         initialState: AppState.init().rebuild(appStateUpdates));
@@ -70,10 +70,10 @@ class CompletableAppWidgetHarnessWithStore {
   void completeRedux() => _reduxCompleter.complete(_store);
 }
 
-/// A test harness that wraps CrowdLeagueApp widget to provide the
+/// A test harness that wraps AppWidget to provide the
 /// functionality that a test may want in order to interact with the widget,
 /// including completing the firebase and redux futures that are awaited in the
-/// CrowdLeagueApp widget.
+/// AppWidget.
 ///
 /// The harness also holds a [FakeStore], whose functionality can be accessed
 /// through the harness.
@@ -85,13 +85,13 @@ class CompletableAppWidgetHarnessWithFakeStore {
 
   FakeFirebaseWrapper _firebase;
   FakeReduxBundle _redux;
-  CrowdLeagueApp _appWidget;
+  AppWidget _appWidget;
 
   //{FakeStore store}
   CompletableAppWidgetHarnessWithFakeStore() : _fakeStore = FakeStore() {
     _firebase = FakeFirebaseWrapper(completer: _firebaseCompleter);
     _redux = FakeReduxBundle(completer: _reduxCompleter);
-    _appWidget = CrowdLeagueApp(firebase: _firebase, redux: _redux);
+    _appWidget = AppWidget(firebase: _firebase, redux: _redux);
   }
 
   Widget get widget => _appWidget;
