@@ -1,7 +1,7 @@
+import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 
 import '../mocks/redux/redux_store_mocks.dart';
 
@@ -9,22 +9,33 @@ import '../mocks/redux/redux_store_mocks.dart';
 /// that a test may want in order to interact with the widget or check for
 /// expected values and behaviour.
 class WidgetTestHarness {
-  final Store<AppState> _store;
+  final FakeStore _fakeStore;
   final Widget _widgetUnderTest;
 
   WidgetTestHarness(
       {@required Widget widgetUnderTest,
-      Store<AppState> store,
+      FakeStore fakeStore,
       dynamic Function(AppStateBuilder) stateUpdates})
-      : _store = store ?? FakeStore(),
+      : _fakeStore = fakeStore ?? FakeStore(),
         _widgetUnderTest = widgetUnderTest {
     if (stateUpdates != null) {
-      _store.state.rebuild(stateUpdates);
+      _fakeStore.updateState(stateUpdates);
     }
   }
 
-  Widget get widget => StoreProvider<AppState>(
-      store: _store, child: MaterialApp(home: _widgetUnderTest));
+  // Allow the test to update the app state.
+  //
+  // We a style guide entry asking contributors to consider splitting up tests
+  // rather than changing the app state and continuing the test.
+  //
+  // See Style Guide > CONSIDER splitting up widget tests that change the app state
+  void updateAppState(dynamic Function(AppStateBuilder) updates) =>
+      _fakeStore.updateState(updates);
 
-  AppState get state => _store.state;
+  Widget get widget => StoreProvider<AppState>(
+      store: _fakeStore, child: MaterialApp(home: _widgetUnderTest));
+
+  AppState get state => _fakeStore.state;
+
+  List<ReduxAction> get receivedActions => _fakeStore.dispatchedActions;
 }
