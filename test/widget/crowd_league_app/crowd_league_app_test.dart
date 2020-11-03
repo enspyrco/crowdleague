@@ -1,16 +1,10 @@
-import 'dart:async';
-
-import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/auth/observe_auth_state.dart';
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
 import 'package:crowdleague/actions/device/check_platform.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
-import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/auth/provider_info.dart';
-import 'package:crowdleague/models/auth/user.dart';
-import 'package:crowdleague/reducers/app_reducer.dart';
-import 'package:crowdleague/widgets/app/crowd_league_app.dart';
+import 'package:crowdleague/reducers/navigation/push_page.dart';
+import 'package:crowdleague/reducers/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/widgets/app/initializing_indicator.dart';
 import 'package:crowdleague/widgets/auth/auth_page/auth_page.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/email_options_fab.dart';
@@ -20,112 +14,89 @@ import 'package:crowdleague/widgets/main/account_button.dart';
 import 'package:crowdleague/widgets/main/main_page.dart';
 import 'package:crowdleague/widgets/more_options/more_options_page.dart';
 import 'package:crowdleague/widgets/profile/profile_page.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:redux/redux.dart';
 
-import '../../mocks/wrappers/firebase_wrapper_mocks.dart';
-import '../../utils/redux_bundle_mocks.dart';
-import '../../utils/verify_dispatch_middleware.dart';
+import '../../data/users_data.dart';
+import '../../utils/completable_app_widget_harness.dart';
 
 void main() {
   group('CrowdLeagueApp', () {
     testWidgets('shows expected UI while initializing',
         (WidgetTester tester) async {
-      // create a fake(ish) a redux bundle
-      final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeReduxBundle(completer: reduxCompleter);
-
-      // create a fake firebase wrapper with a supplied completer
-      final firebaseCompleter = Completer<FirebaseApp>();
-      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
-
-      // the widget under test
-      final wut = CrowdLeagueApp(redux: redux, firebase: firebase);
+      final harness = CompletableAppWidgetHarness();
 
       // Tell the tester to build the widget tree.
-      await tester.pumpWidget(wut);
+      await tester.pumpWidget(harness.widget);
 
-      // Create the Finders.
       final initializingIndicatorFinder = find.byType(InitializingIndicator);
 
-      // verify that the InitializingIndicator is shown
       expect(initializingIndicatorFinder, findsOneWidget);
 
-      // verify the expected text is shown, indicating waiting for both
+      // Verify the expected text is shown, indicating waiting for Firebase init
       expect(find.text('Enticing a ghost into the machine...'), findsOneWidget);
 
-      // complete the firebase future and verfiy text has changed as expected
-      firebaseCompleter.complete();
+      harness.completeFirebase();
+
       await tester.pump();
+
+      // Verify the expected text is shown, indicating waiting for redux init
       expect(find.text('Plumbing the pipes...'), findsOneWidget);
 
-      // complete the redux completer and verify
-      reduxCompleter.complete();
+      harness.completeRedux();
+
       await tester.pump();
 
-      // verify that the InitializingIndicator is no longer present
       expect(initializingIndicatorFinder, findsNothing);
     });
 
     testWidgets('dispatches actions after initialization',
         (WidgetTester tester) async {
-      // create a fake(ish) a redux bundle
-      final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeReduxBundle(completer: reduxCompleter);
-
-      // create a fake firebase wrapper with a supplied completer
-      final firebaseCompleter = Completer<FirebaseApp>();
-      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
-
-      // the widget under test
-      final wut = CrowdLeagueApp(redux: redux, firebase: firebase);
+      final harness = CompletableAppWidgetHarnessWithFakeStore();
 
       // Tell the tester to build the widget tree.
-      await tester.pumpWidget(wut);
+      await tester.pumpWidget(harness.widget);
 
-      // complete the firebase future
-      firebaseCompleter.complete();
+      final initializingIndicatorFinder = find.byType(InitializingIndicator);
 
-      // setup a mock store and complete the redux future with the store
-      final middleware = VerifyDispatchMiddleware();
-      final store = Store<AppState>(appReducer,
-          initialState: AppState.init(), middleware: [middleware]);
-      reduxCompleter.complete(store);
+      expect(initializingIndicatorFinder, findsOneWidget);
 
-      await tester.pumpAndSettle();
+      // Verify the expected text is shown, indicating waiting for Firebase init.
+      expect(find.text('Enticing a ghost into the machine...'), findsOneWidget);
 
-      expect(middleware.received(ObserveAuthState()), true);
-      expect(middleware.received(RequestFCMPermissions()), true);
-      expect(middleware.received(PrintFCMToken()), true);
-      expect(middleware.received(CheckPlatform()), true);
-      expect(middleware.received(PlumbDatabaseStream()), true);
+      harness.completeFirebase();
+
+      await tester.pump();
+
+      // Verify the expected text is shown, indicating waiting for Redux init.
+      expect(find.text('Plumbing the pipes...'), findsOneWidget);
+
+      harness.completeRedux();
+
+      await tester.pump();
+
+      // Check we have moved past the waiting states.
+      expect(initializingIndicatorFinder, findsNothing);
+
+      // Check that all the expected actions were dispatched.
+      expect(harness.receivedActions, contains(ObserveAuthState()));
+      expect(harness.receivedActions, contains(RequestFCMPermissions()));
+      expect(harness.receivedActions, contains(PrintFCMToken()));
+      expect(harness.receivedActions, contains(CheckPlatform()));
+      expect(harness.receivedActions, contains(PlumbDatabaseStream()));
     });
 
     testWidgets(
         'navigates to EmailAuthOptionsPage on FAB tap when user not signed in',
         (WidgetTester tester) async {
-      // Create a fake(ish) redux bundle.
-      final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeReduxBundle(completer: reduxCompleter);
+      final harness =
+          CompletableAppWidgetHarnessWithStore(reducers: [PushPageReducer()]);
 
-      // Create a fake firebase wrapper with a supplied completer.
-      final firebaseCompleter = Completer<FirebaseApp>();
-      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
+      harness.completeFirebase();
+      harness.completeRedux();
 
-      // Widget being tested.
-      final widgetUnderTest = CrowdLeagueApp(redux: redux, firebase: firebase);
-
-      // Build the widget tree.
-      await tester.pumpWidget(widgetUnderTest);
-
-      // Complete the firebase future.
-      firebaseCompleter.complete();
-
-      // Setup a mock store and complete the redux future with the store.
-      final store = Store<AppState>(appReducer, initialState: AppState.init());
-      reduxCompleter.complete(store);
+      // Tell the tester to build the widget tree.
+      await tester.pumpWidget(harness.widget);
 
       // Build the widget tree and wait for animations to complete.
       await tester.pumpAndSettle();
@@ -151,44 +122,23 @@ void main() {
       // Verify ending location.
       expect(nextPageFinder, findsOneWidget);
     });
+  });
 
-    testWidgets('MainPage navigates to ProfilePage on FAB tap',
+  group('MainPage', () {
+    testWidgets('navigates to ProfilePage on FAB tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) redux bundle.
-      final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeReduxBundle(completer: reduxCompleter);
+      final harness = CompletableAppWidgetHarnessWithStore(
+          appStateUpdates: (b) => b..user.replace(bobUser),
+          reducers: [PushPageReducer()]);
 
-      // Create a fake firebase wrapper with a supplied completer.
-      final firebaseCompleter = Completer<FirebaseApp>();
-      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
-
-      // Widget being tested.
-      final widgetUnderTest = CrowdLeagueApp(redux: redux, firebase: firebase);
+      harness.completeFirebase();
+      harness.completeRedux();
 
       // Build the widget tree.
-      await tester.pumpWidget(widgetUnderTest);
-
-      // Complete the firebase future.
-      firebaseCompleter.complete();
+      await tester.pumpWidget(harness.widget);
 
       await tester.pump();
 
-      // Create user for user sign in.
-      final user = User(
-          id: '1234',
-          displayName: 'bob',
-          photoURL: 'photo.com',
-          email: 'test@email.com',
-          providers: BuiltList<ProviderInfo>());
-
-      // Setup a mock store and complete the redux future with the store.
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init().rebuild((b) => b..user.replace(user)),
-      );
-      reduxCompleter.complete(store);
-
-      await tester.pump();
       // Starting location of test.
       final initialPageFinder = find.byType(MainPage);
 
@@ -210,43 +160,18 @@ void main() {
       expect(nextPageFinder, findsOneWidget);
     });
 
-    testWidgets('MainPage navigates to "home page" on button tap',
+    testWidgets('navigates to "home page" on button tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) redux bundle.
-      final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeReduxBundle(completer: reduxCompleter);
+      final harness = CompletableAppWidgetHarnessWithStore(
+          appStateUpdates: (b) => b..user.replace(bobUser));
 
-      // Create a fake firebase wrapper with a supplied completer.
-      final firebaseCompleter = Completer<FirebaseApp>();
-      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
+      harness.completeFirebase();
+      harness.completeRedux();
 
-      // Widget being tested.
-      final widgetUnderTest = CrowdLeagueApp(redux: redux, firebase: firebase);
-
-      // Build the widget tree.
-      await tester.pumpWidget(widgetUnderTest);
-
-      // Complete the firebase future.
-      firebaseCompleter.complete();
+      await tester.pumpWidget(harness.widget);
 
       await tester.pump();
 
-      // Create user for user sign in.
-      final user = User(
-          id: '1234',
-          displayName: 'bob',
-          photoURL: 'photo.com',
-          email: 'test@email.com',
-          providers: BuiltList<ProviderInfo>());
-
-      // Setup a mock store and complete the redux future with the store.
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init().rebuild((b) => b..user.replace(user)),
-      );
-      reduxCompleter.complete(store);
-
-      await tester.pump();
       // Starting location of test.
       final initialPageFinder = find.byType(MainPage);
 
@@ -268,43 +193,20 @@ void main() {
       expect(nextPageFinder, findsOneWidget);
     });
 
-    testWidgets('MainPage navigates to "business page" on button tap',
+    testWidgets('navigates to "business page" on button tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) redux bundle.
-      final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeReduxBundle(completer: reduxCompleter);
+      final harness = CompletableAppWidgetHarnessWithStore(
+          appStateUpdates: (b) => b..user.replace(bobUser),
+          reducers: [StoreNavBarSelectionReducer()]);
 
-      // Create a fake firebase wrapper with a supplied completer.
-      final firebaseCompleter = Completer<FirebaseApp>();
-      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
-
-      // Widget being tested.
-      final widgetUnderTest = CrowdLeagueApp(redux: redux, firebase: firebase);
+      harness.completeFirebase();
+      harness.completeRedux();
 
       // Build the widget tree.
-      await tester.pumpWidget(widgetUnderTest);
-
-      // Complete the firebase future.
-      firebaseCompleter.complete();
+      await tester.pumpWidget(harness.widget);
 
       await tester.pump();
 
-      // Create user for user sign in.
-      final user = User(
-          id: '1234',
-          displayName: 'bob',
-          photoURL: 'photo.com',
-          email: 'test@email.com',
-          providers: BuiltList<ProviderInfo>());
-
-      // Setup a mock store and complete the redux future with the store.
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init().rebuild((b) => b..user.replace(user)),
-      );
-      reduxCompleter.complete(store);
-
-      await tester.pump();
       // Starting location of test.
       final initialPageFinder = find.byType(MainPage);
 
@@ -326,43 +228,20 @@ void main() {
       expect(nextPageFinder, findsOneWidget);
     });
 
-    testWidgets('MainPage navigates to ConversationSummariesPage on button tap',
+    testWidgets('navigates to ConversationSummariesPage on button tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) redux bundle.
-      final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeReduxBundle(completer: reduxCompleter);
+      final harness = CompletableAppWidgetHarnessWithStore(
+          appStateUpdates: (b) => b..user.replace(bobUser),
+          reducers: [StoreNavBarSelectionReducer()]);
 
-      // Create a fake firebase wrapper with a supplied completer.
-      final firebaseCompleter = Completer<FirebaseApp>();
-      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
-
-      // Widget being tested.
-      final widgetUnderTest = CrowdLeagueApp(redux: redux, firebase: firebase);
+      harness.completeFirebase();
+      harness.completeRedux();
 
       // Build the widget tree.
-      await tester.pumpWidget(widgetUnderTest);
-
-      // Complete the firebase future.
-      firebaseCompleter.complete();
+      await tester.pumpWidget(harness.widget);
 
       await tester.pump();
 
-      // Create user for user sign in.
-      final user = User(
-          id: '1234',
-          displayName: 'bob',
-          photoURL: 'photo.com',
-          email: 'test@email.com',
-          providers: BuiltList<ProviderInfo>());
-
-      // Setup a mock store and complete the redux future with the store.
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init().rebuild((b) => b..user.replace(user)),
-      );
-      reduxCompleter.complete(store);
-
-      await tester.pump();
       // Starting location of test.
       final initialPageFinder = find.byType(MainPage);
 
@@ -384,41 +263,17 @@ void main() {
       expect(nextPageFinder, findsOneWidget);
     });
 
-    testWidgets('MainPage navigates to MoreOptionsPage on button tap',
+    testWidgets('navigates to MoreOptionsPage on button tap',
         (WidgetTester tester) async {
-      // Create a fake(ish) redux bundle.
-      final reduxCompleter = Completer<Store<AppState>>();
-      final redux = FakeReduxBundle(completer: reduxCompleter);
+      final harness = CompletableAppWidgetHarnessWithStore(
+          appStateUpdates: (b) => b..user.replace(bobUser),
+          reducers: [StoreNavBarSelectionReducer()]);
 
-      // Create a fake firebase wrapper with a supplied completer.
-      final firebaseCompleter = Completer<FirebaseApp>();
-      final firebase = FakeFirebaseWrapper(completer: firebaseCompleter);
-
-      // Widget being tested.
-      final widgetUnderTest = CrowdLeagueApp(redux: redux, firebase: firebase);
+      harness.completeFirebase();
+      harness.completeRedux();
 
       // Build the widget tree.
-      await tester.pumpWidget(widgetUnderTest);
-
-      // Complete the firebase future.
-      firebaseCompleter.complete();
-
-      await tester.pump();
-
-      // Create user for user sign in.
-      final user = User(
-          id: '1234',
-          displayName: 'bob',
-          photoURL: 'photo.com',
-          email: 'test@email.com',
-          providers: BuiltList<ProviderInfo>());
-
-      // Setup a mock store and complete the redux future with the store.
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.init().rebuild((b) => b..user.replace(user)),
-      );
-      reduxCompleter.complete(store);
+      await tester.pumpWidget(harness.widget);
 
       await tester.pump();
       // Starting location of test.
