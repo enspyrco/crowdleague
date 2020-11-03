@@ -21,7 +21,7 @@ import '../../data/users_data.dart';
 import '../../utils/completable_app_widget_harness.dart';
 
 void main() {
-  group('CrowdLeagueApp', () {
+  group('AppWidget', () {
     testWidgets('shows expected UI while initializing',
         (WidgetTester tester) async {
       final harness = CompletableAppWidgetHarness();

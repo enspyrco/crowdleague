@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/utils/redux/redux_bundle.dart';
-import 'package:crowdleague/widgets/app/crowd_league_app.dart';
+import 'package:crowdleague/widgets/app/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 
@@ -32,5 +32,5 @@ void main() {
       databaseService: FakeDatabaseService(),
       storageService: FakeStorageService(StreamController<ReduxAction>()));
 
-  runApp(CrowdLeagueApp(redux: redux));
+  runApp(AppWidget(redux: redux));
 }

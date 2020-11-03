@@ -1,4 +1,4 @@
-import 'package:crowdleague/widgets/app/crowd_league_app.dart';
+import 'package:crowdleague/widgets/app/app_widget.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(CrowdLeagueApp());
+void main() => runApp(AppWidget());

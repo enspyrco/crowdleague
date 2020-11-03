@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/utils/redux/redux_bundle.dart';
 import 'package:crowdleague/utils/redux/store_operation.dart';
-import 'package:crowdleague/widgets/app/crowd_league_app.dart';
+import 'package:crowdleague/widgets/app/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
@@ -31,5 +31,5 @@ void main() {
       storeOperations: [_rdtOperation],
       firestoreSettings: _firestoreSettings);
 
-  runApp(CrowdLeagueApp());
+  runApp(AppWidget());
 }
