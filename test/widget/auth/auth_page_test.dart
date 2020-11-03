@@ -3,8 +3,10 @@ import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
 import 'package:crowdleague/enums/auth_step.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/widgets/auth/auth_page/auth_page.dart';
+import 'package:crowdleague/widgets/auth/auth_page/buttons/apple_sign_in_button.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/apple_sign_in_fab.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/auth_buttons.dart';
+import 'package:crowdleague/widgets/auth/auth_page/buttons/google_sign_in_button.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/google_sign_in_fab.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/other_provider_fab.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/platform_sign_in_button.dart';
@@ -12,7 +14,6 @@ import 'package:crowdleague/widgets/auth/auth_page/images/crowd_league_logo.dart
 import 'package:crowdleague/widgets/auth/auth_page/text/explanation_text.dart';
 import 'package:crowdleague/widgets/auth/auth_page/text/tag_line_text.dart';
 import 'package:crowdleague/widgets/shared/waiting_indicator.dart';
-import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../utils/widget_test_harness.dart';
