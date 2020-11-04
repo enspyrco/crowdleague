@@ -1,6 +1,5 @@
 import 'package:crowdleague/actions/storage/update_upload_task.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
-import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/storage/upload_task.dart';
 import 'package:redux/redux.dart';
@@ -22,25 +21,22 @@ class UpdateUploadTaskReducer extends TypedReducer<AppState, UpdateUploadTask> {
                   UploadTaskBuilder();
 
           // use the event type to set the storage task state
-          switch (action.type) {
-            case UploadTaskUpdateType.setup:
+          switch (action.state) {
+            case UploadTaskState.setup:
               taskBuilder.state = UploadTaskState.setup;
               taskBuilder.filePath = action.filePath;
               break;
-            case UploadTaskUpdateType.resume:
-              taskBuilder.state = UploadTaskState.resumed;
+            case UploadTaskState.running:
+              taskBuilder.state = UploadTaskState.running;
               break;
-            case UploadTaskUpdateType.progress:
-              taskBuilder.state = UploadTaskState.inProgress;
-              break;
-            case UploadTaskUpdateType.pause:
+            case UploadTaskState.paused:
               taskBuilder.state = UploadTaskState.paused;
               break;
-            case UploadTaskUpdateType.success:
+            case UploadTaskState.success:
               taskBuilder.state = UploadTaskState.processing;
               break;
-            case UploadTaskUpdateType.failure:
-              taskBuilder.state = UploadTaskState.failed;
+            case UploadTaskState.error:
+              taskBuilder.state = UploadTaskState.error;
               break;
           }
 
