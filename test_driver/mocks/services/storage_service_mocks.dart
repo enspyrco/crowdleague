@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/actions/storage/update_upload_task.dart';
-import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
+import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/storage/upload_failure.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,7 +16,7 @@ class MockStorageService extends Mock implements StorageService {}
 
 class FakeStorageService extends Fake implements StorageService {
   final StreamController<ReduxAction> _controller;
-  final Map<String, StorageUploadTask> _tasks = <String, StorageUploadTask>{};
+  final Map<String, UploadTask> _tasks = <String, UploadTask>{};
 
   FakeStorageService(StreamController<ReduxAction> controller)
       : _controller = controller;
@@ -33,14 +33,14 @@ class FakeStorageService extends Fake implements StorageService {
     // emit a setup event to create the entry in the store that will be used
     // by each subsequent update event
     yield UpdateUploadTask(
-        type: UploadTaskUpdateType.setup, uuid: uuid, filePath: filePath);
+        state: UploadTaskState.setup, uuid: uuid, filePath: filePath);
 
     // the profile page vm now has the uuid that it can use to access the upload
     // task
     yield UpdateProfilePage(uploadingProfilePicId: uuid);
 
     // create a fake upload task with a stream we can add events to
-    final controller = StreamController<StorageTaskEvent>();
+    final controller = StreamController<TaskSnapshot>();
     final uploadTask = FakeStorageUploadTask(controller);
     _tasks[uuid] = uploadTask;
 
@@ -53,19 +53,19 @@ class FakeStorageService extends Fake implements StorageService {
 
     // an example that ended in an error
     yield UpdateUploadTask(
-        type: UploadTaskUpdateType.progress,
+        state: UploadTaskState.inProgress,
         uuid: uuid,
         totalByteCount: 159,
         bytesTransferred: 3782214);
 
     yield UpdateUploadTask(
-        type: UploadTaskUpdateType.progress,
+        state: UploadTaskState.inProgress,
         uuid: uuid,
         totalByteCount: 159,
         bytesTransferred: 3782214);
 
     yield UpdateUploadTask(
-        type: UploadTaskUpdateType.failure,
+        state: UploadTaskState.error,
         uuid: uuid,
         failure: UploadFailure(code: -13021, description: 'description'),
         totalByteCount: 159,

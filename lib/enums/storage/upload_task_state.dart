@@ -11,8 +11,10 @@ class UploadTaskState extends EnumClass {
   static const UploadTaskState processing = _$processing;
   static const UploadTaskState processingComplete = _$processingComplete;
   static const UploadTaskState paused = _$paused;
-  static const UploadTaskState resumed = _$resumed;
-  static const UploadTaskState failed = _$failed;
+  static const UploadTaskState running = _$running;
+  static const UploadTaskState success = _$success;
+  static const UploadTaskState canceled = _$canceled;
+  static const UploadTaskState error = _$error;
 
   const UploadTaskState._(String name) : super(name);
 
@@ -22,8 +24,10 @@ class UploadTaskState extends EnumClass {
     processing: 2,
     processingComplete: 3,
     paused: 4,
-    resumed: 5,
-    failed: 6,
+    running: 5,
+    success: 6,
+    canceled: 7,
+    error: 8,
   });
   int get index => _$indexMap[this];
 

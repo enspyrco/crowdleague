@@ -62,7 +62,6 @@ import 'package:crowdleague/enums/processing_failure_type.dart';
 import 'package:crowdleague/enums/settings/brightness_mode.dart';
 import 'package:crowdleague/enums/settings/theme_brightness.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
-import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/app/system_info.dart';
 import 'package:crowdleague/models/auth/provider_info.dart';
