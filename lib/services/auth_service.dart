@@ -6,7 +6,7 @@ import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/utils/wrappers/apple_signin_wrapper.dart';

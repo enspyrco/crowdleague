@@ -18,6 +18,7 @@ import 'package:crowdleague/actions/conversations/disregard_messages.dart';
 import 'package:crowdleague/actions/conversations/leave_conversation.dart';
 import 'package:crowdleague/actions/conversations/observe_conversations.dart';
 import 'package:crowdleague/actions/conversations/observe_messages.dart';
+import 'package:crowdleague/actions/conversations/retrieve_new_conversation_suggestions.dart';
 import 'package:crowdleague/actions/conversations/store_conversations.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
@@ -30,8 +31,6 @@ import 'package:crowdleague/actions/functions/disregard_processing_failures.dart
 import 'package:crowdleague/actions/functions/observe_processing_failures.dart';
 import 'package:crowdleague/actions/functions/store_processing_failures.dart';
 import 'package:crowdleague/actions/functions/update_processing_failure.dart';
-import 'package:crowdleague/actions/leaguers/retrieve_leaguers.dart';
-import 'package:crowdleague/actions/leaguers/store_leaguers.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/push_page.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
@@ -51,12 +50,11 @@ import 'package:crowdleague/actions/profile/upload_profile_pic.dart';
 import 'package:crowdleague/actions/settings/store_brightness_mode.dart';
 import 'package:crowdleague/actions/settings/store_theme_colors.dart';
 import 'package:crowdleague/actions/storage/update_upload_task.dart';
-import 'package:crowdleague/enums/auth_step.dart';
-import 'package:crowdleague/enums/auto_validate.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
+import 'package:crowdleague/enums/auth/auto_validate.dart';
+import 'package:crowdleague/enums/auth/email_auth_mode.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
-import 'package:crowdleague/enums/email_auth_mode.dart';
-import 'package:crowdleague/enums/nav_bar_selection.dart';
-import 'package:crowdleague/enums/new_conversation_page_leaguers_state.dart';
+import 'package:crowdleague/enums/navigation/nav_bar_selection.dart';
 import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/enums/processing_failure_type.dart';
 import 'package:crowdleague/enums/settings/brightness_mode.dart';
@@ -69,11 +67,11 @@ import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_email_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
-import 'package:crowdleague/models/conversations/conversation/vm_conversation_page.dart';
+import 'package:crowdleague/models/conversations/conversation/vm_messages_page.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
-import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_selections.dart';
+import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_suggestions.dart';
 import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
@@ -128,7 +126,7 @@ part 'serializers.g.dart';
   RequestFCMPermissions,
   RemoveCurrentPage,
   RemoveProblem,
-  RetrieveLeaguers,
+  RetrieveNewConversationSuggestions,
   SelectProfilePic,
   SignInWithApple,
   SignInWithGoogle,
@@ -138,7 +136,6 @@ part 'serializers.g.dart';
   StoreAuthStep,
   StoreBrightnessMode,
   StoreConversations,
-  StoreLeaguers,
   StoreMessages,
   StoreNavBarSelection,
   StorePlatform,

@@ -1,5 +1,5 @@
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
-import 'package:crowdleague/enums/email_auth_mode.dart';
+import 'package:crowdleague/enums/auth/email_auth_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 

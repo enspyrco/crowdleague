@@ -1,4 +1,4 @@
-import 'package:crowdleague/enums/email_auth_mode.dart';
+import 'package:crowdleague/enums/auth/email_auth_mode.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/links/create_account_link.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/links/sign_in_link.dart';
 import 'package:flutter/material.dart';

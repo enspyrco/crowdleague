@@ -5,6 +5,6 @@ import 'package:redux/redux.dart';
 class StoreSelectedConversationReducer
     extends TypedReducer<AppState, StoreSelectedConversation> {
   StoreSelectedConversationReducer()
-      : super((state, action) => state.rebuild(
-            (b) => b..conversationPage.summary.replace(action.summary)));
+      : super((state, action) => state
+            .rebuild((b) => b..messagesPage.summary.replace(action.summary)));
 }

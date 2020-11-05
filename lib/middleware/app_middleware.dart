@@ -13,9 +13,9 @@ import 'package:crowdleague/middleware/conversations/disregard_messages.dart';
 import 'package:crowdleague/middleware/conversations/leave_conversation.dart';
 import 'package:crowdleague/middleware/conversations/observe_conversations.dart';
 import 'package:crowdleague/middleware/conversations/observe_messages.dart';
+import 'package:crowdleague/middleware/conversations/retrieve_new_conversation_suggestions.dart';
 import 'package:crowdleague/middleware/conversations/save_message.dart';
 import 'package:crowdleague/middleware/device/check_platform.dart';
-import 'package:crowdleague/middleware/leaguers/retrieve_leaguers.dart';
 import 'package:crowdleague/middleware/notifications/print_f_c_m_token.dart';
 import 'package:crowdleague/middleware/notifications/request_f_c_m_permissions.dart';
 import 'package:crowdleague/middleware/profile/delete_profile_pic.dart';
@@ -69,7 +69,7 @@ List<Middleware<AppState>> createAppMiddleware(
     // Device
     CheckPlatformMiddleware(deviceService),
     // Leaguers
-    RetrieveLeaguersMiddleware(databaseService),
+    RetrieveNewConversationSuggestionsMiddleware(databaseService),
     // Notifications
     PrintFCMTokenMiddleware(notificationsService),
     RequestFCMPermissionsMiddleware(notificationsService),

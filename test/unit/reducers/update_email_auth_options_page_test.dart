@@ -1,7 +1,7 @@
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
-import 'package:crowdleague/enums/auth_step.dart';
-import 'package:crowdleague/enums/auto_validate.dart';
-import 'package:crowdleague/enums/email_auth_mode.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
+import 'package:crowdleague/enums/auth/auto_validate.dart';
+import 'package:crowdleague/enums/auth/email_auth_mode.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/auth/update_email_auth_options_page.dart';
 import 'package:test/test.dart';

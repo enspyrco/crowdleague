@@ -10,7 +10,7 @@ class MessagesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, BuiltList<Message>>(
       distinct: true,
-      converter: (store) => store.state.conversationPage.messages,
+      converter: (store) => store.state.messagesPage.messages,
       builder: (context, messages) {
         return ListView.builder(
             shrinkWrap: true,

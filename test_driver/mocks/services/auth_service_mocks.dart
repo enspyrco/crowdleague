@@ -7,7 +7,7 @@ import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:mockito/mockito.dart';

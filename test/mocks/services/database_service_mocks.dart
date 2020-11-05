@@ -52,7 +52,8 @@ class FakeDatabaseService implements DatabaseService {
   void observeProfilePics(String userId) {}
 
   @override
-  Future<ReduxAction> get retrieveLeaguers => throw UnimplementedError();
+  Future<ReduxAction> get retrieveNewConversationSuggestions =>
+      throw UnimplementedError();
 
   @override
   void saveMessage(Store<AppState> store) {}

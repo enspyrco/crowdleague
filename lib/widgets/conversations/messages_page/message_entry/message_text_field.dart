@@ -1,4 +1,4 @@
-import 'package:crowdleague/actions/conversations/update_conversation_page.dart';
+import 'package:crowdleague/actions/conversations/update_messages_page.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class MessageTextField extends StatelessWidget {
             labelText: 'Message',
           ),
           onChanged: (value) =>
-              context.dispatch(UpdateConversationPage(messageText: value)),
+              context.dispatch(UpdateMessagesPage(messageText: value)),
         ),
       ),
     );

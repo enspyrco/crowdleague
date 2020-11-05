@@ -1,5 +1,5 @@
 import 'package:crowdleague/actions/auth/store_auth_step.dart';
-import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/auth/store_auth_step.dart';
 import 'package:test/test.dart';

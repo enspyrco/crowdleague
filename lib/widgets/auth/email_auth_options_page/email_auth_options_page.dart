@@ -1,5 +1,5 @@
-import 'package:crowdleague/enums/auth_step.dart';
-import 'package:crowdleague/enums/email_auth_mode.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
+import 'package:crowdleague/enums/auth/email_auth_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/auth/vm_email_auth_options_page.dart';

@@ -1,4 +1,4 @@
-import 'package:crowdleague/enums/nav_bar_selection.dart';
+import 'package:crowdleague/enums/navigation/nav_bar_selection.dart';
 import 'package:crowdleague/widgets/conversations/conversation_summaries_page/conversation_summaries_page.dart';
 import 'package:crowdleague/widgets/more_options/more_options_page.dart';
 import 'package:flutter/material.dart';
