@@ -13,7 +13,6 @@ import 'package:crowdleague/reducers/conversations/store_selected_conversation.d
 import 'package:crowdleague/reducers/conversations/update_messages_page.dart';
 import 'package:crowdleague/reducers/conversations/update_new_conversation_page.dart';
 import 'package:crowdleague/reducers/device/store_platform.dart';
-import 'package:crowdleague/reducers/leaguers/store_leaguers.dart';
 import 'package:crowdleague/reducers/navigation/push_page.dart';
 import 'package:crowdleague/reducers/navigation/remove_current_page.dart';
 import 'package:crowdleague/reducers/navigation/store_nav_bar_selection.dart';
@@ -44,8 +43,6 @@ final appReducer =
   UpdateNewConversationPageReducer(),
   // Device
   StorePlatformReducer(),
-  // Leaguers
-  StoreLeaguersReducer(),
   // Navigation
   PushPageReducer(),
   RemoveCurrentPageReducer(),

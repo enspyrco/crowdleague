@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
 import 'package:crowdleague/utils/serializers.dart';
 import 'package:meta/meta.dart';
 

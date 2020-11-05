@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/actions/conversations/store_selected_conversation.dart';
-import 'package:crowdleague/actions/leaguers/store_leaguers.dart';
+import 'package:crowdleague/actions/conversations/update_new_conversation_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/problem_type.dart';
@@ -176,11 +176,7 @@ class DatabaseService {
         .set(<String, dynamic>{'timestamp': FieldValue.serverTimestamp()});
   }
 
-  //////////////////////////////////////////////////////////////////////////////
-  /// LEAGUERS
-  //////////////////////////////////////////////////////////////////////////////
-
-  Future<ReduxAction> get retrieveLeaguers async {
+  Future<ReduxAction> get retrieveNewConversationSuggestions async {
     try {
       final collection = await _firestore.collection('leaguers');
       final snapshot = await collection.get();
@@ -192,7 +188,7 @@ class DatabaseService {
                   'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'))
           .toBuiltList();
 
-      return StoreLeaguers(leaguers: leaguers);
+      return UpdateNewConversationPage(suggestions: leaguers);
     } catch (error, trace) {
       return AddProblem.from(
           message: error.toString(),

@@ -1,4 +1,4 @@
-import 'package:crowdleague/enums/auto_validate.dart';
+import 'package:crowdleague/enums/auth/auto_validate.dart';
 import 'package:flutter/cupertino.dart';
 
 extension AutoValidateExt on AutoValidate {

@@ -6,7 +6,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
-import 'package:crowdleague/enums/nav_bar_selection.dart';
+import 'package:crowdleague/enums/navigation/nav_bar_selection.dart';
 import 'package:crowdleague/models/app/system_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';

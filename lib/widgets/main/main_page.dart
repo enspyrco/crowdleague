@@ -1,5 +1,5 @@
 import 'package:crowdleague/actions/navigation/push_page.dart';
-import 'package:crowdleague/enums/nav_bar_selection.dart';
+import 'package:crowdleague/enums/navigation/nav_bar_selection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/navigation/page_data/new_conversation_page_data.dart';

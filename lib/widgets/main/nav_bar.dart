@@ -1,5 +1,5 @@
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
-import 'package:crowdleague/enums/nav_bar_selection.dart';
+import 'package:crowdleague/enums/navigation/nav_bar_selection.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
