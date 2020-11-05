@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/enums/storage/upload_task_update_type.dart';
+import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/storage/upload_failure.dart';
 import 'package:crowdleague/utils/serializers.dart';
 import 'package:meta/meta.dart';
@@ -22,7 +22,7 @@ abstract class UpdateUploadTask extends Object
   String get uuid;
 
   // Each StorageTaskEvent has the equivalent of the following members
-  UploadTaskUpdateType get type;
+  UploadTaskState get state;
 
   // The local path to the file that is being uploaded
   @nullable
@@ -45,7 +45,7 @@ abstract class UpdateUploadTask extends Object
 
   factory UpdateUploadTask(
       {@required String uuid,
-      @required UploadTaskUpdateType type,
+      @required UploadTaskState state,
       String filePath,
       UploadFailure failure,
       int bytesTransferred,
