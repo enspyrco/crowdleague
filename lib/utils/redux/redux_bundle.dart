@@ -59,11 +59,8 @@ class ReduxBundle {
         _notificationsService =
             notificationsService ?? NotificationsService(FirebaseMessaging()),
         _storageService = storageService ??
-            StorageService(
-              FirebaseStorage(
-                  app: FirebaseFirestore.instance.app,
-                  storageBucket: _bucketName),
-            ),
+            StorageService(FirebaseStorage.instanceFor(
+                app: FirebaseFirestore.instance.app, bucket: _bucketName)),
         _deviceService =
             deviceService ?? DeviceService(imagePicker: ImagePicker());
 
