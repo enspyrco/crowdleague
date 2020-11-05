@@ -7,7 +7,7 @@ import 'package:crowdleague/models/navigation/page_data/page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/profile_page_data.dart';
 import 'package:crowdleague/widgets/app/initial_page.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/email_auth_options_page.dart';
-import 'package:crowdleague/widgets/conversations/conversation_page/conversation_page.dart';
+import 'package:crowdleague/widgets/conversations/messages_page/messages_page.dart';
 import 'package:crowdleague/widgets/conversations/new_conversation_page/new_conversation_page.dart';
 import 'package:crowdleague/widgets/profile/profile_page.dart';
 import 'package:flutter/material.dart';
