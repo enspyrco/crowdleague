@@ -5,5 +5,5 @@ import 'package:redux/redux.dart';
 class StoreLeaguersReducer extends TypedReducer<AppState, StoreLeaguers> {
   StoreLeaguersReducer()
       : super((state, action) => state.rebuild((b) => b
-          ..newConversationsPage.leaguersVM.leaguers.replace(action.leaguers)));
+          ..newConversationPage.leaguersVM.leaguers.replace(action.leaguers)));
 }

@@ -4,6 +4,6 @@ import 'package:redux/redux.dart';
 
 class StoreMessagesReducer extends TypedReducer<AppState, StoreMessages> {
   StoreMessagesReducer()
-      : super((state, action) => state.rebuild(
-            (b) => b..conversationPage.messages.replace(action.messages)));
+      : super((state, action) => state
+            .rebuild((b) => b..messagesPage.messages.replace(action.messages)));
 }

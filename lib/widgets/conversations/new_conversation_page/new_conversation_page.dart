@@ -27,14 +27,14 @@ class NewConversationPage extends StatelessWidget {
             StoreConnector<AppState, BuiltList<Leaguer>>(
               distinct: true,
               converter: (store) =>
-                  store.state.newConversationsPage.selectionsVM.selections,
+                  store.state.newConversationPage.selectionsVM.selections,
               builder: (context, vm) =>
                   NewConversationSelectionsList(items: vm),
             ),
             StoreConnector<AppState, VmNewConversationLeaguers>(
               onInit: (store) => store.dispatch(RetrieveLeaguers()),
               distinct: true,
-              converter: (store) => store.state.newConversationsPage.leaguersVM,
+              converter: (store) => store.state.newConversationPage.leaguersVM,
               builder: (context, vm) =>
                   (vm.state == NewConversationPageLeaguersState.waiting)
                       ? Center(child: CircularProgressIndicator())
@@ -45,7 +45,7 @@ class NewConversationPage extends StatelessWidget {
         floatingActionButton: StoreConnector<AppState, bool>(
           distinct: true,
           converter: (store) => store
-              .state.newConversationsPage.selectionsVM.selections.isNotEmpty,
+              .state.newConversationPage.selectionsVM.selections.isNotEmpty,
           builder: (context, hasSelections) {
             return (hasSelections)
                 ? FloatingActionButton(

@@ -69,7 +69,7 @@ import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_email_auth_options_page.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
-import 'package:crowdleague/models/conversations/conversation/vm_conversation_page.dart';
+import 'package:crowdleague/models/conversations/conversation/vm_messages_page.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_leaguers.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';

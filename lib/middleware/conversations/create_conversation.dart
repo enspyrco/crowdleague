@@ -15,7 +15,7 @@ class CreateConversationMiddleware
           /// a [StoreSelectedConversation] or [AddProblem]
           final reaction = await databaseService.createConversation(
               store.state.user.id,
-              store.state.newConversationsPage.selectionsVM.selections);
+              store.state.newConversationPage.selectionsVM.selections);
           store.dispatch(reaction);
 
           // if there was no problem, navigate to Conversation Page

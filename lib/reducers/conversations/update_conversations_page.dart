@@ -5,6 +5,6 @@ import 'package:redux/redux.dart';
 class UpdateConversationPageReducer
     extends TypedReducer<AppState, UpdateConversationPage> {
   UpdateConversationPageReducer()
-      : super((state, action) => state.rebuild(
-            (b) => b..conversationPage.messageText = action.messageText));
+      : super((state, action) => state
+            .rebuild((b) => b..messagesPage.messageText = action.messageText));
 }

@@ -11,7 +11,7 @@ import 'package:crowdleague/models/app/system_info.dart';
 import 'package:crowdleague/models/auth/user.dart';
 import 'package:crowdleague/models/auth/vm_auth_page.dart';
 import 'package:crowdleague/models/auth/vm_email_auth_options_page.dart';
-import 'package:crowdleague/models/conversations/conversation/vm_conversation_page.dart';
+import 'package:crowdleague/models/conversations/conversation/vm_messages_page.dart';
 import 'package:crowdleague/models/conversations/new_conversation/vm_new_conversation_page.dart';
 import 'package:crowdleague/models/conversations/vm_conversation_summaries_page.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
@@ -38,8 +38,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   VmEmailAuthOptionsPage get emailAuthOptionsPage;
   VmAuthPage get authPage;
   VmConversationSummariesPage get conversationSummariesPage;
-  VmConversationPage get conversationPage;
-  VmNewConversationPage get newConversationsPage;
+  VmMessagesPage get messagesPage;
+  VmNewConversationPage get newConversationPage;
   VmProfilePage get profilePage;
 
   AppState._();
@@ -51,9 +51,9 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
     ..settings = Settings.initBuilder()
     ..authPage = VmAuthPage.initBuilder()
     ..emailAuthOptionsPage = VmEmailAuthOptionsPage.initBuilder()
-    ..newConversationsPage = VmNewConversationPage.initBuilder()
-    ..profilePage = VmProfilePage.initBuilder()
-    ..conversationPage.messageText = '');
+    ..messagesPage.messageText = ''
+    ..newConversationPage = VmNewConversationPage.initBuilder()
+    ..profilePage = VmProfilePage.initBuilder());
 
   factory AppState([void Function(AppStateBuilder) updates]) = _$AppState;
 

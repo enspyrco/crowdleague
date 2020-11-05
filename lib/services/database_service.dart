@@ -130,10 +130,10 @@ class DatabaseService {
       // observeMessages function
       await _firestore
           .collection(
-              '/conversations/${store.state.conversationPage.summary.conversationId}/messages/')
+              '/conversations/${store.state.messagesPage.summary.conversationId}/messages/')
           .add(<String, dynamic>{
         'authorId': store.state.user.id,
-        'text': store.state.conversationPage.messageText,
+        'text': store.state.messagesPage.messageText,
         'timestamp': FieldValue.serverTimestamp()
       });
     } catch (error, trace) {
