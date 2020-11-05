@@ -102,15 +102,8 @@ void main() {
       await tester.tap(createAccountLink);
 
       // check correct action is dispatched with empty form feild values
-      expect(
-          harness.receivedActions,
-          contains(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signUp,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          )));
+      expect(harness.receivedActions,
+          contains(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signUp)));
     });
 
     testWidgets(
@@ -133,15 +126,8 @@ void main() {
       await tester.tap(signInLink);
 
       // check correct action is dispatched with empty form field values
-      expect(
-          harness.receivedActions,
-          contains(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signIn,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          )));
+      expect(harness.receivedActions,
+          contains(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signIn)));
     });
 
     testWidgets('EmailTextField dispatches UpdateEmailAuthOptionsPage',
