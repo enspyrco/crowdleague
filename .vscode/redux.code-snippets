@@ -3,22 +3,22 @@
         "prefix": "reb",
         "body": [
             "rebuild((b) => b.",
-      ],
-      "description": "better rebuild autocomplete"
+        ],
+        "description": "better rebuild autocomplete"
     },
     "import meta": {
         "prefix": "meta import",
         "body": [
             "import 'package:meta/meta.dart';",
-      ],
-      "description": "meta import"
+        ],
+        "description": "meta import"
     },
     "import extensions": {
         "prefix": "extensions import",
         "body": [
             "import 'package:${WORKSPACE_NAME}/extensions/extensions.dart';",
-      ],
-      "description": "extensions import"
+        ],
+        "description": "extensions import"
     },
     "middleware class": {
         "prefix": "mdlware",
@@ -31,8 +31,8 @@
             "\t\tstore.dispatch(reaction);",
             "\t});",
             "}"
-      ],
-      "description": "middleware class"
+        ],
+        "description": "middleware class"
     },
     "reducer class": {
         "prefix": "reducer",
@@ -40,8 +40,8 @@
             "class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Reducer extends TypedReducer<AppState, ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}> {",
             "\t${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Reducer() : super((state, action) => state.rebuild((b) => b..${1} = action.${1}));",
             "}",
-      ],
-      "description": "reducer class"
+        ],
+        "description": "reducer class"
     },
     "built_value fix": {
         "prefix": "bv_fix",
@@ -83,7 +83,46 @@
             "\tstatic Serializer<${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}> get serializer => _$${TM_FILENAME_BASE/([a-z]*)_+([a-z]*)/${1:/lower}${2:/capitalize}/g}Serializer;",
             "}"
         ],
-      "description": "dart built_value class"
+        "description": "dart built_value class"
+    },
+    "built_value problem": {
+        "prefix": "bv_problem",
+        "body": [
+            "library ${TM_FILENAME_BASE};",
+            "",
+            "import 'dart:convert';",
+            "",
+            "import 'package:built_collection/built_collection.dart';",
+            "import 'package:${WORKSPACE_NAME}/utils/serializers.dart';",
+            "import 'package:built_value/built_value.dart';",
+            "import 'package:crowdleague/models/problems/problem.dart';",
+            "import 'package:built_value/serializer.dart';",
+            "import 'package:meta/meta.dart';",
+            "",
+            "part '${TM_FILENAME_BASE}.g.dart';",
+            "",
+            "abstract class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g} implements Problem, Built<${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}, ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Builder> {",
+            "  String get errorMessage;",
+            "  String get stackTrace;",
+            "  BuiltMap<String, Object> get info;",
+            "",
+            "\t${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}._();",
+            "",
+            "\tfactory ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}({@required String errorMessage, @required String stackTrace, BuiltMap<String, Object> info}) = _$${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}._;",
+            "",
+            "\tfactory ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}.by([void Function(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Builder) updates]) = _$${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g};",
+            "",
+            "\tObject toJson() =>",
+            "\t\tserializers.serializeWith(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}.serializer, this);",
+            "",
+            "",
+            "\tstatic ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g} fromJson(String jsonString) =>",
+            "\t\tserializers.deserializeWith(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}.serializer, json.decode(jsonString));",
+            "",
+            "\tstatic Serializer<${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}> get serializer => _$${TM_FILENAME_BASE/([a-z]*)_+([a-z]*)/${1:/lower}${2:/capitalize}/g}Serializer;",
+            "}"
+        ],
+        "description": "dart built_value problem"
     },
     "built_value no-member class": {
         "prefix": "bv_class_no_members",
@@ -114,7 +153,7 @@
             "\tstatic Serializer<${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}> get serializer => _$${TM_FILENAME_BASE/([a-z]*)_+([a-z]*)/${1:/lower}${2:/capitalize}/g}Serializer;",
             "}"
         ],
-      "description": "dart built_value class"
+        "description": "dart built_value class"
     },
     "redux action": {
         "prefix": "bv_act",
@@ -152,7 +191,7 @@
             "\t@override",
             "\tString toString() => '${TM_FILENAME_BASE/(.*)/${1:/upcase}/g}';",
             "}",
-      ],
+        ],
     },
     "redux no-member action": {
         "prefix": "bv_act_no_members",
