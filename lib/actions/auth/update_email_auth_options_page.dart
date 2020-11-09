@@ -5,9 +5,9 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/enums/auth_step.dart';
-import 'package:crowdleague/enums/auto_validate.dart';
-import 'package:crowdleague/enums/email_auth_mode.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
+import 'package:crowdleague/enums/auth/auto_validate.dart';
+import 'package:crowdleague/enums/auth/email_auth_mode.dart';
 import 'package:crowdleague/utils/serializers.dart';
 
 part 'update_email_auth_options_page.g.dart';

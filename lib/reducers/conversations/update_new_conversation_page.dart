@@ -9,14 +9,14 @@ class UpdateNewConversationPageReducer
   UpdateNewConversationPageReducer()
       : super((state, action) => (action.selection != null)
             ? state.rebuild((b) => b
-              ..newConversationsPage
-                  .selectionsVM
-                  .selections
-                  .add(action.selection)
-              ..newConversationsPage
-                  .leaguersVM
+              ..newConversationPage.selections.leaguers.add(action.selection)
+              ..newConversationPage
+                  .suggestions
                   .leaguers
                   .remove(action.selection))
-            : state.rebuild((b) =>
-                b..newConversationsPage.leaguersVM.state = action.state));
+            : state.rebuild((b) => b
+              ..newConversationPage
+                  .suggestions
+                  .leaguers
+                  .replace(action.suggestions)));
 }

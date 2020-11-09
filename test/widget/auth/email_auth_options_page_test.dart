@@ -2,9 +2,9 @@ import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/sign_up_with_email.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/enums/auth_step.dart';
-import 'package:crowdleague/enums/auto_validate.dart';
-import 'package:crowdleague/enums/email_auth_mode.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
+import 'package:crowdleague/enums/auth/auto_validate.dart';
+import 'package:crowdleague/enums/auth/email_auth_mode.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/buttons/create_account_button.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/buttons/sign_in_button.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/email_auth_options_page.dart';
@@ -102,15 +102,8 @@ void main() {
       await tester.tap(createAccountLink);
 
       // check correct action is dispatched with empty form feild values
-      expect(
-          harness.receivedActions,
-          contains(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signUp,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          )));
+      expect(harness.receivedActions,
+          contains(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signUp)));
     });
 
     testWidgets(
@@ -133,15 +126,8 @@ void main() {
       await tester.tap(signInLink);
 
       // check correct action is dispatched with empty form field values
-      expect(
-          harness.receivedActions,
-          contains(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signIn,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          )));
+      expect(harness.receivedActions,
+          contains(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signIn)));
     });
 
     testWidgets('EmailTextField dispatches UpdateEmailAuthOptionsPage',

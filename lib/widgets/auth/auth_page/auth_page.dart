@@ -1,4 +1,4 @@
-import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/auth_buttons.dart';
 import 'package:crowdleague/widgets/auth/auth_page/images/crowd_league_logo.dart';

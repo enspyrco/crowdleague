@@ -1,6 +1,6 @@
 import 'package:crowdleague/actions/auth/sign_in_with_email.dart';
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
-import 'package:crowdleague/enums/auto_validate.dart';
+import 'package:crowdleague/enums/auth/auto_validate.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 

@@ -1,6 +1,6 @@
 import 'package:crowdleague/actions/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/actions/auth/sign_in_with_google.dart';
-import 'package:crowdleague/enums/auth_step.dart';
+import 'package:crowdleague/enums/auth/auth_step.dart';
 import 'package:crowdleague/enums/device/platform_type.dart';
 import 'package:crowdleague/widgets/auth/auth_page/auth_page.dart';
 import 'package:crowdleague/widgets/auth/auth_page/buttons/apple_sign_in_button.dart';

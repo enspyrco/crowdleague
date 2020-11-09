@@ -14,12 +14,11 @@ part 'vm_new_conversation_selections.g.dart';
 abstract class VmNewConversationSelections
     implements
         Built<VmNewConversationSelections, VmNewConversationSelectionsBuilder> {
-  BuiltList<Leaguer> get selections;
+  BuiltList<Leaguer> get leaguers;
 
   VmNewConversationSelections._();
 
-  factory VmNewConversationSelections(
-          {@required BuiltList<Leaguer> selections}) =
+  factory VmNewConversationSelections({@required BuiltList<Leaguer> leaguers}) =
       _$VmNewConversationSelections._;
 
   factory VmNewConversationSelections.by(

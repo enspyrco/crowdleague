@@ -1,6 +1,5 @@
 import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
-import 'package:crowdleague/enums/auto_validate.dart';
-import 'package:crowdleague/enums/email_auth_mode.dart';
+import 'package:crowdleague/enums/auth/email_auth_mode.dart';
 import 'package:crowdleague/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -14,14 +13,8 @@ class CreateAccountLink extends StatelessWidget {
                 decoration: TextDecoration.underline,
                 color: Colors.blue)),
         onTap: () {
-          Form.of(context).reset();
-          context.dispatch(UpdateEmailAuthOptionsPage(
-            mode: EmailAuthMode.signUp,
-            email: '',
-            password: '',
-            repeatPassword: '',
-            autovalidate: AutoValidate.disabled,
-          ));
+          context
+              .dispatch(UpdateEmailAuthOptionsPage(mode: EmailAuthMode.signUp));
         });
   }
 }

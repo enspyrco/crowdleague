@@ -10,10 +10,9 @@ import 'package:crowdleague/reducers/conversations/leave_conversation.dart';
 import 'package:crowdleague/reducers/conversations/store_conversations.dart';
 import 'package:crowdleague/reducers/conversations/store_messages.dart';
 import 'package:crowdleague/reducers/conversations/store_selected_conversation.dart';
-import 'package:crowdleague/reducers/conversations/update_conversations_page.dart';
-import 'package:crowdleague/reducers/conversations/update_new_conversations_page.dart';
+import 'package:crowdleague/reducers/conversations/update_messages_page.dart';
+import 'package:crowdleague/reducers/conversations/update_new_conversation_page.dart';
 import 'package:crowdleague/reducers/device/store_platform.dart';
-import 'package:crowdleague/reducers/leaguers/store_leaguers.dart';
 import 'package:crowdleague/reducers/navigation/push_page.dart';
 import 'package:crowdleague/reducers/navigation/remove_current_page.dart';
 import 'package:crowdleague/reducers/navigation/store_nav_bar_selection.dart';
@@ -40,12 +39,10 @@ final appReducer =
   StoreConversationsReducer(),
   StoreMessagesReducer(),
   StoreSelectedConversationReducer(),
-  UpdateConversationPageReducer(),
+  UpdateMessagesPageReducer(),
   UpdateNewConversationPageReducer(),
   // Device
   StorePlatformReducer(),
-  // Leaguers
-  StoreLeaguersReducer(),
   // Navigation
   PushPageReducer(),
   RemoveCurrentPageReducer(),

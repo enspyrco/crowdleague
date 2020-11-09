@@ -11,7 +11,7 @@ class ObserveMessagesMiddleware
 
           /// the function calls listen on the firestore and keeps the stream open
           /// until disregardMessages is called
-          databaseService.observeMessages(
-              store.state.conversationPage.summary.conversationId);
+          databaseService
+              .observeMessages(store.state.messagesPage.summary.conversationId);
         });
 }
