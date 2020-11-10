@@ -125,7 +125,6 @@ part 'serializers.g.dart';
   PrintFCMToken,
   RequestFCMPermissions,
   RemoveCurrentPage,
-  RemoveProblem,
   RetrieveNewConversationSuggestions,
   SelectProfilePic,
   SignInWithApple,

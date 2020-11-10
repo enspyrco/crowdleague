@@ -8,9 +8,9 @@ part 'problem.g.dart';
 @BuiltValue(instantiable: false)
 abstract class Problem {
   String get message;
+  String get trace;
   BuiltMap<String, Object> get info;
   @nullable
-  String get trace;
 
   Problem rebuild(void Function(ProblemBuilder) updates);
   ProblemBuilder toBuilder();
