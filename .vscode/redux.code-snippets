@@ -104,8 +104,6 @@
             "",
             "\t${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}._();",
             "",
-            "\tfactory ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}() = _$${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}._;",
-            "",
             "\tfactory ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}.by([void Function(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Builder) updates]) = _$${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g};",
             "",
             "\tObject toJson() =>",
