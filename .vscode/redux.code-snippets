@@ -23,6 +23,9 @@
     "middleware class": {
         "prefix": "mdlware",
         "body": [
+            "import 'package:crowdleague/models/app/app_state.dart';",
+            "import 'package:redux/redux.dart';",
+            "",
             "class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Middleware extends TypedMiddleware<AppState, ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}> {",
             "\t${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Middleware(${1/(.*)/${1:/pascalcase}/g}Service ${1}Service) : super((store, action, next) async {",
             "\t\tnext(action);",
@@ -37,6 +40,9 @@
     "reducer class": {
         "prefix": "reducer",
         "body": [
+            "import 'package:crowdleague/models/app/app_state.dart';",
+            "import 'package:redux/redux.dart';",
+            "",
             "class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Reducer extends TypedReducer<AppState, ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}> {",
             "\t${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Reducer() : super((state, action) => state.rebuild((b) => b..${1} = action.${1}));",
             "}",
