@@ -27,12 +27,3 @@ class UpdateUploadTaskMiddleware
           }
         });
 }
-/*
-final action = AddProblem(
-            problem: ProcessingFailureProblem.by(
-              (b) => b
-                ..message = failure.message
-                ..info = BuiltMap<String, String>({'id': failure.id}),
-            ),
-          );
-*/
