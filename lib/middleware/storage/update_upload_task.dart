@@ -1,9 +1,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/storage/update_upload_task.dart';
-import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/enums/storage/upload_task_state.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/problems/upload_task_failure_problem.dart';
 import 'package:redux/redux.dart';
 
 class UpdateUploadTaskMiddleware
@@ -14,14 +14,25 @@ class UpdateUploadTaskMiddleware
 
           if (action.state == UploadTaskState.error) {
             store.dispatch(
-              AddProblem.from(
-                  message:
-                      'There was a problem uploading file name ${action.uuid}, ${action.failure}',
-                  type: ProblemType.uploadTaskFailure,
-                  info: BuiltMap(
-                      {'failure': action.failure, 'uuid': action.uuid}),
-                  state: store.state),
+              AddProblem(
+                problem: UploadTaskFailureProblem.by(
+                  (b) => b
+                    ..message =
+                        'There was a problem uploading file name ${action.uuid}, ${action.failure}'
+                    ..info = BuiltMap<String, String>(
+                        {'failure': action.failure, 'uuid': action.uuid}),
+                ),
+              ),
             );
           }
         });
 }
+/*
+final action = AddProblem(
+            problem: ProcessingFailureProblem.by(
+              (b) => b
+                ..message = failure.message
+                ..info = BuiltMap<String, String>({'id': failure.id}),
+            ),
+          );
+*/
