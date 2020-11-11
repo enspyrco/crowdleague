@@ -30,9 +30,12 @@ extension ConnectAndConvert on FirebaseFirestore {
         if (change.type == DocumentChangeType.added) {
           final failure = change.doc.toProcessingFailure();
           final action = AddProblem(
-              problem: ProcessingFailureProblem.by((b) => b
+            problem: ProcessingFailureProblem.by(
+              (b) => b
                 ..message = failure.message
-                ..info = BuiltMap<String, String>({'id': failure.id})));
+                ..info = BuiltMap<String, String>({'id': failure.id}),
+            ),
+          );
 
           controller.add(action);
         }
@@ -76,10 +79,15 @@ extension ConnectAndConvert on FirebaseFirestore {
                 Message(text: docSnapshot.data()['text'] as String))),
       ));
     }, onError: (dynamic error, StackTrace trace) {
-      controller.add(AddProblem(
-          problem: ObserveMessagesProblem.by((b) => b
-            ..message = error.toString()
-            ..trace = trace.toString())));
+      controller.add(
+        AddProblem(
+          problem: ObserveMessagesProblem.by(
+            (b) => b
+              ..message = error.toString()
+              ..trace = trace.toString(),
+          ),
+        ),
+      );
     });
   }
 
@@ -108,16 +116,26 @@ extension ConnectAndConvert on FirebaseFirestore {
         }
         controller.add(StoreProfilePics(profilePics: picIds.toBuiltList()));
       } catch (error, trace) {
-        controller.add(AddProblem(
-            problem: ObserveProfilePicsProblem.by((b) => b
-              ..message = error.toString()
-              ..trace = trace.toString())));
+        controller.add(
+          AddProblem(
+            problem: ObserveProfilePicsProblem.by(
+              (b) => b
+                ..message = error.toString()
+                ..trace = trace.toString(),
+            ),
+          ),
+        );
       }
     }, onError: (dynamic error, StackTrace trace) {
-      controller.add(AddProblem(
-          problem: ObserveProfilePicsProblem.by((b) => b
-            ..message = error.toString()
-            ..trace = trace.toString())));
+      controller.add(
+        AddProblem(
+          problem: ObserveProfilePicsProblem.by(
+            (b) => b
+              ..message = error.toString()
+              ..trace = trace.toString(),
+          ),
+        ),
+      );
     });
   }
 
@@ -132,10 +150,15 @@ extension ConnectAndConvert on FirebaseFirestore {
         controller.add(UpdateProfilePage(
             userId: leaguer.uid, leaguerPhotoURL: leaguer.photoURL));
       } catch (error, trace) {
-        controller.add(AddProblem(
-            problem: ObserveProfileProblem.by((b) => b
-              ..message = error.toString()
-              ..trace = trace.toString())));
+        controller.add(
+          AddProblem(
+            problem: ObserveProfileProblem.by(
+              (b) => b
+                ..message = error.toString()
+                ..trace = trace.toString(),
+            ),
+          ),
+        );
       }
     });
   }
