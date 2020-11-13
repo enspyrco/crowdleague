@@ -11,6 +11,12 @@
 - When reviewing a PR, if you have a suggestion, try creating a new branch off the PR branch and putting up a PR with your changes. 
 - Try to create a collaborative spirit. 
 
+## Aspire to be in flow 
+
+### Mind like water 
+
+#### Clean up clutter 
+
 ALWAYS close loops 
 
 - when something lands in your space (eg. someone asks a question or suggests an action) try to identify any open loops and close them: 
@@ -33,6 +39,17 @@ TRY to be a Clean Team Member
 - help other team members by quickly and effectively responding to their mental stuff so we clean it up together 
 
 PREFER using Asana over email 
+
+DO keep workspaces highly organised 
+- Asana workspaces are public spaces, meaning the state we leave the space in has an effect on the rest of the team 
+- if a workspace/section/column has a purpose, remove anything that doesn't serve that purpose 
+- we each have a column in the CrowdLeague Workflow workspace, with the purpose of describing our day - what we're currently working on and the plan for what comes after that 
+
+DO attempt to communicate effectively when creating tasks/issues/etc. 
+- so that other team members (and you) can read the tasks/issues/etc. quickly and have a good idea of what it is about  
+- it can be helpful to: 
+  - break down large tasks/issues into smaller pieces 
+  - try and read what you've written with the mindset of someone who doesn't have all the context that you currently do 
 
 #### Standups
 - goal is to get the team up to speed on where you are in your workflow. And identify anything blocking you.
