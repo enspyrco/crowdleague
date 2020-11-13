@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:crowdleague/actions/redux_action.dart';
-import 'package:crowdleague/models/problems/problem.dart';
+import 'package:crowdleague/models/problems/problem_base.dart';
 import 'package:crowdleague/utils/serializers.dart';
 import 'package:meta/meta.dart';
 
@@ -14,11 +14,11 @@ part 'add_problem.g.dart';
 abstract class AddProblem extends Object
     with ReduxAction
     implements Built<AddProblem, AddProblemBuilder> {
-  Problem get problem;
+  ProblemBase get problem;
 
   AddProblem._();
 
-  factory AddProblem({@required Problem problem}) = _$AddProblem._;
+  factory AddProblem({@required ProblemBase problem}) = _$AddProblem._;
 
   factory AddProblem.by([void Function(AddProblemBuilder) updates]) =
       _$AddProblem;

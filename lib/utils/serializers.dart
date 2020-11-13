@@ -76,7 +76,7 @@ import 'package:crowdleague/models/leaguers/leaguer.dart';
 import 'package:crowdleague/models/navigation/page_data/email_auth_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/initial_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
-import 'package:crowdleague/models/problems/problem.dart';
+import 'package:crowdleague/models/problems/problem_base.dart';
 import 'package:crowdleague/models/profile/profile_pic.dart';
 import 'package:crowdleague/models/profile/vm_profile_page.dart';
 import 'package:crowdleague/models/settings/settings.dart';

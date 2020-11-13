@@ -5,12 +5,12 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/utils/serializers.dart';
 import 'package:built_value/built_value.dart';
-import 'package:crowdleague/models/problems/problem.dart';
+import 'package:crowdleague/models/problems/problem_base.dart';
 import 'package:built_value/serializer.dart';
 
 part 'update_leaguer_problem.g.dart';
 
-abstract class UpdateLeaguerProblem implements Problem, Built<UpdateLeaguerProblem, UpdateLeaguerProblemBuilder> {
+abstract class UpdateLeaguerProblem implements ProblemBase, Built<UpdateLeaguerProblem, UpdateLeaguerProblemBuilder> {
 
   UpdateLeaguerProblem._();
 

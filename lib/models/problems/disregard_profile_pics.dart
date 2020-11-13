@@ -5,12 +5,12 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/utils/serializers.dart';
 import 'package:built_value/built_value.dart';
-import 'package:crowdleague/models/problems/problem.dart';
+import 'package:crowdleague/models/problems/problem_base.dart';
 import 'package:built_value/serializer.dart';
 
 part 'disregard_profile_pics.g.dart';
 
-abstract class DisregardProfilePics implements Problem, Built<DisregardProfilePics, DisregardProfilePicsBuilder> {
+abstract class DisregardProfilePics implements ProblemBase, Built<DisregardProfilePics, DisregardProfilePicsBuilder> {
 
   DisregardProfilePics._();
 

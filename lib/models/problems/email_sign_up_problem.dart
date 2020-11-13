@@ -5,12 +5,12 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:crowdleague/utils/serializers.dart';
 import 'package:built_value/built_value.dart';
-import 'package:crowdleague/models/problems/problem.dart';
+import 'package:crowdleague/models/problems/problem_base.dart';
 import 'package:built_value/serializer.dart';
 
 part 'email_sign_up_problem.g.dart';
 
-abstract class EmailSignUpProblem implements Problem, Built<EmailSignUpProblem, EmailSignUpProblemBuilder> {
+abstract class EmailSignUpProblem implements ProblemBase, Built<EmailSignUpProblem, EmailSignUpProblemBuilder> {
 
   EmailSignUpProblem._();
 
