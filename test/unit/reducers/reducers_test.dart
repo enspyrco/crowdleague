@@ -4,11 +4,12 @@ import 'package:crowdleague/actions/auth/store_user.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/enums/auth/auth_step.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/problems/problem.dart';
+import 'package:crowdleague/models/problems/sign_out_problem.dart';
 import 'package:crowdleague/reducers/app_reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:test/test.dart';
 
-import '../../mocks/models/problem_mocks.dart';
 import '../../mocks/models/user_mocks.dart';
 
 void main() {
@@ -21,7 +22,12 @@ void main() {
       );
 
       // dispatch action to add a problem
-      store.dispatch(AddProblem(problem: mockProblem));
+      Problem mockProblem = SignOutProblem.by((b) => b
+        ..message = 'error'
+        ..trace = 'trace');
+      store.dispatch(
+        AddProblem(problem: mockProblem),
+      );
 
       // check that the store has the expected value
       expect(store.state.problems.length, 1);

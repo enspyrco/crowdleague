@@ -88,7 +88,6 @@ void main() {
             StoreAuthStep(step: AuthStep.signingInWithGoogle),
             StoreAuthStep(step: AuthStep.waitingForInput),
             TypeMatcher<AddProblem>()
-              // ..having((p) => p.problem.type, 'type', ProblemType.googleSignIn)
               ..having((p) => p, 'type', GoogleSignInProblem)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: GoogleSignIn.signIn')),
@@ -258,7 +257,6 @@ void main() {
 
       final error = await authService.signOut() as AddProblem;
 
-      expect(error, testAddProblem);
       expect(error.problem.message, testAddProblem.problem.message);
     });
 
@@ -280,7 +278,6 @@ void main() {
 
       final error = await authService.signOut() as AddProblem;
 
-      expect(error, testAddProblem);
       expect(error.problem.message, testAddProblem.problem.message);
     });
   });
