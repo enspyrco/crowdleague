@@ -21,7 +21,7 @@ import 'package:crowdleague/models/problems/observe_processing_failures_problem.
 import 'package:crowdleague/models/problems/observe_profile_pics_problem.dart';
 import 'package:crowdleague/models/problems/observe_profile_problem.dart';
 import 'package:crowdleague/models/problems/retrieve_leaguers_problem.dart';
-import 'package:crowdleague/models/problems/save_message_probelm.dart';
+import 'package:crowdleague/models/problems/save_message_problem.dart';
 import 'package:crowdleague/models/problems/update_leaguer_problem.dart';
 import 'package:crowdleague/utils/redux/firestore_subscriptions.dart';
 import 'package:redux/redux.dart';
@@ -169,7 +169,7 @@ class DatabaseService {
     } catch (error, trace) {
       store.dispatch(
         AddProblem(
-          problem: SaveMessageProbelm.by(
+          problem: SaveMessageProblem.by(
             (b) => b
               ..message = error.toString()
               ..trace = trace.toString(),
