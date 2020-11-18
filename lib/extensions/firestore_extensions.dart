@@ -12,7 +12,7 @@ import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
-import 'package:crowdleague/models/problems/observe_messages_problem.dart';
+import 'package:crowdleague/models/problems/connect_to_messages_problem.dart';
 import 'package:crowdleague/models/problems/observe_profile_pics_problem.dart';
 import 'package:crowdleague/models/problems/observe_profile_problem.dart';
 import 'package:crowdleague/models/problems/processing_failure_problem.dart';
@@ -81,7 +81,7 @@ extension ConnectAndConvert on FirebaseFirestore {
     }, onError: (dynamic error, StackTrace trace) {
       controller.add(
         AddProblem(
-          problem: ObserveMessagesProblem.by(
+          problem: ConnectToMessagesProblem.by(
             (b) => b
               ..message = error.toString()
               ..trace = trace.toString(),

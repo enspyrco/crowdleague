@@ -27,7 +27,7 @@ import 'package:crowdleague/middleware/profile/select_profile_pic.dart';
 import 'package:crowdleague/middleware/profile/upload_profile_pic.dart';
 import 'package:crowdleague/middleware/storage/update_upload_task.dart';
 import 'package:crowdleague/models/app/app_state.dart';
-import 'package:crowdleague/models/problems/database_store_controller_problem.dart';
+import 'package:crowdleague/models/problems/plum_database_stream_problem.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
@@ -99,7 +99,7 @@ class PlumbDatabaseStreamMiddleware
             store.dispatch,
             onError: (dynamic error, StackTrace trace) => store.dispatch(
               AddProblem(
-                problem: DatabaseStoreControllerProblem.by(
+                problem: PlumDatabaseStreamProblem.by(
                   (b) => b
                     ..message = error.toString()
                     ..trace = trace.toString(),
