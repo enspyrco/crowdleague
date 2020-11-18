@@ -34,6 +34,7 @@ import 'package:crowdleague/actions/functions/update_processing_failure.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/push_page.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
+import 'package:crowdleague/actions/navigation/remove_problem.dart';
 import 'package:crowdleague/actions/navigation/store_nav_bar_selection.dart';
 import 'package:crowdleague/actions/notifications/print_fcm_token.dart';
 import 'package:crowdleague/actions/notifications/request_fcm_permissions.dart';
@@ -123,6 +124,7 @@ part 'serializers.g.dart';
   PrintFCMToken,
   RequestFCMPermissions,
   RemoveCurrentPage,
+  RemoveProblem,
   RetrieveNewConversationSuggestions,
   SelectProfilePic,
   SignInWithApple,

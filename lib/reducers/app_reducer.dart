@@ -1,5 +1,6 @@
 import 'package:crowdleague/actions/functions/store_processing_failures.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
+import 'package:crowdleague/actions/navigation/remove_problem.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/reducers/auth/clear_user_data.dart';
 import 'package:crowdleague/reducers/auth/store_auth_step.dart';
@@ -58,6 +59,7 @@ final appReducer =
   StoreThemeColorsReducer(),
   // Other (class declarations below)
   AddProblemReducer(),
+  RemoveProblemReducer(),
   StoreProcessingFailuresReducer(),
 ]);
 
@@ -74,3 +76,8 @@ class AddProblemReducer extends TypedReducer<AppState, AddProblem> {
             state.rebuild((b) => b..problems.add(action.problem)));
 }
 
+class RemoveProblemReducer extends TypedReducer<AppState, RemoveProblem> {
+  RemoveProblemReducer()
+      : super((state, action) =>
+            state.rebuild((b) => b..problems.remove(action.problem)));
+}
