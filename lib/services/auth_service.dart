@@ -189,7 +189,7 @@ class AuthService {
 
   /// Tries to create a new user account with the given email address and password.
   ///
-  /// If successful, it also signs the user in into the app and updates
+  /// If successful, it also signs the user into the app and updates
   /// the [onAuthStateChanged] stream.
   ///
   /// Errors:
@@ -212,7 +212,7 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
       yield AddProblem(
-        problem: EmailSignInProblem.by(
+        problem: EmailSignUpProblem.by(
           (b) => b
             ..message = e.message.toString()
             ..info = BuiltMap<String, String>({'code': e.code}),
