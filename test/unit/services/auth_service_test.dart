@@ -5,7 +5,10 @@ import 'package:crowdleague/actions/auth/update_email_auth_options_page.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/enums/auth/auth_step.dart';
-import 'package:crowdleague/enums/problem_type.dart';
+import 'package:crowdleague/models/problems/apple_sign_in_problem.dart';
+import 'package:crowdleague/models/problems/email_sign_in_problem.dart';
+import 'package:crowdleague/models/problems/google_sign_in_problem.dart';
+import 'package:crowdleague/models/problems/sign_out_problem.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mockito/mockito.dart';
@@ -85,7 +88,7 @@ void main() {
             StoreAuthStep(step: AuthStep.signingInWithGoogle),
             StoreAuthStep(step: AuthStep.waitingForInput),
             TypeMatcher<AddProblem>()
-              ..having((p) => p.problem.type, 'type', ProblemType.googleSignIn)
+              ..having((p) => p, 'type', GoogleSignInProblem)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: GoogleSignIn.signIn')),
             emitsDone
@@ -126,7 +129,7 @@ void main() {
             StoreAuthStep(step: AuthStep.signingInWithFirebase),
             StoreAuthStep(step: AuthStep.waitingForInput),
             TypeMatcher<AddProblem>()
-              ..having((p) => p.problem.type, 'type', ProblemType.appleSignIn)
+              ..having((p) => p, 'type', AppleSignInProblem)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: AppleSignIn.signIn')),
             emitsDone
@@ -149,7 +152,7 @@ void main() {
             TypeMatcher<StoreAuthStep>()..having((a) => a.step, 'step', 1),
             TypeMatcher<StoreAuthStep>()..having((a) => a.step, 'step', 0),
             TypeMatcher<AddProblem>()
-              ..having((p) => p.problem.type, 'type', ProblemType.appleSignIn)
+              ..having((p) => p, 'type', AppleSignInProblem)
               ..having((p) => p.problem.message, 'message',
                   equals('Exception: AppleSignIn.signIn')),
             emitsDone,
@@ -188,7 +191,7 @@ void main() {
             UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
             UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
             TypeMatcher<AddProblem>()
-              ..having((p) => p.problem.type, 'type', ProblemType.emailSignIn)
+              ..having((p) => p, 'type', EmailSignInProblem)
               ..having(
                   (p) => p.problem.info,
                   'info',
@@ -214,7 +217,7 @@ void main() {
             UpdateEmailAuthOptionsPage(step: AuthStep.signingInWithEmail),
             UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput),
             TypeMatcher<AddProblem>()
-              ..having((p) => p.problem.type, 'type', ProblemType.emailSignIn)
+              ..having((p) => p, 'type', EmailSignInProblem)
               ..having((p) => p.problem.message, 'message',
                   equals('firebase auth exception error')),
             emitsDone
@@ -244,15 +247,16 @@ void main() {
         FakeGoogleSignInThrows(),
         MockAppleSignIn(),
       );
-      final testAddProblem = AddProblem.from(
-        message: 'Exception: GoogleSignIn.signOut',
-        type: ProblemType.signOut,
-        traceString: '',
+      final testAddProblem = AddProblem(
+        problem: SignOutProblem.by(
+          (b) => b
+            ..message = 'Exception: GoogleSignIn.signOut'
+            ..trace = '',
+        ),
       );
 
       final error = await authService.signOut() as AddProblem;
 
-      expect(error.problem.type, testAddProblem.problem.type);
       expect(error.problem.message, testAddProblem.problem.message);
     });
 
@@ -264,15 +268,16 @@ void main() {
         MockGoogleSignIn(),
         MockAppleSignIn(),
       );
-      final testAddProblem = AddProblem.from(
-        message: 'Exception: firebaseAuth.signOut',
-        type: ProblemType.signOut,
-        traceString: '',
+      final testAddProblem = AddProblem(
+        problem: SignOutProblem.by(
+          (b) => b
+            ..message = 'Exception: firebaseAuth.signOut'
+            ..trace = '',
+        ),
       );
 
       final error = await authService.signOut() as AddProblem;
 
-      expect(error.problem.type, testAddProblem.problem.type);
       expect(error.problem.message, testAddProblem.problem.message);
     });
   });

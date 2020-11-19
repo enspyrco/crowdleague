@@ -7,8 +7,12 @@ import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_current_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/enums/auth/auth_step.dart';
-import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/extensions/extensions.dart';
+import 'package:crowdleague/models/problems/apple_sign_in_problem.dart';
+import 'package:crowdleague/models/problems/email_sign_in_problem.dart';
+import 'package:crowdleague/models/problems/email_sign_up_problem.dart';
+import 'package:crowdleague/models/problems/google_sign_in_problem.dart';
+import 'package:crowdleague/models/problems/sign_out_problem.dart';
 import 'package:crowdleague/utils/wrappers/apple_signin_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -72,10 +76,12 @@ class AuthService {
       // errors with code kSignInCanceledError are swallowed by the
       // GoogleSignIn.signIn() method so we can assume anything caught here
       // is a problem and send to the store for display
-      yield AddProblem.from(
-        message: error.toString(),
-        type: ProblemType.googleSignIn,
-        traceString: trace.toString(),
+      yield AddProblem(
+        problem: GoogleSignInProblem.by(
+          (b) => b
+            ..message = error.toString()
+            ..trace = trace.toString(),
+        ),
       );
     }
   }
@@ -111,10 +117,13 @@ class AuthService {
         case AuthorizationErrorCode.canceled:
           break;
         default:
-          yield AddProblem.from(
-              message: e.toString(),
-              type: ProblemType.appleSignIn,
-              info: BuiltMap({'code': e.code}));
+          yield AddProblem(
+            problem: AppleSignInProblem.by(
+              (b) => b
+                ..message = e.toString()
+                ..info = BuiltMap<String, String>({'code': e.code}),
+            ),
+          );
       }
     } catch (error, trace) {
       // reset the UI and display an alert
@@ -122,10 +131,12 @@ class AuthService {
       yield StoreAuthStep(step: AuthStep.waitingForInput);
       // any specific errors are caught and dealt with so we can assume
       // anything caught here is a problem and send to the store for display
-      yield AddProblem.from(
-        message: error.toString(),
-        type: ProblemType.appleSignIn,
-        traceString: trace.toString(),
+      yield AddProblem(
+        problem: AppleSignInProblem.by(
+          (b) => b
+            ..message = error.toString()
+            ..trace = trace.toString(),
+        ),
       );
     }
   }
@@ -155,26 +166,30 @@ class AuthService {
       yield RemoveCurrentPage();
     } on FirebaseAuthException catch (e) {
       yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
-      yield AddProblem.from(
-        message: e.message.toString(),
-        type: ProblemType.emailSignIn,
-        info: BuiltMap({'code': e.code}),
+      yield AddProblem(
+        problem: EmailSignInProblem.by(
+          (b) => b
+            ..message = e.message.toString()
+            ..info = BuiltMap<String, String>({'code': e.code}),
+        ),
       );
     } catch (error, trace) {
       // reset UI
       yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
       // display problem
-      yield AddProblem.from(
-        message: error.toString(),
-        type: ProblemType.emailSignIn,
-        traceString: trace.toString(),
+      yield AddProblem(
+        problem: EmailSignInProblem.by(
+          (b) => b
+            ..message = error.toString()
+            ..trace = trace.toString(),
+        ),
       );
     }
   }
 
   /// Tries to create a new user account with the given email address and password.
   ///
-  /// If successful, it also signs the user in into the app and updates
+  /// If successful, it also signs the user into the app and updates
   /// the [onAuthStateChanged] stream.
   ///
   /// Errors:
@@ -196,19 +211,23 @@ class AuthService {
       yield RemoveCurrentPage();
     } on FirebaseAuthException catch (e) {
       yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
-      yield AddProblem.from(
-        message: e.message.toString(),
-        type: ProblemType.emailSignIn,
-        info: BuiltMap({'code': e.code}),
+      yield AddProblem(
+        problem: EmailSignUpProblem.by(
+          (b) => b
+            ..message = e.message.toString()
+            ..info = BuiltMap<String, String>({'code': e.code}),
+        ),
       );
     } catch (error, trace) {
       // reset UI
       yield UpdateEmailAuthOptionsPage(step: AuthStep.waitingForInput);
       // display problem
-      yield AddProblem.from(
-        message: error.toString(),
-        type: ProblemType.emailSignUp,
-        traceString: trace.toString(),
+      yield AddProblem(
+        problem: EmailSignUpProblem.by(
+          (b) => b
+            ..message = error.toString()
+            ..trace = trace.toString(),
+        ),
       );
     }
   }
@@ -218,10 +237,12 @@ class AuthService {
       await _fireAuth.signOut();
       await _googleSignIn.signOut();
     } catch (error, trace) {
-      return AddProblem.from(
-        message: error.toString(),
-        type: ProblemType.signOut,
-        traceString: trace.toString(),
+      return AddProblem(
+        problem: SignOutProblem.by(
+          (b) => b
+            ..message = error.toString()
+            ..trace = trace.toString(),
+        ),
       );
     }
 
