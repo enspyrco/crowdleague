@@ -12,7 +12,7 @@ abstract class ProblemBase {
   String get message;
   String get trace;
   @nullable
-  BuiltMap<dynamic, dynamic> get info;
+  BuiltMap<String, Object> get info;
 
   ProblemBase rebuild(void Function(ProblemBaseBuilder) updates);
   ProblemBaseBuilder toBuilder();

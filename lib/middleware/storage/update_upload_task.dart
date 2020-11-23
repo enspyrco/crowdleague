@@ -19,7 +19,7 @@ class UpdateUploadTaskMiddleware
                   (b) => b
                     ..message =
                         'There was a problem uploading file name ${action.uuid}, ${action.failure}'
-                    ..info = BuiltMap<String, String>(
+                    ..info = MapBuilder<String, Object>(
                         {'failure': action.failure, 'uuid': action.uuid}),
                 ),
               ),

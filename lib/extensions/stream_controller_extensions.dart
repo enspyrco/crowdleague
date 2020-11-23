@@ -8,7 +8,7 @@ import 'package:crowdleague/models/problems/problem_base.dart';
 
 extension StreamControllerExt on StreamController<ReduxAction> {
   static final Map<Type,
-          ProblemBase Function(dynamic, StackTrace, BuiltMap<dynamic, dynamic>)>
+          ProblemBase Function(dynamic, StackTrace, MapBuilder<String, Object>)>
       _problemMap = {
     ObserveProcessingFailuresProblem: (dynamic error, trace, info) =>
         ObserveProcessingFailuresProblem.by(
@@ -20,6 +20,6 @@ extension StreamControllerExt on StreamController<ReduxAction> {
   };
 
   void addProblem(dynamic error, StackTrace trace,
-          BuiltMap<dynamic, dynamic> info, Type type) =>
+          MapBuilder<String, Object> info, Type type) =>
       add(AddProblem(problem: _problemMap[type](error, trace, info)));
 }

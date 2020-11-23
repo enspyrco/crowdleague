@@ -33,7 +33,7 @@ extension ConnectAndConvert on FirebaseFirestore {
             problem: ProcessingFailureProblem.by(
               (b) => b
                 ..message = failure.message
-                ..info = BuiltMap<String, String>({'id': failure.id}),
+                ..info = MapBuilder<String, Object>({'id': failure.id}),
             ),
           );
 

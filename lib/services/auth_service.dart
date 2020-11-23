@@ -121,7 +121,7 @@ class AuthService {
             problem: AppleSignInProblem.by(
               (b) => b
                 ..message = e.toString()
-                ..info = BuiltMap<String, String>({'code': e.code}),
+                ..info = MapBuilder<String, Object>({'code': e.code}),
             ),
           );
       }
@@ -170,7 +170,7 @@ class AuthService {
         problem: EmailSignInProblem.by(
           (b) => b
             ..message = e.message.toString()
-            ..info = BuiltMap<String, String>({'code': e.code}),
+            ..info = MapBuilder<String, Object>({'code': e.code}),
         ),
       );
     } catch (error, trace) {
@@ -215,7 +215,7 @@ class AuthService {
         problem: EmailSignUpProblem.by(
           (b) => b
             ..message = e.message.toString()
-            ..info = BuiltMap<String, String>({'code': e.code}),
+            ..info = MapBuilder<String, Object>({'code': e.code}),
         ),
       );
     } catch (error, trace) {
