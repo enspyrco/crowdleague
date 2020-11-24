@@ -1,8 +1,8 @@
-import 'package:crowdleague/models/problems/problem.dart';
+import 'package:crowdleague/models/problems/problem_base.dart';
 import 'package:flutter/material.dart';
 
 class ProblemAlert extends StatelessWidget {
-  final Problem problem;
+  final ProblemBase problem;
 
   ProblemAlert({this.problem});
 
@@ -23,7 +23,7 @@ class ProblemAlert extends StatelessWidget {
         FlatButton(
           child: Text('OK'),
           onPressed: () {
-            Navigator.of(context).pop<Problem>(problem);
+            Navigator.of(context).pop<ProblemBase>(problem);
           },
         ),
       ],

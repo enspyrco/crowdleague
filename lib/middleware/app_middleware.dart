@@ -1,6 +1,5 @@
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
-import 'package:crowdleague/enums/problem_type.dart';
 import 'package:crowdleague/middleware/auth/observe_auth_state.dart';
 import 'package:crowdleague/middleware/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/middleware/auth/sign_in_with_email.dart';
@@ -28,6 +27,7 @@ import 'package:crowdleague/middleware/profile/select_profile_pic.dart';
 import 'package:crowdleague/middleware/profile/upload_profile_pic.dart';
 import 'package:crowdleague/middleware/storage/update_upload_task.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/problems/plum_database_stream_problem.dart';
 import 'package:crowdleague/services/auth_service.dart';
 import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
@@ -98,10 +98,13 @@ class PlumbDatabaseStreamMiddleware
           databaseService.storeStream.listen(
             store.dispatch,
             onError: (dynamic error, StackTrace trace) => store.dispatch(
-              AddProblem.from(
-                  message: error.toString(),
-                  traceString: trace.toString(),
-                  type: ProblemType.databaseStoreController),
+              AddProblem(
+                problem: PlumDatabaseStreamProblem.by(
+                  (b) => b
+                    ..message = error.toString()
+                    ..trace = trace.toString(),
+                ),
+              ),
             ),
           );
         });

@@ -91,6 +91,39 @@
         ],
         "description": "dart built_value class"
     },
+    "built_value problem": {
+        "prefix": "bv_problem",
+        "body": [
+            "library ${TM_FILENAME_BASE};",
+            "",
+            "import 'dart:convert';",
+            "",
+            "import 'package:built_collection/built_collection.dart';",
+            "import 'package:${WORKSPACE_NAME}/utils/serializers.dart';",
+            "import 'package:built_value/built_value.dart';",
+            "import 'package:crowdleague/models/problems/problem_base.dart';",
+            "import 'package:built_value/serializer.dart';",
+            "",
+            "part '${TM_FILENAME_BASE}.g.dart';",
+            "",
+            "abstract class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g} implements ProblemBase, Built<${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}, ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Builder> {",
+            "",
+            "\t${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}._();",
+            "",
+            "\tfactory ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}.by([void Function(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}Builder) updates]) = _$${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g};",
+            "",
+            "\tObject toJson() =>",
+            "\t\tserializers.serializeWith(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}.serializer, this);",
+            "",
+            "",
+            "\tstatic ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g} fromJson(String jsonString) =>",
+            "\t\tserializers.deserializeWith(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}.serializer, json.decode(jsonString));",
+            "",
+            "\tstatic Serializer<${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}> get serializer => _$${TM_FILENAME_BASE/([a-z]*)_+([a-z]*)/${1:/lower}${2:/capitalize}/g}Serializer;",
+            "}"
+        ],
+        "description": "dart built_value problem"
+    },
     "built_value no-member class": {
         "prefix": "bv_class_no_members",
         "body": [
