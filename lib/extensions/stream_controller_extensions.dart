@@ -189,7 +189,7 @@ extension StreamControllerExt on StreamController<ReduxAction> {
         ),
   };
 
-  void addProblem(dynamic error, StackTrace trace,
-          MapBuilder<String, Object> info, Type type) =>
+  void addProblem(Type type, dynamic error, StackTrace trace,
+          [MapBuilder<String, Object> info]) =>
       add(AddProblem(problem: _problemMap[type](error, trace, info)));
 }

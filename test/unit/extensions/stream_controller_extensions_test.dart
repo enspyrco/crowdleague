@@ -30,7 +30,7 @@ void main() {
       }, count: 1));
 
       controller.addProblem(
-          error, trace, info, ObserveProcessingFailuresProblem);
+          ObserveProcessingFailuresProblem, error, trace, info);
     });
   });
 }
