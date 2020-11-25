@@ -185,6 +185,6 @@ final Map<Type,
 };
 
 AddProblem createAddProblem(Type type, dynamic error, StackTrace trace,
-    [MapBuilder<String, Object> info]) {
-  return AddProblem(problem: map[type](error, trace, info));
+    [Map<String, Object> info]) {
+  return AddProblem(problem: map[type](error, trace, MapBuilder<String, Object>(info)));
 }
