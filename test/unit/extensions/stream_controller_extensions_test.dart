@@ -14,13 +14,12 @@ void main() {
 
       dynamic error = 'ohno!';
       final trace = StackTrace.current;
-      final info = MapBuilder<String, Object>();
 
       final testProblem = ObserveProcessingFailuresProblem.by(
         (b) => b
           ..message = error.toString()
           ..trace = trace.toString()
-          ..info = info,
+          ..info = MapBuilder(),
       );
 
       final expectedAction = AddProblem(problem: testProblem);
@@ -30,7 +29,7 @@ void main() {
       }, count: 1));
 
       controller.addProblem(
-          ObserveProcessingFailuresProblem, error, trace, info);
+          ObserveProcessingFailuresProblem, error, trace, <String, Object>{});
     });
   });
 }
