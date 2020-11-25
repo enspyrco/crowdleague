@@ -1,6 +1,3 @@
-Contents of the gdoc https://docs.google.com/document/d/1sMq82Zwt120PHdsOPq5NA2BpuyezvQuq-2O0Dakixdo/edit is below. 
-Needs to have the formatting matched to the original doc.
-
 0 - Introduction 
 =================
 
@@ -9,44 +6,44 @@ Note that the sections are numbered but the items within each section are dot po
 1 - Planning in consultation with stakeholders 
 ===============================================
 
--   Replace Section below with the section name, eg. Auth
+-   Replace *Section* below with the section name, eg. Auth
 
 -   Use the next available Section number (denoted x. below)
 
--   Create in Drive - a folder called "x. Section: Sections Planning" in "Sections Planning (CL)".  In the folder: 
+-   Create in Drive - a folder called "x. *Section*: Sections Planning" in "Sections Planning (CL)".  In the folder: 
 
--   a Google doc called "0 - Use Cases < Section (CL)" that will hold just a list of Use Cases, so we have short, easy to read and think about, list that is the definitive set of use cases
+    -   a Google doc called "0 - Use Cases < *Section* (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
 
--   short, clear names → balance brevity with clarity 
+        -   short, clear names → balance brevity with clarity 
 
--   Create an Asana Project called "x. Section" 
+-   Create an Asana Project called "x. *Section*" 
 
--   add a link to the relevant "Sections Planning" Google Drive folder 
+    -   add a link to the relevant "Sections Planning" Google Drive folder 
 
--   add a link to The Process google doc 
+    -   add a link to The Process google doc 
 
 -   Start a Discussion in Asana called "Planning Discussion", tag all stakeholders and ask for input on: 
 
--   the use cases 
+    -   the use cases 
 
--   ... 
+    -   ... 
 
--   anything anyone wants to add 
+    -   anything anyone wants to add 
 
 -   Do a design review 
 
--   look for apps solving similar problems in interesting ways 
+    -   look for apps solving similar problems in interesting ways 
 
--   write some notes about the parts you think are done well 
+    -   write some notes about the parts you think are done well 
 
 -   Complete use cases for level 1
 
 2 - Build everything around the use-case 
 =========================================
 
-(large use cases can be split into parts) 
+> large use cases can be split into parts 
 
-(each use case needs a short but identifying code name)
+> each use case needs a short but identifying code name 
 
 For each use-case there will be three types of digital goodness:
 
@@ -56,61 +53,54 @@ For each use-case there will be three types of digital goodness:
 
 -   Google Docs (x3) 
 
--   Models 
+    -   Models 
 
--   User Flow 
+    -   User Flow 
 
--   Sequence Diagram
+    -   Sequence Diagram
 
 Create: 
 
 -   An Asana task for each use case, linked to the GitHub issue and Google doc (see below) 
 
--   A Drive folder for each use case, called "x. Use Case - Section (CL)" 
+-   A Drive folder for each use case, called "x. *Use Case* - *Section* (CL)" and in that folder, a Google Doc for each use case: 
 
--   In that folder, a Google Doc for each use case: 
+    -   Models 
 
--   Models 
+        -   "x. *Use Case* < Models < *Section* (CL)"
+        
+        -   Google Drawing 
 
--   X. Use Case < Models < Section (CL)
+        -   UML Diagram ([example](https://docs.google.com/drawings/d/1-X-aZdVrsuFItxlwkJqusOINdk0kYb9dl3fgLTQVz94/template/preview?usp=drive_web)) 
 
--   Google Drawing 
+    -   A User Flow 
 
--   UML Diagram ([example](https://docs.google.com/drawings/d/1-X-aZdVrsuFItxlwkJqusOINdk0kYb9dl3fgLTQVz94/template/preview?usp=drive_web)) 
+        -   Step 1: Make a doc named: "x. *Use Case* < User Flow < *Section* (CL)"
 
--   A User Flow 
+        -   Step 2, Part 1: Use Case → User Flow 
 
--   Step 1: Make a doc named: "X. Use Case < User Flow < Section (CL)"
+            -   A leaguer who 
+                -   (context) 
+            -   wants to 
+                -   (goal) 
+            -   so they 
+                -   (action steps)
 
--   Step 2, Part 1: Use Case → User Flow 
+        -   See: [User flow is the new wireframe](https://uxdesign.cc/when-to-use-user-flows-guide-8b26ca9aa36a) & [The How (and Why) of User Flows](https://uxdesign.cc/the-how-and-why-of-user-flows-85df776a1e2) 
 
--   A leaguer who 
+    -   A Sequence Diagram ([tutorial](https://creately.com/blog/diagrams/sequence-diagram-tutorial/), examples: [oauth2](https://developers.google.com/identity/protocols/oauth2?csw=1))  
 
--   (context) 
+        -   "x. *Use Case* < Sequence Diagram < *Section* (CL)"
 
--   wants to 
+        -   See [Sequence Diagram Legend](https://docs.google.com/drawings/d/1KHo0M8I2elC-vrY2kQYZ38CgU4O2P9hkD4BFeoDcxSY/edit) 
 
--   (goal) 
-
--   so they 
-
--   (action steps) 
-
--   See: [User flow is the new wireframe](https://uxdesign.cc/when-to-use-user-flows-guide-8b26ca9aa36a)| [The How (and Why) of User Flows](https://uxdesign.cc/the-how-and-why-of-user-flows-85df776a1e2) 
-
--   A Sequence Diagram ([tutorial](https://creately.com/blog/diagrams/sequence-diagram-tutorial/), examples: [oauth2](https://developers.google.com/identity/protocols/oauth2?csw=1))  
-
--   X. Use Case < Sequence Diagram < Section (CL)
-
--   See [Sequence Diagram Legend](https://docs.google.com/drawings/d/1KHo0M8I2elC-vrY2kQYZ38CgU4O2P9hkD4BFeoDcxSY/edit) 
-
--   Decide on widget/action/middleware names
+        -   Decide on widget/action/middleware names
 
 -   An issue on GitHub for each use case
 
-1.  Add a section label (eg. Auth) 
+    1.  Add a section label (eg. Auth) 
 
-2.  Indicate the use case it addresses & link to the Google doc  
+    2.  Indicate the use case it addresses & link to the Google doc  
 
 -   Links back and forth between the Task, Issue & Doc 
 
