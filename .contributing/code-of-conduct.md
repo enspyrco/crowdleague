@@ -43,7 +43,7 @@ PREFER using Asana over email
 DO keep workspaces highly organised 
 - Asana workspaces are public spaces, meaning the state we leave the space in has an effect on the rest of the team 
 - if a workspace/section/column has a purpose, remove anything that doesn't serve that purpose 
-- we each have a column in the CrowdLeague Workflow workspace, with the purpose of describing our day - what we're currently working on and the plan for what comes after that 
+- we each have a column on the Team Board project of the CrowdLeague workspace, with the purpose of describing our day - what we're currently working on and what we plan to complete in the session.
 
 DO attempt to communicate effectively when creating tasks/issues/etc. 
 - so that other team members (and you) can read the tasks/issues/etc. quickly and have a good idea of what it is about  
