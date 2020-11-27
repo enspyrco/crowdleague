@@ -26,6 +26,7 @@ dependencies:
   firebase_storage:
   image_picker:
   uuid:
+  permission_handler:
 
 dev_dependencies:
   flutter_test:
