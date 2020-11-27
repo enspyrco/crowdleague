@@ -186,5 +186,10 @@ final Map<Type,
 
 AddProblem createAddProblem(Type type, dynamic error, StackTrace trace,
     [Map<String, Object> info]) {
+      if (info == null) {
+        return AddProblem(problem: map[type](error, trace, null));
+      }
   return AddProblem(problem: map[type](error, trace, MapBuilder<String, Object>(info)));
 }
+
+// return AddProblem(problem: map[type](error, trace, MapBuilder<String, Object>(info)));
