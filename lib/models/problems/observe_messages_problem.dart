@@ -16,7 +16,10 @@ abstract class ObserveMessagesProblem
         Built<ObserveMessagesProblem, ObserveMessagesProblemBuilder> {
   ObserveMessagesProblem._();
 
-  factory ObserveMessagesProblem() = _$ObserveMessagesProblem._;
+  factory ObserveMessagesProblem(
+      {String message,
+      String trace,
+      BuiltMap<String, Object> info}) = _$ObserveMessagesProblem._;
 
   factory ObserveMessagesProblem.by(
           [void Function(ObserveMessagesProblemBuilder) updates]) =

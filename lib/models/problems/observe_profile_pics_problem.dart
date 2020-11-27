@@ -16,7 +16,10 @@ abstract class ObserveProfilePicsProblem
         Built<ObserveProfilePicsProblem, ObserveProfilePicsProblemBuilder> {
   ObserveProfilePicsProblem._();
 
-  factory ObserveProfilePicsProblem() = _$ObserveProfilePicsProblem._;
+  factory ObserveProfilePicsProblem(
+      {String message,
+      String trace,
+      BuiltMap<String, Object> info}) = _$ObserveProfilePicsProblem._;
 
   factory ObserveProfilePicsProblem.by(
           [void Function(ObserveProfilePicsProblemBuilder) updates]) =
