@@ -48,6 +48,7 @@ android {
         ndkVersion "21.3.6528147"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders = [mapsKey: mapsKeyProperty]
     }
 
     signingConfigs {
