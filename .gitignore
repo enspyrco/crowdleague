@@ -49,6 +49,8 @@ app.*.map.json
 # don't add project credentials to version control
 ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
+# don't add maps api keys file to version control
+ios/Flutter/MapsKey.xcconfig
 # Android keystore for release 
 android/app/keystore.jks
 android/app/keystore.config
