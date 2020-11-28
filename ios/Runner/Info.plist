@@ -63,5 +63,7 @@
 	<string>Used to capture audio to go with the video</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to add profile pics, venue pics, etc.</string>
+	<key>maps_api_key</key>
+	<string>$(MAPS_API_KEY)</string>
 </dict>
 </plist>
