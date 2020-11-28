@@ -1,5 +1,4 @@
 import 'package:crowdleague/actions/database/plumb_database_stream.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/middleware/auth/observe_auth_state.dart';
 import 'package:crowdleague/middleware/auth/sign_in_with_apple.dart';
 import 'package:crowdleague/middleware/auth/sign_in_with_email.dart';
@@ -33,6 +32,7 @@ import 'package:crowdleague/services/database_service.dart';
 import 'package:crowdleague/services/device_service.dart';
 import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
+import 'package:crowdleague/utils/problem_utils.dart';
 import 'package:redux/redux.dart';
 
 /// Middleware is used for a variety of things:
@@ -92,20 +92,16 @@ List<Middleware<AppState>> createAppMiddleware(
 class PlumbDatabaseStreamMiddleware
     extends TypedMiddleware<AppState, PlumbDatabaseStream> {
   PlumbDatabaseStreamMiddleware(DatabaseService databaseService)
-      : super((store, action, next) async {
-          next(action);
+      : super(
+          (store, action, next) async {
+            next(action);
 
-          databaseService.storeStream.listen(
-            store.dispatch,
-            onError: (dynamic error, StackTrace trace) => store.dispatch(
-              AddProblem(
-                problem: PlumDatabaseStreamProblem.by(
-                  (b) => b
-                    ..message = error.toString()
-                    ..trace = trace.toString(),
-                ),
+            databaseService.storeStream.listen(
+              store.dispatch,
+              onError: (dynamic error, StackTrace trace) => store.dispatch(
+                createAddProblem(PlumDatabaseStreamProblem, error, trace),
               ),
-            ),
-          );
-        });
+            );
+          },
+        );
 }

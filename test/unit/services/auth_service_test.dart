@@ -10,6 +10,7 @@ import 'package:crowdleague/models/problems/email_sign_in_problem.dart';
 import 'package:crowdleague/models/problems/google_sign_in_problem.dart';
 import 'package:crowdleague/models/problems/sign_out_problem.dart';
 import 'package:crowdleague/services/auth_service.dart';
+import 'package:crowdleague/utils/problem_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -247,13 +248,8 @@ void main() {
         FakeGoogleSignInThrows(),
         MockAppleSignIn(),
       );
-      final testAddProblem = AddProblem(
-        problem: SignOutProblem.by(
-          (b) => b
-            ..message = 'Exception: GoogleSignIn.signOut'
-            ..trace = '',
-        ),
-      );
+      final testAddProblem = createAddProblem(SignOutProblem,
+          'Exception: GoogleSignIn.signOut', StackTrace.current);
 
       final error = await authService.signOut() as AddProblem;
 
@@ -268,13 +264,8 @@ void main() {
         MockGoogleSignIn(),
         MockAppleSignIn(),
       );
-      final testAddProblem = AddProblem(
-        problem: SignOutProblem.by(
-          (b) => b
-            ..message = 'Exception: firebaseAuth.signOut'
-            ..trace = '',
-        ),
-      );
+      final testAddProblem = createAddProblem(SignOutProblem,
+          'Exception: firebaseAuth.signOut', StackTrace.current);
 
       final error = await authService.signOut() as AddProblem;
 

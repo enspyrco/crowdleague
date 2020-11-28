@@ -1,7 +1,7 @@
 import 'package:crowdleague/actions/auth/sign_out_user.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/middleware/auth/sign_out_user.dart';
 import 'package:crowdleague/models/problems/sign_out_problem.dart';
+import 'package:crowdleague/utils/problem_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -15,13 +15,7 @@ void main() {
       // initialize test store/services
       final mockAuthService = MockAuthService();
       final testStore = FakeStore();
-      final problem = AddProblem(
-        problem: SignOutProblem.by(
-          (b) => b
-            ..message = ''
-            ..trace = '',
-        ),
-      );
+      final problem = createAddProblem(SignOutProblem, '', StackTrace.current);
 
       // return error signing out user
       when(mockAuthService.signOut()).thenAnswer((_) async => problem);
