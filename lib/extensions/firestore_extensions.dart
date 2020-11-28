@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/actions/conversations/store_conversations.dart';
 import 'package:crowdleague/actions/conversations/store_messages.dart';
 import 'package:crowdleague/actions/functions/store_processing_failures.dart';
-import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/profile/store_profile_pics.dart';
 import 'package:crowdleague/actions/profile/update_profile_page.dart';
 import 'package:crowdleague/actions/redux_action.dart';
+import 'package:crowdleague/extensions/stream_controller_extensions.dart';
 import 'package:crowdleague/models/conversations/conversation/message.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/functions/processing_failure.dart';
@@ -29,15 +29,12 @@ extension ConnectAndConvert on FirebaseFirestore {
       for (final change in querySnapshot.docChanges) {
         if (change.type == DocumentChangeType.added) {
           final failure = change.doc.toProcessingFailure();
-          final action = AddProblem(
-            problem: ProcessingFailureProblem.by(
-              (b) => b
-                ..message = failure.message
-                ..info = BuiltMap<String, String>({'id': failure.id}),
-            ),
+          controller.addProblem(
+            ProcessingFailureProblem,
+            failure,
+            StackTrace.current,
+            <String, Object>{'id': failure.id},
           );
-
-          controller.add(action);
         }
       }
 
@@ -79,15 +76,7 @@ extension ConnectAndConvert on FirebaseFirestore {
                 Message(text: docSnapshot.data()['text'] as String))),
       ));
     }, onError: (dynamic error, StackTrace trace) {
-      controller.add(
-        AddProblem(
-          problem: ConnectToMessagesProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      controller.addProblem(ConnectToMessagesProblem, error, trace);
     });
   }
 
@@ -116,26 +105,10 @@ extension ConnectAndConvert on FirebaseFirestore {
         }
         controller.add(StoreProfilePics(profilePics: picIds.toBuiltList()));
       } catch (error, trace) {
-        controller.add(
-          AddProblem(
-            problem: ObserveProfilePicsProblem.by(
-              (b) => b
-                ..message = error.toString()
-                ..trace = trace.toString(),
-            ),
-          ),
-        );
+        controller.addProblem(ObserveProfilePicsProblem, error, trace);
       }
     }, onError: (dynamic error, StackTrace trace) {
-      controller.add(
-        AddProblem(
-          problem: ObserveProfilePicsProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      controller.addProblem(ObserveProfilePicsProblem, error, trace);
     });
   }
 
@@ -150,15 +123,7 @@ extension ConnectAndConvert on FirebaseFirestore {
         controller.add(UpdateProfilePage(
             userId: leaguer.uid, leaguerPhotoURL: leaguer.photoURL));
       } catch (error, trace) {
-        controller.add(
-          AddProblem(
-            problem: ObserveProfileProblem.by(
-              (b) => b
-                ..message = error.toString()
-                ..trace = trace.toString(),
-            ),
-          ),
-        );
+        controller.addProblem(ObserveProfileProblem, error, trace);
       }
     });
   }

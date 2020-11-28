@@ -7,6 +7,7 @@ import 'package:crowdleague/actions/conversations/update_new_conversation_page.d
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/redux_action.dart';
 import 'package:crowdleague/extensions/extensions.dart';
+import 'package:crowdleague/extensions/stream_controller_extensions.dart';
 import 'package:crowdleague/models/app/app_state.dart';
 import 'package:crowdleague/models/conversations/conversation_summary.dart';
 import 'package:crowdleague/models/leaguers/leaguer.dart';
@@ -24,6 +25,7 @@ import 'package:crowdleague/models/problems/observe_profile_problem.dart';
 import 'package:crowdleague/models/problems/save_message_problem.dart';
 import 'package:crowdleague/models/problems/update_leaguer_problem.dart';
 import 'package:crowdleague/models/problems/update_new_conversation_page_problem.dart';
+import 'package:crowdleague/utils/problem_utils.dart';
 import 'package:crowdleague/utils/redux/firestore_subscriptions.dart';
 import 'package:redux/redux.dart';
 
@@ -62,15 +64,8 @@ class DatabaseService {
       _firestoreSubscriptions.processingFailures =
           _firestore.connectToProcessingFailures(userId, _storeController);
     } catch (error, trace) {
-      _storeController.add(
-        AddProblem(
-          problem: ObserveProcessingFailuresProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      _storeController.addProblem(
+          ObserveProcessingFailuresProblem, error, trace);
     }
   }
 
@@ -107,13 +102,7 @@ class DatabaseService {
               photoURLs: BuiltList(photoURLs),
               uids: BuiltList(uids)));
     } catch (error, trace) {
-      return AddProblem(
-        problem: CreateConversationProblem.by(
-          (b) => b
-            ..message = error.toString()
-            ..trace = trace.toString(),
-        ),
-      );
+      return createAddProblem(CreateConversationProblem, error, trace);
     }
   }
 
@@ -127,15 +116,7 @@ class DatabaseService {
       _firestoreSubscriptions.conversations =
           _firestore.connectToConversations(userId, _storeController);
     } catch (error, trace) {
-      _storeController.add(
-        AddProblem(
-          problem: ObserveConversationsProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      _storeController.addProblem(ObserveConversationsProblem, error, trace);
     }
   }
 
@@ -143,15 +124,7 @@ class DatabaseService {
     try {
       _firestoreSubscriptions.conversations?.cancel();
     } catch (error, trace) {
-      _storeController.add(
-        AddProblem(
-          problem: DisregardConversationsProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      _storeController.addProblem(DisregardConversationsProblem, error, trace);
     }
   }
 
@@ -168,15 +141,7 @@ class DatabaseService {
         'timestamp': FieldValue.serverTimestamp()
       });
     } catch (error, trace) {
-      store.dispatch(
-        AddProblem(
-          problem: SaveMessageProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      store.dispatch(createAddProblem(SaveMessageProblem, error, trace));
     }
   }
 
@@ -187,15 +152,7 @@ class DatabaseService {
       _firestoreSubscriptions.messages =
           _firestore.connectToMessages(conversationId, _storeController);
     } catch (error, trace) {
-      _storeController.add(
-        AddProblem(
-          problem: ObserveMessagesProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      _storeController.addProblem(ObserveMessagesProblem, error, trace);
     }
   }
 
@@ -204,15 +161,7 @@ class DatabaseService {
     try {
       await _firestoreSubscriptions.messages?.cancel();
     } catch (error, trace) {
-      store.dispatch(
-        AddProblem(
-          problem: DisregardMessagesProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      store.dispatch(createAddProblem(DisregardMessagesProblem, error, trace));
     }
   }
 
@@ -236,13 +185,7 @@ class DatabaseService {
 
       return UpdateNewConversationPage(suggestions: leaguers);
     } catch (error, trace) {
-      return AddProblem(
-        problem: UpdateNewConversationPageProblem.by(
-          (b) => b
-            ..message = error.toString()
-            ..trace = trace.toString(),
-        ),
-      );
+      return createAddProblem(UpdateNewConversationPageProblem, error, trace);
     }
   }
 
@@ -254,13 +197,7 @@ class DatabaseService {
       await docRef.update(<String, dynamic>{'photoURL': picURL});
       return null;
     } catch (error, trace) {
-      return AddProblem(
-        problem: UpdateLeaguerProblem.by(
-          (b) => b
-            ..message = error.toString()
-            ..trace = trace.toString(),
-        ),
-      );
+      return createAddProblem(UpdateLeaguerProblem, error, trace);
     }
   }
 
@@ -277,15 +214,7 @@ class DatabaseService {
       _firestoreSubscriptions.profilePics =
           _firestore.connectToProfilePics(userId, _storeController);
     } catch (error, trace) {
-      _storeController.add(
-        AddProblem(
-          problem: ObserveProfilePicsProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      _storeController.addProblem(ObserveProfilePicsProblem, error, trace);
     }
   }
 
@@ -294,15 +223,7 @@ class DatabaseService {
     try {
       await _firestoreSubscriptions.profilePics?.cancel();
     } catch (error, trace) {
-      _storeController.add(
-        AddProblem(
-          problem: DisregardProfilePicsProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      _storeController.addProblem(DisregardProfilePicsProblem, error, trace);
     }
   }
 
@@ -312,15 +233,7 @@ class DatabaseService {
       _firestoreSubscriptions.profile =
           _firestore.connectToProfile(userId, _storeController);
     } catch (error, trace) {
-      _storeController.add(
-        AddProblem(
-          problem: ObserveProfileProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      _storeController.addProblem(ObserveProfileProblem, error, trace);
     }
   }
 
@@ -329,15 +242,7 @@ class DatabaseService {
     try {
       await _firestoreSubscriptions.profile?.cancel();
     } catch (error, trace) {
-      _storeController.add(
-        AddProblem(
-          problem: DisregardProfileProblem.by(
-            (b) => b
-              ..message = error.toString()
-              ..trace = trace.toString(),
-          ),
-        ),
-      );
+      _storeController.addProblem(DisregardProfileProblem, error, trace);
     }
   }
 
@@ -347,13 +252,7 @@ class DatabaseService {
       await _firestore.doc('leaguers/$userId/profile_pics/$picId').delete();
       return null;
     } catch (error, trace) {
-      return AddProblem(
-        problem: DeleteProfilePicProblem.by(
-          (b) => b
-            ..message = error.toString()
-            ..trace = trace.toString(),
-        ),
-      );
+      return createAddProblem(DeleteProfilePicProblem, error, trace);
     }
   }
 }
