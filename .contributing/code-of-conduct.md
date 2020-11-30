@@ -4,10 +4,10 @@
 
 #### Reviews 
 
-- 1 review is required for merging 
+- Generally only 1 approval is required before merging.  The exceptions are: 
+  - Files in the `.contributing/` folder, where approvals are needed from the whole team before merging
 - The reviewer merges when they are happy that everything has been addressed 
-- Please use "Changes requested" to hand back control until all questions have been resolved (avoids the ambiguous state of unanswered questions in an approved review) 
-- feel free to leave a LGTM with some feedback but no approval, but please indicate why you are leaving the approve/merge to someone else 
+- Please use "Changes requested" to hand back control until all questions have been resolved (avoids the ambiguous state of unanswered questions in an approved PR) 
 
 #### Treat PRs as the start of a process, not the end 
 
