@@ -16,7 +16,10 @@ abstract class ObserveProfileProblem
         Built<ObserveProfileProblem, ObserveProfileProblemBuilder> {
   ObserveProfileProblem._();
 
-  factory ObserveProfileProblem() = _$ObserveProfileProblem._;
+  factory ObserveProfileProblem(
+      {String message,
+      String trace,
+      BuiltMap<String, Object> info}) = _$ObserveProfileProblem._;
 
   factory ObserveProfileProblem.by(
           [void Function(ObserveProfileProblemBuilder) updates]) =
