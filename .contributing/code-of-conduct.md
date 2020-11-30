@@ -2,6 +2,13 @@
 
 ### PRs 
 
+#### Reviews 
+
+- 1 review is required for merging 
+- The reviewer merges when they are happy that everything has been addressed 
+- Please use "Changes requested" to hand back control until all questions have been resolved (avoids the ambiguous state of unanswered questions in an approved review) 
+- feel free to leave a LGTM with some feedback but no approval, but please indicate why you are leaving the approve/merge to someone else 
+
 #### Treat PRs as the start of a process, not the end 
 
 - When you finish a PR you have setup the next stage, which is a collaborative process. 
