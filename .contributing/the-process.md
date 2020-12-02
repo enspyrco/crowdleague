@@ -98,11 +98,21 @@ Create: 
 
 -   An issue on GitHub for each use case
 
-    1.  Add a section label (eg. Auth) 
+1.  Create a tracking issue
 
-    2.  Indicate the use case it addresses & link to the Google doc  
+      - add a tracking label
 
--   Links back and forth between the Task, Issue & Doc 
+      - title "section_name use_case_number: use_case_name"
+
+      - in the description, break down the use case into a checklist of tasks (sub issues)
+
+      - grab team for discussion/ input on checklist
+
+  2.  For each task in tracking issue, create an issue and link its issue number
+
+  3.  Add all created issues to appropriate github projects
+
+- Links back and forth between the Task, Issue & Doc
 
 -   Folders for tests (use the code-name for the use-case) 
 
