@@ -161,10 +161,10 @@ final Map<Type, ProblemBase Function(dynamic, StackTrace, Map<String, Object>)>
 
 AddProblem createAddProblem(Type type, dynamic error, StackTrace trace,
     [Map<String, Object> info]) {
-      if (info == null) {
-        return AddProblem(problem: map[type](error, trace, null));
-      }
-  return AddProblem(problem: map[type](error, trace, MapBuilder<String, Object>(info)));
+  return AddProblem(problem: map[type](error, trace, info));
 }
 
-// return AddProblem(problem: map[type](error, trace, MapBuilder<String, Object>(info)));
+ProblemBase createProblem(Type type, dynamic error, StackTrace trace,
+    [Map<String, Object> info]) {
+  return map[type](error, trace, info);
+}
