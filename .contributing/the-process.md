@@ -1,14 +1,14 @@
-# 0 - Introduction 
+# 0 - Introduction
 
 Note that the sections are numbered but the items within each section are dot points rather than a numbered list. The two sections should be done in order, but within each section it's probably a good idea to jump around and expect to do multiple passes.
 
-# 1 - Planning in consultation with stakeholders 
+# 1 - Planning in consultation with stakeholders
 
 - Replace _Section_ below with the section name, eg. Auth
 
 - Use the next available Section number (denoted x. below)
 
-- Create in Drive - a folder called "x. _Section_: Sections Planning" in "Sections Planning (CL)".  In the folder:
+- Create in Drive - a folder called "x. _Section_: Sections Planning" in "Sections Planning (CL)". In the folder:
 
   - a Google doc called "0 - Use Cases < _Section_ (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
 
@@ -36,7 +36,7 @@ Note that the sections are numbered but the items within each section are dot po
 
 - Complete use cases for level 1
 
-# 2 - Build everything around the use-case 
+# 2 - Build everything around the use-case
 
 > large use cases can be split into parts
 
@@ -60,7 +60,7 @@ Create:
 
 - An Asana task for each use case, linked to the GitHub issue and Google doc (see below)
 
-- A Drive folder for each use case, called "x. _Use Case_ - _Section_ (CL)" and in that folder, a Google Doc for each use case:
+- A Drive folder for each use case, called "x. _Use Case_ - _Section_ (CL)" and in that folder, a Google Doc for each use case:
 
   - Models
 
@@ -97,17 +97,15 @@ Create:
 
   1.  Create a tracking issue
 
+      - add a tracking label
+
       - title "section_name use_case_number: use_case_name"
 
-      - in the description, create a checklist of tasks (sub issues) that outlines the steps to add the use case to the app
+      - in the description, break down the use case into a checklist of tasks (sub issues)
 
       - grab team for discussion/ input on checklist
 
-      - create issues from tasks and link issue number
-
-      - add a tracking label
-
-  2.  For each task in tracking issue, create an issue and link its issue number in the checklist
+  2.  For each task in tracking issue, create an issue and link its issue number
 
   3.  Add all created issues to appropriate github projects
 
@@ -121,7 +119,7 @@ Create:
 
 - PR
 
-# Notes on the various tools 
+# Notes on the various tools
 
 - Google docs are great for creating longer, more complex documents (eg. with diagrams and a TOC)
 
