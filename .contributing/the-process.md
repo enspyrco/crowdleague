@@ -10,7 +10,7 @@ Note that the sections are numbered but the items within each section are dot po
 
 -   Use the next available Section number (denoted x. below)
 
--   Create in Drive - a folder called "x. *Section*: Sections Planning" in "Sections Planning (CL)".  In the folder: 
+-   Create in Drive - a folder called "x. *Section*: Sections Planning (CL)" in "Sections Planning (CL)".  In the folder: 
 
     -   a Google doc called "0 - Use Cases < *Section* (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
 
