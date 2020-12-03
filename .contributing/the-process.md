@@ -106,8 +106,6 @@ Create: 
 
         - in the description, break down the use case into a checklist of tasks (sub issues)
 
-        - grab team for discussion/ input on checklist
-
     2.  For each task in tracking issue, create an issue and link its issue number
 
     3.  Add all created issues to appropriate github projects
