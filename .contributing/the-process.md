@@ -112,7 +112,7 @@ Create: 
 
     3.  Add all created issues to appropriate github projects
 
-- Add Links back and forth between the Task, Issue & Doc
+- Add links back and forth between the Task, Issue & Doc
 
 -   Folders for tests (use the code-name for the use-case) 
 
