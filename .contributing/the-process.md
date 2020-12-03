@@ -96,23 +96,23 @@ Create: 
 
         -   Decide on widget/action/middleware names
 
--   An issue on GitHub for each use case
+-   An issue on GitHub for each use case:
 
-1.  Create a tracking issue
+    1.  Create a tracking issue
 
-      - add a tracking label
+        - add the "tracking" label
 
-      - title "section_name use_case_number: use_case_name"
+        - Add a title "section_name use_case_number: use_case_name"
 
-      - in the description, break down the use case into a checklist of tasks (sub issues)
+        - in the description, break down the use case into a checklist of tasks (sub issues)
 
-      - grab team for discussion/ input on checklist
+        - grab team for discussion/ input on checklist
 
-  2.  For each task in tracking issue, create an issue and link its issue number
+    2.  For each task in tracking issue, create an issue and link its issue number
 
-  3.  Add all created issues to appropriate github projects
+    3.  Add all created issues to appropriate github projects
 
-- Links back and forth between the Task, Issue & Doc
+- Add Links back and forth between the Task, Issue & Doc
 
 -   Folders for tests (use the code-name for the use-case) 
 
