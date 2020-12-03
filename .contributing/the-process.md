@@ -75,16 +75,51 @@ Create: 
 
     -   A User Flow 
 
-        -   Step 1: Make a doc named: "x. *Use Case* < User Flow < *Section* (CL)"
+        1. Create a folder to hold all files needed to create a user flow
+            - Add title: "x. *Use Case* - User Flow files - *Section* (CL)"
 
-        -   Step 2, Part 1: Use Case → User Flow 
+        2. Inside folder created in step 1, create a doc to outline action steps for the use case. 
+            - Add title: "x. *Use Case* - User Flow - *Section* (CL)"
+            - Add template to doc: 
+                -   A leaguer who...
+                    -   (context) 
+                -   wants to...
+                    -   (goal) 
+                -   so they...
+                    -   (action steps)
+            - After adding action steps, create "input task" in asana
 
-            -   A leaguer who 
-                -   (context) 
-            -   wants to 
-                -   (goal) 
-            -   so they 
-                -   (action steps)
+
+        3. Create lofi wireframe
+            - Sketch lofi wireframe on paper
+            - Create a google drawing to get input on sketch
+                - Add title: "x. *Use Case* - Lofi Sketch - *Section* (CL)"
+            - Take a photo and upload it to google drawing doc
+            - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
+            - Create an "input task" in asana
+            - After 24 hr input time has ended, resolve any conversations (use real time chat if need be)
+            - When all conversations are resolved move onto step 4!
+        
+
+        4. Create Hifi wireframe
+            - Create Hifi wireframe using Adobe XD
+            - Inside folder created in step 1, create a google drawing to get input on wireframe
+                - Add title: "x. *Use Case* - Hifi wireframe - *Section* (CL)"
+            - Export any screens and upload them to google drawing doc
+            - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
+            - Create an "input task" in asana
+            - After 24 hr input time has ended, resolve any conversations (use real time chat if need be)
+            - When all conversations are resolved move onto step 5!
+
+        5. Create User flow doc!
+            - create a google drawing file inside use case folder
+              - Add title: "x. *Use Case* - User flow - *Section* (CL)"
+            - Combine action steps with wireframes in file
+            - Create an "input task" in asana
+            - After 24 hr input time has ended, resolve any conversations (use real time chat if need be)
+            - When all conversations are resolved move onto step 5!
+
+
 
         -   See: [User flow is the new wireframe](https://uxdesign.cc/when-to-use-user-flows-guide-8b26ca9aa36a) & [The How (and Why) of User Flows](https://uxdesign.cc/the-how-and-why-of-user-flows-85df776a1e2) 
 
