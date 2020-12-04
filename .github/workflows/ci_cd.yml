@@ -37,7 +37,7 @@ jobs:
     - name: Install Flutter tool
       uses: subosito/flutter-action@v1
       with:
-        channel: 'stable' # or: 'dev' or 'beta'
+        channel: 'dev' # or: 'stable' or 'beta'
 
     ##############################################
     # get dependencies & generate code
@@ -45,7 +45,7 @@ jobs:
     - name: Get app dependencies
       run: flutter pub get
     - name: Generate built_value code
-      run: flutter pub run build_runner build
+      run: dart run build_runner build
 
     ##############################################
     # run tests and upload coverage to coveralls
