@@ -30,141 +30,141 @@ final Map<Type, ProblemBase Function(dynamic, StackTrace, Map<String, Object>)>
   AppleSignInProblem: (dynamic error, trace, info) => AppleSignInProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   ConnectToMessagesProblem: (dynamic error, trace, info) =>
       ConnectToMessagesProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   CreateConversationProblem: (dynamic error, trace, info) =>
       CreateConversationProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   DeleteProfilePicProblem: (dynamic error, trace, info) =>
       DeleteProfilePicProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   DisregardConversationsProblem: (dynamic error, trace, info) =>
       DisregardConversationsProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   DisregardMessagesProblem: (dynamic error, trace, info) =>
       DisregardMessagesProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   DisregardProfilePicsProblem: (dynamic error, trace, info) =>
       DisregardProfilePicsProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   DisregardProfileProblem: (dynamic error, trace, info) =>
       DisregardProfileProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   EmailSignInProblem: (dynamic error, trace, info) => EmailSignInProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   GeneralProblem: (dynamic error, trace, info) => GeneralProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   GoogleSignInProblem: (dynamic error, trace, info) => GoogleSignInProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   ObserveConversationsProblem: (dynamic error, trace, info) =>
       ObserveConversationsProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   ObserveMessagesProblem: (dynamic error, trace, info) =>
       ObserveMessagesProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   ObserveProcessingFailuresProblem: (dynamic error, trace, info) =>
       ObserveProcessingFailuresProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   ObserveProfilePicsProblem: (dynamic error, trace, info) =>
       ObserveProfilePicsProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   ObserveProfileProblem: (dynamic error, trace, info) => ObserveProfileProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   PlumDatabaseStreamProblem: (dynamic error, trace, info) =>
       PlumDatabaseStreamProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   ProcessingFailureProblem: (dynamic error, trace, info) =>
       ProcessingFailureProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   SaveMessageProblem: (dynamic error, trace, info) => SaveMessageProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   SignOutProblem: (dynamic error, trace, info) => SignOutProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   UpdateLeaguerProblem: (dynamic error, trace, info) => UpdateLeaguerProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   UpdateNewConversationPageProblem: (dynamic error, trace, info) =>
       UpdateNewConversationPageProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
   UploadTaskFailureProblem: (dynamic error, trace, info) =>
       UploadTaskFailureProblem(
         message: '$error',
         trace: '$trace',
-        info: info == null ? null : BuiltMap(info),
+        info: BuiltMap(info),
       ),
 };
 
 AddProblem createAddProblem(Type type, dynamic error, StackTrace trace,
     [Map<String, Object> info]) {
-  return AddProblem(problem: map[type](error, trace, info));
+  return AddProblem(problem: map[type](error, trace, info ?? {}));
 }
 
 ProblemBase createProblem(Type type, dynamic error, StackTrace trace,
     [Map<String, Object> info]) {
-  return map[type](error, trace, info);
+  return map[type](error, trace, info ?? {});
 }
