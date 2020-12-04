@@ -11,7 +11,6 @@ part 'problem_base.g.dart';
 abstract class ProblemBase {
   String get message;
   String get trace;
-  @nullable
   BuiltMap<String, Object> get info;
 
   ProblemBase rebuild(void Function(ProblemBaseBuilder) updates);

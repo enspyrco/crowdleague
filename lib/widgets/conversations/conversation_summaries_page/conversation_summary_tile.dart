@@ -20,10 +20,6 @@ class ConversationSummaryTile extends StatelessWidget {
       onDismissed: (direction) {
         context.dispatch(
             LeaveConversation(conversationId: summary.conversationId));
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-                'Leaving conversation with id: ${summary.conversationId}')));
       },
       child: ListTile(
         leading: Image.network(summary.photoURLs.first),

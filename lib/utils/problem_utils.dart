@@ -25,171 +25,146 @@ import 'package:crowdleague/models/problems/update_leaguer_problem.dart';
 import 'package:crowdleague/models/problems/update_new_conversation_page_problem.dart';
 import 'package:crowdleague/models/problems/upload_task_failure_problem.dart';
 
-final Map<Type,
-        ProblemBase Function(dynamic, StackTrace, MapBuilder<String, Object>)>
+final Map<Type, ProblemBase Function(dynamic, StackTrace, Map<String, Object>)>
     map = {
-  AppleSignInProblem: (dynamic error, trace, info) => AppleSignInProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+  AppleSignInProblem: (dynamic error, trace, info) => AppleSignInProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   ConnectToMessagesProblem: (dynamic error, trace, info) =>
-      ConnectToMessagesProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      ConnectToMessagesProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   CreateConversationProblem: (dynamic error, trace, info) =>
-      CreateConversationProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      CreateConversationProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   DeleteProfilePicProblem: (dynamic error, trace, info) =>
-      DeleteProfilePicProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      DeleteProfilePicProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   DisregardConversationsProblem: (dynamic error, trace, info) =>
-      DisregardConversationsProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      DisregardConversationsProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   DisregardMessagesProblem: (dynamic error, trace, info) =>
-      DisregardMessagesProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      DisregardMessagesProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   DisregardProfilePicsProblem: (dynamic error, trace, info) =>
-      DisregardProfilePicsProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      DisregardProfilePicsProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   DisregardProfileProblem: (dynamic error, trace, info) =>
-      DisregardProfileProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      DisregardProfileProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
-  EmailSignInProblem: (dynamic error, trace, info) => EmailSignInProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+  EmailSignInProblem: (dynamic error, trace, info) => EmailSignInProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
-  GeneralProblem: (dynamic error, trace, info) => GeneralProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+  GeneralProblem: (dynamic error, trace, info) => GeneralProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
-  GoogleSignInProblem: (dynamic error, trace, info) => GoogleSignInProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+  GoogleSignInProblem: (dynamic error, trace, info) => GoogleSignInProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   ObserveConversationsProblem: (dynamic error, trace, info) =>
-      ObserveConversationsProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      ObserveConversationsProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   ObserveMessagesProblem: (dynamic error, trace, info) =>
-      ObserveMessagesProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      ObserveMessagesProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   ObserveProcessingFailuresProblem: (dynamic error, trace, info) =>
-      ObserveProcessingFailuresProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      ObserveProcessingFailuresProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   ObserveProfilePicsProblem: (dynamic error, trace, info) =>
-      ObserveProfilePicsProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      ObserveProfilePicsProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
-  ObserveProfileProblem: (dynamic error, trace, info) =>
-      ObserveProfileProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+  ObserveProfileProblem: (dynamic error, trace, info) => ObserveProfileProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   PlumDatabaseStreamProblem: (dynamic error, trace, info) =>
-      PlumDatabaseStreamProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      PlumDatabaseStreamProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   ProcessingFailureProblem: (dynamic error, trace, info) =>
-      ProcessingFailureProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      ProcessingFailureProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
-  SaveMessageProblem: (dynamic error, trace, info) => SaveMessageProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+  SaveMessageProblem: (dynamic error, trace, info) => SaveMessageProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
-  SignOutProblem: (dynamic error, trace, info) => SignOutProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+  SignOutProblem: (dynamic error, trace, info) => SignOutProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
-  UpdateLeaguerProblem: (dynamic error, trace, info) => UpdateLeaguerProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+  UpdateLeaguerProblem: (dynamic error, trace, info) => UpdateLeaguerProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   UpdateNewConversationPageProblem: (dynamic error, trace, info) =>
-      UpdateNewConversationPageProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      UpdateNewConversationPageProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
   UploadTaskFailureProblem: (dynamic error, trace, info) =>
-      UploadTaskFailureProblem.by(
-        (b) => b
-          ..message = error.toString()
-          ..trace = trace.toString()
-          ..info = info,
+      UploadTaskFailureProblem(
+        message: '$error',
+        trace: '$trace',
+        info: BuiltMap(info),
       ),
 };
 
 AddProblem createAddProblem(Type type, dynamic error, StackTrace trace,
     [Map<String, Object> info]) {
-      if (info == null) {
-        return AddProblem(problem: map[type](error, trace, null));
-      }
-  return AddProblem(problem: map[type](error, trace, MapBuilder<String, Object>(info)));
+  return AddProblem(problem: map[type](error, trace, info ?? {}));
 }
 
-// return AddProblem(problem: map[type](error, trace, MapBuilder<String, Object>(info)));
+ProblemBase createProblem(Type type, dynamic error, StackTrace trace,
+    [Map<String, Object> info]) {
+  return map[type](error, trace, info ?? {});
+}
