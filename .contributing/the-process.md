@@ -10,7 +10,7 @@ Note that the sections are numbered but the items within each section are dot po
 
 -   Use the next available Section number (denoted x. below)
 
--   Create in Drive - a folder called "x. *Section*: Sections Planning" in "Sections Planning (CL)".  In the folder: 
+-   Create in Drive - a folder called "x. *Section*: Sections Planning (CL)" in "Sections Planning (CL)".  In the folder: 
 
     -   a Google doc called "0 - Use Cases < *Section* (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
 
@@ -96,13 +96,21 @@ Create: 
 
         -   Decide on widget/action/middleware names
 
--   An issue on GitHub for each use case
+-   An issue on GitHub for each use case:
 
-    1.  Add a section label (eg. Auth) 
+    1.  Create a tracking issue
 
-    2.  Indicate the use case it addresses & link to the Google doc  
+        - add the "tracking" label
 
--   Links back and forth between the Task, Issue & Doc 
+        - Add a title "section_name use_case_number: use_case_name"
+
+        - in the description, break down the use case into a checklist of tasks (sub issues)
+
+    2.  For each task in tracking issue, create an issue and link its issue number
+
+    3.  Add all created issues to appropriate github projects
+
+- Add links back and forth between the Task, Issue & Doc
 
 -   Folders for tests (use the code-name for the use-case) 
 
