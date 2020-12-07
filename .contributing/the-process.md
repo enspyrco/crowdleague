@@ -98,7 +98,7 @@ Create: 
             - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
             - Create an "input task" in asana
             - After 24 hr input time has ended, resolve any conversations (use real time chat if need be)
-            - When all conversations are resolved move onto step 4!
+            - When all conversations are resolved, create a Hifi wireframe!
         
 
         4. Create Hifi wireframe
@@ -109,9 +109,9 @@ Create: 
             - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
             - Create an "input task" in asana
             - After 24 hr input time has ended, resolve any conversations (use real time chat if need be)
-            - When all conversations are resolved move onto step 5!
+            - When all conversations are resolved, Create User flow doc!
 
-        5. Create User flow doc!
+        5. Create User flow doc
             - create a google drawing file inside use case folder
               - Add title: "x. *Use Case* - User flow - *Section* (CL)"
             - Combine action steps with wireframes in file
