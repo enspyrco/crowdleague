@@ -2,9 +2,20 @@
 
 ### PRs 
 
+#### Reviews and Merging 
+
+- Generally only 1 approval is required before merging, if the PR has been up for more than 24 hours.  The exceptions are: 
+  - Files in the `.contributing/` folder, where approvals are needed from the whole team before merging
+- If there are approvals from everyone, merge at will.
+- When a PR has approval(s), if someone else wants changes we don't merge until the request is resolved.
+- The reviewer merges when they are happy that everything has been addressed 
+- Please use "Changes requested" to hand back control until all questions have been resolved (in order to avoid the ambiguous state of unanswered questions in an approved PR) 
+- All merges onto `dev` should be squashed (with the squash & merge option at merge time) 
+
 #### Treat PRs as the start of a process, not the end 
 
 - When you finish a PR you have setup the next stage, which is a collaborative process. 
+- Questions and discussion should be welcomed as an attempt to improve our project. If you feel frustrated, try to get to the bottom of it and consider having a conversation with the person involved.
 
 #### Reviewing a PR is a collaboration, not gatekeeping 
 
