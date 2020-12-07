@@ -117,8 +117,6 @@ Create: 
             - Combine action steps with wireframes in file
             - Create an "input task" in asana
             - After 24 hr input time has ended, resolve any conversations (use real time chat if need be)
-            - When all conversations are resolved move onto step 5!
-
 
 
         -   See: [User flow is the new wireframe](https://uxdesign.cc/when-to-use-user-flows-guide-8b26ca9aa36a) & [The How (and Why) of User Flows](https://uxdesign.cc/the-how-and-why-of-user-flows-85df776a1e2) 
