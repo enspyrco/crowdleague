@@ -63,9 +63,21 @@ DO attempt to communicate effectively when creating tasks/issues/etc.
   - try and read what you've written with the mindset of someone who doesn't have all the context that you currently do 
 
 #### Standups
-- goal is to get the team up to speed on where you are in your workflow. And identify anything blocking you.
-- with the goal of preventing discussions that could waste someones time
-  - try to push any discussions to post-standup 
-  - all team members please feel free to transform into stand up police should a discussion that is wasting your time erupt
-    - stand up police have all rights to flag conversations as post-standup items
+
+DO share your progress with the team
+- Get the team up to speed on where you are in your workflow.
+- Identify anything blocking you.
+- Finish with a "maptivation" statement: 
+  - draw us a map of where we're going 
+  - get us excited about getting there 
+
+AVOID blocking the flow 
+- Try to prevent discussions that are not relevant to standup 
+- Push any such discussions to post-standup 
+  
+DO take action to avoid wasted time 
+- Feel free to speak up should a discussion that is wasting your time erupt
+  
+DO respond positively to requests to move conversations to post-standup  
+- If anyone requests that a conversation is moved to post-standup, the response should be freindly and respectful.
 
