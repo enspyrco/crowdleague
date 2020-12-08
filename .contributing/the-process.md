@@ -76,7 +76,7 @@ Create: 
     -   A User Flow 
 
         1. Create a folder to hold all files needed to create a user flow
-            - Add title: "x. *Use Case* - User Flow files - *Section* (CL)"
+            - Add title: "x. *Use Case* < User Flow files < *Section* (CL)"
 
         2. Inside "user flow folder", create a doc to outline action steps for the use case. 
             - Add title: "Action steps < x. *Use Case* < User Flow < *Section* (CL)"
@@ -161,9 +161,9 @@ Key
 ====
 
 - "IS" : input session
-- "user flow folder": folder created in user flow step 1, titled: "x. *Use Case* - User Flow files - *Section* (CL)"
+- "user flow folder": folder created in user flow step 1, titled: "x. *Use Case* < User Flow files < *Section* (CL)"
 - "input task": 
-  - Create a task in Asana with title "IS: Lofi Sketch < x. Use Case" and:
+  - e.g Create a task in Asana with title "IS: *title of Google doc*" and:
       - Add a link to the google drawing in the task description
       - Move the task to the "Blockers & Reviews" column
       - Add a due date of tomorrow
@@ -173,5 +173,5 @@ Key
         - remind everyone the doc will be sealed at end of day
       - At next standdown:
         - give everyone a final warning
-                resolve any conversations (use real time chat if need be)
+        - resolve any conversations (use real time chat if need be)
         - declare the doc sealed
