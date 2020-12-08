@@ -68,7 +68,7 @@ DO share your progress with the team
 - Get the team up to speed on where you are in your workflow.
 - Identify anything blocking you.
 - Finish with a "maptivation" statement: 
-  - draw us a map of where we're going 
+  - draw us a map of where we're going today
   - get us excited about getting there 
 
 AVOID blocking the flow 
