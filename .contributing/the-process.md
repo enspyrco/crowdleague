@@ -163,7 +163,7 @@ Key
 - "IS" : input session
 - "user flow folder": folder created in user flow step 1, titled: "x. *Use Case* < User Flow files < *Section* (CL)"
 - "input task": 
-  - e.g Create a task in Asana with title "IS: *title of Google doc*" and:
+  - e.g Create a task in Asana with title "IS: *title of Google file*" and:
       - Add a link to the google drawing in the task description
       - Move the task to the "Blockers & Reviews" column
       - Add a due date of tomorrow
