@@ -36,6 +36,8 @@ Note that the sections are numbered but the items within each section are dot po
 
     -   write some notes about the parts you think are done well 
 
+    -   search for inspiration in collections of cool designs (eg. [Dribbble](https://dribbble.com/), [Uplabs](https://www.uplabs.com/))
+
 -   Complete use cases for level 1
 
 2 - Build everything around the use-case 
