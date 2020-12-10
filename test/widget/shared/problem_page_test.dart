@@ -21,7 +21,7 @@ void main() {
       // Create the Finders.
       final problemMessageText = find.text(problem.message);
 
-      // verify that the AuthPage UI is shown
+      // Verify that the text exists in the UI
       expect(problemMessageText, findsOneWidget);
     });
   });
