@@ -65,7 +65,7 @@ Create: 
 
 -   An Asana task for each use case, linked to the GitHub issue and Google doc (see below) 
 
--   A Drive folder for each use case, called "x. *Use Case* - *Section* (CL)" and in that folder, a Google Doc for each use case: 
+-   A Drive folder for each use case, called "x. *Use Case* < *Section* (CL)" and in that folder, a Google Doc for each use case: 
 
     -   Models 
 
