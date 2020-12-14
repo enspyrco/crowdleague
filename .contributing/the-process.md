@@ -12,7 +12,7 @@ Note that the sections are numbered but the items within each section are dot po
 
 -   Create in Drive - a folder called "x. *Section*: Sections Planning (CL)" in "Sections Planning (CL)".  In the folder: 
 
-    -   a Google doc called "0 - Use Cases < *Section* (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
+    -   a Google doc called "0. Use Cases < *Section* (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
 
         -   short, clear names → balance brevity with clarity 
 
@@ -61,27 +61,24 @@ For each use-case there will be three types of digital goodness:
 
     -   Sequence Diagram
 
-Create: 
+Inside Google Drive Folder "x. *Section*: Sections Planning (CL)", create:
 
--   An Asana task for each use case, linked to the GitHub issue and Google doc (see below) 
+-   A Models file
 
--   A Drive folder for each use case, called "x. *Use Case* < *Section* (CL)" and in that folder, a Google Doc for each use case: 
+      -   Create a UML  - ([example](https://docs.google.com/drawings/d/1-X-aZdVrsuFItxlwkJqusOINdk0kYb9dl3fgLTQVz94/template/preview?usp=drive_web))
+      
+      -   Add title - "Models < x. *Use Case* < *Section* (CL)"
 
-    -   Models 
+-   A Drive folder for each use case, called "x. *Use Case* < *Section* (CL)" and in that folder, create:
 
-        -   "x. *Use Case* < Models < *Section* (CL)"
-        
-        -   Google Drawing 
+    -   A User Flow:
 
-        -   UML Diagram ([example](https://docs.google.com/drawings/d/1-X-aZdVrsuFItxlwkJqusOINdk0kYb9dl3fgLTQVz94/template/preview?usp=drive_web)) 
+        1. Create a folder to hold all files needed to create a user flow diagram
+            - After creating the user flow diagram, all files in this folder dont need to be looked at. So keeping them seperate will reduce clutter and make it easier to look for the files we need to look at when creating github issues and coding! 
+            - Add title: "User Flow Files < x. *Use Case*  < *Section* (CL)"
 
-    -   A User Flow 
-
-        1. Create a folder to hold all files needed to create a user flow
-            - Add title: "x. *Use Case* < User Flow files < *Section* (CL)"
-
-        2. Inside "user flow folder", create a doc to outline action steps for the use case. 
-            - Add title: "Action steps < x. *Use Case* < User Flow < *Section* (CL)"
+        2. Inside "User Flow Files" folder, create a doc to outline action steps for the use case. 
+            - Add title: "Action steps < User Flow Files < x. *Use Case* < *Section* (CL)"
             - Add template to doc: 
                 -   A leaguer who...
                     -   (context) 
@@ -91,27 +88,27 @@ Create: 
                     -   (action steps)
             - After adding action steps, create "input task" in asana
 
-        3. Inside "user flow folder", create lofi wireframe
+        3. Inside "User Flow Files" folder, create lofi wireframe
             - Sketch lofi wireframe on paper
             - Create a google drawing to get input on sketch
-                - Add title: "Lofi Sketch < x. *Use Case* < User Flow < *Section* (CL)"
+                - Add title: "Lofi Sketch <  User Flow Files < x. *Use Case* < *Section* (CL)"
             - Take a photo and upload it to the google drawing doc from the previous step
             - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
             - Create an "input task" in asana
             - When all conversations are resolved, Create Hifi wireframe!
 
-        4. Create Hifi wireframe
+        4. Inside "User Flow Files" folder, create Hifi wireframe
             - Create Hifi wireframe using Adobe XD
             - Inside "user flow folder", create a google drawing to get input on wireframe
-                - Add title: "Hifi wireframe < x. *Use Case* < User Flow < *Section* (CL)"
+                - Add title: "Hifi wireframe < User Flow Files < x. *Use Case* <  *Section* (CL)"
             - Export any screens created in XD and upload them to google drawing doc
             - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
             - Create an "input task" in asana
-            - When all conversations are resolved, Create User flow doc!
+            - When all conversations are resolved, Create User Flow Diagram!
 
-        5. Create User flow doc
-            - create a google drawing file inside "x. Use Case" folder
-              - Add title: "Hifi wireframe < x. *Use Case* < *Section* (CL)"
+        5. Inside "x. *Use Case* < *Section* (CL)", create a User Flow Diagram
+            - Create a google drawing file
+              - Add title: "User Flow Diagram < x. *Use Case* < *Section* (CL)"
             - Combine action steps with wireframes in file
             - Create an "input task" in asana
             - After 24 hr input time has ended, resolve any conversations (use real time chat if need be)
@@ -121,25 +118,32 @@ Create: 
 
     -   A Sequence Diagram ([tutorial](https://creately.com/blog/diagrams/sequence-diagram-tutorial/), examples: [oauth2](https://developers.google.com/identity/protocols/oauth2?csw=1))  
 
-        -   "x. *Use Case* < Sequence Diagram < *Section* (CL)"
+        -   "Sequence Diagram < x. *Use Case*  < *Section* (CL)"
 
         -   See [Sequence Diagram Legend](https://docs.google.com/drawings/d/1KHo0M8I2elC-vrY2kQYZ38CgU4O2P9hkD4BFeoDcxSY/edit) 
 
         -   Decide on widget/action/middleware names
 
--   An issue on GitHub for each use case:
+-   In Asana, create:
 
-    1.  Create a tracking issue
+    -   A task for each use case, linked to the GitHub issue and Google folder 
 
-        - add the "tracking" label
 
-        - Add a title "section_name use_case_number: use_case_name"
+- In github, create:
 
-        - in the description, break down the use case into a checklist of tasks (sub issues)
+    -   An issue for each use case:
 
-    2.  For each task in tracking issue, create an issue and link its issue number
+        1.  Create a tracking issue
 
-    3.  Add all created issues to appropriate github projects
+            - add the "tracking" label
+
+            - Add a title "section_name use_case_number: use_case_name"
+
+            - in the description, break down the use case into a checklist of tasks (sub issues)
+
+        2.  For each task in tracking issue, create an issue and link its issue number
+
+        3.  Add all created issues to appropriate github projects
 
 - Add links back and forth between the Task, Issue & Doc
 
