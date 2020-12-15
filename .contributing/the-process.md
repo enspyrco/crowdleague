@@ -12,7 +12,7 @@ Note that the sections are numbered but the items within each section are dot po
 
 -   Create in Drive - a folder called "x. *Section*: Sections Planning (CL)" in "Sections Planning (CL)".  In the folder: 
 
-    -   a Google doc called "0. Use Cases < *Section* (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
+    -   a Google doc called "Use Cases < *Section* (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
 
         -   short, clear names → balance brevity with clarity 
 
@@ -67,11 +67,11 @@ Inside Google Drive Folder "x. *Section*: Sections Planning (CL)", create:
 
       -   Create a UML  - ([example](https://docs.google.com/drawings/d/1-X-aZdVrsuFItxlwkJqusOINdk0kYb9dl3fgLTQVz94/template/preview?usp=drive_web))
       
-      -   Add title - "Models < x. *Use Case* < *Section* (CL)"
+      -   Add title - "Models < *Section* (CL)"
 
 -   A Drive folder for each use case, called "x. *Use Case* < *Section* (CL)" and in that folder, create:
 
-    -   A User Flow:
+    -   A User Flow: (see: [User flow is the new wireframe](https://uxdesign.cc/when-to-use-user-flows-guide-8b26ca9aa36a) & [The How (and Why) of User Flows](https://uxdesign.cc/the-how-and-why-of-user-flows-85df776a1e2))
 
         1. Create a folder to hold all files needed to create a user flow diagram
             - After creating the user flow diagram, all files in this folder dont need to be looked at. So keeping them seperate will reduce clutter and make it easier to look for the files we need to look at when creating github issues and coding! 
@@ -86,7 +86,7 @@ Inside Google Drive Folder "x. *Section*: Sections Planning (CL)", create:
                     -   (goal) 
                 -   so they...
                     -   (action steps)
-            - After adding action steps, create "input task" in asana
+            - After adding action steps, create an "input task" in asana
 
         3. Inside "User Flow Files" folder, create lofi wireframe
             - Sketch lofi wireframe on paper
@@ -106,19 +106,17 @@ Inside Google Drive Folder "x. *Section*: Sections Planning (CL)", create:
             - Create an "input task" in asana
             - When all conversations are resolved, Create User Flow Diagram!
 
-        5. Inside "x. *Use Case* < *Section* (CL)", create a User Flow Diagram
+        5. Inside "x. *Use Case* < *Section* (CL)" folder, create a User Flow Diagram
             - Create a google drawing file
               - Add title: "User Flow Diagram < x. *Use Case* < *Section* (CL)"
             - Combine action steps with wireframes in file
             - Create an "input task" in asana
-            - After 24 hr input time has ended, resolve any conversations (use real time chat if need be)
-
-
-        -   See: [User flow is the new wireframe](https://uxdesign.cc/when-to-use-user-flows-guide-8b26ca9aa36a) & [The How (and Why) of User Flows](https://uxdesign.cc/the-how-and-why-of-user-flows-85df776a1e2) 
 
     -   A Sequence Diagram ([tutorial](https://creately.com/blog/diagrams/sequence-diagram-tutorial/), examples: [oauth2](https://developers.google.com/identity/protocols/oauth2?csw=1))  
 
-        -   "Sequence Diagram < x. *Use Case*  < *Section* (CL)"
+        - Inside "x. *Use Case* < *Section* (CL)" folder, create a sequence diagram
+
+        -   Add title - "Sequence Diagram < x. *Use Case*  < *Section* (CL)"
 
         -   See [Sequence Diagram Legend](https://docs.google.com/drawings/d/1KHo0M8I2elC-vrY2kQYZ38CgU4O2P9hkD4BFeoDcxSY/edit) 
 
