@@ -74,7 +74,7 @@ Inside Google Drive Folder "x. *Section*: Sections Planning (CL)", create:
     -   A User Flow: (see: [User flow is the new wireframe](https://uxdesign.cc/when-to-use-user-flows-guide-8b26ca9aa36a) & [The How (and Why) of User Flows](https://uxdesign.cc/the-how-and-why-of-user-flows-85df776a1e2))
 
         1. Create a folder to hold all files needed to create a user flow diagram
-            - After creating the user flow diagram, all files in this folder dont need to be looked at. So keeping them seperate will reduce clutter and make it easier to look for the files we need to look at when creating github issues and coding! 
+            - After creating the user flow diagram, all files in this folder don't need to be looked at. So keeping them separate will reduce clutter and make it easier to look for the files we need to look at when creating github issues and coding! 
             - Add title: "User Flow Files < x. *Use Case*  < *Section* (CL)"
 
         2. Inside "User Flow Files" folder, create a doc to outline action steps for the use case. 
