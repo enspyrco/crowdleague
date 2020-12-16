@@ -8,15 +8,13 @@ Note that the sections are numbered but the items within each section are dot po
 
 -   Replace *Section* below with the section name, eg. Auth
 
--   Use the next available Section number (denoted x. below)
-
--   Create in Drive - a folder called "x. *Section*: Sections Planning (CL)" in "Sections Planning (CL)".  In the folder: 
+-   Create in Drive - a folder called "*Section*: Sections Planning (CL)" in "Sections Planning (CL)".  In the folder: 
 
     -   a Google doc called "Use Cases < *Section* (CL)" that will hold just a list of Use Cases, so we have a short, easy to read and think about, list that is the definitive set of use cases
 
         -   short, clear names → balance brevity with clarity 
 
--   Create an Asana Project called "x. *Section*" 
+-   Create an Asana Project called "> *Section*" 
 
     -   add a link to the relevant "Sections Planning" Google Drive folder 
 
@@ -61,7 +59,7 @@ For each use-case there will be three types of digital goodness:
 
     -   Sequence Diagram
 
-Inside Google Drive Folder "x. *Section*: Sections Planning (CL)", create:
+Inside Google Drive Folder "*Section*: Sections Planning (CL)", create:
 
 -   A Models file
 
