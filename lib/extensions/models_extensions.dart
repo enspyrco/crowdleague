@@ -4,12 +4,14 @@ import 'package:crowdleague/models/navigation/page_data/initial_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/messages_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/new_conversation_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/page_data.dart';
+import 'package:crowdleague/models/navigation/page_data/problem_page_data.dart';
 import 'package:crowdleague/models/navigation/page_data/profile_page_data.dart';
 import 'package:crowdleague/widgets/app/initial_page.dart';
 import 'package:crowdleague/widgets/auth/email_auth_options_page/email_auth_options_page.dart';
 import 'package:crowdleague/widgets/conversations/messages_page/messages_page.dart';
 import 'package:crowdleague/widgets/conversations/new_conversation_page/new_conversation_page.dart';
 import 'package:crowdleague/widgets/profile/profile_page.dart';
+import 'package:crowdleague/widgets/shared/problem_page.dart';
 import 'package:flutter/material.dart';
 
 /// We are using extensions in order to keep models as PODOs and avoid other
@@ -29,7 +31,9 @@ extension NavigatorEntriesExt on BuiltList<PageData> {
     NewConversationPageData(): MaterialPage<NewConversationPage>(
         key: ValueKey(NewConversationPage), child: NewConversationPage()),
     MessagesPageData(): MaterialPage<MessagesPage>(
-        key: ValueKey(MessagesPage), child: MessagesPage())
+        key: ValueKey(MessagesPage), child: MessagesPage()),
+    ProblemPageData(): MaterialPage<ProblemPage>(
+        key: ValueKey(ProblemPage), child: ProblemPage())
   };
 
   List<MaterialPage> toPages() =>

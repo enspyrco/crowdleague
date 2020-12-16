@@ -2,6 +2,7 @@ import 'package:crowdleague/actions/functions/store_processing_failures.dart';
 import 'package:crowdleague/actions/navigation/add_problem.dart';
 import 'package:crowdleague/actions/navigation/remove_problem.dart';
 import 'package:crowdleague/models/app/app_state.dart';
+import 'package:crowdleague/models/navigation/page_data/problem_page_data.dart';
 import 'package:crowdleague/reducers/auth/clear_user_data.dart';
 import 'package:crowdleague/reducers/auth/store_auth_step.dart';
 import 'package:crowdleague/reducers/auth/store_user.dart';
@@ -73,7 +74,8 @@ class StoreProcessingFailuresReducer
 class AddProblemReducer extends TypedReducer<AppState, AddProblem> {
   AddProblemReducer()
       : super((state, action) =>
-            state.rebuild((b) => b..problems.add(action.problem)));
+            state.rebuild((b) => b..problems.add(action.problem)
+            ..pagesData.add(ProblemPageData())));
 }
 
 class RemoveProblemReducer extends TypedReducer<AppState, RemoveProblem> {
