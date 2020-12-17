@@ -73,10 +73,10 @@ Inside Google Drive Folder "*Section*: Sections Planning (CL)", create:
 
         1. Create a folder to hold all files needed to create a user flow diagram
             - After creating the user flow diagram, all files in this folder don't need to be looked at. So keeping them separate will reduce clutter and make it easier to look for the files we need to look at when creating github issues and coding! 
-            - Add title: "User Flow Ingredients < x. *Use Case*  < *Section* (CL)"
+            - Add title: "User Flow Pieces < x. *Use Case*  < *Section* (CL)"
 
-        2. Inside "User Flow Ingredients" folder, create a doc to outline action steps for the use case. 
-            - Add title: "Action steps < User Flow Ingredients < x. *Use Case* < *Section* (CL)"
+        2. Inside "User Flow Pieces" folder, create a doc to outline action steps for the use case. 
+            - Add title: "Action steps < User Flow Pieces < x. *Use Case* < *Section* (CL)"
             - Add template to doc: 
                 -   A leaguer who...
                     -   (context) 
@@ -86,19 +86,19 @@ Inside Google Drive Folder "*Section*: Sections Planning (CL)", create:
                     -   (action steps)
             - After adding action steps, create an "input task" in asana
 
-        3. Inside "User Flow Ingredients" folder, create lofi wireframe
+        3. Inside "User Flow Pieces" folder, create lofi wireframe
             - Sketch lofi wireframe on paper
             - Create a google drawing to get input on sketch
-                - Add title: "Lofi Sketch <  User Flow Ingredients < x. *Use Case* < *Section* (CL)"
+                - Add title: "Lofi Sketch <  User Flow Pieces < x. *Use Case* < *Section* (CL)"
             - Take a photo and upload it to the google drawing doc from the previous step
             - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
             - Create an "input task" in asana
             - When all conversations are resolved, Create Hifi wireframe!
 
-        4. Inside "User Flow Ingredients" folder, create Hifi wireframe
+        4. Inside "User Flow Pieces" folder, create Hifi wireframe
             - Create Hifi wireframe using Adobe XD
             - Inside "user flow folder", create a google drawing to get input on wireframe
-                - Add title: "Hifi wireframe < User Flow Ingredients < x. *Use Case* <  *Section* (CL)"
+                - Add title: "Hifi wireframe < User Flow Pieces < x. *Use Case* <  *Section* (CL)"
             - Export any screens created in XD and upload them to google drawing doc
             - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
             - Create an "input task" in asana
@@ -163,7 +163,7 @@ Key
 ====
 
 - "IS" : input session
-- "user flow folder": folder created in user flow step 1, titled: "x. *Use Case* < User Flow Ingredients < *Section* (CL)"
+- "user flow folder": folder created in user flow step 1, titled: "x. *Use Case* < User Flow Pieces < *Section* (CL)"
 - "input task": 
   - e.g Create a task in Asana with title "IS: *title of Google file*" and:
       - Add a link to the google drawing in the task description
