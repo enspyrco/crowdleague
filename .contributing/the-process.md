@@ -73,10 +73,10 @@ Inside Google Drive Folder "*Section*: Sections Planning (CL)", create:
 
         1. Create a folder to hold all files needed to create a user flow diagram
             - After creating the user flow diagram, all files in this folder don't need to be looked at. So keeping them separate will reduce clutter and make it easier to look for the files we need to look at when creating github issues and coding! 
-            - Add title: "User Flow Files < x. *Use Case*  < *Section* (CL)"
+            - Add title: "User Flow Pieces < x. *Use Case*  < *Section* (CL)"
 
-        2. Inside "User Flow Files" folder, create a doc to outline action steps for the use case. 
-            - Add title: "Action steps < User Flow Files < x. *Use Case* < *Section* (CL)"
+        2. Inside "User Flow Pieces" folder, create a doc to outline action steps for the use case. 
+            - Add title: "Action steps < User Flow Pieces < x. *Use Case* < *Section* (CL)"
             - Add template to doc: 
                 -   A leaguer who...
                     -   (context) 
@@ -84,31 +84,31 @@ Inside Google Drive Folder "*Section*: Sections Planning (CL)", create:
                     -   (goal) 
                 -   so they...
                     -   (action steps)
-            - After adding action steps, create an "input task" in asana
+            - After adding action steps, create an "input task"[3] in asana
 
-        3. Inside "User Flow Files" folder, create lofi wireframe
+        3. Inside "User Flow Pieces" folder, create lofi wireframe
             - Sketch lofi wireframe on paper
             - Create a google drawing to get input on sketch
-                - Add title: "Lofi Sketch <  User Flow Files < x. *Use Case* < *Section* (CL)"
+                - Add title: "Lofi Sketch <  User Flow Pieces < x. *Use Case* < *Section* (CL)"
             - Take a photo and upload it to the google drawing doc from the previous step
             - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
-            - Create an "input task" in asana
+            - Create an "input task"[3] in asana
             - When all conversations are resolved, Create Hifi wireframe!
 
-        4. Inside "User Flow Files" folder, create Hifi wireframe
+        4. Inside "User Flow Pieces" folder, create Hifi wireframe
             - Create Hifi wireframe using Adobe XD
-            - Inside "user flow folder", create a google drawing to get input on wireframe
-                - Add title: "Hifi wireframe < User Flow Files < x. *Use Case* <  *Section* (CL)"
+            - Inside "user flow folder"[2] , create a google drawing to get input on wireframe
+                - Add title: "Hifi wireframe < User Flow Pieces < x. *Use Case* <  *Section* (CL)"
             - Export any screens created in XD and upload them to google drawing doc
             - Add any helpful comments, e.g reasoning for design decisions, specific questions about design
-            - Create an "input task" in asana
+            - Create an "input task"[3] in asana
             - When all conversations are resolved, Create User Flow Diagram!
 
         5. Inside "x. *Use Case* < *Section* (CL)" folder, create a User Flow Diagram
             - Create a google drawing file
               - Add title: "User Flow Diagram < x. *Use Case* < *Section* (CL)"
             - Combine action steps with wireframes in file
-            - Create an "input task" in asana
+            - Create an "input task"[3] in asana
 
     -   A Sequence Diagram ([tutorial](https://creately.com/blog/diagrams/sequence-diagram-tutorial/), examples: [oauth2](https://developers.google.com/identity/protocols/oauth2?csw=1))  
 
@@ -162,10 +162,12 @@ Notes on the various tools 
 Key
 ====
 
-- "IS" : input session
-- "user flow folder": folder created in user flow step 1, titled: "x. *Use Case* < User Flow files < *Section* (CL)"
-- "input task": 
-  - e.g Create a task in Asana with title "IS: *title of Google file*" and:
+1. "IS" : input session
+
+2. "user flow folder": folder created in user flow step 1, titled: "x. *Use Case* < User Flow Pieces < *Section* (CL)"
+
+3. "input task": 
+    - e.g Create a task in Asana with title "IS [1]: *title of Google file*" and:
       - Add a link to the google drawing in the task description
       - Move the task to the "Blockers & Reviews" column
       - Add a due date of tomorrow
