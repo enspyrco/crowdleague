@@ -177,5 +177,5 @@ Key
         - At end of RTC, inform team about input sessions due date 
 
     3. Finalise file:
-        - Resolve any conversations (use RTC's if neccessary)
+        - Resolve any conversations (use RTCs if necessary)
         - At due date, declare the doc sealed
