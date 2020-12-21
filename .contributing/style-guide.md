@@ -45,6 +45,10 @@ The [style guide for the Flutter repo](https://github.com/flutter/flutter/wiki/S
   - eg. set the reducer to null when creating a mock store in widget tests rather than use the appReducer 
 
 
+# Markdown Style
+
+Markdown should follow the default set of markdown lints defined in [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint).
+
 
 # Contributing 
 
@@ -105,3 +109,4 @@ Whenever possible, do a rename refactor in a separate PR.
 - keep logic to the middleware & reducers
 - converting to other types can be done with extensions 
 - it's important we stick to this as we don't test any of the models, enums or actions (and the corresponding coverage info is not included) 
+
