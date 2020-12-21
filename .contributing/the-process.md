@@ -168,7 +168,7 @@ Key
 
 3. "input task": 
     1. Create a task in Asana with title "IS [1]: *title of Google file*" and:
-        - Add a link to the google drawing in the task description
+        - Add a link to the google file in the task description
         - Move the task to the "Open for input" column
         - Add a due date of tomorrow at 5:00pm
         
