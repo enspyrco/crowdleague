@@ -167,15 +167,15 @@ Key
 2. "user flow folder": folder created in user flow step 1, titled: "x. *Use Case* < User Flow Pieces < *Section* (CL)"
 
 3. "input task": 
-    - e.g Create a task in Asana with title "IS [1]: *title of Google file*" and:
-      - Add a link to the google drawing in the task description
-      - Move the task to the "Blockers & Reviews" column
-      - Add a due date of tomorrow
-      - At standdown:
-        - resolve any conversations (add RTCs for the next day if need be)
-      - At next standup:
-        - remind everyone the doc will be sealed at end of day
-      - At next standdown:
-        - give everyone a final warning
-        - resolve any conversations (use real time chat if need be)
-        - declare the doc sealed
+    1. Create a task in Asana with title "IS [1]: *title of Google file*" and:
+        - Add a link to the google file in the task description
+        - Move the task to the "Open for input" column
+        - Add a due date of tomorrow at 5:00pm
+        
+    2. Hold an RTC to discuss the file. This is to get all teammates on the same page, which makes it easier for everyone to give more valuable input. 
+        - RTC can be held during day of creation, or after standup next day.
+        - At end of RTC, inform team about input sessions due date 
+
+    3. Finalise file:
+        - Resolve any conversations (use RTCs if necessary)
+        - At due date, declare the doc sealed
