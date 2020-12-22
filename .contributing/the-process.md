@@ -105,9 +105,10 @@ Inside Google Drive Folder "*Section*: Sections Planning (CL)", create:
             - When all conversations are resolved, Create User Flow Diagram!
 
         5. Inside "x. *Use Case* < *Section* (CL)" folder, create a User Flow Diagram
-            - Create a google drawing file
-              - Add title: "User Flow Diagram < x. *Use Case* < *Section* (CL)"
-            - Combine action steps with wireframes in file
+            - Create a google presentation file
+              - Add title: "User Flow Presentation < x. *Use Case* < *Section* (CL)"
+            - Export any screens created in XD and add them to a slide in the google presentation
+            - Add the relevant action step to each slide
             - Create an "input task"[3] in asana
 
     -   A Sequence Diagram ([tutorial](https://creately.com/blog/diagrams/sequence-diagram-tutorial/), examples: [oauth2](https://developers.google.com/identity/protocols/oauth2?csw=1))  
