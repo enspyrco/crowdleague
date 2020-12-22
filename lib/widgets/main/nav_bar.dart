@@ -20,6 +20,10 @@ class NavBar extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.location_city_rounded),
+          label: 'Venues',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.business),
           label: 'Business',
         ),
