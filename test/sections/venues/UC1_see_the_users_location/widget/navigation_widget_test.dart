@@ -8,7 +8,7 @@ import '../../../../utils/widget_test_harness.dart';
 void main() {
   group('navBar', () {
     testWidgets(
-        'on tap venues page nav bar item, dispatch action to navigate to venues page ',
+        'dispatches StoreNavBarSelection action on tap venues BottomNavigationBarItem',
         (WidgetTester tester) async {
       // Setup a test harness.
       final harness = WidgetTestHarness(
