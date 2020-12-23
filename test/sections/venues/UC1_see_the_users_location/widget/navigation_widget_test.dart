@@ -29,6 +29,7 @@ void main() {
 
       await tester.tap(venuesNavBarItem);
 
+      // Check that `venuesNavBarItem` dispatches correct action
       expect(
         harness.receivedActions,
         contains(
