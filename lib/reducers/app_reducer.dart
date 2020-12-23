@@ -73,9 +73,11 @@ class StoreProcessingFailuresReducer
 
 class AddProblemReducer extends TypedReducer<AppState, AddProblem> {
   AddProblemReducer()
-      : super((state, action) =>
-            state.rebuild((b) => b..problems.add(action.problem)
-            ..pagesData.add(ProblemPageData())));
+      : super((state, action) => state.rebuild((b) => b
+          ..problems.add(action.problem)
+          ..pagesData.add(
+            ProblemPageData(problem: action.problem),
+          )));
 }
 
 class RemoveProblemReducer extends TypedReducer<AppState, RemoveProblem> {

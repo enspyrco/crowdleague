@@ -13,7 +13,7 @@ void main() {
           GeneralProblem, 'Problem error message', StackTrace.current);
 
       // Setup a test harness.
-      final harness = WidgetTestHarness(widgetUnderTest: ProblemPage(problem));
+      final harness = WidgetTestHarness(widgetUnderTest: ProblemPage(problem: problem));
 
       // Tell the tester to build the widget tree.
       await tester.pumpWidget(harness.widget);
