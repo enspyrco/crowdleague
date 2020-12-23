@@ -3,7 +3,7 @@ import 'package:crowdleague/enums/navigation/nav_bar_selection.dart';
 import 'package:crowdleague/widgets/main/nav_bar.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../utils/widget_test_harness.dart';
+import '../../../../utils/widget_test_harness.dart';
 
 void main() {
   group('navBar', () {
