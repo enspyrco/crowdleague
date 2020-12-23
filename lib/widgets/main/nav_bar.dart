@@ -20,7 +20,7 @@ class NavBar extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.location_city_rounded),
+          icon: Icon(Icons.location_on),
           label: 'Venues',
         ),
         BottomNavigationBarItem(
