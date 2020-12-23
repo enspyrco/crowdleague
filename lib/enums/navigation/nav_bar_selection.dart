@@ -8,6 +8,7 @@ part 'nav_bar_selection.g.dart';
 class NavBarSelection extends EnumClass {
   static const NavBarSelection home = _$home;
   static const NavBarSelection business = _$business;
+  static const NavBarSelection venues = _$venues;
   static const NavBarSelection conversations = _$conversations;
   static const NavBarSelection more = _$more;
 
@@ -15,6 +16,7 @@ class NavBarSelection extends EnumClass {
 
   static final _$indexMap = BuiltMap<NavBarSelection, int>({
     home: 0,
+    venues: 1,
     business: 1,
     conversations: 2,
     more: 3,
@@ -28,10 +30,12 @@ class NavBarSelection extends EnumClass {
       case 0:
         return _$home;
       case 1:
-        return _$business;
+        return _$venues;
       case 2:
-        return _$conversations;
+        return _$business;
       case 3:
+        return _$conversations;
+      case 4:
         return _$more;
       default:
         throw ArgumentError(index);
