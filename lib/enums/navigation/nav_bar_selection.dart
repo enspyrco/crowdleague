@@ -17,9 +17,9 @@ class NavBarSelection extends EnumClass {
   static final _$indexMap = BuiltMap<NavBarSelection, int>({
     home: 0,
     venues: 1,
-    business: 1,
-    conversations: 2,
-    more: 3,
+    business: 2,
+    conversations: 3,
+    more: 4,
   });
   int get index => _$indexMap[this];
 
