@@ -15,8 +15,12 @@ void main() {
       final rut = StoreNavBarSelectionReducer();
 
       // Invoke the reducer to get a new state.
-      final newState = rut.reducer(initialState,
-          StoreNavBarSelection(selection: NavBarSelection.valueOfIndex(1)));
+      final newState = rut.reducer(
+        initialState,
+        StoreNavBarSelection(
+          selection: NavBarSelection.valueOfIndex(1),
+        ),
+      );
 
       // Check that the new state has the new navbarSelection.
       expect(newState.navBarSelection.name, 'venues');
