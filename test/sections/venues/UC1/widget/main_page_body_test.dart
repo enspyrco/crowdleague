@@ -39,8 +39,7 @@ void main() {
       // Create the Finders.
       final venuesPage = find.text('Venues Page');
 
-      // Use the `findsOneWidget` matcher provided by flutter_test to verify
-      // that venuesPage is shown
+      // verify that venuesPage is shown
       expect(venuesPage, findsOneWidget);
     });
   });
