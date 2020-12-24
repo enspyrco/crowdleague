@@ -15,6 +15,8 @@ class MainPageBody extends StatelessWidget {
     switch (selection) {
       case NavBarSelection.home:
         return Center(child: Text('Home Page'));
+      case NavBarSelection.venues:
+        return Center(child: Text('Venues Page'));
       case NavBarSelection.business:
         return Center(child: Text('Business Page'));
       case NavBarSelection.conversations:
