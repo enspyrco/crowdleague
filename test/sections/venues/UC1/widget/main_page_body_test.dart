@@ -1,16 +1,17 @@
 import 'package:crowdleague/enums/navigation/nav_bar_selection.dart';
-import 'package:crowdleague/widgets/main/main_page_body.dart';
+import 'package:crowdleague/widgets/main/main_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../utils/widget_test_harness.dart';
 
 void main() {
-  group('MainPageBody', () {
+  group('MainPage', () {
     testWidgets('shows venuesPage when appState.navBarSelection updates',
         (WidgetTester tester) async {
-      // Setup a test harness.
+      // Setup a test harness with updated state
       final harness = WidgetTestHarness(
-        widgetUnderTest: MainPageBody(selection: NavBarSelection.venues),
+        stateUpdates: (b) => b..navBarSelection = NavBarSelection.venues,
+        widgetUnderTest: MainPage(),
       );
 
       // Tell the tester to build the widget tree.
