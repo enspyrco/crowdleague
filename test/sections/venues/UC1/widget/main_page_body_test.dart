@@ -20,7 +20,7 @@ void main() {
       final homePage = find.text('Home Page');
       final venuesPage = find.text('Venues Page');
 
-      // verify that homePage is shown and venues page is not shown
+      // Verify that homePage is shown and venues page is not shown
       expect(homePage, findsOneWidget);
       expect(venuesPage, findsNothing);
     });
@@ -37,10 +37,12 @@ void main() {
       await tester.pumpWidget(harness.widget);
 
       // Create the Finders.
+      final homePage = find.text('Home Page');
       final venuesPage = find.text('Venues Page');
 
-      // verify that venuesPage is shown
+      // Verify that venuesPage is shown and homePage is not shown
       expect(venuesPage, findsOneWidget);
+      expect(homePage, findsNothing);
     });
   });
 }
