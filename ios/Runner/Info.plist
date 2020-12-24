@@ -65,5 +65,7 @@
 	<string>Used to add profile pics, venue pics, etc.</string>
 	<key>maps_api_key</key>
 	<string>$(MAPS_API_KEY)</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+	<string>we have your location</string>
 </dict>
 </plist>
