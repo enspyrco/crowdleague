@@ -11,6 +11,8 @@ import 'package:meta/meta.dart';
 
 part 'problem_page_data.g.dart';
 
+/// Creates a type of [PageData] to route to [ProblemPage].
+/// See [Navigator]
 abstract class ProblemPageData
     implements PageData, Built<ProblemPageData, ProblemPageDataBuilder> {
   ProblemBase get problem;
