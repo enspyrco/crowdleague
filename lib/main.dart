@@ -2,6 +2,7 @@ import 'package:crowdleague/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -64,32 +65,65 @@ class _SignInScreenState extends State<SignInScreen> {
     return credential;
   }
 
+  Future<UserCredential> signInWithGoogle(BuildContext context) async {
+    setState(() {
+      isSigningIn = true;
+    });
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    final userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    if (context.mounted) context.pushReplacement('/');
+
+    return userCredential;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: (isSigningIn)
             ? const CircularProgressIndicator()
-            : TextButton.icon(
-                icon: const Icon(
-                  CustomIcons.apple,
-                  size: 16,
-                ),
-                onPressed: () => signInWithApple(context),
-                label: const Text('Sign in with Apple'),
-                style: const ButtonStyle(
-                  foregroundColor: WidgetStatePropertyAll(Colors.white),
-                  textStyle:
-                      WidgetStatePropertyAll(TextStyle(color: Colors.white)),
-                  backgroundColor: WidgetStatePropertyAll(Colors.black),
-                  shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5.0),
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton.icon(
+                    icon: const Icon(
+                      CustomIcons.apple,
+                      size: 16,
+                    ),
+                    onPressed: () => signInWithApple(context),
+                    label: const Text('Sign in with Apple'),
+                    style: const ButtonStyle(
+                      foregroundColor: WidgetStatePropertyAll(Colors.white),
+                      textStyle: WidgetStatePropertyAll(
+                          TextStyle(color: Colors.white)),
+                      backgroundColor: WidgetStatePropertyAll(Colors.black),
+                      shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5.0),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      signInWithGoogle(context);
+                    },
+                    label: const Text('Sign in with Google'),
+                  ),
+                ],
               ),
       ),
     );
