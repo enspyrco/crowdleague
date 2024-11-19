@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>945991608888-g51ifp9etckk1v70ih4n3ks2hle31p81.apps.googleusercontent.com</string>
+	<string>945991608888-2avjr1tpktuua4qv7b4gll8m13na78o5.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.945991608888-g51ifp9etckk1v70ih4n3ks2hle31p81</string>
+	<string>com.googleusercontent.apps.945991608888-2avjr1tpktuua4qv7b4gll8m13na78o5</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>945991608888-bnt33suqso037tuo91hrrgv11d7c6dno.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAucqyBAKIpsdEs4y1M1ypgmrV1fPhyjcQ</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>co.enspyr.crowdleague</string>
+	<string>co.enspyr.cl1</string>
 	<key>PROJECT_ID</key>
 	<string>crowdleague-project</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:945991608888:ios:86c5e7e868ccccb96314cd</string>
+	<string>1:945991608888:ios:e86c73c1fd8b65cc6314cd</string>
 </dict>
 </plist>

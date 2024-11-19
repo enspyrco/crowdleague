@@ -43,19 +43,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCCY0ns9i98D1EiGpmNrYfMzzOrpyfKL6o',
-    appId: '1:945991608888:web:a6b8b744348c586a6314cd',
-    messagingSenderId: '945991608888',
-    projectId: 'crowdleague-project',
-    authDomain: 'crowdleague-project.firebaseapp.com',
-    storageBucket: 'crowdleague-project.firebasestorage.app',
-    measurementId: 'G-B9J1PXT6P3',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCBD19q1DpyVMUPXEr_XTvPytlh_AVVaaQ',
-    appId: '1:945991608888:android:14eff4cd00ca49e26314cd',
+    appId: '1:945991608888:android:1a93eb485d7157716314cd',
     messagingSenderId: '945991608888',
     projectId: 'crowdleague-project',
     storageBucket: 'crowdleague-project.firebasestorage.app',
@@ -63,21 +53,34 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAucqyBAKIpsdEs4y1M1ypgmrV1fPhyjcQ',
-    appId: '1:945991608888:ios:86c5e7e868ccccb96314cd',
+    appId: '1:945991608888:ios:e86c73c1fd8b65cc6314cd',
     messagingSenderId: '945991608888',
     projectId: 'crowdleague-project',
     storageBucket: 'crowdleague-project.firebasestorage.app',
-    iosClientId: '945991608888-g51ifp9etckk1v70ih4n3ks2hle31p81.apps.googleusercontent.com',
-    iosBundleId: 'co.enspyr.crowdleague',
+    androidClientId: '945991608888-bnt33suqso037tuo91hrrgv11d7c6dno.apps.googleusercontent.com',
+    iosClientId: '945991608888-2avjr1tpktuua4qv7b4gll8m13na78o5.apps.googleusercontent.com',
+    iosBundleId: 'co.enspyr.cl1',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCCY0ns9i98D1EiGpmNrYfMzzOrpyfKL6o',
+    appId: '1:945991608888:web:9552c24ac3e057566314cd',
+    messagingSenderId: '945991608888',
+    projectId: 'crowdleague-project',
+    authDomain: 'crowdleague-project.firebaseapp.com',
+    storageBucket: 'crowdleague-project.firebasestorage.app',
+    measurementId: 'G-4DB55BKKJ4',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAucqyBAKIpsdEs4y1M1ypgmrV1fPhyjcQ',
-    appId: '1:945991608888:ios:86c5e7e868ccccb96314cd',
+    appId: '1:945991608888:ios:19a70067619dec436314cd',
     messagingSenderId: '945991608888',
     projectId: 'crowdleague-project',
     storageBucket: 'crowdleague-project.firebasestorage.app',
+    androidClientId: '945991608888-bnt33suqso037tuo91hrrgv11d7c6dno.apps.googleusercontent.com',
     iosClientId: '945991608888-g51ifp9etckk1v70ih4n3ks2hle31p81.apps.googleusercontent.com',
     iosBundleId: 'co.enspyr.crowdleague',
   );
+
 }
