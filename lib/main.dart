@@ -1,3 +1,4 @@
+import 'package:crowdleague/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
@@ -59,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
     });
     final credential =
         await FirebaseAuth.instance.signInWithProvider(appleProvider);
-    if (context.mounted) context.go('/');
+    if (context.mounted) context.pushReplacement('/');
     return credential;
   }
 
@@ -69,9 +70,26 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Center(
         child: (isSigningIn)
             ? const CircularProgressIndicator()
-            : TextButton(
+            : TextButton.icon(
+                icon: const Icon(
+                  CustomIcons.apple,
+                  size: 16,
+                ),
                 onPressed: () => signInWithApple(context),
-                child: const Text('Sign In'),
+                label: const Text('Sign in with Apple'),
+                style: const ButtonStyle(
+                  foregroundColor: WidgetStatePropertyAll(Colors.white),
+                  textStyle:
+                      WidgetStatePropertyAll(TextStyle(color: Colors.white)),
+                  backgroundColor: WidgetStatePropertyAll(Colors.black),
+                  shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5.0),
+                      ),
+                    ),
+                  ),
+                ),
               ),
       ),
     );
@@ -83,7 +101,7 @@ class HomeScreen extends StatelessWidget {
 
   Future<void> signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    if (context.mounted) context.go('/signin');
+    if (context.mounted) context.pushReplacement('/signin');
   }
 
   @override
