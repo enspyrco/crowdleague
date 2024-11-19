@@ -4,14 +4,14 @@
       "android": {
         "default": {
           "projectId": "crowdleague-project",
-          "appId": "1:945991608888:android:c10637a487d019ea6314cd",
+          "appId": "1:945991608888:android:14eff4cd00ca49e26314cd",
           "fileOutput": "android/app/google-services.json"
         }
       },
       "ios": {
         "default": {
           "projectId": "crowdleague-project",
-          "appId": "1:945991608888:ios:093504da4819f8886314cd",
+          "appId": "1:945991608888:ios:86c5e7e868ccccb96314cd",
           "uploadDebugSymbols": false,
           "fileOutput": "ios/Runner/GoogleService-Info.plist"
         }
@@ -19,7 +19,7 @@
       "macos": {
         "default": {
           "projectId": "crowdleague-project",
-          "appId": "1:945991608888:ios:093504da4819f8886314cd",
+          "appId": "1:945991608888:ios:86c5e7e868ccccb96314cd",
           "uploadDebugSymbols": false,
           "fileOutput": "macos/Runner/GoogleService-Info.plist"
         }
@@ -28,10 +28,10 @@
         "lib/firebase_options.dart": {
           "projectId": "crowdleague-project",
           "configurations": {
-            "android": "1:945991608888:android:c10637a487d019ea6314cd",
-            "ios": "1:945991608888:ios:093504da4819f8886314cd",
-            "macos": "1:945991608888:ios:093504da4819f8886314cd",
-            "web": "1:945991608888:web:a7bbadf13761d03e6314cd"
+            "android": "1:945991608888:android:14eff4cd00ca49e26314cd",
+            "ios": "1:945991608888:ios:86c5e7e868ccccb96314cd",
+            "macos": "1:945991608888:ios:86c5e7e868ccccb96314cd",
+            "web": "1:945991608888:web:a6b8b744348c586a6314cd"
           }
         }
       }

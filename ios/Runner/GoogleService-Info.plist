@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>945991608888-g51ifp9etckk1v70ih4n3ks2hle31p81.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.945991608888-g51ifp9etckk1v70ih4n3ks2hle31p81</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAucqyBAKIpsdEs4y1M1ypgmrV1fPhyjcQ</string>
 	<key>GCM_SENDER_ID</key>
@@ -9,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.crowdleague</string>
+	<string>co.enspyr.crowdleague</string>
 	<key>PROJECT_ID</key>
 	<string>crowdleague-project</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:945991608888:ios:093504da4819f8886314cd</string>
+	<string>1:945991608888:ios:86c5e7e868ccccb96314cd</string>
 </dict>
 </plist>

@@ -45,17 +45,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCCY0ns9i98D1EiGpmNrYfMzzOrpyfKL6o',
-    appId: '1:945991608888:web:a7bbadf13761d03e6314cd',
+    appId: '1:945991608888:web:a6b8b744348c586a6314cd',
     messagingSenderId: '945991608888',
     projectId: 'crowdleague-project',
     authDomain: 'crowdleague-project.firebaseapp.com',
     storageBucket: 'crowdleague-project.firebasestorage.app',
-    measurementId: 'G-YJW2EJMFMD',
+    measurementId: 'G-B9J1PXT6P3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCBD19q1DpyVMUPXEr_XTvPytlh_AVVaaQ',
-    appId: '1:945991608888:android:c10637a487d019ea6314cd',
+    appId: '1:945991608888:android:14eff4cd00ca49e26314cd',
     messagingSenderId: '945991608888',
     projectId: 'crowdleague-project',
     storageBucket: 'crowdleague-project.firebasestorage.app',
@@ -63,19 +63,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAucqyBAKIpsdEs4y1M1ypgmrV1fPhyjcQ',
-    appId: '1:945991608888:ios:093504da4819f8886314cd',
+    appId: '1:945991608888:ios:86c5e7e868ccccb96314cd',
     messagingSenderId: '945991608888',
     projectId: 'crowdleague-project',
     storageBucket: 'crowdleague-project.firebasestorage.app',
-    iosBundleId: 'com.example.crowdleague',
+    iosClientId: '945991608888-g51ifp9etckk1v70ih4n3ks2hle31p81.apps.googleusercontent.com',
+    iosBundleId: 'co.enspyr.crowdleague',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAucqyBAKIpsdEs4y1M1ypgmrV1fPhyjcQ',
-    appId: '1:945991608888:ios:093504da4819f8886314cd',
+    appId: '1:945991608888:ios:86c5e7e868ccccb96314cd',
     messagingSenderId: '945991608888',
     projectId: 'crowdleague-project',
     storageBucket: 'crowdleague-project.firebasestorage.app',
-    iosBundleId: 'com.example.crowdleague',
+    iosClientId: '945991608888-g51ifp9etckk1v70ih4n3ks2hle31p81.apps.googleusercontent.com',
+    iosBundleId: 'co.enspyr.crowdleague',
   );
 }
