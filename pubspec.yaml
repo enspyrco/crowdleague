@@ -58,7 +58,10 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/images/google_icon.png
+
   fonts:
-  - family: CustomIcons
-    fonts:
-      - asset: assets/fonts/icons.ttf
+    - family: CustomIcons
+      fonts:
+        - asset: assets/fonts/icons.ttf
