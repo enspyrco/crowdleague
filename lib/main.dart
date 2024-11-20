@@ -1,4 +1,4 @@
-import 'package:crowdleague/custom_icons.dart';
+import 'package:crowdleague/utils/icons/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
