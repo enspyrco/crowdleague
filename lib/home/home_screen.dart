@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: <Widget>[
-        const VenuesScreen(),
+        VenuesScreen(),
         const NotificationsScreen(),
         const MessagesScreen(),
         const YouScreen(),
