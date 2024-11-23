@@ -5,6 +5,8 @@ PODS:
   - AppAuth/Core (1.7.5)
   - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
+  - file_selector_macos (0.0.1):
+    - FlutterMacOS
   - Firebase/Auth (11.4.2):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 11.4.0)
@@ -79,6 +81,7 @@ PODS:
     - GTMSessionFetcher/Core
 
 DEPENDENCIES:
+  - file_selector_macos (from `Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos`)
   - firebase_auth (from `Flutter/ephemeral/.symlinks/plugins/firebase_auth/macos`)
   - firebase_core (from `Flutter/ephemeral/.symlinks/plugins/firebase_core/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
@@ -100,6 +103,8 @@ SPEC REPOS:
     - GTMSessionFetcher
 
 EXTERNAL SOURCES:
+  file_selector_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos
   firebase_auth:
     :path: Flutter/ephemeral/.symlinks/plugins/firebase_auth/macos
   firebase_core:
@@ -111,6 +116,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
+  file_selector_macos: cc3858c981fe6889f364731200d6232dac1d812d
   Firebase: 7fd5466678d964be78fbf536d8a3385da19c4828
   firebase_auth: 85ed6c80b24da60af13391f9cdc0e566440b1963
   firebase_core: d95c4a2225d7b6ed46bc31fb2a6f421fc7c8285b

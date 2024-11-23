@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'auth/sign_in_screen.dart';
 import 'home/home_screen.dart';
+import 'utils/image_picker_screen.dart';
 
 final _router = GoRouter(
   initialLocation: FirebaseAuth.instance.currentUser == null ? '/signin' : '/',
@@ -17,6 +18,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/signin',
       builder: (context, state) => const SignInScreen(),
+    ),
+    GoRoute(
+      path: '/image-picker',
+      builder: (context, state) => const ImagePickerScreen(),
     ),
   ],
 );
