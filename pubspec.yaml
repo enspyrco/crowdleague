@@ -36,6 +36,7 @@ dependencies:
   google_sign_in: ^6.2.2
   google_maps_flutter: ^2.10.0
   image_picker: ^1.1.2
+  image_cropper: ^8.0.2
 
 
 dev_dependencies:
