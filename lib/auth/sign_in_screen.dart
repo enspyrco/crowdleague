@@ -1,3 +1,5 @@
+import 'package:crowdleague/services/auth_service.dart';
+import 'package:crowdleague/utils/locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
       isSigningIn = true;
     });
     final credential =
-        await FirebaseAuth.instance.signInWithProvider(appleProvider);
+        await locate<AuthService>().signInWithProvider(appleProvider);
     if (context.mounted) context.pushReplacement('/');
     return credential;
   }
@@ -40,7 +42,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
 
     final userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        await locate<AuthService>().signInWithCredential(credential);
     if (context.mounted) context.pushReplacement('/');
 
     return userCredential;

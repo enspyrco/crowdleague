@@ -1,15 +1,18 @@
+import 'package:crowdleague/services/auth_service.dart';
+import 'package:crowdleague/services/storage_service.dart';
+import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'auth/sign_in_screen.dart';
 import 'home/home_screen.dart';
 import 'utils/image_picker_screen.dart';
 
 final _router = GoRouter(
-  initialLocation: FirebaseAuth.instance.currentUser == null ? '/signin' : '/',
+  initialLocation:
+      locate<AuthService>().currentUserId == null ? '/signin' : '/',
   routes: [
     GoRoute(
       path: '/',
@@ -31,6 +34,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  Locator.add<AuthService>(AuthService());
+  Locator.add<StorageService>(StorageService());
+
   runApp(const CrowdLeagueApp());
 }
 

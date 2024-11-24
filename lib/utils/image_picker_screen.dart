@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:crowdleague/services/storage_service.dart';
+import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../services/auth_service.dart';
 
 class ImagePickerScreen extends StatefulWidget {
   const ImagePickerScreen({super.key});
@@ -62,6 +66,8 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
       setState(() {
         _croppedFile = croppedFile;
       });
+      locate<StorageService>()
+          .createReference(at: '${locate<AuthService>().currentUserId ?? '?'}');
     }
   }
 
@@ -90,20 +96,30 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
               style: const TextStyle(color: Colors.red),
             ),
           if (_croppedFile != null)
-            Center(
-              child: kIsWeb
-                  ? Image.network(_croppedFile!.path, errorBuilder:
-                      (BuildContext context, Object error,
-                          StackTrace? stackTrace) {
-                      return const Center(
-                          child: Text('There was a problem downloading'));
-                    })
-                  : Image.file(File(_croppedFile!.path), errorBuilder:
-                      (BuildContext context, Object error,
-                          StackTrace? stackTrace) {
-                      return const Center(
-                          child: Text('This image type is not supported'));
-                    }),
+            Column(
+              children: [
+                kIsWeb
+                    ? Image.network(
+                        _croppedFile!.path,
+                        errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) {
+                          return const Center(
+                            child:
+                                Text('There was a problem downloading image'),
+                          );
+                        },
+                      )
+                    : Image.file(
+                        File(_croppedFile!.path),
+                        errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) {
+                          return const Center(
+                            child: Text('There was a problem opening image'),
+                          );
+                        },
+                      ),
+                const LinearProgressIndicator(),
+              ],
             ),
         ],
       ),
