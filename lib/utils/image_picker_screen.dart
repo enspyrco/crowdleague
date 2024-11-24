@@ -20,6 +20,7 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
   final ImagePicker _picker = ImagePicker();
   CroppedFile? _croppedFile;
   Object? _error;
+  bool _uploading = false;
 
   Future<void> _onPickPhotoButtonPressed(ImageSource source) async {
     if (mounted) {
@@ -66,8 +67,13 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
       setState(() {
         _croppedFile = croppedFile;
       });
-      locate<StorageService>()
-          .createReference(at: '${locate<AuthService>().currentUserId ?? '?'}');
+      final imageRef = locate<StorageService>().createReference(
+          at: 'profilePics/${locate<AuthService>().currentUserId ?? '?'}');
+      _uploading = true;
+      await imageRef.putFile(File(_croppedFile!.path));
+      setState(() {
+        _uploading = false;
+      });
     }
   }
 
@@ -118,7 +124,7 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
                           );
                         },
                       ),
-                const LinearProgressIndicator(),
+                if (_uploading) const LinearProgressIndicator(),
               ],
             ),
         ],
