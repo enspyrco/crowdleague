@@ -1,4 +1,5 @@
 import 'package:crowdleague/services/auth_service.dart';
+import 'package:crowdleague/services/firestore_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ void main() async {
 
   Locator.add<AuthService>(AuthService());
   Locator.add<StorageService>(StorageService());
+  Locator.add<FirestoreService>(FirestoreService());
 
   runApp(const CrowdLeagueApp());
 }

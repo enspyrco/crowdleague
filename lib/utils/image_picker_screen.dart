@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:crowdleague/services/firestore_service.dart';
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/utils/locator.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:go_router/go_router.dart';
 
 import '../services/auth_service.dart';
 
@@ -21,31 +24,38 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
   CroppedFile? _croppedFile;
   Object? _error;
   bool _uploading = false;
+  double _uploadProgress = 0.0;
 
-  Future<void> _onPickPhotoButtonPressed(ImageSource source) async {
+  Future<void> _onPickPhotoButtonPressed(
+      BuildContext context, ImageSource source) async {
     if (mounted) {
       try {
         final XFile? pickedFile = await _picker.pickImage(source: source);
         if (pickedFile == null) return;
-        var decodedImage =
-            await decodeImageFromList(await pickedFile.readAsBytes());
-        _cropImage(pickedFile.path, decodedImage.width, decodedImage.height);
+        final imageBytes = await pickedFile.readAsBytes();
+        var decodedImage = await decodeImageFromList(imageBytes);
+        _cropImage(
+          // ignore: use_build_context_synchronously (as we check if mounted where it is used)
+          context,
+          pickedFile.path,
+          decodedImage.width,
+          decodedImage.height,
+        );
       } catch (e) {
         setState(() {
-          setState(() {
-            _error = e;
-          });
+          _error = e;
         });
       }
     }
   }
 
-  Future<void> _cropImage(String path, int width, int height) async {
+  Future<void> _cropImage(
+      BuildContext context, String path, int width, int height) async {
     int squareSize = (width > height) ? width : height;
     final croppedFile = await ImageCropper().cropImage(
         sourcePath: path,
         compressFormat: ImageCompressFormat.jpg,
-        compressQuality: 100,
+        compressQuality: 50,
         uiSettings: [
           IOSUiSettings(
             title: 'Cropper',
@@ -64,16 +74,38 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
           )
         ]);
     if (croppedFile != null) {
-      setState(() {
-        _croppedFile = croppedFile;
-      });
-      final imageRef = locate<StorageService>().createReference(
-          at: 'profilePics/${locate<AuthService>().currentUserId ?? '?'}');
+      if (mounted) {
+        setState(() {
+          _croppedFile = croppedFile;
+        });
+      }
+      final imageRef = locate<StorageService>()
+          .createReference(at: 'profilePics')
+          .child(locate<AuthService>().currentUserId ?? '?');
       _uploading = true;
-      await imageRef.putFile(File(_croppedFile!.path));
-      setState(() {
-        _uploading = false;
-      });
+      UploadTask task = imageRef.putFile(File(_croppedFile!.path));
+      await for (final snapshot in task.asStream()) {
+        _uploadProgress =
+            snapshot.bytesTransferred / snapshot.totalBytes.toDouble();
+        bool finished = (_uploadProgress > 0.99) ? true : false;
+        if (mounted) {
+          setState(() {
+            if (finished) {
+              _uploadProgress = 0.0;
+              _uploading = false;
+            }
+          });
+        }
+        if (finished) {
+          String downloadUrl = await imageRef.getDownloadURL();
+          await locate<FirestoreService>().setDoc(
+              path: 'profilePics/${locate<AuthService>().currentUserId!}',
+              data: {'large': downloadUrl});
+          if (context.mounted) {
+            context.pop();
+          }
+        }
+      }
     }
   }
 
@@ -88,11 +120,11 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
             children: [
               IconButton.outlined(
                   onPressed: () =>
-                      _onPickPhotoButtonPressed(ImageSource.gallery),
+                      _onPickPhotoButtonPressed(context, ImageSource.gallery),
                   icon: const Icon(Icons.photo)),
               IconButton.outlined(
                   onPressed: () =>
-                      _onPickPhotoButtonPressed(ImageSource.camera),
+                      _onPickPhotoButtonPressed(context, ImageSource.camera),
                   icon: const Icon(Icons.camera_alt)),
             ],
           ),
@@ -124,7 +156,10 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
                           );
                         },
                       ),
-                if (_uploading) const LinearProgressIndicator(),
+                if (_uploading && _uploadProgress == 0.0)
+                  const LinearProgressIndicator(),
+                if (_uploading && _uploadProgress > 0.0)
+                  LinearProgressIndicator(value: _uploadProgress),
               ],
             ),
         ],
