@@ -30,7 +30,8 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
       BuildContext context, ImageSource source) async {
     if (mounted) {
       try {
-        final XFile? pickedFile = await _picker.pickImage(source: source);
+        final XFile? pickedFile =
+            await _picker.pickImage(source: source, maxHeight: 1000);
         if (pickedFile == null) return;
         final imageBytes = await pickedFile.readAsBytes();
         var decodedImage = await decodeImageFromList(imageBytes);
@@ -99,8 +100,9 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
         if (finished) {
           String downloadUrl = await imageRef.getDownloadURL();
           await locate<FirestoreService>().setDoc(
-              path: 'profilePics/${locate<AuthService>().currentUserId!}',
-              data: {'large': downloadUrl});
+              merge: true,
+              path: 'profiles/${locate<AuthService>().currentUserId!}',
+              data: {'largePic': downloadUrl});
           if (context.mounted) {
             context.pop();
           }
