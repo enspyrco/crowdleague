@@ -11,11 +11,14 @@ class FirestoreService {
     return _db.doc(path).update(data);
   }
 
+  /// Uses the cloud_firestore's set document - when marge is true, this becomes
+  /// an update where a new document will be created if none exists.
   Future<void> setDoc({
     required String path,
     required Map<String, Object?> data,
+    bool merge = false,
   }) {
-    return _db.doc(path).set(data);
+    return _db.doc(path).set(data, SetOptions(merge: merge));
   }
 
   Stream<Map<String, Object?>?> documentStream({required String path}) {
