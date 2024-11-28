@@ -73,31 +73,21 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
           Stack(
             children: [
               if (_croppedFilePath != null)
-                SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: Avatar(
-                    picPath: _croppedFilePath!,
-                    loading: _uploading,
-                  ),
+                Avatar(
+                  picPath: _croppedFilePath!,
+                  loading: _uploading,
+                  size: 100,
                 ),
               if (_croppedFilePath == null)
                 StreamBuilder<Map<String, Object?>?>(
                   stream: locate<UserService>().profileDocStream,
                   builder: (context, snapshot) {
-                    return SizedBox(
-                      width: 100,
-                      height: 100,
-                      child:
-                          Avatar(picUrl: snapshot.data?['largePic'] as String?),
+                    return Avatar(
+                      picUrl: snapshot.data?['largePic'] as String?,
+                      loading: _uploading,
+                      size: 100,
                     );
                   },
-                ),
-              if (_uploading)
-                const SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: CircularProgressIndicator(),
                 ),
             ],
           ),

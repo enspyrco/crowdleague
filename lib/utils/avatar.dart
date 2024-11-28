@@ -18,37 +18,64 @@ class Avatar extends StatelessWidget {
     this.backgroundColor = Colors.red,
     this.loading = false,
     this.size = 50,
-  });
+  }) : assert(!(picPath != null && picUrl != null));
 
   final String? picPath;
   final String? picUrl;
   final Color backgroundColor;
   final bool loading;
-  final int size;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
-    if (picPath == null && picUrl == null) {
-      return CircleAvatar(
-        backgroundColor: backgroundColor,
-      );
-    }
-    if (picPath != null && kIsWeb) {
-      return CircleAvatar(
-        backgroundColor: backgroundColor,
-        backgroundImage: NetworkImage(picPath!),
-      );
-    }
-    if (picPath == null) {
-      return CircleAvatar(
-        backgroundColor: backgroundColor,
-        backgroundImage: NetworkImage(picUrl!),
-      );
-    } else {
-      return CircleAvatar(
-        backgroundColor: backgroundColor,
-        foregroundImage: FileImage(File(picPath!)),
-      );
-    }
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        children: [
+          if (picPath == null && picUrl == null)
+            SizedBox(
+              width: size,
+              height: size,
+              child: CircleAvatar(
+                backgroundColor: backgroundColor,
+              ),
+            ),
+          if (picPath != null && kIsWeb)
+            SizedBox(
+              width: size,
+              height: size,
+              child: CircleAvatar(
+                backgroundColor: backgroundColor,
+                backgroundImage: NetworkImage(picPath!),
+              ),
+            ),
+          if (picUrl != null)
+            SizedBox(
+              width: size,
+              height: size,
+              child: CircleAvatar(
+                backgroundColor: backgroundColor,
+                backgroundImage: NetworkImage(picUrl!),
+              ),
+            ),
+          if (picPath != null && !kIsWeb)
+            SizedBox(
+              width: size,
+              height: size,
+              child: CircleAvatar(
+                backgroundColor: backgroundColor,
+                foregroundImage: FileImage(File(picPath!)),
+              ),
+            ),
+          if (loading)
+            const SizedBox(
+              width: 100,
+              height: 100,
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      ),
+    );
   }
 }
