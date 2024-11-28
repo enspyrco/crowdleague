@@ -9,4 +9,11 @@ class UserService {
   final Stream<Map<String, Object?>?> _profileDocStream =
       locate<FirestoreService>().documentStream(
           path: 'profiles/${locate<AuthService>().currentUserId}');
+
+  Future<void> updateProfilePicUrl(String url) async {
+    return locate<FirestoreService>().setDoc(
+        merge: true,
+        path: 'profiles/${locate<AuthService>().currentUserId!}',
+        data: {'largePic': url});
+  }
 }

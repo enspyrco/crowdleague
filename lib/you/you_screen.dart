@@ -1,9 +1,8 @@
-import 'package:crowdleague/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/firestore_service.dart';
 import '../services/user_service.dart';
+import '../utils/avatar.dart';
 import '../utils/locator.dart';
 
 class YouScreen extends StatefulWidget {
@@ -18,7 +17,7 @@ class _YouScreenState extends State<YouScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.yellow.shade800,
+        backgroundColor: Colors.red,
         title: const Text(
           'nick',
           style: TextStyle(fontSize: 20),
@@ -28,13 +27,7 @@ class _YouScreenState extends State<YouScreen> {
           child: StreamBuilder<Map<String, Object?>?>(
               stream: locate<UserService>().profileDocStream,
               builder: (context, snapshot) {
-                return (snapshot.data?['largePic'] == null)
-                    ? CircleAvatar(backgroundColor: Colors.yellow.shade800)
-                    : CircleAvatar(
-                        backgroundColor: Colors.yellow.shade800,
-                        foregroundImage:
-                            NetworkImage(snapshot.data!['largePic'] as String),
-                      );
+                return Avatar(picUrl: snapshot.data?['largePic'] as String?);
               }),
         ),
         actions: [
