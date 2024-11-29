@@ -18,6 +18,7 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
   String? _croppedFilePath;
   Object? _error;
   bool _uploading = false;
+  final _textController = TextEditingController();
 
   Future<void> _onPickPhotoButtonPressed(ImageSource source) async {
     try {
@@ -61,6 +62,16 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
         });
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    locate<UserService>().profileDocStream.listen((profile) {
+      if (mounted) {
+        _textController.text = profile?['name'] as String? ?? 'null';
+      }
+    });
   }
 
   @override
@@ -109,6 +120,14 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
               _error.toString(),
               style: const TextStyle(color: Colors.red),
             ),
+          const SizedBox(
+            height: 50,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 100, right: 100),
+            child: TextField(controller: _textController),
+          ),
+          const Text('Name'),
         ],
       ),
     );

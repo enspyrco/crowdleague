@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
+/// A service that wraps the FirebaseFirestore.instance meaning tests can
+/// provide a test double in place of the service.
 class FirestoreService {
   final _db = FirebaseFirestore.instance;
 

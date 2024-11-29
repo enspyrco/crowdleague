@@ -38,11 +38,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // The order here matters as th AuthService accesses the UserService in its
+  // constructor.
+  Locator.add<UserService>(UserService());
   Locator.add<AuthService>(AuthService());
+
   Locator.add<StorageService>(StorageService());
   Locator.add<FirestoreService>(FirestoreService());
   Locator.add<ImagesService>(ImagesService());
-  Locator.add<UserService>(UserService());
 
   runApp(const CrowdLeagueApp());
 }
