@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../services/auth_service.dart';
 import '../services/user_service.dart';
 import '../utils/avatar.dart';
 import '../utils/locator.dart';
@@ -48,6 +49,17 @@ class _YouScreenState extends State<YouScreen> {
               },
             ),
           ),
+        ],
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: const Text('Sign Out'),
+            onTap: () {
+              locate<AuthService>().signOut();
+              context.replace('/signin');
+            },
+          )
         ],
       ),
     );

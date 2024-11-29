@@ -56,4 +56,8 @@ class UserService {
       data: {'name': name},
     );
   }
+
+  Future<void>? dispose() {
+    return profileStreamSubscription?.cancel();
+  }
 }

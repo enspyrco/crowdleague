@@ -29,4 +29,9 @@ class AuthService {
   Future<UserCredential> signInWithCredential(AuthCredential authCredential) {
     return _auth.signInWithCredential(authCredential);
   }
+
+  Future<void> signOut() {
+    locate<UserService>().dispose();
+    return _auth.signOut();
+  }
 }

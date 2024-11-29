@@ -38,8 +38,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // The order here matters as th AuthService accesses the UserService in its
-  // constructor.
+  // The order here matters as the AuthService accesses the UserService in its
+  // constructor to setup listening to the profile.
   Locator.add<UserService>(UserService());
   Locator.add<AuthService>(AuthService());
 
