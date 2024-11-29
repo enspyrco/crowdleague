@@ -14,7 +14,7 @@ import 'firestore_service.dart';
 /// The BehaviourSubject at any time and get latest profile data without
 /// performing unnecessary reads.
 ///
-/// The AuthService is used to set up the UserService listening to firestore's
+/// The AuthService sets up the UserService listening to firestore's
 /// snapshots when the user signs in or opens the app already signed in.
 /// Snapshots are then added to the BehaviourSubject.
 class UserService {
@@ -23,6 +23,8 @@ class UserService {
 
   Stream<Map<String, Object?>?> get profileDocStream => _userSubject.stream;
 
+  /// Called by the AuthService when a User object is emitted by the
+  /// FirebaseAuth's onAuthStateChanges stream.
   void listenToProfileStream(String userId) {
     if (profileStreamSubscription != null) {
       profileStreamSubscription!.cancel();
