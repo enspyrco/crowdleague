@@ -10,7 +10,7 @@ import 'services/firestore_service.dart';
 import 'services/images_service.dart';
 import 'services/storage_service.dart';
 import 'services/user_service.dart';
-import 'utils/image_picker_screen.dart';
+import 'you/edit_profile_screen.dart';
 import 'utils/locator.dart';
 
 final _router = GoRouter(
@@ -27,7 +27,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/image-picker',
-      builder: (context, state) => const ImagePickerScreen(),
+      builder: (context, state) => const EditProfileScreen(),
     ),
   ],
 );

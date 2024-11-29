@@ -4,17 +4,17 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../services/images_service.dart';
-import 'avatar.dart';
-import 'locator.dart';
+import '../utils/avatar.dart';
+import '../utils/locator.dart';
 
-class ImagePickerScreen extends StatefulWidget {
-  const ImagePickerScreen({super.key});
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
 
   @override
-  State<ImagePickerScreen> createState() => _ImagePickerScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _ImagePickerScreenState extends State<ImagePickerScreen> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   String? _croppedFilePath;
   Object? _error;
   bool _uploading = false;
