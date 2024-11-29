@@ -18,10 +18,14 @@ class _YouScreenState extends State<YouScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: const Text(
-          'nick',
-          style: TextStyle(fontSize: 20),
-        ),
+        title: StreamBuilder<Map<String, Object?>?>(
+            stream: locate<UserService>().profileDocStream,
+            builder: (context, snapshot) {
+              return Text(
+                snapshot.data?['name'] as String? ?? 'null',
+                style: const TextStyle(fontSize: 20),
+              );
+            }),
         leading: Padding(
           padding: const EdgeInsets.all(5),
           child: StreamBuilder<Map<String, Object?>?>(

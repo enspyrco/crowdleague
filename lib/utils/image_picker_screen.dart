@@ -128,6 +128,26 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
             child: TextField(controller: _textController),
           ),
           const Text('Name'),
+          const SizedBox(
+            height: 100,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: const Text('Cancel')),
+              TextButton(
+                  onPressed: () {
+                    locate<UserService>()
+                        .updateProfileName(_textController.text);
+                    context.pop();
+                  },
+                  child: const Text('Save')),
+            ],
+          )
         ],
       ),
     );

@@ -46,4 +46,12 @@ class UserService {
       data: {'largePic': url},
     );
   }
+
+  Future<void> updateProfileName(String name) {
+    return locate<FirestoreService>().setDoc(
+      merge: true,
+      path: 'profiles/${locate<AuthService>().currentUserId!}',
+      data: {'name': name},
+    );
+  }
 }
