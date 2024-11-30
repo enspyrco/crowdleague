@@ -53,12 +53,22 @@ class _YouScreenState extends State<YouScreen> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: const Text('Sign Out'),
-            onTap: () {
-              locate<AuthService>().signOut();
-              context.replace('/signin');
-            },
+          Card(
+            child: ListTile(
+              title: const Text('Add a Venue'),
+              onTap: () {
+                context.push('/add-venue-location');
+              },
+            ),
+          ),
+          Card(
+            child: ListTile(
+              title: const Text('Sign Out'),
+              onTap: () {
+                locate<AuthService>().signOut();
+                context.replace('/signin');
+              },
+            ),
           )
         ],
       ),

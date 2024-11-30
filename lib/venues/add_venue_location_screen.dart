@@ -7,8 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../services/geo_location_service.dart';
 import '../utils/locator.dart';
 
-class VenuesScreen extends StatefulWidget {
-  const VenuesScreen({super.key});
+class AddVenueLocationScreen extends StatefulWidget {
+  const AddVenueLocationScreen({super.key});
 
   static const CameraPosition _kMelbourne = CameraPosition(
     target: LatLng(-37.840935, 144.946457),
@@ -16,15 +16,22 @@ class VenuesScreen extends StatefulWidget {
   );
 
   @override
-  State<VenuesScreen> createState() => _VenuesScreenState();
+  State<AddVenueLocationScreen> createState() => _AddVenueLocationScreenState();
 }
 
-class _VenuesScreenState extends State<VenuesScreen> {
+class _AddVenueLocationScreenState extends State<AddVenueLocationScreen> {
   final Completer<GoogleMapController> _controllerCompleter =
       Completer<GoogleMapController>();
 
   LatLng? _currentLocation;
+  LatLng? _cameraTarget;
   bool _isLoading = true;
+
+  Marker _marker = const Marker(
+    markerId: MarkerId('center'),
+    position: LatLng(-37.840935, 144.946457),
+    draggable: false,
+  );
 
   Future<void> _getLocation() async {
     final latLngRecord = await locate<GeoLocationService>().determinePosition();
@@ -59,20 +66,32 @@ class _VenuesScreenState extends State<VenuesScreen> {
       return const Placeholder();
     }
     return Scaffold(
+        appBar: AppBar(actions: [
+          IconButton(
+              onPressed: () => {_marker.position},
+              icon: const Icon(Icons.check))
+        ]),
         body: Stack(
-      children: [
-        GoogleMap(
-          myLocationEnabled: true,
-          mapType: MapType.hybrid,
-          initialCameraPosition: (_currentLocation == null)
-              ? VenuesScreen._kMelbourne
-              : CameraPosition(target: _currentLocation!),
-          onMapCreated: (GoogleMapController controller) {
-            _controllerCompleter.complete(controller);
-          },
-        ),
-        if (_isLoading) const Center(child: CircularProgressIndicator()),
-      ],
-    ));
+          children: [
+            GoogleMap(
+              myLocationEnabled: true,
+              mapType: MapType.normal,
+              markers: {_marker},
+              initialCameraPosition: (_currentLocation == null)
+                  ? AddVenueLocationScreen._kMelbourne
+                  : CameraPosition(target: _currentLocation!),
+              onMapCreated: (GoogleMapController controller) {
+                _controllerCompleter.complete(controller);
+              },
+              onCameraMove: (cameraPosition) {
+                setState(() {
+                  _marker =
+                      _marker.copyWith(positionParam: cameraPosition.target);
+                });
+              },
+            ),
+            if (_isLoading) const Center(child: CircularProgressIndicator()),
+          ],
+        ));
   }
 }
