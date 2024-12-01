@@ -23,7 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: Colors.grey.shade200,
+        backgroundColor: Colors.grey.shade200,
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: <Widget>[
-        VenuesScreen(),
+        const VenuesScreen(),
         const NotificationsScreen(),
         const MessagesScreen(),
         const YouScreen(),

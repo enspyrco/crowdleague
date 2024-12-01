@@ -23,6 +23,14 @@ class FirestoreService {
     return _db.doc(path).set(data, SetOptions(merge: merge));
   }
 
+  Future<String> addDoc({
+    required String collectionPath,
+    required Map<String, Object?> data,
+  }) async {
+    final ref = await _db.collection(collectionPath).add(data);
+    return ref.id;
+  }
+
   Stream<Map<String, Object?>?> documentStream({required String path}) {
     return _db.doc(path).snapshots().map<Map<String, Object?>?>((ref) {
       return ref.data();

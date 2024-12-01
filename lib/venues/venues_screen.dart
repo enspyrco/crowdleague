@@ -63,7 +63,6 @@ class _VenuesScreenState extends State<VenuesScreen> {
       children: [
         GoogleMap(
           myLocationEnabled: true,
-          mapType: MapType.hybrid,
           initialCameraPosition: (_currentLocation == null)
               ? VenuesScreen._kMelbourne
               : CameraPosition(target: _currentLocation!),

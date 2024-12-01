@@ -18,6 +18,7 @@ class StorageService {
     });
   }
 
+  /// Returns a reference to the uploaded file.
   Future<Reference> upload(
       {required String localPath, required String storagePath}) async {
     final storageRef = _storage.ref(storagePath);

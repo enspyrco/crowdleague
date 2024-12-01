@@ -3,7 +3,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../utils/locator.dart';
-import 'auth_service.dart';
 import 'storage_service.dart';
 
 class ImagesService {
@@ -48,10 +47,14 @@ class ImagesService {
     return croppedFile?.path;
   }
 
-  Future<String> uploadProfilePic({required String localPath}) async {
+  /// Returns a Future with the download Url of the givne photo.
+  Future<String> uploadPhoto({
+    required String localPath,
+    required String storagePath,
+  }) async {
     final imageRef = await locate<StorageService>().upload(
       localPath: localPath,
-      storagePath: 'profilePics/${locate<AuthService>().currentUserId!}',
+      storagePath: storagePath,
     );
     return imageRef.getDownloadURL();
   }

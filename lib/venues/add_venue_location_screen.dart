@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../services/geo_location_service.dart';
@@ -24,7 +26,6 @@ class _AddVenueLocationScreenState extends State<AddVenueLocationScreen> {
       Completer<GoogleMapController>();
 
   LatLng? _currentLocation;
-  LatLng? _cameraTarget;
   bool _isLoading = true;
 
   Marker _marker = const Marker(
@@ -68,14 +69,18 @@ class _AddVenueLocationScreenState extends State<AddVenueLocationScreen> {
     return Scaffold(
         appBar: AppBar(actions: [
           IconButton(
-              onPressed: () => {_marker.position},
+              onPressed: () {
+                locate<VenuesService>().createNewVenue(
+                  at: (_marker.position.latitude, _marker.position.longitude),
+                );
+                context.push('/configure-venue');
+              },
               icon: const Icon(Icons.check))
         ]),
         body: Stack(
           children: [
             GoogleMap(
               myLocationEnabled: true,
-              mapType: MapType.normal,
               markers: {_marker},
               initialCameraPosition: (_currentLocation == null)
                   ? AddVenueLocationScreen._kMelbourne

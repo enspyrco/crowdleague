@@ -1,5 +1,7 @@
 import 'package:crowdleague/services/geo_location_service.dart';
+import 'package:crowdleague/services/venues_service.dart';
 import 'package:crowdleague/venues/add_venue_location_screen.dart';
+import 'package:crowdleague/venues/finalise_venue_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +14,7 @@ import 'services/firestore_service.dart';
 import 'services/images_service.dart';
 import 'services/storage_service.dart';
 import 'services/user_service.dart';
+import 'venues/configure_venue_screen.dart';
 import 'you/edit_profile_screen.dart';
 import 'utils/locator.dart';
 
@@ -33,7 +36,13 @@ final _router = GoRouter(
     ),
     GoRoute(
         path: '/add-venue-location',
-        builder: (context, state) => const AddVenueLocationScreen())
+        builder: (context, state) => const AddVenueLocationScreen()),
+    GoRoute(
+        path: '/configure-venue',
+        builder: (context, state) => const ConfigureVenueScreen()),
+    GoRoute(
+        path: '/finalise-venue',
+        builder: (context, state) => const FinaliseVenueScreen()),
   ],
 );
 
@@ -52,6 +61,7 @@ void main() async {
   Locator.add<FirestoreService>(FirestoreService());
   Locator.add<ImagesService>(ImagesService());
   Locator.add<GeoLocationService>(GeoLocationService());
+  Locator.add<VenuesService>(VenuesService());
 
   runApp(const CrowdLeagueApp());
 }

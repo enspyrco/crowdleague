@@ -1,21 +1,22 @@
+import 'dart:io';
+
 import 'package:crowdleague/services/user_service.dart';
+import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../services/auth_service.dart';
 import '../services/images_service.dart';
-import '../utils/avatar.dart';
 import '../utils/locator.dart';
 
-class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+class FinaliseVenueScreen extends StatefulWidget {
+  const FinaliseVenueScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  State<FinaliseVenueScreen> createState() => _FinaliseVenueScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _FinaliseVenueScreenState extends State<FinaliseVenueScreen> {
   String? _croppedFilePath;
   Object? _error;
   bool _uploading = false;
@@ -48,13 +49,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _croppedFilePath = croppedFilePath;
             });
           }
-          final imageUrl = await locate<ImagesService>().uploadPhoto(
+          final venueId = await locate<VenuesService>().addNewVenueToDB();
+          final photoUrl = await locate<ImagesService>().uploadPhoto(
             localPath: _croppedFilePath!,
-            storagePath: 'profilePics/${locate<AuthService>().currentUserId!}',
+            storagePath: 'venuePhotos/$venueId',
           );
-          await locate<UserService>().updateProfilePicUrl(imageUrl);
+          await locate<VenuesService>()
+              .updateVenue(id: venueId, photoUrl: photoUrl);
+
           if (mounted) {
-            context.pop();
+            context.go('/');
           }
         }
       }
@@ -65,16 +69,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         });
       }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    locate<UserService>().profileDocStream.listen((profile) {
-      if (mounted) {
-        _textController.text = profile?['name'] as String? ?? 'null';
-      }
-    });
   }
 
   @override
@@ -94,43 +88,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 25),
             Stack(
               children: [
                 if (_croppedFilePath != null)
-                  Avatar(
-                    picPath: _croppedFilePath!,
-                    loading: _uploading,
-                    size: 100,
-                  ),
+                  Image.file(File(_croppedFilePath!)),
                 if (_croppedFilePath == null)
-                  StreamBuilder<Map<String, Object?>?>(
-                    stream: locate<UserService>().profileDocStream,
-                    builder: (context, snapshot) {
-                      return Avatar(
-                        picUrl: snapshot.data?['largePic'] as String?,
-                        loading: _uploading,
-                        size: 100,
-                      );
-                    },
+                  AspectRatio(
+                    aspectRatio: 1.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blueAccent)),
+                      child: const Center(
+                        child: Text('photo'),
+                      ),
+                    ),
                   ),
               ],
             ),
-            const SizedBox(height: 30),
+            if (_uploading) const LinearProgressIndicator(),
+            const SizedBox(
+              height: 100,
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton.outlined(
-                  onPressed: () =>
-                      _onPickPhotoButtonPressed(ImageSource.gallery),
-                  icon: const Icon(Icons.photo),
-                ),
-                const SizedBox(width: 50),
+                    onPressed: () =>
+                        _onPickPhotoButtonPressed(ImageSource.gallery),
+                    icon: const Icon(Icons.photo)),
                 IconButton.outlined(
-                  onPressed: () =>
-                      _onPickPhotoButtonPressed(ImageSource.camera),
-                  icon: const Icon(Icons.camera_alt),
-                ),
+                    onPressed: () =>
+                        _onPickPhotoButtonPressed(ImageSource.camera),
+                    icon: const Icon(Icons.camera_alt)),
               ],
             ),
             if (_error != null) // display any errors in a Text widget
@@ -138,14 +127,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 _error.toString(),
                 style: const TextStyle(color: Colors.red),
               ),
-            const SizedBox(
-              height: 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 100, right: 100),
-              child: TextField(controller: _textController),
-            ),
-            const Text('Name'),
           ],
         ),
       ),
