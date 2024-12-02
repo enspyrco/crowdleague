@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -19,10 +20,19 @@ class StorageService {
   }
 
   /// Returns a reference to the uploaded file.
-  Future<Reference> upload(
+  Future<Reference> uploadFile(
       {required String localPath, required String storagePath}) async {
     final storageRef = _storage.ref(storagePath);
     UploadTask task = storageRef.putFile(File(localPath));
+    await task;
+    return storageRef;
+  }
+
+  /// Returns a reference to the uploaded bytes.
+  Future<Reference> uploadBytes(
+      {required Uint8List bytes, required String storagePath}) async {
+    final storageRef = _storage.ref(storagePath);
+    UploadTask task = storageRef.putData(bytes);
     await task;
     return storageRef;
   }

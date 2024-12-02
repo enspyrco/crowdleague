@@ -50,7 +50,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
     final venues = await locate<VenuesService>().retrieveVenues();
     _markers.clear();
     for (final Venue venue in venues) {
-      final http.Response response = await http.get(Uri.parse(venue.photoUrl));
+      final http.Response response = await http.get(Uri.parse(venue.iconUrl));
       final descriptor = BitmapDescriptor.bytes(response.bodyBytes);
       final marker = Marker(
         markerId: MarkerId(venue.id),

@@ -1,13 +1,14 @@
 import 'dart:io';
 
-import 'package:crowdleague/services/user_service.dart';
-import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../services/images_service.dart';
+import '../services/venues_service.dart';
 import '../utils/locator.dart';
+import 'venue_icon.dart';
 
 class FinaliseVenueScreen extends StatefulWidget {
   const FinaliseVenueScreen({super.key});
@@ -20,7 +21,7 @@ class _FinaliseVenueScreenState extends State<FinaliseVenueScreen> {
   String? _croppedFilePath;
   Object? _error;
   bool _uploading = false;
-  final _textController = TextEditingController();
+  final _screenshotController = ScreenshotController();
 
   Future<void> _onPickPhotoButtonPressed(ImageSource source) async {
     try {
@@ -50,12 +51,20 @@ class _FinaliseVenueScreenState extends State<FinaliseVenueScreen> {
             });
           }
           final venueId = await locate<VenuesService>().addNewVenueToDB();
-          final photoUrl = await locate<ImagesService>().uploadPhoto(
+          // convert the VenueIcon widget to a png? and upload bytes
+          final bytes = await _screenshotController.capture();
+          final String iconDownloadUrl = (bytes != null)
+              ? await locate<ImagesService>().uploadPhotoFromBytes(
+                  bytes: bytes, storagePath: 'venuePhotos/${venueId}_icon')
+              : '';
+
+          final photoUrl = await locate<ImagesService>().uploadPhotoFromFile(
             localPath: _croppedFilePath!,
             storagePath: 'venuePhotos/$venueId',
           );
-          await locate<VenuesService>()
-              .updateVenue(id: venueId, photoUrl: photoUrl);
+          await locate<VenuesService>().updateVenue(
+              id: venueId,
+              data: {'photoUrl': photoUrl, 'iconUrl': iconDownloadUrl});
 
           if (mounted) {
             context.go('/');
@@ -74,24 +83,24 @@ class _FinaliseVenueScreenState extends State<FinaliseVenueScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              locate<UserService>().updateProfileName(_textController.text);
-              context.pop();
-            },
-            icon: const Icon(Icons.check),
-          )
-        ],
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Stack(
               children: [
                 if (_croppedFilePath != null)
-                  Image.file(File(_croppedFilePath!)),
+                  Stack(
+                    children: [
+                      Screenshot(
+                        controller: _screenshotController,
+                        child: VenueIcon(
+                          filePath: _croppedFilePath!,
+                        ),
+                      ),
+                      Image.file(File(_croppedFilePath!)),
+                    ],
+                  ),
                 if (_croppedFilePath == null)
                   AspectRatio(
                     aspectRatio: 1.0,

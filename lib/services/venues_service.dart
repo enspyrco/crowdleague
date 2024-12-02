@@ -46,12 +46,9 @@ class VenuesService {
         .addDoc(collectionPath: 'venues', data: _newVenue.toJson());
   }
 
-  Future<void> updateVenue({required String id, String? photoUrl}) {
-    if (photoUrl != null) {
-      return locate<FirestoreService>()
-          .updateDoc(path: 'venues/$id', data: {'photoUrl': photoUrl});
-    }
-    return Future.value();
+  Future<void> updateVenue(
+      {required String id, required Map<String, Object?> data}) {
+    return locate<FirestoreService>().updateDoc(path: 'venues/$id', data: data);
   }
 
   Future<Set<Venue>> retrieveVenues() async {

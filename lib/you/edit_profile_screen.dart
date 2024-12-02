@@ -48,7 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _croppedFilePath = croppedFilePath;
             });
           }
-          final imageUrl = await locate<ImagesService>().uploadPhoto(
+          final imageUrl = await locate<ImagesService>().uploadPhotoFromFile(
             localPath: _croppedFilePath!,
             storagePath: 'profilePics/${locate<AuthService>().currentUserId!}',
           );

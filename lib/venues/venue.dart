@@ -5,6 +5,7 @@ class Venue {
     required this.name,
     required this.type,
     required this.photoUrl,
+    required this.iconUrl,
     required this.latitude,
     required this.longitude,
   });
@@ -14,6 +15,7 @@ class Venue {
   final int facing;
   final String name;
   final String photoUrl;
+  final String iconUrl;
   final double latitude;
   final double longitude;
 
@@ -23,6 +25,7 @@ class Venue {
       id: json['id'] as String,
       name: json['name'] as String,
       photoUrl: json['photoUrl'] as String,
+      iconUrl: json['iconUrl'] as String,
       type: json['type'] as int,
       latitude: json['latitude'] as double,
       longitude: json['longitude'] as double,
