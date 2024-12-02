@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:http/http.dart' as http;
+import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../services/geo_location_service.dart';
 import '../utils/locator.dart';
+import 'venue.dart';
 
 class VenuesScreen extends StatefulWidget {
   const VenuesScreen({super.key});
@@ -25,32 +28,47 @@ class _VenuesScreenState extends State<VenuesScreen> {
 
   LatLng? _currentLocation;
   bool _isLoading = true;
-
-  Future<void> _getLocation() async {
-    final latLngRecord = await locate<GeoLocationService>().determinePosition();
-    LatLng location = LatLng(latLngRecord.$1, latLngRecord.$2);
-    _currentLocation = location;
-  }
+  final Set<Marker> _markers = {};
 
   Future<void> _goToCurrentLocation() async {
-    final controller = await _controllerCompleter.future;
-    if (mounted) {
-      _isLoading = false;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: _currentLocation ?? const LatLng(0, 0), zoom: 15)));
-    }
-
+    // wait for the google maps controller and the geolocation
+    final (latLngRecord, controller) = await (
+      locate<GeoLocationService>().determinePosition(),
+      _controllerCompleter.future
+    ).wait;
+    LatLng location = LatLng(latLngRecord.$1, latLngRecord.$2);
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: location, zoom: 15)));
+    }
+  }
+
+  Future<void> _displayVenues() async {
+    final venues = await locate<VenuesService>().retrieveVenues();
+    _markers.clear();
+    for (final Venue venue in venues) {
+      final http.Response response = await http.get(Uri.parse(venue.photoUrl));
+      final descriptor = BitmapDescriptor.bytes(response.bodyBytes);
+      final marker = Marker(
+        markerId: MarkerId(venue.id),
+        position: LatLng(venue.latitude, venue.longitude),
+        icon: descriptor,
+      );
+      _markers.add(marker);
+    }
+    if (mounted) {
+      setState(() {});
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _getLocation().then((_) => _goToCurrentLocation());
+    _goToCurrentLocation();
+    _displayVenues();
   }
 
   @override
@@ -62,6 +80,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
         body: Stack(
       children: [
         GoogleMap(
+          markers: _markers,
           myLocationEnabled: true,
           initialCameraPosition: (_currentLocation == null)
               ? VenuesScreen._kMelbourne

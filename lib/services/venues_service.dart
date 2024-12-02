@@ -4,6 +4,7 @@ import 'package:crowdleague/services/firestore_service.dart';
 import 'package:crowdleague/venues/new_venue.dart';
 
 import '../utils/locator.dart';
+import '../venues/venue.dart';
 
 class VenuesService {
   var _newVenue = NewVenue();
@@ -51,5 +52,13 @@ class VenuesService {
           .updateDoc(path: 'venues/$id', data: {'photoUrl': photoUrl});
     }
     return Future.value();
+  }
+
+  Future<Set<Venue>> retrieveVenues() async {
+    final json =
+        await locate<FirestoreService>().getDocs(inCollectionPath: 'venues');
+    return json.map<Venue>((json) {
+      return Venue.fromJson(json);
+    }).toSet();
   }
 }

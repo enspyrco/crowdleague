@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../services/geo_location_service.dart';
+import '../services/venues_service.dart';
 import '../utils/locator.dart';
 
 class AddVenueLocationScreen extends StatefulWidget {
@@ -34,31 +34,26 @@ class _AddVenueLocationScreenState extends State<AddVenueLocationScreen> {
     draggable: false,
   );
 
-  Future<void> _getLocation() async {
-    final latLngRecord = await locate<GeoLocationService>().determinePosition();
-    LatLng location = LatLng(latLngRecord.$1, latLngRecord.$2);
-    _currentLocation = location;
-  }
-
   Future<void> _goToCurrentLocation() async {
-    final controller = await _controllerCompleter.future;
-    if (mounted) {
-      _isLoading = false;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: _currentLocation ?? const LatLng(0, 0), zoom: 15)));
-    }
-
+    // wait for the google maps controller and the geolocation
+    final (latLngRecord, controller) = await (
+      locate<GeoLocationService>().determinePosition(),
+      _controllerCompleter.future
+    ).wait;
+    LatLng location = LatLng(latLngRecord.$1, latLngRecord.$2);
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: location, zoom: 15)));
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _getLocation().then((_) => _goToCurrentLocation());
+    _goToCurrentLocation();
   }
 
   @override

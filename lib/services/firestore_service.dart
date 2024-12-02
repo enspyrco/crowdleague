@@ -36,4 +36,14 @@ class FirestoreService {
       return ref.data();
     });
   }
+
+  Future<Set<Map<String, Object?>>> getDocs(
+      {required String inCollectionPath}) async {
+    final snapshot = await _db.collection(inCollectionPath).get();
+    return snapshot.docs.map<Map<String, Object?>>((snapshot) {
+      final json = snapshot.data();
+      json['id'] = snapshot.id;
+      return json;
+    }).toSet();
+  }
 }
