@@ -1,7 +1,7 @@
 import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/locator.dart';
+import '../../../utils/locator.dart';
 
 class VenueFacingDropdown extends StatefulWidget {
   const VenueFacingDropdown({super.key});

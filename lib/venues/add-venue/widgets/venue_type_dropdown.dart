@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../services/venues_service.dart';
-import '../utils/locator.dart';
+import '../../../services/venues_service.dart';
+import '../../../utils/locator.dart';
 
 class VenueTypeDropdown extends StatefulWidget {
   const VenueTypeDropdown({super.key});

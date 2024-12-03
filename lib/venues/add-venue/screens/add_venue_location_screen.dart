@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../services/geo_location_service.dart';
-import '../services/venues_service.dart';
-import '../utils/locator.dart';
+import '../../../services/geo_location_service.dart';
+import '../../../services/venues_service.dart';
+import '../../../utils/locator.dart';
 
 class AddVenueLocationScreen extends StatefulWidget {
   const AddVenueLocationScreen({super.key});

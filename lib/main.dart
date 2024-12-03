@@ -1,7 +1,7 @@
 import 'package:crowdleague/services/geo_location_service.dart';
 import 'package:crowdleague/services/venues_service.dart';
-import 'package:crowdleague/venues/add_venue_location_screen.dart';
-import 'package:crowdleague/venues/finalise_venue_screen.dart';
+import 'package:crowdleague/venues/add-venue/screens/add_venue_location_screen.dart';
+import 'package:crowdleague/venues/add-venue/screens/finalise_venue_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +14,7 @@ import 'services/firestore_service.dart';
 import 'services/images_service.dart';
 import 'services/storage_service.dart';
 import 'services/user_service.dart';
-import 'venues/configure_venue_screen.dart';
+import 'venues/add-venue/screens/configure_venue_screen.dart';
 import 'you/edit_profile_screen.dart';
 import 'utils/locator.dart';
 

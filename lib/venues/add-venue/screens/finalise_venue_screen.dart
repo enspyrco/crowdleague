@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:screenshot/screenshot.dart';
 
-import '../services/images_service.dart';
-import '../services/venues_service.dart';
-import '../utils/locator.dart';
-import 'venue_icon.dart';
+import '../../../services/images_service.dart';
+import '../../../services/venues_service.dart';
+import '../../../utils/locator.dart';
+import '../widgets/venue_icon.dart';
 
 class FinaliseVenueScreen extends StatefulWidget {
   const FinaliseVenueScreen({super.key});

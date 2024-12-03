@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:crowdleague/services/firestore_service.dart';
-import 'package:crowdleague/venues/new_venue.dart';
+import 'package:crowdleague/venues/models/new_venue.dart';
 
 import '../utils/locator.dart';
-import '../venues/venue.dart';
+import '../venues/models/venue.dart';
 
 class VenuesService {
   var _newVenue = NewVenue();

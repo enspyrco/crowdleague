@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/venues_service.dart';
-import '../utils/locator.dart';
-import 'new_venue.dart';
-import 'venue_facing_dropdown.dart';
-import 'venue_type_dropdown.dart';
+import '../../../services/venues_service.dart';
+import '../../../utils/locator.dart';
+import '../../models/new_venue.dart';
+import '../widgets/venue_facing_dropdown.dart';
+import '../widgets/venue_type_dropdown.dart';
 
 class ConfigureVenueScreen extends StatefulWidget {
   const ConfigureVenueScreen({super.key});

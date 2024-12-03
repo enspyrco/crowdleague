@@ -8,7 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../services/geo_location_service.dart';
 import '../utils/locator.dart';
-import 'venue.dart';
+import 'models/venue.dart';
 
 class VenuesScreen extends StatefulWidget {
   const VenuesScreen({super.key});
