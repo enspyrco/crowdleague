@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/foundation.dart';
@@ -56,6 +57,8 @@ class _VenuesScreenState extends State<VenuesScreen> {
         markerId: MarkerId(venue.id),
         position: LatLng(venue.latitude, venue.longitude),
         icon: descriptor,
+        onTap: () =>
+            context.pushNamed('venue-detail', pathParameters: {'id': venue.id}),
       );
       _markers.add(marker);
     }

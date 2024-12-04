@@ -1,0 +1,63 @@
+import 'package:crowdleague/services/venues_service.dart';
+import 'package:crowdleague/utils/locator.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../models/venue.dart';
+
+class VenueDetailScreen extends StatefulWidget {
+  const VenueDetailScreen({required this.venueId, super.key});
+
+  final String venueId;
+
+  @override
+  State<VenueDetailScreen> createState() => _VenueDetailScreenState();
+}
+
+class _VenueDetailScreenState extends State<VenueDetailScreen> {
+  Venue? _venue;
+
+  Future<void> _retrieveVenue() async {
+    final venue = await locate<VenuesService>().retrieveVenue(widget.venueId);
+    if (mounted) {
+      setState(() {
+        _venue = venue;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _retrieveVenue();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          if (_venue == null) const Center(child: CircularProgressIndicator()),
+          if (_venue != null)
+            Stack(
+              children: [
+                Image.network(_venue!.photoUrl),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 25.0, top: 25.0),
+                    child: IconButton(
+                        color: Colors.white,
+                        style: IconButton.styleFrom(
+                            backgroundColor: Colors.grey.withOpacity(0.7)),
+                        onPressed: () => context.pop(),
+                        icon: const Icon(Icons.arrow_back_ios_new)),
+                  ),
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+}

@@ -46,4 +46,11 @@ class FirestoreService {
       return json;
     }).toSet();
   }
+
+  Future<Map<String, Object?>?> getDoc({required String atPath}) async {
+    final reference = await _db.doc(atPath).get();
+    final json = reference.data();
+    json?['id'] = reference.id;
+    return json;
+  }
 }

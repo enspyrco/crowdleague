@@ -15,6 +15,7 @@ import 'services/images_service.dart';
 import 'services/storage_service.dart';
 import 'services/user_service.dart';
 import 'venues/add-venue/screens/configure_venue_screen.dart';
+import 'venues/venue-detail/venue_detail_screen.dart';
 import 'you/edit_profile_screen.dart';
 import 'utils/locator.dart';
 
@@ -23,26 +24,39 @@ final _router = GoRouter(
       locate<AuthService>().currentUserId == null ? '/signin' : '/',
   routes: [
     GoRoute(
+      name: 'home',
       path: '/',
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
+      name: 'signin',
       path: '/signin',
       builder: (context, state) => const SignInScreen(),
     ),
     GoRoute(
+      name: 'image-picker',
       path: '/image-picker',
       builder: (context, state) => const EditProfileScreen(),
     ),
     GoRoute(
+        name: 'add-venue-location',
         path: '/add-venue-location',
         builder: (context, state) => const AddVenueLocationScreen()),
     GoRoute(
+        name: 'configure-venue',
         path: '/configure-venue',
         builder: (context, state) => const ConfigureVenueScreen()),
     GoRoute(
+        name: 'finalise-venue',
         path: '/finalise-venue',
         builder: (context, state) => const FinaliseVenueScreen()),
+    GoRoute(
+      name: 'venue-detail',
+      path: '/venue-detail/:id',
+      builder: (context, state) => VenueDetailScreen(
+        venueId: state.pathParameters['id']!,
+      ),
+    ),
   ],
 );
 

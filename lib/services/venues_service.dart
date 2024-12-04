@@ -58,4 +58,10 @@ class VenuesService {
       return Venue.fromJson(json);
     }).toSet();
   }
+
+  Future<Venue?> retrieveVenue(String id) async {
+    final json = await locate<FirestoreService>().getDoc(atPath: 'venues/$id');
+    if (json == null) return null;
+    return Venue.fromJson(json);
+  }
 }
