@@ -72,26 +72,37 @@ class _AddVenueLocationScreenState extends State<AddVenueLocationScreen> {
               },
               icon: const Icon(Icons.check))
         ]),
-        body: Stack(
-          children: [
-            GoogleMap(
-              myLocationEnabled: true,
-              markers: {_marker},
-              initialCameraPosition: (_currentLocation == null)
-                  ? AddVenueLocationScreen._kMelbourne
-                  : CameraPosition(target: _currentLocation!),
-              onMapCreated: (GoogleMapController controller) {
-                _controllerCompleter.complete(controller);
-              },
-              onCameraMove: (cameraPosition) {
-                setState(() {
-                  _marker =
-                      _marker.copyWith(positionParam: cameraPosition.target);
-                });
-              },
-            ),
-            if (_isLoading) const Center(child: CircularProgressIndicator()),
-          ],
-        ));
+        body: LayoutBuilder(builder: (context, constraints) {
+          return Stack(
+            children: [
+              GoogleMap(
+                myLocationEnabled: true,
+                markers: {_marker},
+                initialCameraPosition: (_currentLocation == null)
+                    ? AddVenueLocationScreen._kMelbourne
+                    : CameraPosition(target: _currentLocation!),
+                onMapCreated: (GoogleMapController controller) {
+                  _controllerCompleter.complete(controller);
+                },
+                onCameraMove: (cameraPosition) {
+                  setState(() {
+                    _marker =
+                        _marker.copyWith(positionParam: cameraPosition.target);
+                  });
+                },
+              ),
+              if (_isLoading) const Center(child: CircularProgressIndicator()),
+              Positioned(
+                height: constraints.maxHeight - 40,
+                width: constraints.maxWidth,
+                child: const Icon(
+                  Icons.location_pin,
+                  size: 45,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          );
+        }));
   }
 }
