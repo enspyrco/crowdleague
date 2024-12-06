@@ -2,6 +2,7 @@ import 'package:crowdleague/services/venues_service.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/venue.dart';
 
@@ -45,7 +46,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 25.0, top: 25.0),
+                    padding: const EdgeInsets.only(left: 25.0, top: 45.0),
                     child: IconButton(
                         color: Colors.white,
                         style: IconButton.styleFrom(
@@ -55,6 +56,35 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                   ),
                 ),
               ],
+            ),
+          const SizedBox(height: 15),
+          if (_venue != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                _venue!.name,
+                style: const TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 34,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+          const SizedBox(height: 15),
+          if (_venue != null)
+            InkWell(
+              child: Text(
+                _venue!.address,
+                style: const TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 18,
+                  color: Colors.blue,
+                ),
+              ),
+              onTap: () => launchUrl(
+                Uri.parse(
+                    'https://www.google.com/maps/place/${_venue!.address}/@${_venue!.latitude},${_venue!.longitude},18z'),
+              ),
             ),
         ],
       ),

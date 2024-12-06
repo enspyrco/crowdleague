@@ -16,6 +16,7 @@ class ConfigureVenueScreen extends StatefulWidget {
 
 class _ConfigureVenueScreenState extends State<ConfigureVenueScreen> {
   final _nameController = TextEditingController();
+  final _addressController = TextEditingController();
 
   @override
   void initState() {
@@ -27,17 +28,14 @@ class _ConfigureVenueScreenState extends State<ConfigureVenueScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          StreamBuilder<NewVenue>(
-              stream: null,
-              builder: (context, snapshot) {
-                return IconButton(
-                    onPressed: () {
-                      locate<VenuesService>()
-                          .updateNewVenue(name: _nameController.text);
-                      context.push('/finalise-venue');
-                    },
-                    icon: const Icon(Icons.check));
-              })
+          IconButton(
+            onPressed: () {
+              locate<VenuesService>().updateNewVenue(
+                  name: _nameController.text, address: _addressController.text);
+              context.push('/finalise-venue');
+            },
+            icon: const Icon(Icons.check),
+          ),
         ],
       ),
       body: Center(
@@ -59,6 +57,17 @@ class _ConfigureVenueScreenState extends State<ConfigureVenueScreen> {
                     const Padding(
                       padding: EdgeInsets.only(top: 8.0),
                       child: Text('Name'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 100, right: 100),
+                      child: TextField(
+                        controller: _addressController,
+                        autofocus: true,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: Text('Address'),
                     ),
                   ],
                 ),

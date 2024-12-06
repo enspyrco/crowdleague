@@ -23,6 +23,7 @@ class VenuesService {
     int? type,
     int? facing,
     String? name,
+    String? address,
     (double, double)? latLng,
   }) {
     if (type != null) {
@@ -33,6 +34,9 @@ class VenuesService {
     }
     if (name != null) {
       _newVenue.name = name;
+    }
+    if (address != null) {
+      _newVenue.address = address;
     }
     if (latLng != null) {
       _newVenue.latLng = latLng;
