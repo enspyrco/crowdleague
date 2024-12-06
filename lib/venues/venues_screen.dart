@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../services/geo_location_service.dart';
 import '../utils/locator.dart';
 import 'models/venue.dart';
 
@@ -16,7 +15,7 @@ class VenuesScreen extends StatefulWidget {
 
   static const CameraPosition _kMelbourne = CameraPosition(
     target: LatLng(-37.840935, 144.946457),
-    zoom: 15,
+    zoom: 12,
   );
 
   @override
@@ -28,24 +27,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
       Completer<GoogleMapController>();
 
   LatLng? _currentLocation;
-  bool _isLoading = true;
   final Set<Marker> _markers = {};
-
-  Future<void> _goToCurrentLocation() async {
-    // wait for the google maps controller and the geolocation
-    final (latLngRecord, controller) = await (
-      locate<GeoLocationService>().determinePosition(),
-      _controllerCompleter.future
-    ).wait;
-    LatLng location = LatLng(latLngRecord.$1, latLngRecord.$2);
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: location, zoom: 15)));
-    }
-  }
 
   Future<void> _displayVenues() async {
     final venues = await locate<VenuesService>().retrieveVenues();
@@ -70,7 +52,6 @@ class _VenuesScreenState extends State<VenuesScreen> {
   @override
   void initState() {
     super.initState();
-    _goToCurrentLocation();
     _displayVenues();
   }
 
@@ -92,7 +73,6 @@ class _VenuesScreenState extends State<VenuesScreen> {
             _controllerCompleter.complete(controller);
           },
         ),
-        if (_isLoading) const Center(child: CircularProgressIndicator()),
       ],
     ));
   }
