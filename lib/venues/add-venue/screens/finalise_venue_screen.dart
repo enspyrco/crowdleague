@@ -102,24 +102,20 @@ class _FinaliseVenueScreenState extends State<FinaliseVenueScreen> {
                     ],
                   ),
                 if (_croppedFilePath == null)
-                  AspectRatio(
+                  const AspectRatio(
                     aspectRatio: 1.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blueAccent)),
-                      child: const Center(
-                        child: Text('photo'),
-                      ),
+                    child: Center(
+                      child: Text('pick a photo'),
                     ),
                   ),
               ],
             ),
             if (_uploading) const LinearProgressIndicator(),
             const SizedBox(
-              height: 100,
+              height: 20,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton.outlined(
                     onPressed: () =>
