@@ -1,9 +1,9 @@
-import 'package:crowdleague/services/venues_service.dart';
-import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../services/venues_service.dart';
+import '../../utils/locator.dart';
 import '../models/venue.dart';
 
 class VenueDetailScreen extends StatefulWidget {
@@ -38,11 +38,49 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     return Scaffold(
       body: Column(
         children: [
-          if (_venue == null) const Center(child: CircularProgressIndicator()),
+          if (_venue == null)
+            const AspectRatio(
+              aspectRatio: 1.0,
+              child: Center(child: CircularProgressIndicator()),
+            ),
           if (_venue != null)
             Stack(
               children: [
-                Image.network(_venue!.photoUrl),
+                Image.network(
+                  _venue!.photoUrl,
+                  frameBuilder: (context, child, frame, sync) {
+                    if (frame == null) {
+                      return const AspectRatio(
+                        aspectRatio: 1.0,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    return child;
+                  },
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return AspectRatio(
+                      aspectRatio: 1.0,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, exception, stackTrace) {
+                    return Text(
+                      exception.toString(),
+                      style: const TextStyle(color: Colors.red),
+                    );
+                  },
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
