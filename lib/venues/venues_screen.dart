@@ -32,13 +32,25 @@ class _VenuesScreenState extends State<VenuesScreen> {
   Future<void> _displayVenues() async {
     final venues = await locate<VenuesService>().retrieveVenues();
     _markers.clear();
+
+    final Map<Venue, BitmapDescriptor> descriptorMap = {};
+
+    // get bytes for icons asynchronously
+    await Future.wait(
+      venues.map(
+        (venue) async {
+          final response = await http.get(Uri.parse(venue.iconUrl));
+          final descriptor = BitmapDescriptor.bytes(response.bodyBytes);
+          descriptorMap[venue] = descriptor;
+        },
+      ),
+    );
+
     for (final Venue venue in venues) {
-      final http.Response response = await http.get(Uri.parse(venue.iconUrl));
-      final descriptor = BitmapDescriptor.bytes(response.bodyBytes);
       final marker = Marker(
         markerId: MarkerId(venue.id),
         position: LatLng(venue.latitude, venue.longitude),
-        icon: descriptor,
+        icon: descriptorMap[venue]!,
         onTap: () =>
             context.pushNamed('venue-detail', pathParameters: {'id': venue.id}),
       );
