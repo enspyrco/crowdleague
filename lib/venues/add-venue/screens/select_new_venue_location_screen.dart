@@ -9,8 +9,8 @@ import '../../../services/geo_location_service.dart';
 import '../../../services/venues_service.dart';
 import '../../../utils/locator.dart';
 
-class AddVenueLocationScreen extends StatefulWidget {
-  const AddVenueLocationScreen({super.key});
+class SelectNewVenueLocationScreen extends StatefulWidget {
+  const SelectNewVenueLocationScreen({super.key});
 
   static const CameraPosition _kMelbourne = CameraPosition(
     target: LatLng(-37.840935, 144.946457),
@@ -18,10 +18,12 @@ class AddVenueLocationScreen extends StatefulWidget {
   );
 
   @override
-  State<AddVenueLocationScreen> createState() => _AddVenueLocationScreenState();
+  State<SelectNewVenueLocationScreen> createState() =>
+      _SelectNewVenueLocationScreenState();
 }
 
-class _AddVenueLocationScreenState extends State<AddVenueLocationScreen> {
+class _SelectNewVenueLocationScreenState
+    extends State<SelectNewVenueLocationScreen> {
   final Completer<GoogleMapController> _controllerCompleter =
       Completer<GoogleMapController>();
 
@@ -68,7 +70,7 @@ class _AddVenueLocationScreenState extends State<AddVenueLocationScreen> {
                 locate<VenuesService>().createNewVenue(
                   at: (_marker.position.latitude, _marker.position.longitude),
                 );
-                context.push('/configure-venue');
+                context.push('/finalise-new-venue');
               },
               icon: const Icon(Icons.check))
         ]),
@@ -79,7 +81,7 @@ class _AddVenueLocationScreenState extends State<AddVenueLocationScreen> {
                 myLocationEnabled: true,
                 markers: {_marker},
                 initialCameraPosition: (_currentLocation == null)
-                    ? AddVenueLocationScreen._kMelbourne
+                    ? SelectNewVenueLocationScreen._kMelbourne
                     : CameraPosition(target: _currentLocation!),
                 onMapCreated: (GoogleMapController controller) {
                   _controllerCompleter.complete(controller);

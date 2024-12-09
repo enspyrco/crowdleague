@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/locator.dart';
 
-class VenueFacingDropdown extends StatefulWidget {
-  const VenueFacingDropdown({super.key});
+class CourtEnvironmentDropdown extends StatefulWidget {
+  const CourtEnvironmentDropdown({super.key});
 
-  static const list = ['east-west', 'north-south'];
+  static const list = ['outdoor', 'indoor', 'covered-outdoor'];
 
   @override
-  State<VenueFacingDropdown> createState() => _VenueFacingDropdownState();
+  State<CourtEnvironmentDropdown> createState() =>
+      _CourtEnvironmentDropdownState();
 }
 
-class _VenueFacingDropdownState extends State<VenueFacingDropdown> {
-  String dropdownValue = VenueFacingDropdown.list.first;
+class _CourtEnvironmentDropdownState extends State<CourtEnvironmentDropdown> {
+  String dropdownValue = CourtEnvironmentDropdown.list.first;
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +26,16 @@ class _VenueFacingDropdownState extends State<VenueFacingDropdown> {
       ),
       onChanged: (String? value) {
         if (value != null) {
-          final facingNum = VenueFacingDropdown.list.indexOf(value) + 1;
-          locate<VenuesService>().updateNewVenue(facing: facingNum);
+          final environmentNum =
+              CourtEnvironmentDropdown.list.indexOf(value) + 1;
+          locate<VenuesService>().updateNewVenue(environment: environmentNum);
         }
 
         setState(() {
           dropdownValue = value!;
         });
       },
-      items: VenueFacingDropdown.list
+      items: CourtEnvironmentDropdown.list
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,

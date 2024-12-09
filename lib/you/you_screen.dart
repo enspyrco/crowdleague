@@ -23,7 +23,7 @@ class _YouScreenState extends State<YouScreen> {
             stream: locate<UserService>().profileDocStream,
             builder: (context, snapshot) {
               return Text(
-                snapshot.data?['name'] as String? ?? 'null',
+                snapshot.data?['name'] as String? ?? '?',
                 style: const TextStyle(fontSize: 20),
               );
             }),
@@ -32,7 +32,9 @@ class _YouScreenState extends State<YouScreen> {
           child: StreamBuilder<Map<String, Object?>?>(
               stream: locate<UserService>().profileDocStream,
               builder: (context, snapshot) {
-                return Avatar(picUrl: snapshot.data?['largePic'] as String?);
+                return Avatar(
+                    picUrl: snapshot.data?['largePic'] as String? ??
+                        'https://firebasestorage.googleapis.com/v0/b/crowdleague-project.firebasestorage.app/o/profilePics%2Fempty_profile_pic.jpg?alt=media&token=c8a9c8d7-0c0a-4510-b003-a389473573cb');
               }),
         ),
         actions: [
@@ -57,7 +59,7 @@ class _YouScreenState extends State<YouScreen> {
             child: ListTile(
               title: const Text('Add a Venue'),
               onTap: () {
-                context.push('/add-venue-location');
+                context.push('/select-new-venue-location');
               },
             ),
           ),

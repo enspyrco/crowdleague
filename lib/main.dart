@@ -1,7 +1,7 @@
 import 'package:crowdleague/services/geo_location_service.dart';
 import 'package:crowdleague/services/venues_service.dart';
-import 'package:crowdleague/venues/add-venue/screens/add_venue_location_screen.dart';
-import 'package:crowdleague/venues/add-venue/screens/finalise_venue_screen.dart';
+import 'package:crowdleague/venues/add-venue/screens/finalise_new_venue_screen.dart';
+import 'package:crowdleague/venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +14,6 @@ import 'services/firestore_service.dart';
 import 'services/images_service.dart';
 import 'services/storage_service.dart';
 import 'services/user_service.dart';
-import 'venues/add-venue/screens/configure_venue_screen.dart';
 import 'venues/venue-detail/venue_detail_screen.dart';
 import 'you/edit_profile_screen.dart';
 import 'utils/locator.dart';
@@ -39,17 +38,13 @@ final _router = GoRouter(
       builder: (context, state) => const EditProfileScreen(),
     ),
     GoRoute(
-        name: 'add-venue-location',
-        path: '/add-venue-location',
-        builder: (context, state) => const AddVenueLocationScreen()),
+        name: 'select-new-venue-location',
+        path: '/select-new-venue-location',
+        builder: (context, state) => const SelectNewVenueLocationScreen()),
     GoRoute(
-        name: 'configure-venue',
-        path: '/configure-venue',
-        builder: (context, state) => const ConfigureVenueScreen()),
-    GoRoute(
-        name: 'finalise-venue',
-        path: '/finalise-venue',
-        builder: (context, state) => const FinaliseVenueScreen()),
+        name: 'finalise-new-venue',
+        path: '/finalise-new-venue',
+        builder: (context, state) => const FinaliseNewVenueScreen()),
     GoRoute(
       name: 'venue-detail',
       path: '/venue-detail/:id',
