@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:crowdleague/services/storage_service.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../utils/locator.dart';
@@ -104,5 +105,17 @@ class VenuesService {
     final json = await locate<FirestoreService>().getDoc(atPath: 'venues/$id');
     if (json == null) return null;
     return Venue.fromJson(json);
+  }
+
+  Future<void> deleteVenue({required Venue venue}) async {
+    await locate<StorageService>().deleteFile(
+      'venuePhotos',
+      '${venue.id}_large',
+    );
+    await locate<StorageService>().deleteFile(
+      'venuePhotos',
+      '${venue.id}_icon',
+    );
+    await locate<FirestoreService>().deleteDoc(atPath: 'venues/${venue.id}');
   }
 }

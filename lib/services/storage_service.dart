@@ -36,4 +36,8 @@ class StorageService {
     await task;
     return storageRef;
   }
+
+  Future<void> deleteFile(String path, String fileName) {
+    return _storage.ref(path).child(fileName).delete();
+  }
 }

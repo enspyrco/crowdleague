@@ -53,4 +53,8 @@ class FirestoreService {
     json?['id'] = reference.id;
     return json;
   }
+
+  Future<void> deleteDoc({required String atPath}) {
+    return _db.doc(atPath).delete();
+  }
 }

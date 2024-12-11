@@ -24,7 +24,7 @@ class FinaliseNewVenueScreen extends StatefulWidget {
 class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
-  bool _loading = false;
+  bool _uploading = false;
 
   Future<void> _createVenue(String name, String address) async {
     locate<VenuesService>().updateLocalVenue(
@@ -34,13 +34,13 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
 
     if (mounted) {
       setState(() {
-        _loading = true;
+        _uploading = true;
       });
     }
     await locate<VenuesService>().createNewVenue();
     if (mounted) {
       setState(() {
-        _loading = false;
+        _uploading = false;
       });
       context.go('/');
     }
@@ -73,6 +73,7 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
         builder: (context, snapshot) {
           return ListView(
             children: [
+              if (_uploading) const LinearProgressIndicator(),
               const UploadVenuePhoto(),
               const DividerWithSubheading('Name'),
               Padding(

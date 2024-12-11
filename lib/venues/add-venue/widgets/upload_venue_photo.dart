@@ -19,19 +19,19 @@ class UploadVenuePhoto extends StatefulWidget {
 class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
   String? _croppedFilePath;
   Object? _error;
-  bool _uploading = false;
+  bool _loading = false;
   final _screenshotController = ScreenshotController();
 
   Future<void> _onPickPhotoButtonPressed(ImageSource source) async {
     try {
       setState(() {
-        _uploading = true;
+        _loading = true;
       });
       XFile? pickedFile = await locate<ImagesService>().pickImage(source);
       if (pickedFile == null) {
         if (mounted) {
           setState(() {
-            _uploading = false;
+            _loading = false;
           });
         }
       } else {
@@ -40,7 +40,7 @@ class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
         if (croppedFilePath == null) {
           if (mounted) {
             setState(() {
-              _uploading = false;
+              _loading = false;
             });
           }
         } else {
@@ -57,7 +57,7 @@ class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
               locate<VenuesService>().updateLocalVenue(iconBytes: bytes);
               if (mounted) {
                 setState(() {
-                  _uploading = false;
+                  _loading = false;
                 });
               }
             });
@@ -105,10 +105,10 @@ class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
           const AspectRatio(
             aspectRatio: 1.0,
             child: Center(
-              child: Text('upload'),
+              child: Text('pick a\nphoto'),
             ),
           ),
-        if (_uploading) const LinearProgressIndicator(),
+        if (_loading) const CircularProgressIndicator(),
         const SizedBox(height: 20),
         if (_error != null) // display any errors in a Text widget
           Text(

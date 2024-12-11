@@ -17,6 +17,7 @@ class VenueDetailScreen extends StatefulWidget {
 
 class _VenueDetailScreenState extends State<VenueDetailScreen> {
   Venue? _venue;
+  bool _deleting = false;
 
   Future<void> _retrieveVenue() async {
     final venue = await locate<VenuesService>().retrieveVenue(widget.venueId);
@@ -24,6 +25,13 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
       setState(() {
         _venue = venue;
       });
+    }
+  }
+
+  Future<void> _deleteVenue() async {
+    await locate<VenuesService>().deleteVenue(venue: _venue!);
+    if (mounted) {
+      context.go('/');
     }
   }
 
@@ -38,12 +46,12 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     return Scaffold(
       body: Column(
         children: [
-          if (_venue == null)
+          if (_venue == null || _deleting)
             const AspectRatio(
               aspectRatio: 1.0,
               child: Center(child: CircularProgressIndicator()),
             ),
-          if (_venue != null)
+          if (_venue != null && !_deleting) ...[
             Stack(
               children: [
                 Image.network(
@@ -95,8 +103,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 ),
               ],
             ),
-          const SizedBox(height: 15),
-          if (_venue != null)
+            const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -108,8 +115,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 ),
               ),
             ),
-          const SizedBox(height: 15),
-          if (_venue != null)
+            const SizedBox(height: 15),
             InkWell(
               child: Text(
                 _venue!.address,
@@ -124,6 +130,16 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                     'https://www.google.com/maps/place/${_venue!.address}/@${_venue!.latitude},${_venue!.longitude},18z'),
               ),
             ),
+            const SizedBox(height: 15),
+            TextButton(
+                onPressed: () {
+                  _deleteVenue();
+                },
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.red),
+                )),
+          ],
         ],
       ),
     );

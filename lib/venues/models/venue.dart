@@ -14,7 +14,7 @@ class Venue {
 
   final String id;
   final int size; // 1 half-court, 2 full-court, 3 multi-court
-  final int surface; // concrete, wood, astro-turf
+  final int surface; // 1 concrete, 2 wood, 3 astro-turf, 4 rubber
   final int environment; // outdoor, indoor, outdoor-with-cover
   final String name;
   final String address;
