@@ -1,16 +1,21 @@
-import 'package:crowdleague/venues/add-venue/widgets/upload_venue_photo.dart';
+import 'package:crowdleague/venues/models/local_venue.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../services/venues_service.dart';
 import '../../../utils/locator.dart';
-import '../../models/new_venue.dart';
 import '../widgets/court_environment_dropdown.dart';
 import '../widgets/court_surface_dropdown.dart';
+import '../widgets/divider_with_subheading.dart';
+import '../widgets/upload_venue_photo.dart';
 import '../widgets/venue_size_dropdown.dart';
 
 class FinaliseNewVenueScreen extends StatefulWidget {
-  const FinaliseNewVenueScreen({super.key});
+  const FinaliseNewVenueScreen(
+      {required this.latitude, required this.longitude, super.key});
+
+  final String latitude;
+  final String longitude;
 
   @override
   State<FinaliseNewVenueScreen> createState() => _FinaliseNewVenueScreenState();
@@ -19,10 +24,35 @@ class FinaliseNewVenueScreen extends StatefulWidget {
 class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
+  bool _loading = false;
+
+  Future<void> _createVenue(String name, String address) async {
+    locate<VenuesService>().updateLocalVenue(
+      name: name,
+      address: address,
+    );
+
+    if (mounted) {
+      setState(() {
+        _loading = true;
+      });
+    }
+    await locate<VenuesService>().createNewVenue();
+    if (mounted) {
+      setState(() {
+        _loading = false;
+      });
+      context.go('/');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    locate<VenuesService>().updateLocalVenue(latLng: (
+      double.parse(widget.latitude),
+      double.parse(widget.longitude),
+    ));
   }
 
   @override
@@ -32,32 +62,19 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              locate<VenuesService>().updateNewVenue(
-                  name: _nameController.text, address: _addressController.text);
-              context.push('/finalise-new-venue');
+              _createVenue(_nameController.text, _addressController.text);
             },
             icon: const Icon(Icons.check),
           ),
         ],
       ),
-      body: StreamBuilder<NewVenue>(
-        stream: locate<VenuesService>().newVenueStream,
+      body: StreamBuilder<LocalVenue>(
+        stream: locate<VenuesService>().localVenueStream,
         builder: (context, snapshot) {
           return ListView(
             children: [
               const UploadVenuePhoto(),
-              const Divider(),
-              Container(
-                padding: const EdgeInsets.only(left: 20),
-                child: Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(
-                    'Name',
-                    style: Theme.of(context).textTheme.bodySmall,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-              ),
+              const DividerWithSubheading('Name'),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: TextField(
@@ -65,70 +82,26 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
                   autofocus: true,
                 ),
               ),
-              const Divider(),
-              Container(
-                padding: const EdgeInsets.only(left: 20),
-                child: Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(
-                    'Address',
-                    style: Theme.of(context).textTheme.bodySmall,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-              ),
+              const DividerWithSubheading('Address'),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: TextField(
                   controller: _addressController,
                 ),
               ),
-              const Divider(),
-              Container(
-                padding: const EdgeInsets.only(left: 20),
-                child: Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(
-                    'Size',
-                    style: Theme.of(context).textTheme.bodySmall,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-              ),
+              const DividerWithSubheading('Size'),
               const SizedBox(height: 5),
               const Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: VenueSizeDropdown(),
               ),
               if (snapshot.data != null && snapshot.data!.size != 3) ...[
-                const Divider(),
-                Container(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(
-                      'Surface',
-                      style: Theme.of(context).textTheme.bodySmall,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                ),
+                const DividerWithSubheading('Surface'),
                 const Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: CourtSurfaceDropdown(),
                 ),
-                const Divider(),
-                Container(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(
-                      'Environment',
-                      style: Theme.of(context).textTheme.bodySmall,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                ),
+                const DividerWithSubheading('Environment'),
                 const Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: CourtEnvironmentDropdown(),

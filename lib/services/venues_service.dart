@@ -1,67 +1,90 @@
 import 'dart:async';
+import 'dart:typed_data';
 
-import 'package:crowdleague/services/firestore_service.dart';
-import 'package:crowdleague/venues/models/new_venue.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../utils/locator.dart';
+import '../venues/models/local_venue.dart';
 import '../venues/models/venue.dart';
+import 'firestore_service.dart';
+import 'images_service.dart';
 
 class VenuesService {
-  var _newVenue = NewVenue();
+  /// A local copy of the venue for local state that we can listen to, in order
+  /// to update the UI when certain values change, eg. multi-venue has no
+  /// surface value.
+  final _localVenue = LocalVenue();
 
-  final _newVenueSubject = BehaviorSubject<NewVenue>.seeded(NewVenue());
+  final _localVenueSubject = BehaviorSubject<LocalVenue>.seeded(LocalVenue());
+  Stream<LocalVenue> get localVenueStream => _localVenueSubject.stream;
 
-  Stream<NewVenue> get newVenueStream => _newVenueSubject.stream;
+  final _uploadProgressSubject = BehaviorSubject<int>.seeded(0);
+  Stream<int> get uploadProgressStream => _uploadProgressSubject.stream;
 
-  /// Create a new venue at the given location, for eventually saving to the db.
-  void createNewVenue({required (double, double) at}) {
-    _newVenue = NewVenue(latLng: at);
-    _newVenueSubject.add(_newVenue);
+  /// Create a new venue at the given location, with photos if one was picked
+  Future<void> createNewVenue() async {
+    final venueId = await locate<FirestoreService>()
+        .addDoc(collectionPath: 'venues', data: _localVenue.toJson());
+
+    // Upload icon bytes
+    if (_localVenue.largePhotoPath != null) {
+      // if the user has picked a photo
+      final iconUrl = await locate<ImagesService>().uploadPhotoFromBytes(
+          bytes: _localVenue.iconBytes!,
+          storagePath: 'venuePhotos/${venueId}_icon');
+
+      //  Upload large photo file
+      final largePhotoUrl = await locate<ImagesService>().uploadPhotoFromFile(
+        localPath: _localVenue.largePhotoPath!,
+        storagePath: 'venuePhotos/${venueId}_large',
+      );
+
+      // add photo Urls to data
+      await locate<FirestoreService>().updateDoc(
+        path: 'venues/$venueId',
+        data: {'largePhotoUrl': largePhotoUrl, 'iconUrl': iconUrl},
+      );
+    }
   }
 
   /// Update the members of the new venue before it is saved to the db.
-  void updateNewVenue({
+  void updateLocalVenue({
     int? size,
     int? surface,
     int? environment,
     String? name,
     String? address,
     (double, double)? latLng,
-    String? iconUrl,
-    String? largePhotoUrl,
+    Uint8List? iconBytes,
+    String? largePhotoPath,
   }) {
     if (size != null) {
-      _newVenue.size = size;
+      _localVenue.size = size;
     }
     if (surface != null) {
-      _newVenue.surface = surface;
+      _localVenue.surface = surface;
     }
     if (environment != null) {
-      _newVenue.environment = environment;
+      _localVenue.environment = environment;
     }
     if (name != null) {
-      _newVenue.name = name;
+      _localVenue.name = name;
     }
     if (address != null) {
-      _newVenue.address = address;
+      _localVenue.address = address;
     }
     if (latLng != null) {
-      _newVenue.latLng = latLng;
+      _localVenue.latitude = latLng.$1;
+      _localVenue.longitude = latLng.$2;
     }
-    if (iconUrl != null) {
-      _newVenue.iconUrl = iconUrl;
+    if (iconBytes != null) {
+      _localVenue.iconBytes = iconBytes;
     }
-    if (largePhotoUrl != null) {
-      _newVenue.largePhotoUrl = largePhotoUrl;
+    if (largePhotoPath != null) {
+      _localVenue.largePhotoPath = largePhotoPath;
     }
-    _newVenueSubject.add(_newVenue);
-  }
 
-  /// Returns a Future with the Database Id of the new venue
-  Future<String> addNewVenueToDB() {
-    return locate<FirestoreService>()
-        .addDoc(collectionPath: 'venues', data: _newVenue.toJson());
+    _localVenueSubject.add(_localVenue);
   }
 
   Future<void> updateVenue(

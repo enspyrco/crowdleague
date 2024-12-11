@@ -47,7 +47,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
             Stack(
               children: [
                 Image.network(
-                  _venue!.photoUrl,
+                  _venue!.largePhotoUrl,
                   frameBuilder: (context, child, frame, sync) {
                     if (frame == null) {
                       return const AspectRatio(

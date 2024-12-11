@@ -49,25 +49,19 @@ class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
               _croppedFilePath = croppedFilePath;
             });
           }
-          final venueId = await locate<VenuesService>().addNewVenueToDB();
-          // convert the VenueIcon widget to a png? and upload bytes
-          final bytes = await _screenshotController.capture();
-          final String iconDownloadUrl = (bytes != null)
-              ? await locate<ImagesService>().uploadPhotoFromBytes(
-                  bytes: bytes, storagePath: 'venuePhotos/${venueId}_icon')
-              : '';
-
-          final photoUrl = await locate<ImagesService>().uploadPhotoFromFile(
-            localPath: _croppedFilePath!,
-            storagePath: 'venuePhotos/$venueId',
-          );
-          locate<VenuesService>().updateNewVenue(
-              largePhotoUrl: photoUrl, iconUrl: iconDownloadUrl);
-          if (mounted) {
-            setState(() {
-              _uploading = false;
+          locate<VenuesService>()
+              .updateLocalVenue(largePhotoPath: _croppedFilePath);
+          // convert the VenueIcon widget to a png and upload bytes
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _screenshotController.capture().then((bytes) {
+              locate<VenuesService>().updateLocalVenue(iconBytes: bytes);
+              if (mounted) {
+                setState(() {
+                  _uploading = false;
+                });
+              }
             });
-          }
+          });
         }
       }
     } catch (e) {

@@ -43,8 +43,11 @@ final _router = GoRouter(
         builder: (context, state) => const SelectNewVenueLocationScreen()),
     GoRoute(
         name: 'finalise-new-venue',
-        path: '/finalise-new-venue',
-        builder: (context, state) => const FinaliseNewVenueScreen()),
+        path: '/finalise-new-venue/latitude/:latitude/longitude/:longitude',
+        builder: (context, state) => FinaliseNewVenueScreen(
+              latitude: state.pathParameters['latitude']!,
+              longitude: state.pathParameters['longitude']!,
+            )),
     GoRoute(
       name: 'venue-detail',
       path: '/venue-detail/:id',

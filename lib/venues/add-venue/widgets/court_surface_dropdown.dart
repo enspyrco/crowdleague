@@ -6,7 +6,7 @@ import '../../../utils/locator.dart';
 class CourtSurfaceDropdown extends StatefulWidget {
   const CourtSurfaceDropdown({super.key});
 
-  static const list = ['concrete', 'wood', 'astro-turf'];
+  static const list = ['concrete', 'wood', 'astro-turf', 'rubber'];
 
   @override
   State<CourtSurfaceDropdown> createState() => _CourtSurfaceDropdownState();
@@ -26,7 +26,7 @@ class _CourtSurfaceDropdownState extends State<CourtSurfaceDropdown> {
       onChanged: (String? value) {
         if (value != null) {
           final surfaceNum = CourtSurfaceDropdown.list.indexOf(value) + 1;
-          locate<VenuesService>().updateNewVenue(surface: surfaceNum);
+          locate<VenuesService>().updateLocalVenue(surface: surfaceNum);
         }
 
         setState(() {

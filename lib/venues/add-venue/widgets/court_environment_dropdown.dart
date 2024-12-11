@@ -28,7 +28,7 @@ class _CourtEnvironmentDropdownState extends State<CourtEnvironmentDropdown> {
         if (value != null) {
           final environmentNum =
               CourtEnvironmentDropdown.list.indexOf(value) + 1;
-          locate<VenuesService>().updateNewVenue(environment: environmentNum);
+          locate<VenuesService>().updateLocalVenue(environment: environmentNum);
         }
 
         setState(() {

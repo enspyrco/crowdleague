@@ -6,16 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../services/geo_location_service.dart';
-import '../../../services/venues_service.dart';
 import '../../../utils/locator.dart';
 
 class SelectNewVenueLocationScreen extends StatefulWidget {
   const SelectNewVenueLocationScreen({super.key});
-
-  static const CameraPosition _kMelbourne = CameraPosition(
-    target: LatLng(-37.840935, 144.946457),
-    zoom: 15,
-  );
 
   @override
   State<SelectNewVenueLocationScreen> createState() =>
@@ -27,7 +21,7 @@ class _SelectNewVenueLocationScreenState
   final Completer<GoogleMapController> _controllerCompleter =
       Completer<GoogleMapController>();
 
-  LatLng? _currentLocation;
+  LatLng _currentLocation = LatLng(-37.840935, 144.946457);
   bool _isLoading = true;
 
   Marker _marker = const Marker(
@@ -63,14 +57,18 @@ class _SelectNewVenueLocationScreenState
     if (defaultTargetPlatform == TargetPlatform.macOS) {
       return const Placeholder();
     }
+
     return Scaffold(
         appBar: AppBar(actions: [
           IconButton(
               onPressed: () {
-                locate<VenuesService>().createNewVenue(
-                  at: (_marker.position.latitude, _marker.position.longitude),
+                context.pushNamed(
+                  'finalise-new-venue',
+                  pathParameters: {
+                    'latitude': _currentLocation.latitude.toString(),
+                    'longitude': _currentLocation.longitude.toString()
+                  },
                 );
-                context.push('/finalise-new-venue');
               },
               icon: const Icon(Icons.check))
         ]),
@@ -80,9 +78,7 @@ class _SelectNewVenueLocationScreenState
               GoogleMap(
                 myLocationEnabled: true,
                 markers: {_marker},
-                initialCameraPosition: (_currentLocation == null)
-                    ? SelectNewVenueLocationScreen._kMelbourne
-                    : CameraPosition(target: _currentLocation!),
+                initialCameraPosition: CameraPosition(target: _currentLocation),
                 onMapCreated: (GoogleMapController controller) {
                   _controllerCompleter.complete(controller);
                 },
@@ -91,6 +87,7 @@ class _SelectNewVenueLocationScreenState
                     _marker =
                         _marker.copyWith(positionParam: cameraPosition.target);
                   });
+                  _currentLocation = cameraPosition.target;
                 },
               ),
               if (_isLoading) const Center(child: CircularProgressIndicator()),
