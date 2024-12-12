@@ -57,61 +57,61 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              _createVenue(_nameController.text, _addressController.text);
-            },
-            icon: const Icon(Icons.check),
-          ),
-        ],
-      ),
-      body: StreamBuilder<LocalVenue>(
+    return StreamBuilder<LocalVenue>(
         stream: locate<VenuesService>().localVenueStream,
         builder: (context, snapshot) {
-          return ListView(
-            children: [
-              if (_uploading) const LinearProgressIndicator(),
-              const UploadVenuePhoto(),
-              const DividerWithSubheading('Name'),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: TextField(
-                  controller: _nameController,
-                  autofocus: true,
-                ),
+          return Scaffold(
+              appBar: AppBar(
+                actions: [
+                  if (snapshot.hasData && snapshot.data!.largePhotoPath != null)
+                    IconButton(
+                      onPressed: () {
+                        _createVenue(
+                            _nameController.text, _addressController.text);
+                      },
+                      icon: const Icon(Icons.check),
+                    ),
+                ],
               ),
-              const DividerWithSubheading('Address'),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: TextField(
-                  controller: _addressController,
-                ),
-              ),
-              const DividerWithSubheading('Size'),
-              const SizedBox(height: 5),
-              const Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: VenueSizeDropdown(),
-              ),
-              if (snapshot.data != null && snapshot.data!.size != 3) ...[
-                const DividerWithSubheading('Surface'),
-                const Padding(
-                  padding: EdgeInsets.only(left: 15.0),
-                  child: CourtSurfaceDropdown(),
-                ),
-                const DividerWithSubheading('Environment'),
-                const Padding(
-                  padding: EdgeInsets.only(left: 15.0),
-                  child: CourtEnvironmentDropdown(),
-                ),
-              ],
-            ],
-          );
-        },
-      ),
-    );
+              body: ListView(
+                children: [
+                  if (_uploading) const LinearProgressIndicator(),
+                  const UploadVenuePhoto(),
+                  const DividerWithSubheading('Name'),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: TextField(
+                      controller: _nameController,
+                      autofocus: true,
+                    ),
+                  ),
+                  const DividerWithSubheading('Address'),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: TextField(
+                      controller: _addressController,
+                    ),
+                  ),
+                  const DividerWithSubheading('Size'),
+                  const SizedBox(height: 5),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: VenueSizeDropdown(),
+                  ),
+                  if (snapshot.data != null && snapshot.data!.size != 3) ...[
+                    const DividerWithSubheading('Surface'),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 15.0),
+                      child: CourtSurfaceDropdown(),
+                    ),
+                    const DividerWithSubheading('Environment'),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 15.0),
+                      child: CourtEnvironmentDropdown(),
+                    ),
+                  ],
+                ],
+              ));
+        });
   }
 }
