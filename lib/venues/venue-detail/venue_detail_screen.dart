@@ -29,8 +29,16 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   }
 
   Future<void> _deleteVenue() async {
+    if (mounted) {
+      setState(() {
+        _deleting = true;
+      });
+    }
     await locate<VenuesService>().deleteVenue(venue: _venue!);
     if (mounted) {
+      setState(() {
+        _deleting = false;
+      });
       context.go('/');
     }
   }
@@ -108,22 +116,20 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 _venue!.name,
-                style: const TextStyle(
-                  fontFamily: 'Raleway',
-                  fontSize: 34,
-                  fontWeight: FontWeight.w300,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .displayLarge!
+                    .copyWith(fontWeight: FontWeight.w300),
               ),
             ),
             const SizedBox(height: 15),
             InkWell(
               child: Text(
                 _venue!.address,
-                style: const TextStyle(
-                  fontFamily: 'Raleway',
-                  fontSize: 18,
-                  color: Colors.blue,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .displayMedium!
+                    .copyWith(color: Colors.blue),
               ),
               onTap: () => launchUrl(
                 Uri.parse(

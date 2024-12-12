@@ -18,7 +18,7 @@ class _YouScreenState extends State<YouScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Theme.of(context).primaryColor,
         title: StreamBuilder<Map<String, Object?>?>(
             stream: locate<UserService>().profileDocStream,
             builder: (context, snapshot) {

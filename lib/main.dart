@@ -90,6 +90,21 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: _router,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.red,
+        ),
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 34,
+          ),
+          displayMedium: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 18,
+          ),
+        ),
+      ),
     );
   }
 }
