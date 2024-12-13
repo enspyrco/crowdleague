@@ -21,7 +21,7 @@ class _SelectNewVenueLocationScreenState
   final Completer<GoogleMapController> _controllerCompleter =
       Completer<GoogleMapController>();
 
-  LatLng _currentLocation = LatLng(-37.840935, 144.946457);
+  LatLng _currentLocation = const LatLng(-37.840935, 144.946457);
   bool _isLoading = true;
 
   Marker _marker = const Marker(

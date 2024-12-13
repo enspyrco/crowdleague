@@ -1,14 +1,22 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 
 import '../venues/models/upload_event.dart';
 
+/// The default bucket is in the US
 class StorageService {
-  final _storage = FirebaseStorage.instanceFor(
-      bucket: "gs://crowdleague-project.firebasestorage.app");
+  StorageService() {
+    (kReleaseMode)
+        ? _storage =
+            FirebaseStorage.instanceFor(bucket: "gs://crowdleague-project-aus")
+        : _storage = FirebaseStorage.instanceFor(
+            bucket: "gs://crowdleague-project.firebasestorage.app");
+  }
+
+  late final FirebaseStorage _storage;
 
   final uploadEventStreamController = StreamController<UploadEvent>();
 

@@ -1,10 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+
 /// A service that wraps the FirebaseFirestore.instance meaning tests can
 /// provide a test double in place of the service.
+///
+/// The default Firestore is in Australia.
 class FirestoreService {
-  final _db = FirebaseFirestore.instance;
+  FirestoreService(FirebaseApp firebaseApp) {
+    (kReleaseMode)
+        ? _db = FirebaseFirestore.instanceFor(
+            app: firebaseApp, databaseId: '(default)')
+        : _db = FirebaseFirestore.instanceFor(
+            app: firebaseApp, databaseId: 'firestore-usa');
+  }
+
+  late final FirebaseFirestore _db;
 
   Future<void> updateDoc({
     required String path,
