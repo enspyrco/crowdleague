@@ -8,7 +8,6 @@ import '../utils/locator.dart';
 import '../venues/models/local_venue.dart';
 import '../venues/models/venue.dart';
 import 'firestore_service.dart';
-import 'images_service.dart';
 
 class VenuesService {
   /// A local copy of the venue for local state that we can listen to, in order
@@ -30,15 +29,20 @@ class VenuesService {
     // Upload icon bytes
     if (_localVenue.largePhotoPath != null) {
       // if the user has picked a photo
-      final iconUrl = await locate<ImagesService>().uploadPhotoFromBytes(
+      final iconUrl = await locate<StorageService>().uploadBytes(
           bytes: _localVenue.iconBytes!,
           storagePath: 'venuePhotos/${venueId}_icon');
 
+      final storagePath = 'venuePhotos/${venueId}_large';
+
       //  Upload large photo file
-      final largePhotoUrl = await locate<ImagesService>().uploadPhotoFromFile(
+      await for (final _ in locate<StorageService>().uploadFile(
         localPath: _localVenue.largePhotoPath!,
-        storagePath: 'venuePhotos/${venueId}_large',
-      );
+        storagePath: storagePath,
+      )) {}
+
+      final largePhotoUrl = await locate<StorageService>()
+          .getDownLoadUrl(storagePath: storagePath);
 
       // add photo Urls to data
       await locate<FirestoreService>().updateDoc(

@@ -39,7 +39,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
       setState(() {
         _deleting = false;
       });
-      context.go('/');
+      context.pop();
     }
   }
 

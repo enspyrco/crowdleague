@@ -1,3 +1,4 @@
+import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -48,10 +49,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _croppedFilePath = croppedFilePath;
             });
           }
-          final imageUrl = await locate<ImagesService>().uploadPhotoFromFile(
+          final storagePath =
+              'profilePics/${locate<AuthService>().currentUserId!}';
+          await for (final _ in locate<StorageService>().uploadFile(
             localPath: _croppedFilePath!,
-            storagePath: 'profilePics/${locate<AuthService>().currentUserId!}',
-          );
+            storagePath: storagePath,
+          )) {} // TODO: use the upload progress for a determinate progress indicator
+          final imageUrl = await locate<StorageService>()
+              .getDownLoadUrl(storagePath: storagePath);
+
           await locate<UserService>().updateProfilePicUrl(imageUrl);
           if (mounted) {
             context.pop();

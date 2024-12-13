@@ -10,10 +10,10 @@ class VenueIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 11,
+      radius: 8,
       backgroundColor: Colors.red,
       child: CircleAvatar(
-        radius: 10,
+        radius: 7,
         backgroundImage: FileImage(File(filePath)),
       ),
     );

@@ -25,8 +25,10 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   bool _uploading = false;
+  double? progress;
 
   Future<void> _createVenue(String name, String address) async {
+    // Update the name & address of the LocalVenue stored in the VenuesService
     locate<VenuesService>().updateLocalVenue(
       name: name,
       address: address,
@@ -73,45 +75,58 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
                     ),
                 ],
               ),
-              body: ListView(
-                children: [
-                  if (_uploading) const LinearProgressIndicator(),
-                  const UploadVenuePhoto(),
-                  const DividerWithSubheading('Name'),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: TextField(
-                      controller: _nameController,
-                      autofocus: true,
-                    ),
-                  ),
-                  const DividerWithSubheading('Address'),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: TextField(
-                      controller: _addressController,
-                    ),
-                  ),
-                  const DividerWithSubheading('Size'),
-                  const SizedBox(height: 5),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 15.0),
-                    child: VenueSizeDropdown(),
-                  ),
-                  if (snapshot.data != null && snapshot.data!.size != 3) ...[
-                    const DividerWithSubheading('Surface'),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 15.0),
-                      child: CourtSurfaceDropdown(),
-                    ),
-                    const DividerWithSubheading('Environment'),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 15.0),
-                      child: CourtEnvironmentDropdown(),
-                    ),
-                  ],
-                ],
-              ));
+              body: (_uploading)
+                  ? const Column(
+                      children: [
+                        LinearProgressIndicator(),
+                        Expanded(
+                          child: Center(
+                            child: Text('hello'),
+                          ),
+                        )
+                      ],
+                    )
+                  : ListView(
+                      children: [
+                        if (!_uploading) ...[
+                          const UploadVenuePhoto(),
+                          const DividerWithSubheading('Name'),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: TextField(
+                              controller: _nameController,
+                              autofocus: true,
+                            ),
+                          ),
+                          const DividerWithSubheading('Address'),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: TextField(
+                              controller: _addressController,
+                            ),
+                          ),
+                          const DividerWithSubheading('Size'),
+                          const SizedBox(height: 5),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 15.0),
+                            child: VenueSizeDropdown(),
+                          ),
+                          if (snapshot.data != null &&
+                              snapshot.data!.size != 3) ...[
+                            const DividerWithSubheading('Surface'),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 15.0),
+                              child: CourtSurfaceDropdown(),
+                            ),
+                            const DividerWithSubheading('Environment'),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 15.0),
+                              child: CourtEnvironmentDropdown(),
+                            ),
+                          ],
+                        ],
+                      ],
+                    ));
         });
   }
 }

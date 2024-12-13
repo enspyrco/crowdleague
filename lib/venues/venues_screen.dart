@@ -29,6 +29,15 @@ class _VenuesScreenState extends State<VenuesScreen> {
   LatLng? _currentLocation;
   final Set<Marker> _markers = {};
 
+  Future<void> _openVenueDetailScreen(String id) async {
+    await context.pushNamed('venue-detail', pathParameters: {'id': id});
+    Marker marker =
+        _markers.firstWhere((marker) => marker.markerId.value == id);
+    setState(() {
+      _markers.remove(marker);
+    });
+  }
+
   Future<void> _displayVenues() async {
     final venues = await locate<VenuesService>().retrieveVenues();
     _markers.clear();
@@ -51,8 +60,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
         markerId: MarkerId(venue.id),
         position: LatLng(venue.latitude, venue.longitude),
         icon: descriptorMap[venue]!,
-        onTap: () =>
-            context.pushNamed('venue-detail', pathParameters: {'id': venue.id}),
+        onTap: () => _openVenueDetailScreen(venue.id),
       );
       _markers.add(marker);
     }

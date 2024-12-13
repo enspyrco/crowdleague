@@ -1,11 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../venues/models/upload_event.dart';
+
 class StorageService {
   final _storage = FirebaseStorage.instanceFor(
       bucket: "gs://crowdleague-project.firebasestorage.app");
+
+  final uploadEventStreamController = StreamController<UploadEvent>();
 
   Stream<double> uploadWithProgress(
       {required String localPath, required String storagePath}) {
@@ -19,22 +24,30 @@ class StorageService {
     });
   }
 
-  /// Returns a reference to the uploaded file.
-  Future<Reference> uploadFile(
-      {required String localPath, required String storagePath}) async {
+  /// Returns a Stream of UploadEvents that carry the progress of the upload
+  Stream<UploadEvent> uploadFile(
+      {required String localPath, required String storagePath}) {
     final storageRef = _storage.ref(storagePath);
     UploadTask task = storageRef.putFile(File(localPath));
-    await task;
-    return storageRef;
+    return task.snapshotEvents.map<UploadEvent>((snapshot) {
+      return UploadEvent(
+          progress: snapshot.bytesTransferred / snapshot.totalBytes.toDouble());
+    });
   }
 
-  /// Returns a reference to the uploaded bytes.
-  Future<Reference> uploadBytes(
+  // Returns a Future with the download Url of a file that was uploaded
+  Future<String> getDownLoadUrl({required String storagePath}) {
+    final storageRef = _storage.ref(storagePath);
+    return storageRef.getDownloadURL();
+  }
+
+  /// Returns a Future with the download Url of the bytes that were uploaded.
+  Future<String> uploadBytes(
       {required Uint8List bytes, required String storagePath}) async {
     final storageRef = _storage.ref(storagePath);
     UploadTask task = storageRef.putData(bytes);
     await task;
-    return storageRef;
+    return storageRef.getDownloadURL();
   }
 
   Future<void> deleteFile(String path, String fileName) {

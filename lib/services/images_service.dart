@@ -1,11 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:flutter/painting.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../utils/locator.dart';
-import 'storage_service.dart';
 
 class ImagesService {
   final ImagePicker _picker = ImagePicker();
@@ -47,29 +42,5 @@ class ImagesService {
           )
         ]);
     return croppedFile?.path;
-  }
-
-  /// Returns a Future with the download Url of the file that was uploaded.
-  Future<String> uploadPhotoFromFile({
-    required String localPath,
-    required String storagePath,
-  }) async {
-    final imageRef = await locate<StorageService>().uploadFile(
-      localPath: localPath,
-      storagePath: storagePath,
-    );
-    return imageRef.getDownloadURL();
-  }
-
-  /// Returns a Future with the download Url of the bytes that were uploaded.
-  Future<String> uploadPhotoFromBytes({
-    required Uint8List bytes,
-    required String storagePath,
-  }) async {
-    final imageRef = await locate<StorageService>().uploadBytes(
-      bytes: bytes,
-      storagePath: storagePath,
-    );
-    return imageRef.getDownloadURL();
   }
 }
