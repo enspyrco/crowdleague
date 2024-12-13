@@ -60,7 +60,7 @@ final _router = GoRouter(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
+  final firebaseApp = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -70,7 +70,7 @@ void main() async {
   Locator.add<AuthService>(AuthService());
 
   Locator.add<StorageService>(StorageService());
-  Locator.add<FirestoreService>(FirestoreService());
+  Locator.add<FirestoreService>(FirestoreService(firebaseApp));
   Locator.add<ImagesService>(ImagesService());
   Locator.add<GeoLocationService>(GeoLocationService());
   Locator.add<VenuesService>(VenuesService());

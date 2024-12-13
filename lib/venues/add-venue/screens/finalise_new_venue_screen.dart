@@ -65,8 +65,8 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     final String iconUrl = await locate<VenuesService>()
         .getDownloadUrl('venuePhotos/${venueId}_icon');
 
-    locate<VenuesService>()
-        .updateVenue(id: venueId, data: // add photo Urls to data
+    await locate<VenuesService>()
+        .updateVenue(id: venueId, data: // add photo Urls to venue
             {'largePhotoUrl': largePhotoUrl, 'iconUrl': iconUrl});
 
     if (mounted) {
