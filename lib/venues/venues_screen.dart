@@ -30,12 +30,16 @@ class _VenuesScreenState extends State<VenuesScreen> {
   final Set<Marker> _markers = {};
 
   Future<void> _openVenueDetailScreen(String id) async {
-    await context.pushNamed('venue-detail', pathParameters: {'id': id});
-    Marker marker =
-        _markers.firstWhere((marker) => marker.markerId.value == id);
-    setState(() {
-      _markers.remove(marker);
-    });
+    String? venueId =
+        await context.pushNamed('venue-detail', pathParameters: {'id': id});
+
+    if (venueId != null) {
+      Marker marker =
+          _markers.firstWhere((marker) => marker.markerId.value == venueId);
+      setState(() {
+        _markers.remove(marker);
+      });
+    }
   }
 
   Future<void> _displayVenues() async {

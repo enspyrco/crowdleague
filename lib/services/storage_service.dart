@@ -30,8 +30,10 @@ class StorageService {
     final storageRef = _storage.ref(storagePath);
     UploadTask task = storageRef.putFile(File(localPath));
     return task.snapshotEvents.map<UploadEvent>((snapshot) {
-      return UploadEvent(
-          progress: snapshot.bytesTransferred / snapshot.totalBytes.toDouble());
+      var progress = snapshot.bytesTransferred / snapshot.totalBytes.toDouble();
+      if (progress.isInfinite) progress = 1;
+      if (progress.isNaN) progress = 0;
+      return UploadEvent(progress: progress);
     });
   }
 
@@ -42,12 +44,16 @@ class StorageService {
   }
 
   /// Returns a Future with the download Url of the bytes that were uploaded.
-  Future<String> uploadBytes(
-      {required Uint8List bytes, required String storagePath}) async {
+  Stream<UploadEvent> uploadBytes(
+      {required Uint8List bytes, required String storagePath}) {
     final storageRef = _storage.ref(storagePath);
     UploadTask task = storageRef.putData(bytes);
-    await task;
-    return storageRef.getDownloadURL();
+    return task.snapshotEvents.map<UploadEvent>((snapshot) {
+      var progress = snapshot.bytesTransferred / snapshot.totalBytes.toDouble();
+      if (progress.isInfinite) progress = 1;
+      if (progress.isNaN) progress = 0;
+      return UploadEvent(progress: progress);
+    });
   }
 
   Future<void> deleteFile(String path, String fileName) {

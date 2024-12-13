@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:crowdleague/services/storage_service.dart';
+import 'package:crowdleague/venues/models/upload_event.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../utils/locator.dart';
@@ -21,35 +22,24 @@ class VenuesService {
   final _uploadProgressSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get uploadProgressStream => _uploadProgressSubject.stream;
 
-  /// Create a new venue at the given location, with photos if one was picked
-  Future<void> createNewVenue() async {
-    final venueId = await locate<FirestoreService>()
+  /// Create a new venue at the given location and return the id
+  Future<String> createNewVenue() async {
+    return locate<FirestoreService>()
         .addDoc(collectionPath: 'venues', data: _localVenue.toJson());
+  }
 
-    // Upload icon bytes
-    if (_localVenue.largePhotoPath != null) {
-      // if the user has picked a photo
-      final iconUrl = await locate<StorageService>().uploadBytes(
-          bytes: _localVenue.iconBytes!,
-          storagePath: 'venuePhotos/${venueId}_icon');
+  Future<String> getDownloadUrl(String storagePath) {
+    return locate<StorageService>().getDownLoadUrl(storagePath: storagePath);
+  }
 
-      final storagePath = 'venuePhotos/${venueId}_large';
+  Stream<UploadEvent> uploadIconBytes({required String storagePath}) {
+    return locate<StorageService>()
+        .uploadBytes(bytes: _localVenue.iconBytes!, storagePath: storagePath);
+  }
 
-      //  Upload large photo file
-      await for (final _ in locate<StorageService>().uploadFile(
-        localPath: _localVenue.largePhotoPath!,
-        storagePath: storagePath,
-      )) {}
-
-      final largePhotoUrl = await locate<StorageService>()
-          .getDownLoadUrl(storagePath: storagePath);
-
-      // add photo Urls to data
-      await locate<FirestoreService>().updateDoc(
-        path: 'venues/$venueId',
-        data: {'largePhotoUrl': largePhotoUrl, 'iconUrl': iconUrl},
-      );
-    }
+  Stream<UploadEvent> uploadFile({required String storagePath}) {
+    return locate<StorageService>().uploadFile(
+        localPath: _localVenue.largePhotoPath!, storagePath: storagePath);
   }
 
   /// Update the members of the new venue before it is saved to the db.

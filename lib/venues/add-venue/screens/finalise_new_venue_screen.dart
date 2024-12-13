@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../services/venues_service.dart';
 import '../../../utils/locator.dart';
+import '../../models/upload_event.dart';
 import '../widgets/court_environment_dropdown.dart';
 import '../widgets/court_surface_dropdown.dart';
 import '../widgets/divider_with_subheading.dart';
@@ -25,7 +26,7 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   bool _uploading = false;
-  double? progress;
+  String _progressMessage = 'Initializing upload...';
 
   Future<void> _createVenue(String name, String address) async {
     // Update the name & address of the LocalVenue stored in the VenuesService
@@ -39,7 +40,35 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
         _uploading = true;
       });
     }
-    await locate<VenuesService>().createNewVenue();
+    final venueId = await locate<VenuesService>().createNewVenue();
+
+    //  Upload large photo file
+    if (mounted) {
+      setState(() {
+        _progressMessage = 'Uploading venue photo...';
+      });
+    }
+    await for (final UploadEvent _ in locate<VenuesService>().uploadFile(
+      storagePath: 'venuePhotos/${venueId}_large',
+    )) {}
+    final String largePhotoUrl = await locate<VenuesService>()
+        .getDownloadUrl('venuePhotos/${venueId}_large');
+
+    // Upload bytes for map icon and get a download Url
+    if (mounted) {
+      setState(() {
+        _progressMessage = 'Creating and uploading map icon...';
+      });
+    }
+    await for (final _ in locate<VenuesService>()
+        .uploadIconBytes(storagePath: 'venuePhotos/${venueId}_icon')) {}
+    final String iconUrl = await locate<VenuesService>()
+        .getDownloadUrl('venuePhotos/${venueId}_icon');
+
+    locate<VenuesService>()
+        .updateVenue(id: venueId, data: // add photo Urls to data
+            {'largePhotoUrl': largePhotoUrl, 'iconUrl': iconUrl});
+
     if (mounted) {
       setState(() {
         _uploading = false;
@@ -76,12 +105,12 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
                 ],
               ),
               body: (_uploading)
-                  ? const Column(
+                  ? Column(
                       children: [
-                        LinearProgressIndicator(),
+                        const LinearProgressIndicator(),
                         Expanded(
                           child: Center(
-                            child: Text('hello'),
+                            child: Text(_progressMessage),
                           ),
                         )
                       ],
