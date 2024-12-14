@@ -10,6 +10,7 @@ class Venue {
     required this.iconUrl,
     required this.latitude,
     required this.longitude,
+    required this.createdBy,
   });
 
   final String id;
@@ -22,6 +23,7 @@ class Venue {
   final String iconUrl;
   final double latitude;
   final double longitude;
+  final String createdBy;
 
   factory Venue.fromJson(Map<String, Object?> json) {
     return Venue(
@@ -35,6 +37,7 @@ class Venue {
       iconUrl: json['iconUrl'] as String,
       latitude: json['latitude'] as double,
       longitude: json['longitude'] as double,
+      createdBy: json['createdBy'] as String,
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:crowdleague/venues/models/local_venue.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../services/auth_service.dart';
 import '../../../services/venues_service.dart';
 import '../../../utils/locator.dart';
 import '../../models/upload_event.dart';
@@ -33,6 +34,7 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     locate<VenuesService>().updateLocalVenue(
       name: name,
       address: address,
+      createdBy: locate<AuthService>().currentUserId!,
     );
 
     if (mounted) {

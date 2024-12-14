@@ -1,3 +1,4 @@
+import 'package:crowdleague/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -137,14 +138,16 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               ),
             ),
             const SizedBox(height: 15),
-            TextButton(
-                onPressed: () {
-                  _deleteVenue();
-                },
-                child: const Text(
-                  'Delete',
-                  style: TextStyle(color: Colors.red),
-                )),
+            if (_venue != null &&
+                _venue!.createdBy == locate<AuthService>().currentUserId!)
+              TextButton(
+                  onPressed: () {
+                    _deleteVenue();
+                  },
+                  child: const Text(
+                    'Delete',
+                    style: TextStyle(color: Colors.red),
+                  )),
           ],
         ],
       ),
