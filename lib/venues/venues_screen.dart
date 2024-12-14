@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:crowdleague/services/venues_service.dart';
@@ -25,9 +26,15 @@ class VenuesScreen extends StatefulWidget {
 class _VenuesScreenState extends State<VenuesScreen> {
   final Completer<GoogleMapController> _controllerCompleter =
       Completer<GoogleMapController>();
+  late final String _darkMapStyle;
 
   LatLng? _currentLocation;
   final Set<Marker> _markers = {};
+
+  Future _loadMapStyles() async {
+    _darkMapStyle =
+        await rootBundle.loadString('assets/json/dark_mode_style.json');
+  }
 
   Future<void> _openVenueDetailScreen(String id) async {
     String? venueId =
@@ -76,6 +83,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
   @override
   void initState() {
     super.initState();
+    _loadMapStyles();
     _displayVenues();
   }
 
@@ -88,6 +96,9 @@ class _VenuesScreenState extends State<VenuesScreen> {
         body: Stack(
       children: [
         GoogleMap(
+          style: Theme.of(context).brightness == Brightness.dark
+              ? _darkMapStyle
+              : null,
           markers: _markers,
           myLocationEnabled: true,
           initialCameraPosition: (_currentLocation == null)

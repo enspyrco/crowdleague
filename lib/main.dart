@@ -1,7 +1,3 @@
-import 'package:crowdleague/services/geo_location_service.dart';
-import 'package:crowdleague/services/venues_service.dart';
-import 'package:crowdleague/venues/add-venue/screens/finalise_new_venue_screen.dart';
-import 'package:crowdleague/venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
@@ -11,9 +7,13 @@ import 'auth/sign_in_screen.dart';
 import 'home/home_screen.dart';
 import 'services/auth_service.dart';
 import 'services/firestore_service.dart';
+import 'services/geo_location_service.dart';
 import 'services/images_service.dart';
 import 'services/storage_service.dart';
 import 'services/user_service.dart';
+import 'services/venues_service.dart';
+import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
+import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'venues/venue-detail/venue_detail_screen.dart';
 import 'you/edit_profile_screen.dart';
 import 'utils/locator.dart';
@@ -91,6 +91,7 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
     return MaterialApp.router(
       routerConfig: _router,
       theme: ThemeData(
+        brightness: Brightness.light,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.red,
         ),
@@ -105,6 +106,23 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
           ),
         ),
       ),
+      darkTheme: ThemeData.dark().copyWith(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.red,
+        ),
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 34,
+          ),
+          displayMedium: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 18,
+          ),
+        ),
+      ),
+      themeMode: ThemeMode.system,
     );
   }
 }
