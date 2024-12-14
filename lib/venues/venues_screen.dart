@@ -93,22 +93,18 @@ class _VenuesScreenState extends State<VenuesScreen> {
       return const Placeholder();
     }
     return Scaffold(
-        body: Stack(
-      children: [
-        GoogleMap(
-          style: Theme.of(context).brightness == Brightness.dark
-              ? _darkMapStyle
-              : null,
-          markers: _markers,
-          myLocationEnabled: true,
-          initialCameraPosition: (_currentLocation == null)
-              ? VenuesScreen._kMelbourne
-              : CameraPosition(target: _currentLocation!),
-          onMapCreated: (GoogleMapController controller) {
-            _controllerCompleter.complete(controller);
-          },
-        ),
-      ],
+        body: GoogleMap(
+      style: Theme.of(context).brightness == Brightness.dark
+          ? _darkMapStyle
+          : null,
+      markers: _markers,
+      myLocationEnabled: true,
+      initialCameraPosition: (_currentLocation == null)
+          ? VenuesScreen._kMelbourne
+          : CameraPosition(target: _currentLocation!),
+      onMapCreated: (GoogleMapController controller) {
+        _controllerCompleter.complete(controller);
+      },
     ));
   }
 }

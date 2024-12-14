@@ -77,6 +77,16 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     }
   }
 
+  Future<void> _getStreetAddress() async {
+    String address = await locate<VenuesService>()
+        .retrieveAddress(widget.latitude, widget.longitude);
+    if (mounted) {
+      setState(() {
+        _addressController.text = address;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -84,6 +94,7 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
       double.parse(widget.latitude),
       double.parse(widget.longitude),
     ));
+    _getStreetAddress();
   }
 
   @override

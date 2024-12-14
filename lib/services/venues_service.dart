@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 
 import 'package:crowdleague/services/storage_service.dart';
 import 'package:crowdleague/venues/models/upload_event.dart';
 import 'package:rxdart/subjects.dart';
 
+import '../utils/api_keys.dart';
 import '../utils/locator.dart';
 import '../venues/models/local_venue.dart';
 import '../venues/models/venue.dart';
@@ -111,5 +114,33 @@ class VenuesService {
       '${venue.id}_icon',
     );
     await locate<FirestoreService>().deleteDoc(atPath: 'venues/${venue.id}');
+  }
+
+  Future<String> retrieveAddress(String latitude, String longitude) async {
+    final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$reverseGeocodingApiKey');
+    // Make the API call
+    final response = await http.get(url);
+
+    // Check if the request was successful
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+      // Check if results exist
+      if (jsonResponse['status'] == 'OK' && jsonResponse['results'] != null) {
+        // Take the first result (most specific location)
+        final firstResult = jsonResponse['results'][0];
+        final formattedAdress = firstResult['formatted_address'] as String?;
+        if (formattedAdress == null) {
+          throw Exception('Formatted address was null');
+        }
+        return formattedAdress;
+      } else {
+        throw Exception('No results found or API returned an error');
+      }
+    } else {
+      throw Exception('Failed to load geocoding data');
+    }
   }
 }
