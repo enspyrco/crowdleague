@@ -9,6 +9,7 @@ class LocalVenue {
     this.address = '',
     this.latitude = 0,
     this.longitude = 0,
+    this.createdBy = '',
   });
 
   int size; // 1 half-court, 2 full-court, 3 multi-court
@@ -20,6 +21,7 @@ class LocalVenue {
   Uint8List? iconBytes;
   double latitude;
   double longitude;
+  String createdBy;
 
   Map<String, Object?> toJson() {
     return {
@@ -30,6 +32,7 @@ class LocalVenue {
       'address': address,
       'latitude': latitude,
       'longitude': longitude,
+      'createdBy': createdBy,
     };
   }
 }

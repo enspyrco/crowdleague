@@ -55,6 +55,7 @@ class VenuesService {
     (double, double)? latLng,
     Uint8List? iconBytes,
     String? largePhotoPath,
+    String? createdBy,
   }) {
     if (size != null) {
       _localVenue.size = size;
@@ -80,6 +81,9 @@ class VenuesService {
     }
     if (largePhotoPath != null) {
       _localVenue.largePhotoPath = largePhotoPath;
+    }
+    if (createdBy != null) {
+      _localVenue.createdBy = createdBy;
     }
 
     _localVenueSubject.add(_localVenue);
