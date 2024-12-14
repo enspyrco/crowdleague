@@ -70,6 +70,7 @@ flutter:
 
   assets:
     - assets/images/google_icon.png
+    - assets/json/dark_mode_style.json
 
   fonts:
     - family: CustomIcons
