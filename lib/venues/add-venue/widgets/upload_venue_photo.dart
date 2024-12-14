@@ -52,15 +52,15 @@ class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
           locate<VenuesService>()
               .updateLocalVenue(largePhotoPath: _croppedFilePath);
           // convert the VenueIcon widget to a png and upload bytes
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            _screenshotController.capture().then((bytes) {
-              locate<VenuesService>().updateLocalVenue(iconBytes: bytes);
-              if (mounted) {
-                setState(() {
-                  _loading = false;
-                });
-              }
-            });
+          _screenshotController
+              .capture(delay: const Duration(milliseconds: 100))
+              .then((bytes) {
+            locate<VenuesService>().updateLocalVenue(iconBytes: bytes);
+            if (mounted) {
+              setState(() {
+                _loading = false;
+              });
+            }
           });
         }
       }
