@@ -1,3 +1,4 @@
+import 'package:crowdleague/services/messaging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
@@ -69,6 +70,7 @@ void main() async {
   Locator.add<UserService>(UserService());
   Locator.add<AuthService>(AuthService());
 
+  Locator.add<MessagingService>(MessagingService());
   Locator.add<StorageService>(StorageService());
   Locator.add<FirestoreService>(FirestoreService(firebaseApp));
   Locator.add<ImagesService>(ImagesService());

@@ -1,7 +1,26 @@
+import 'package:crowdleague/services/messaging_service.dart';
+import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  Future<void> getAToken() async {
+    await locate<MessagingService>().init();
+    String? token = await locate<MessagingService>().getToken();
+    debugPrint(token);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAToken();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -26,7 +26,7 @@ class VenuesScreen extends StatefulWidget {
 class _VenuesScreenState extends State<VenuesScreen> {
   final Completer<GoogleMapController> _controllerCompleter =
       Completer<GoogleMapController>();
-  late final String _darkMapStyle;
+  String _darkMapStyle = '';
 
   LatLng? _currentLocation;
   final Set<Marker> _markers = {};
