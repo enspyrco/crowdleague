@@ -8,6 +8,7 @@
 import 'package:crowdleague/services/venues_service.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:crowdleague/venues/add-venue/widgets/court_surface_dropdown.dart';
+import 'package:crowdleague/venues/models/local_venue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -15,10 +16,13 @@ void main() {
   testWidgets('Court surface dropdown sets new venue map',
       (WidgetTester tester) async {
     Locator.add<VenuesService>(VenuesService());
+
+    final localVenue = LocalVenue();
+
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: Scaffold(
-          body: CourtSurfaceDropdown(),
+          body: CourtSurfaceDropdown(localVenue: localVenue),
         ),
       ),
     );
@@ -28,12 +32,6 @@ void main() {
     expect(droDownButton, findsOneWidget);
     expect(find.text('concrete'), findsOneWidget);
     expect(find.text('wood'), findsNothing);
-
-    // the local venue stream emits a map that contains the 'surface' key with
-    // value 1 because the CourtSurfaceDropdown widget sets the local venue in
-    // the initState
-    expect(locate<VenuesService>().localVenueStream.first,
-        completion(containsPair('surface', 1)));
 
     // there appears to be no way to interact with the dropdown to check that
     // changing the value has the expected result.

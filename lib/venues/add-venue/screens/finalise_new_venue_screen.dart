@@ -29,32 +29,52 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
   bool _uploading = false;
   String _progressMessage = 'Initializing upload...';
 
+  /// A local copy of the venue for local state that we can listen to, in order
+  /// to update the UI when certain values change, eg. multi-venue has no
+  /// surface value.
+  final _localVenue = LocalVenue();
+
   Future<void> _createVenue(String name, String address) async {
     // Update the name & address of the LocalVenue stored in the VenuesService
-    locate<VenuesService>().updateLocalVenue(
-      name: name,
-      address: address,
-      createdBy: locate<AuthService>().currentUserId!,
-    );
+    _localVenue.name = name;
+    _localVenue.address = address;
+    _localVenue.createdBy = locate<AuthService>().currentUserId!;
 
     if (mounted) {
       setState(() {
         _uploading = true;
       });
     }
-    final venueId = await locate<VenuesService>().createNewVenue();
+    final venueId =
+        await locate<VenuesService>().createNewVenue(_localVenue.toJson());
 
-    //  Upload large photo file
     if (mounted) {
       setState(() {
         _progressMessage = 'Uploading venue photo...';
       });
     }
+
+    // upload large photo
     await for (final UploadEvent _ in locate<VenuesService>().uploadFile(
+      localPath: _localVenue.largePhotoPath!,
       storagePath: 'venuePhotos/${venueId}_large',
     )) {}
     final String largePhotoUrl = await locate<VenuesService>()
         .getDownloadUrl('venuePhotos/${venueId}_large');
+
+    // resize large photo
+    final int smallSize = 50;
+    await locate<VenuesService>().resizeLargeImage(
+        localPath: _localVenue.largePhotoPath!, smallSize: smallSize);
+    _localVenue.smallPhotoPath = '${_localVenue.largePhotoPath!}_$smallSize';
+
+    // upload small photo
+    await for (final UploadEvent _ in locate<VenuesService>().uploadFile(
+      localPath: '${_localVenue.largePhotoPath!}_$smallSize',
+      storagePath: 'venuePhotos/${venueId}_small',
+    )) {}
+    final String smallPhotoUrl = await locate<VenuesService>()
+        .getDownloadUrl('venuePhotos/${venueId}_small');
 
     // Upload bytes for map icon and get a download Url
     if (mounted) {
@@ -62,14 +82,19 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
         _progressMessage = 'Creating and uploading map icon...';
       });
     }
-    await for (final _ in locate<VenuesService>()
-        .uploadIconBytes(storagePath: 'venuePhotos/${venueId}_icon')) {}
+    await for (final _ in locate<VenuesService>().uploadIconBytes(
+        bytes: _localVenue.iconBytes!,
+        storagePath: 'venuePhotos/${venueId}_icon')) {}
     final String iconUrl = await locate<VenuesService>()
         .getDownloadUrl('venuePhotos/${venueId}_icon');
 
     await locate<VenuesService>()
         .updateVenue(id: venueId, data: // add photo Urls to venue
-            {'largePhotoUrl': largePhotoUrl, 'iconUrl': iconUrl});
+            {
+      'largePhotoUrl': largePhotoUrl,
+      'smallPhotoUrl': smallPhotoUrl,
+      'iconUrl': iconUrl,
+    });
 
     if (mounted) {
       setState(() {
@@ -89,86 +114,101 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     }
   }
 
+  void updatePickedPhotoState(String largePhotoPath) {
+    setState(() {
+      _localVenue.largePhotoPath = largePhotoPath;
+    });
+  }
+
+  void updateVenueSizeState(int size) {
+    setState(() {
+      _localVenue.size = size;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    locate<VenuesService>().updateLocalVenue(latLng: (
-      double.parse(widget.latitude),
-      double.parse(widget.longitude),
-    ));
+    _localVenue.latitude = double.parse(widget.latitude);
+    _localVenue.longitude = double.parse(widget.longitude);
     _getStreetAddress();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<LocalVenue>(
-        stream: locate<VenuesService>().localVenueStream,
-        builder: (context, snapshot) {
-          return Scaffold(
-              appBar: AppBar(
-                actions: [
-                  if (snapshot.hasData && snapshot.data!.largePhotoPath != null)
-                    IconButton(
-                      onPressed: () {
-                        _createVenue(
-                            _nameController.text, _addressController.text);
-                      },
-                      icon: const Icon(Icons.check),
-                    ),
-                ],
+    return Scaffold(
+        appBar: AppBar(
+          actions: [
+            // only allow creating the venue when the user has picked a photo
+            if (_localVenue.largePhotoPath != null)
+              IconButton(
+                onPressed: () {
+                  _createVenue(_nameController.text, _addressController.text);
+                },
+                icon: const Icon(Icons.check),
               ),
-              body: (_uploading)
-                  ? Column(
-                      children: [
-                        const LinearProgressIndicator(),
-                        Expanded(
-                          child: Center(
-                            child: Text(_progressMessage),
-                          ),
-                        )
-                      ],
-                    )
-                  : ListView(
-                      children: [
-                        if (!_uploading) ...[
-                          const UploadVenuePhoto(),
-                          const DividerWithSubheading('Name'),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: TextField(
-                              controller: _nameController,
-                              autofocus: true,
-                            ),
-                          ),
-                          const DividerWithSubheading('Address'),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: TextField(
-                              controller: _addressController,
-                            ),
-                          ),
-                          const DividerWithSubheading('Size'),
-                          const SizedBox(height: 5),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 15.0),
-                            child: VenueSizeDropdown(),
-                          ),
-                          if (snapshot.data != null &&
-                              snapshot.data!.size != 3) ...[
-                            const DividerWithSubheading('Surface'),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 15.0),
-                              child: CourtSurfaceDropdown(),
-                            ),
-                            const DividerWithSubheading('Environment'),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 15.0),
-                              child: CourtEnvironmentDropdown(),
-                            ),
-                          ],
-                        ],
-                      ],
-                    ));
-        });
+          ],
+        ),
+        body: (_uploading)
+            ? Column(
+                children: [
+                  const LinearProgressIndicator(),
+                  Expanded(
+                    child: Center(
+                      child: Text(_progressMessage),
+                    ),
+                  )
+                ],
+              )
+            : ListView(
+                children: [
+                  if (!_uploading) ...[
+                    UploadVenuePhoto(
+                      localVenue: _localVenue,
+                      updateStateCallback: updatePickedPhotoState,
+                    ),
+                    const DividerWithSubheading('Name'),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: TextField(
+                        controller: _nameController,
+                        autofocus: true,
+                      ),
+                    ),
+                    const DividerWithSubheading('Address'),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: TextField(
+                        controller: _addressController,
+                      ),
+                    ),
+                    const DividerWithSubheading('Size'),
+                    const SizedBox(height: 5),
+                    Padding(
+                      padding: EdgeInsets.only(left: 15.0),
+                      child: VenueSizeDropdown(
+                        localVenue: _localVenue,
+                        updateStateCallback: updateVenueSizeState,
+                      ),
+                    ),
+                    if (_localVenue.size != 3) ...[
+                      const DividerWithSubheading('Surface'),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15.0),
+                        child: CourtSurfaceDropdown(
+                          localVenue: _localVenue,
+                        ),
+                      ),
+                      const DividerWithSubheading('Environment'),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15.0),
+                        child: CourtEnvironmentDropdown(
+                          localVenue: _localVenue,
+                        ),
+                      ),
+                    ],
+                  ],
+                ],
+              ));
   }
 }

@@ -22,10 +22,8 @@ class _YouScreenState extends State<YouScreen> {
         title: StreamBuilder<Map<String, Object?>?>(
             stream: locate<UserService>().profileDocStream,
             builder: (context, snapshot) {
-              return Text(
-                snapshot.data?['name'] as String? ?? '?',
-                style: const TextStyle(fontSize: 20),
-              );
+              return Text(snapshot.data?['name'] as String? ?? '?',
+                  style: Theme.of(context).textTheme.displayMedium!);
             }),
         leading: Padding(
           padding: const EdgeInsets.all(5),
@@ -33,7 +31,7 @@ class _YouScreenState extends State<YouScreen> {
               stream: locate<UserService>().profileDocStream,
               builder: (context, snapshot) {
                 return Avatar(
-                    picUrl: snapshot.data?['largePic'] as String? ??
+                    picUrl: snapshot.data?['smallPic'] as String? ??
                         'https://firebasestorage.googleapis.com/v0/b/crowdleague-project.firebasestorage.app/o/profilePics%2Fempty_profile_pic.jpg?alt=media&token=c8a9c8d7-0c0a-4510-b003-a389473573cb');
               }),
         ),

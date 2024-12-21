@@ -15,7 +15,7 @@ class Avatar extends StatelessWidget {
     super.key,
     this.picPath,
     this.picUrl,
-    this.backgroundColor = Colors.red,
+    this.backgroundColor = Colors.black,
     this.loading = false,
     this.size = 50,
   }) : assert(!(picPath != null && picUrl != null));

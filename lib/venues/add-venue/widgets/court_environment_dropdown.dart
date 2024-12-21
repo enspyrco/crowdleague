@@ -1,12 +1,14 @@
-import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../../utils/locator.dart';
+import '../../models/local_venue.dart';
 
 class CourtEnvironmentDropdown extends StatefulWidget {
-  const CourtEnvironmentDropdown({super.key});
+  const CourtEnvironmentDropdown({required LocalVenue localVenue, super.key})
+      : _localVenue = localVenue;
 
   static const list = ['outdoor', 'indoor', 'covered-outdoor'];
+
+  final LocalVenue _localVenue;
 
   @override
   State<CourtEnvironmentDropdown> createState() =>
@@ -28,7 +30,7 @@ class _CourtEnvironmentDropdownState extends State<CourtEnvironmentDropdown> {
         if (value != null) {
           final environmentNum =
               CourtEnvironmentDropdown.list.indexOf(value) + 1;
-          locate<VenuesService>().updateLocalVenue(environment: environmentNum);
+          widget._localVenue.environment = environmentNum;
         }
 
         setState(() {

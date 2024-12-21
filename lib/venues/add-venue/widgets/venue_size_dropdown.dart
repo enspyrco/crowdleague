@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../services/venues_service.dart';
-import '../../../utils/locator.dart';
+import '../../models/local_venue.dart';
 
 class VenueSizeDropdown extends StatefulWidget {
-  const VenueSizeDropdown({super.key});
+  const VenueSizeDropdown({
+    required LocalVenue localVenue,
+    required this.updateStateCallback,
+    super.key,
+  }) : _localVenue = localVenue;
 
   static const list = ['half-court', 'full-court', 'multi-court'];
+
+  final LocalVenue _localVenue;
+  final void Function(int) updateStateCallback;
 
   @override
   State<VenueSizeDropdown> createState() => _VenueSizeDropdownState();
@@ -26,7 +32,8 @@ class _VenueSizeDropdownState extends State<VenueSizeDropdown> {
       onChanged: (String? value) {
         if (value != null) {
           final sizeNum = VenueSizeDropdown.list.indexOf(value) + 1;
-          locate<VenuesService>().updateLocalVenue(size: sizeNum);
+          widget._localVenue.size = sizeNum;
+          widget.updateStateCallback(sizeNum);
         }
         setState(() {
           dropdownValue = value!;

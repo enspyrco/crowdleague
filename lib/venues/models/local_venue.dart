@@ -17,7 +17,14 @@ class LocalVenue {
   int environment; // 1 outdoor, 2 indoor, 3 outdoor-with-cover
   String name;
   String address;
+
+  /// The local file path of the large venue image
   String? largePhotoPath;
+
+  /// The local file path of the small venue image
+  String? smallPhotoPath;
+
+  /// The bytes for the venue icon
   Uint8List? iconBytes;
   double latitude;
   double longitude;

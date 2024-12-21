@@ -50,15 +50,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             });
           }
           final storagePath =
-              'profilePics/${locate<AuthService>().currentUserId!}';
+              'profilePics/${locate<AuthService>().currentUserId!}_large';
+          // we use an indeterminate progress indicator as the file is so small
+          // that the indicator is useless
           await for (final _ in locate<StorageService>().uploadFile(
             localPath: _croppedFilePath!,
             storagePath: storagePath,
-          )) {} // TODO: use the upload progress for a determinate progress indicator
+          )) {}
           final imageUrl = await locate<StorageService>()
               .getDownLoadUrl(storagePath: storagePath);
 
-          await locate<UserService>().updateProfilePicUrl(imageUrl);
+          await locate<UserService>()
+              .updateProfilePicUrl(size: 'large', url: imageUrl);
+
+          final int smallSize = 50;
+          await locate<ImagesService>()
+              .resizeImage(filePath: _croppedFilePath!, size: smallSize);
+
+          final storagePathSmall =
+              'profilePics/${locate<AuthService>().currentUserId!}_small';
+
+          await for (final _ in locate<StorageService>().uploadFile(
+            localPath: '${_croppedFilePath!}_$smallSize',
+            storagePath: storagePathSmall,
+          )) {}
+          final imageUrlSmall = await locate<StorageService>()
+              .getDownLoadUrl(storagePath: storagePathSmall);
+
+          await locate<UserService>()
+              .updateProfilePicUrl(size: 'small', url: imageUrlSmall);
+
           if (mounted) {
             context.pop();
           }

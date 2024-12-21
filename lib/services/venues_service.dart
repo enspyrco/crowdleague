@@ -9,84 +9,46 @@ import 'package:rxdart/subjects.dart';
 
 import '../utils/api_keys.dart';
 import '../utils/locator.dart';
-import '../venues/models/local_venue.dart';
 import '../venues/models/venue.dart';
 import 'firestore_service.dart';
+import 'images_service.dart';
 
 class VenuesService {
-  /// A local copy of the venue for local state that we can listen to, in order
-  /// to update the UI when certain values change, eg. multi-venue has no
-  /// surface value.
-  final _localVenue = LocalVenue();
-
-  final _localVenueSubject = BehaviorSubject<LocalVenue>.seeded(LocalVenue());
-  Stream<LocalVenue> get localVenueStream => _localVenueSubject.stream;
-
   final _uploadProgressSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get uploadProgressStream => _uploadProgressSubject.stream;
 
   /// Create a new venue at the given location and return the id
-  Future<String> createNewVenue() async {
+  Future<String> createNewVenue(Map<String, Object?> data) async {
     return locate<FirestoreService>()
-        .addDoc(collectionPath: 'venues', data: _localVenue.toJson());
+        .addDoc(collectionPath: 'venues', data: data);
   }
 
   Future<String> getDownloadUrl(String storagePath) {
     return locate<StorageService>().getDownLoadUrl(storagePath: storagePath);
   }
 
-  Stream<UploadEvent> uploadIconBytes({required String storagePath}) {
+  Stream<UploadEvent> uploadIconBytes(
+      {required Uint8List bytes, required String storagePath}) {
     return locate<StorageService>()
-        .uploadBytes(bytes: _localVenue.iconBytes!, storagePath: storagePath);
+        .uploadBytes(bytes: bytes, storagePath: storagePath);
   }
 
-  Stream<UploadEvent> uploadFile({required String storagePath}) {
-    return locate<StorageService>().uploadFile(
-        localPath: _localVenue.largePhotoPath!, storagePath: storagePath);
-  }
-
-  /// Update the members of the new venue before it is saved to the db.
-  void updateLocalVenue({
-    int? size,
-    int? surface,
-    int? environment,
-    String? name,
-    String? address,
-    (double, double)? latLng,
-    Uint8List? iconBytes,
-    String? largePhotoPath,
-    String? createdBy,
+  Stream<UploadEvent> uploadFile({
+    required String localPath,
+    required String storagePath,
   }) {
-    if (size != null) {
-      _localVenue.size = size;
-    }
-    if (surface != null) {
-      _localVenue.surface = surface;
-    }
-    if (environment != null) {
-      _localVenue.environment = environment;
-    }
-    if (name != null) {
-      _localVenue.name = name;
-    }
-    if (address != null) {
-      _localVenue.address = address;
-    }
-    if (latLng != null) {
-      _localVenue.latitude = latLng.$1;
-      _localVenue.longitude = latLng.$2;
-    }
-    if (iconBytes != null) {
-      _localVenue.iconBytes = iconBytes;
-    }
-    if (largePhotoPath != null) {
-      _localVenue.largePhotoPath = largePhotoPath;
-    }
-    if (createdBy != null) {
-      _localVenue.createdBy = createdBy;
-    }
+    return locate<StorageService>().uploadFile(
+      localPath: localPath,
+      storagePath: storagePath,
+    );
+  }
 
-    _localVenueSubject.add(_localVenue);
+  Future<void> resizeLargeImage({
+    required String localPath,
+    required int smallSize,
+  }) async {
+    await locate<ImagesService>()
+        .resizeImage(filePath: localPath, size: smallSize);
   }
 
   Future<void> updateVenue(
