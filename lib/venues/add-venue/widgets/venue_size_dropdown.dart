@@ -31,7 +31,7 @@ class _VenueSizeDropdownState extends State<VenueSizeDropdown> {
       ),
       onChanged: (String? value) {
         if (value != null) {
-          final sizeNum = VenueSizeDropdown.list.indexOf(value) + 1;
+          final sizeNum = VenueSizeDropdown.list.indexOf(value);
           widget._localVenue.size = sizeNum;
           widget.updateStateCallback(sizeNum);
         }

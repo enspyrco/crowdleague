@@ -28,8 +28,7 @@ class _CourtEnvironmentDropdownState extends State<CourtEnvironmentDropdown> {
       ),
       onChanged: (String? value) {
         if (value != null) {
-          final environmentNum =
-              CourtEnvironmentDropdown.list.indexOf(value) + 1;
+          final environmentNum = CourtEnvironmentDropdown.list.indexOf(value);
           widget._localVenue.environment = environmentNum;
         }
 

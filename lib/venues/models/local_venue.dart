@@ -2,9 +2,9 @@ import 'dart:typed_data';
 
 class LocalVenue {
   LocalVenue({
-    this.size = 1,
-    this.surface = 1,
-    this.environment = 1,
+    this.size = 0,
+    this.surface = 0,
+    this.environment = 0,
     this.name = '',
     this.address = '',
     this.latitude = 0,
@@ -12,9 +12,9 @@ class LocalVenue {
     this.createdBy = '',
   });
 
-  int size; // 1 half-court, 2 full-court, 3 multi-court
-  int surface; // 1 concrete, 2 wood, 3 astro-turf, 4 rubber
-  int environment; // 1 outdoor, 2 indoor, 3 outdoor-with-cover
+  int size; // 0 half-court, 1 full-court, 2 multi-court
+  int surface; // 0 concrete, 1 wood, 2 astro-turf, 3 rubber
+  int environment; // 0 outdoor, 1 indoor, 2 outdoor-with-cover
   String name;
   String address;
 

@@ -27,7 +27,7 @@ class _CourtSurfaceDropdownState extends State<CourtSurfaceDropdown> {
       ),
       onChanged: (String? value) {
         if (value != null) {
-          final surfaceNum = CourtSurfaceDropdown.list.indexOf(value) + 1;
+          final surfaceNum = CourtSurfaceDropdown.list.indexOf(value);
           widget._localVenue.surface = surfaceNum;
         }
 

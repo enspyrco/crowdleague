@@ -1,4 +1,3 @@
-import 'package:crowdleague/services/messaging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +9,7 @@ import 'services/auth_service.dart';
 import 'services/firestore_service.dart';
 import 'services/geo_location_service.dart';
 import 'services/images_service.dart';
+import 'services/messaging_service.dart';
 import 'services/storage_service.dart';
 import 'services/user_service.dart';
 import 'services/venues_service.dart';
