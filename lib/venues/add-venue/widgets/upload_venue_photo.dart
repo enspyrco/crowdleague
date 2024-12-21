@@ -5,12 +5,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../services/images_service.dart';
-import '../../../services/venues_service.dart';
 import '../../../utils/locator.dart';
+import '../../models/local_venue.dart';
 import 'venue_icon.dart';
 
 class UploadVenuePhoto extends StatefulWidget {
-  const UploadVenuePhoto({super.key});
+  const UploadVenuePhoto({
+    super.key,
+    required LocalVenue localVenue,
+    required this.updateStateCallback,
+  }) : _localVenue = localVenue;
+
+  final LocalVenue _localVenue;
+  final void Function(String) updateStateCallback;
 
   @override
   State<UploadVenuePhoto> createState() => _UploadVenuePhotoState();
@@ -47,15 +54,16 @@ class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
           if (mounted) {
             setState(() {
               _croppedFilePath = croppedFilePath;
+              widget.updateStateCallback(_croppedFilePath!);
             });
           }
-          locate<VenuesService>()
-              .updateLocalVenue(largePhotoPath: _croppedFilePath);
+          widget._localVenue.largePhotoPath = _croppedFilePath;
+
           // convert the VenueIcon widget to a png and upload bytes
           _screenshotController
               .capture(delay: const Duration(milliseconds: 100))
               .then((bytes) {
-            locate<VenuesService>().updateLocalVenue(iconBytes: bytes);
+            widget._localVenue.iconBytes = bytes;
             if (mounted) {
               setState(() {
                 _loading = false;

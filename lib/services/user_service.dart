@@ -41,11 +41,12 @@ class UserService {
     });
   }
 
-  Future<void> updateProfilePicUrl(String url) async {
+  Future<void> updateProfilePicUrl(
+      {required String size, required String url}) async {
     return locate<FirestoreService>().setDoc(
       merge: true,
       path: 'profiles/${locate<AuthService>().currentUserId!}',
-      data: {'largePic': url},
+      data: {'${size}Pic': url},
     );
   }
 

@@ -7,6 +7,7 @@ class Venue {
     required this.name,
     required this.address,
     required this.largePhotoUrl,
+    required this.smallPhotoUrl,
     required this.iconUrl,
     required this.latitude,
     required this.longitude,
@@ -20,6 +21,7 @@ class Venue {
   final String name;
   final String address;
   final String largePhotoUrl;
+  final String smallPhotoUrl;
   final String iconUrl;
   final double latitude;
   final double longitude;
@@ -34,6 +36,7 @@ class Venue {
       name: json['name'] as String,
       address: json['address'] as String,
       largePhotoUrl: json['largePhotoUrl'] as String,
+      smallPhotoUrl: json['smallPhotoUrl'] as String,
       iconUrl: json['iconUrl'] as String,
       latitude: json['latitude'] as double,
       longitude: json['longitude'] as double,

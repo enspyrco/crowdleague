@@ -1,9 +1,11 @@
+import 'package:fc_native_image_resize/fc_native_image_resize.dart';
 import 'package:flutter/painting.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagesService {
   final ImagePicker _picker = ImagePicker();
+  final _resizePlugin = FcNativeImageResize();
 
   Future<XFile?> pickImage(ImageSource source) async {
     final XFile? pickedFile =
@@ -42,5 +44,15 @@ class ImagesService {
           )
         ]);
     return croppedFile?.path;
+  }
+
+  Future<void> resizeImage({required String filePath, required int size}) {
+    return _resizePlugin.resizeFile(
+        srcFile: filePath,
+        destFile: '${filePath}_$size',
+        width: size,
+        height: size,
+        keepAspectRatio: true,
+        format: 'jpeg');
   }
 }
