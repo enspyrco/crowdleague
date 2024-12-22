@@ -1,11 +1,9 @@
-import 'package:crowdleague/services/storage_service.dart';
-import 'package:crowdleague/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../services/auth_service.dart';
 import '../services/images_service.dart';
+import '../services/user_service.dart';
 import '../utils/avatar.dart';
 import '../utils/locator.dart';
 
@@ -49,36 +47,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _croppedFilePath = croppedFilePath;
             });
           }
-          final storagePath =
-              'profilePics/${locate<AuthService>().currentUserId!}_large';
-          // we use an indeterminate progress indicator as the file is so small
-          // that the indicator is useless
-          await for (final _ in locate<StorageService>().uploadFile(
-            localPath: _croppedFilePath!,
-            storagePath: storagePath,
-          )) {}
-          final imageUrl = await locate<StorageService>()
-              .getDownLoadUrl(storagePath: storagePath);
-
-          await locate<UserService>()
-              .updateProfilePicUrl(size: 'large', url: imageUrl);
+          locate<UserService>().saveLargeProfilePic(_croppedFilePath!);
 
           final int smallSize = 50;
           await locate<ImagesService>()
               .resizeImage(filePath: _croppedFilePath!, size: smallSize);
 
-          final storagePathSmall =
-              'profilePics/${locate<AuthService>().currentUserId!}_small';
-
-          await for (final _ in locate<StorageService>().uploadFile(
-            localPath: '${_croppedFilePath!}_$smallSize',
-            storagePath: storagePathSmall,
-          )) {}
-          final imageUrlSmall = await locate<StorageService>()
-              .getDownLoadUrl(storagePath: storagePathSmall);
-
-          await locate<UserService>()
-              .updateProfilePicUrl(size: 'small', url: imageUrlSmall);
+          locate<UserService>()
+              .saveSmallProfilePic(_croppedFilePath!, smallSize);
 
           if (mounted) {
             context.pop();

@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:crowdleague/services/auth_service.dart';
 import 'package:rxdart/subjects.dart';
 
-import '../utils/locator.dart';
+import '../auth/enums/auth_provider.dart';
+import 'auth_service.dart';
 import 'firestore_service.dart';
+import 'storage_service.dart';
 
 /// The UserService has app scope and a BehaviourSubject seeded with an
 /// empty map. The service exposes the BehaviourSubject's stream, listens
@@ -18,10 +19,32 @@ import 'firestore_service.dart';
 /// snapshots when the user signs in or opens the app already signed in.
 /// Snapshots are then added to the BehaviourSubject.
 class UserService {
+  UserService({
+    required AuthService authService,
+    required FirestoreService firestoreService,
+    required StorageService storageService,
+  })  : _authService = authService,
+        _firestoreService = firestoreService,
+        _storageService = storageService {
+    _authService.authStateChanges().listen((user) {
+      if (user != null) {
+        listenToProfileStream(user.uid);
+      }
+    });
+  }
+
+  late final AuthService _authService;
+  late final FirestoreService _firestoreService;
+  late final StorageService _storageService;
+
   final _userSubject = BehaviorSubject<Map<String, Object?>>.seeded({});
   StreamSubscription<Map<String, Object?>?>? profileStreamSubscription;
 
   Stream<Map<String, Object?>?> get profileDocStream => _userSubject.stream;
+
+  String? get currentUserId {
+    return _authService.currentUserId;
+  }
 
   /// Called by the AuthService when a User object is emitted by the
   /// FirebaseAuth's onAuthStateChanges stream.
@@ -30,7 +53,7 @@ class UserService {
       profileStreamSubscription!.cancel();
     }
 
-    profileStreamSubscription = locate<FirestoreService>()
+    profileStreamSubscription = _firestoreService
         .documentStream(
       path: 'profiles/$userId',
     )
@@ -41,24 +64,61 @@ class UserService {
     });
   }
 
+  Future<void> signInWith({required AuthProvider provider}) async {
+    switch (provider) {
+      case AuthProvider.apple:
+        await _authService.signInWithApple();
+      case AuthProvider.google:
+        await _authService.signInWithGoogle();
+    }
+  }
+
   Future<void> updateProfilePicUrl(
       {required String size, required String url}) async {
-    return locate<FirestoreService>().setDoc(
+    return _firestoreService.setDoc(
       merge: true,
-      path: 'profiles/${locate<AuthService>().currentUserId!}',
+      path: 'profiles/${_authService.currentUserId!}',
       data: {'${size}Pic': url},
     );
   }
 
   Future<void> updateProfileName(String name) {
-    return locate<FirestoreService>().setDoc(
+    return _firestoreService.setDoc(
       merge: true,
-      path: 'profiles/${locate<AuthService>().currentUserId!}',
+      path: 'profiles/${_authService.currentUserId!}',
       data: {'name': name},
     );
   }
 
-  Future<void>? dispose() {
-    return profileStreamSubscription?.cancel();
+  Future<void> saveLargeProfilePic(String filePath) async {
+    final storagePath = 'profilePics/${currentUserId!}_large';
+    // we use an indeterminate progress indicator as the file is so small
+    // that the indicator is useless
+    await for (final _ in _storageService.uploadFile(
+      localPath: filePath,
+      storagePath: storagePath,
+    )) {}
+    final imageUrl =
+        await _storageService.getDownLoadUrl(storagePath: storagePath);
+
+    return updateProfilePicUrl(size: 'large', url: imageUrl);
+  }
+
+  Future<void> saveSmallProfilePic(String filePath, int smallSize) async {
+    final storagePathSmall = 'profilePics/${currentUserId!}_small';
+
+    await for (final _ in _storageService.uploadFile(
+      localPath: '${filePath}_$smallSize',
+      storagePath: storagePathSmall,
+    )) {}
+    final imageUrlSmall =
+        await _storageService.getDownLoadUrl(storagePath: storagePathSmall);
+
+    return updateProfilePicUrl(size: 'small', url: imageUrlSmall);
+  }
+
+  Future<void> signOut() async {
+    await profileStreamSubscription?.cancel();
+    return _authService.signOut();
   }
 }

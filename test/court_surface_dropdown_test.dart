@@ -12,10 +12,15 @@ import 'package:crowdleague/venues/models/local_venue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'test-doubles/firestore_service_test_double.dart';
+import 'test-doubles/storage_service_test_double.dart';
+
 void main() {
   testWidgets('Court surface dropdown sets new venue map',
       (WidgetTester tester) async {
-    Locator.add<VenuesService>(VenuesService());
+    Locator.add<VenuesService>(VenuesService(
+        firestoreService: FirestoreServiceTestDouble(),
+        storageService: StorageServiceTestDouble()));
 
     final localVenue = LocalVenue();
 

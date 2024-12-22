@@ -14,30 +14,37 @@ import 'firestore_service.dart';
 import 'images_service.dart';
 
 class VenuesService {
+  VenuesService(
+      {required FirestoreService firestoreService,
+      required StorageService storageService})
+      : _firestoreService = firestoreService,
+        _storageService = storageService;
+
+  final FirestoreService _firestoreService;
+  final StorageService _storageService;
+
   final _uploadProgressSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get uploadProgressStream => _uploadProgressSubject.stream;
 
   /// Create a new venue at the given location and return the id
   Future<String> createNewVenue(Map<String, Object?> data) async {
-    return locate<FirestoreService>()
-        .addDoc(collectionPath: 'venues', data: data);
+    return _firestoreService.addDoc(collectionPath: 'venues', data: data);
   }
 
   Future<String> getDownloadUrl(String storagePath) {
-    return locate<StorageService>().getDownLoadUrl(storagePath: storagePath);
+    return _storageService.getDownLoadUrl(storagePath: storagePath);
   }
 
   Stream<UploadEvent> uploadIconBytes(
       {required Uint8List bytes, required String storagePath}) {
-    return locate<StorageService>()
-        .uploadBytes(bytes: bytes, storagePath: storagePath);
+    return _storageService.uploadBytes(bytes: bytes, storagePath: storagePath);
   }
 
   Stream<UploadEvent> uploadFile({
     required String localPath,
     required String storagePath,
   }) {
-    return locate<StorageService>().uploadFile(
+    return _storageService.uploadFile(
       localPath: localPath,
       storagePath: storagePath,
     );
@@ -53,33 +60,32 @@ class VenuesService {
 
   Future<void> updateVenue(
       {required String id, required Map<String, Object?> data}) {
-    return locate<FirestoreService>().updateDoc(path: 'venues/$id', data: data);
+    return _firestoreService.updateDoc(path: 'venues/$id', data: data);
   }
 
   Future<Set<Venue>> retrieveVenues() async {
-    final json =
-        await locate<FirestoreService>().getDocs(inCollectionPath: 'venues');
+    final json = await _firestoreService.getDocs(inCollectionPath: 'venues');
     return json.map<Venue>((json) {
       return Venue.fromJson(json);
     }).toSet();
   }
 
   Future<Venue?> retrieveVenue(String id) async {
-    final json = await locate<FirestoreService>().getDoc(atPath: 'venues/$id');
+    final json = await _firestoreService.getDoc(atPath: 'venues/$id');
     if (json == null) return null;
     return Venue.fromJson(json);
   }
 
   Future<void> deleteVenue({required Venue venue}) async {
-    await locate<StorageService>().deleteFile(
+    await _storageService.deleteFile(
       'venuePhotos',
       '${venue.id}_large',
     );
-    await locate<StorageService>().deleteFile(
+    await _storageService.deleteFile(
       'venuePhotos',
       '${venue.id}_icon',
     );
-    await locate<FirestoreService>().deleteDoc(atPath: 'venues/${venue.id}');
+    await _firestoreService.deleteDoc(atPath: 'venues/${venue.id}');
   }
 
   Future<String> retrieveAddress(String latitude, String longitude) async {

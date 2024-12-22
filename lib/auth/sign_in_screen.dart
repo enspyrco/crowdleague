@@ -1,12 +1,11 @@
-import 'package:crowdleague/services/auth_service.dart';
-import 'package:crowdleague/utils/locator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
+import '../services/user_service.dart';
 import '../utils/icons/custom_icons.dart';
+import '../utils/locator.dart';
+import 'enums/auth_provider.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -18,34 +17,20 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   bool isSigningIn = false;
 
-  Future<UserCredential> signInWithApple(BuildContext context) async {
-    final appleProvider = AppleAuthProvider();
+  Future<void> signInWithApple(BuildContext context) async {
     setState(() {
       isSigningIn = true;
     });
-    final credential =
-        await locate<AuthService>().signInWithProvider(appleProvider);
+    await locate<UserService>().signInWith(provider: AuthProvider.apple);
     if (context.mounted) context.pushReplacement('/');
-    return credential;
   }
 
-  Future<UserCredential> signInWithGoogle(BuildContext context) async {
+  Future<void> signInWithGoogle(BuildContext context) async {
     setState(() {
       isSigningIn = true;
     });
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    final userCredential =
-        await locate<AuthService>().signInWithCredential(credential);
+    await locate<UserService>().signInWith(provider: AuthProvider.google);
     if (context.mounted) context.pushReplacement('/');
-
-    return userCredential;
   }
 
   @override

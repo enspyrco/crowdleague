@@ -21,7 +21,7 @@ import 'utils/locator.dart';
 
 final _router = GoRouter(
   initialLocation:
-      locate<AuthService>().currentUserId == null ? '/signin' : '/',
+      locate<UserService>().currentUserId == null ? '/signin' : '/',
   routes: [
     GoRoute(
       name: 'home',
@@ -67,15 +67,22 @@ void main() async {
 
   // The order here matters as the AuthService accesses the UserService in its
   // constructor to setup listening to the profile.
-  Locator.add<UserService>(UserService());
-  Locator.add<AuthService>(AuthService());
+  final authService = AuthService();
+  final firestoreService = FirestoreService(firebaseApp);
+  final storageService = StorageService();
+
+  Locator.add<UserService>(UserService(
+    authService: authService,
+    firestoreService: firestoreService,
+    storageService: storageService,
+  ));
+
+  Locator.add<VenuesService>(VenuesService(
+      firestoreService: firestoreService, storageService: storageService));
+  Locator.add<ImagesService>(ImagesService());
 
   Locator.add<MessagingService>(MessagingService());
-  Locator.add<StorageService>(StorageService());
-  Locator.add<FirestoreService>(FirestoreService(firebaseApp));
-  Locator.add<ImagesService>(ImagesService());
   Locator.add<GeoLocationService>(GeoLocationService());
-  Locator.add<VenuesService>(VenuesService());
 
   runApp(const CrowdLeagueApp());
 }
