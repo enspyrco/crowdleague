@@ -19,11 +19,42 @@ class FirestoreService {
 
   late final FirebaseFirestore _db;
 
-  Future<void> updateDoc({
-    required String path,
+  Future<String> addDoc({
+    required String collectionPath,
     required Map<String, Object?> data,
-  }) {
-    return _db.doc(path).update(data);
+  }) async {
+    final ref = await _db.collection(collectionPath).add(data);
+    return ref.id;
+  }
+
+  Future<void> deleteDoc({required String atPath}) {
+    return _db.doc(atPath).delete();
+  }
+
+  Stream<Map<String, Object?>?> documentStream({required String path}) {
+    return _db.doc(path).snapshots().map<Map<String, Object?>?>((ref) {
+      return ref.data();
+    });
+  }
+
+  Future<Map<String, Object?>?> getDoc({
+    required String atPath,
+  }) async {
+    final reference = await _db.doc(atPath).get();
+    final json = reference.data();
+    json?['id'] = reference.id;
+    return json;
+  }
+
+  Future<Set<Map<String, Object?>>> getDocs({
+    required String inCollectionPath,
+  }) async {
+    final snapshot = await _db.collection(inCollectionPath).get();
+    return snapshot.docs.map<Map<String, Object?>>((snapshot) {
+      final json = snapshot.data();
+      json['id'] = snapshot.id;
+      return json;
+    }).toSet();
   }
 
   /// Uses the cloud_firestore's set document - when marge is true, this becomes
@@ -36,38 +67,10 @@ class FirestoreService {
     return _db.doc(path).set(data, SetOptions(merge: merge));
   }
 
-  Future<String> addDoc({
-    required String collectionPath,
+  Future<void> updateDoc({
+    required String path,
     required Map<String, Object?> data,
-  }) async {
-    final ref = await _db.collection(collectionPath).add(data);
-    return ref.id;
-  }
-
-  Stream<Map<String, Object?>?> documentStream({required String path}) {
-    return _db.doc(path).snapshots().map<Map<String, Object?>?>((ref) {
-      return ref.data();
-    });
-  }
-
-  Future<Set<Map<String, Object?>>> getDocs(
-      {required String inCollectionPath}) async {
-    final snapshot = await _db.collection(inCollectionPath).get();
-    return snapshot.docs.map<Map<String, Object?>>((snapshot) {
-      final json = snapshot.data();
-      json['id'] = snapshot.id;
-      return json;
-    }).toSet();
-  }
-
-  Future<Map<String, Object?>?> getDoc({required String atPath}) async {
-    final reference = await _db.doc(atPath).get();
-    final json = reference.data();
-    json?['id'] = reference.id;
-    return json;
-  }
-
-  Future<void> deleteDoc({required String atPath}) {
-    return _db.doc(atPath).delete();
+  }) {
+    return _db.doc(path).update(data);
   }
 }

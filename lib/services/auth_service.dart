@@ -1,24 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../utils/locator.dart';
-import 'user_service.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 /// Wraps the FirebaseAuth.instance to allow providing test doubles in tests.
 ///
 /// The AuthService accesses the UserService in its constructor so the
 /// UserService must be added to the service provider before the AuthService.
 class AuthService {
-  AuthService() {
-    _auth.authStateChanges().listen((user) {
-      if (user != null) {
-        locate<UserService>().listenToProfileStream(user.uid);
-      }
-    });
+  AuthService({FirebaseAuth? firebaseAuth}) {
+    firebaseAuth == null ? _auth = FirebaseAuth.instance : _auth = firebaseAuth;
   }
 
-  final _auth = FirebaseAuth.instance;
+  late final FirebaseAuth _auth;
 
-  Future<UserCredential> signInWithProvider(AuthProvider provider) {
+  Stream<User?> authStateChanges() => _auth.authStateChanges();
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return _auth.signInWithCredential(credential);
+  }
+
+  Future<UserCredential> signInWithApple() {
+    final provider = AppleAuthProvider();
     return _auth.signInWithProvider(provider);
   }
 
@@ -26,12 +35,7 @@ class AuthService {
     return _auth.currentUser?.uid;
   }
 
-  Future<UserCredential> signInWithCredential(AuthCredential authCredential) {
-    return _auth.signInWithCredential(authCredential);
-  }
-
   Future<void> signOut() {
-    locate<UserService>().dispose();
     return _auth.signOut();
   }
 }
