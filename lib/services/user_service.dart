@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:rxdart/subjects.dart';
 
@@ -73,15 +74,6 @@ class UserService {
     }
   }
 
-  Future<void> updateProfilePicUrl(
-      {required String size, required String url}) async {
-    return _firestoreService.setDoc(
-      merge: true,
-      path: 'profiles/${_authService.currentUserId!}',
-      data: {'${size}Pic': url},
-    );
-  }
-
   Future<void> updateProfileName(String name) {
     return _firestoreService.setDoc(
       merge: true,
@@ -98,10 +90,6 @@ class UserService {
       localPath: filePath,
       storagePath: storagePath,
     )) {}
-    final imageUrl =
-        await _storageService.getDownLoadUrl(storagePath: storagePath);
-
-    return updateProfilePicUrl(size: 'large', url: imageUrl);
   }
 
   Future<void> saveSmallProfilePic(String filePath, int smallSize) async {
@@ -111,10 +99,16 @@ class UserService {
       localPath: '${filePath}_$smallSize',
       storagePath: storagePathSmall,
     )) {}
-    final imageUrlSmall =
-        await _storageService.getDownLoadUrl(storagePath: storagePathSmall);
+  }
 
-    return updateProfilePicUrl(size: 'small', url: imageUrlSmall);
+  Future<Uint8List?> retrieveSmallProfilePic() {
+    final storagePathSmall = 'profilePics/${currentUserId!}_small';
+    return _storageService.downloadBytes(storagePathSmall);
+  }
+
+  Future<Uint8List?> retrieveLargeProfilePic() {
+    final storagePathSmall = 'profilePics/${currentUserId!}_large';
+    return _storageService.downloadBytes(storagePathSmall);
   }
 
   Future<void> signOut() async {

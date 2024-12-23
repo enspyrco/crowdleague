@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -63,41 +65,51 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
           if (_venue != null && !_deleting) ...[
             Stack(
               children: [
-                Image.network(
-                  _venue!.largePhotoUrl,
-                  frameBuilder: (context, child, frame, sync) {
-                    if (frame == null) {
-                      return const AspectRatio(
-                        aspectRatio: 1.0,
-                        child: Center(child: CircularProgressIndicator()),
+                FutureBuilder<Uint8List?>(
+                    future: locate<VenuesService>()
+                        .downloadLargePhoto(widget.venueId),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        return AspectRatio(
+                            aspectRatio: 1.0,
+                            child: Center(child: CircularProgressIndicator()));
+                      }
+                      return Image.memory(
+                        snapshot.data!,
+                        frameBuilder: (context, child, frame, sync) {
+                          if (frame == null) {
+                            return const AspectRatio(
+                              aspectRatio: 1.0,
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          }
+                          return child;
+                        },
+                        // loadingBuilder: (BuildContext context, Widget child,
+                        //     ImageChunkEvent? loadingProgress) {
+                        //   if (loadingProgress == null) {
+                        //     return child;
+                        //   }
+                        //   return AspectRatio(
+                        //     aspectRatio: 1.0,
+                        //     child: Center(
+                        //       child: CircularProgressIndicator(
+                        //         value: loadingProgress.expectedTotalBytes != null
+                        //             ? loadingProgress.cumulativeBytesLoaded /
+                        //                 loadingProgress.expectedTotalBytes!
+                        //             : null,
+                        //       ),
+                        //     ),
+                        //   );
+                        // },
+                        errorBuilder: (context, exception, stackTrace) {
+                          return Text(
+                            exception.toString(),
+                            style: const TextStyle(color: Colors.red),
+                          );
+                        },
                       );
-                    }
-                    return child;
-                  },
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return AspectRatio(
-                      aspectRatio: 1.0,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, exception, stackTrace) {
-                    return Text(
-                      exception.toString(),
-                      style: const TextStyle(color: Colors.red),
-                    );
-                  },
-                ),
+                    }),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
@@ -105,7 +117,8 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                     child: IconButton(
                         color: Colors.white,
                         style: IconButton.styleFrom(
-                            backgroundColor: Colors.grey.withOpacity(0.7)),
+                            backgroundColor:
+                                Colors.grey.withValues(alpha: 0.7)),
                         onPressed: () => context.pop(),
                         icon: const Icon(Icons.arrow_back_ios_new)),
                   ),

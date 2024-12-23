@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import 'package:crowdleague/services/venues_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -59,9 +58,12 @@ class _VenuesScreenState extends State<VenuesScreen> {
     await Future.wait(
       venues.map(
         (venue) async {
-          final response = await http.get(Uri.parse(venue.iconUrl));
-          final descriptor = BitmapDescriptor.bytes(response.bodyBytes);
-          descriptorMap[venue] = descriptor;
+          // final response = await http.get(Uri.parse(venue.iconUrl));
+          final bytes = await locate<VenuesService>().downloadIcon(venue.id);
+          if (bytes != null) {
+            final descriptor = BitmapDescriptor.bytes(bytes);
+            descriptorMap[venue] = descriptor;
+          }
         },
       ),
     );
