@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,10 +28,14 @@ class _YouScreenState extends State<YouScreen> {
             }),
         leading: Padding(
           padding: const EdgeInsets.all(5),
-          child: StreamBuilder<Map<String, Object?>?>(
-              stream: locate<UserService>().profileDocStream,
+          child: FutureBuilder<Uint8List?>(
+              future: locate<UserService>().retrieveSmallProfilePic(),
               builder: (context, snapshot) {
-                return Avatar(picUrl: snapshot.data?['smallPic'] as String?);
+                if (snapshot.hasData) {
+                  return Avatar(picBytes: snapshot.data);
+                } else {
+                  return Avatar(loading: true);
+                }
               }),
         ),
         actions: [

@@ -31,11 +31,15 @@ class VenuesService {
     return _firestoreService.addDoc(collectionPath: 'venues', data: data);
   }
 
-  Future<String> getDownloadUrl(String storagePath) {
-    return _storageService.getDownLoadUrl(storagePath: storagePath);
+  Future<Uint8List?> downloadLargePhoto(String venueId) {
+    return _storageService.downloadBytes('venuePhotos/${venueId}_large');
   }
 
-  Stream<UploadEvent> uploadIconBytes(
+  Future<Uint8List?> downloadIcon(String venueId) {
+    return _storageService.downloadBytes('venuePhotos/${venueId}_icon');
+  }
+
+  Stream<UploadEvent> uploadBytes(
       {required Uint8List bytes, required String storagePath}) {
     return _storageService.uploadBytes(bytes: bytes, storagePath: storagePath);
   }

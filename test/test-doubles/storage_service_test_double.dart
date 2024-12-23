@@ -16,12 +16,6 @@ class StorageServiceTestDouble implements StorageService {
   }
 
   @override
-  Future<String> getDownLoadUrl({required String storagePath}) {
-    // TODO: implement getDownLoadUrl
-    throw UnimplementedError();
-  }
-
-  @override
   Stream<UploadEvent> uploadBytes(
       {required Uint8List bytes, required String storagePath}) {
     // TODO: implement uploadBytes
@@ -44,6 +38,12 @@ class StorageServiceTestDouble implements StorageService {
   Stream<double> uploadWithProgress(
       {required String localPath, required String storagePath}) {
     // TODO: implement uploadWithProgress
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Uint8List?> downloadBytes(String storagePath) {
+    // TODO: implement downloadBytes
     throw UnimplementedError();
   }
 }

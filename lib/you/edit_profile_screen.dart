@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -110,12 +112,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   StreamBuilder<Map<String, Object?>?>(
                     stream: locate<UserService>().profileDocStream,
                     builder: (context, snapshot) {
-                      return Avatar(
-                        picUrl: snapshot.data?['largePic'] as String? ??
-                            'https://firebasestorage.googleapis.com/v0/b/crowdleague-project.firebasestorage.app/o/profilePics%2Fempty_profile_pic.jpg?alt=media&token=c8a9c8d7-0c0a-4510-b003-a389473573cb',
-                        loading: _uploading,
-                        size: 100,
-                      );
+                      return FutureBuilder<Uint8List?>(
+                          future:
+                              locate<UserService>().retrieveLargeProfilePic(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return CircularProgressIndicator();
+                            }
+                            return Avatar(
+                              picBytes: snapshot.data!,
+                              loading: _uploading,
+                              size: 100,
+                            );
+                          });
                     },
                   ),
               ],

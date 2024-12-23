@@ -45,12 +45,6 @@ class StorageService {
     });
   }
 
-  // Returns a Future with the download Url of a file that was uploaded
-  Future<String> getDownLoadUrl({required String storagePath}) {
-    final storageRef = _storage.ref(storagePath);
-    return storageRef.getDownloadURL();
-  }
-
   /// Returns a Future with the download Url of the bytes that were uploaded.
   Stream<UploadEvent> uploadBytes(
       {required Uint8List bytes, required String storagePath}) {
@@ -62,6 +56,11 @@ class StorageService {
       if (progress.isNaN) progress = 0;
       return UploadEvent(progress: progress);
     });
+  }
+
+  Future<Uint8List?> downloadBytes(String storagePath) {
+    final storageRef = _storage.ref(storagePath);
+    return storageRef.getData();
   }
 
   Future<void> deleteFile(String path, String fileName) {

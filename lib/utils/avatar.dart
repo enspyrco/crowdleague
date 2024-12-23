@@ -15,13 +15,22 @@ class Avatar extends StatelessWidget {
     super.key,
     this.picPath,
     this.picUrl,
+    this.picBytes,
     this.backgroundColor = Colors.black,
     this.loading = false,
     this.size = 50,
-  }) : assert(!(picPath != null && picUrl != null));
+  });
+  // : assert(!(picPath != null && picUrl != null && picBytes != null) &&
+  //           loading == false), // can't all be null while not loading
+  //       assert((picPath != null ||
+  //           picUrl != null ||
+  //           picBytes != null ||
+  //           loading == true)); // one ( or more!?) must be non-null or loading
+  // TODO: how to assert that 2 of them can't be non-null?
 
   final String? picPath;
   final String? picUrl;
+  final Uint8List? picBytes;
   final Color backgroundColor;
   final bool loading;
   final double size;
@@ -33,7 +42,16 @@ class Avatar extends StatelessWidget {
       height: size,
       child: Stack(
         children: [
-          if (picPath == null && picUrl == null)
+          if (picBytes != null)
+            SizedBox(
+              width: size,
+              height: size,
+              child: CircleAvatar(
+                backgroundColor: backgroundColor,
+                backgroundImage: MemoryImage(picBytes!),
+              ),
+            ),
+          if (picPath == null && picUrl == null && picBytes == null)
             SizedBox(
               width: size,
               height: size,

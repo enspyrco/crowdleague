@@ -59,8 +59,6 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
       localPath: _localVenue.largePhotoPath!,
       storagePath: 'venuePhotos/${venueId}_large',
     )) {}
-    final String largePhotoUrl = await locate<VenuesService>()
-        .getDownloadUrl('venuePhotos/${venueId}_large');
 
     // resize large photo
     final int smallSize = 50;
@@ -73,8 +71,6 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
       localPath: '${_localVenue.largePhotoPath!}_$smallSize',
       storagePath: 'venuePhotos/${venueId}_small',
     )) {}
-    final String smallPhotoUrl = await locate<VenuesService>()
-        .getDownloadUrl('venuePhotos/${venueId}_small');
 
     // Upload bytes for map icon and get a download Url
     if (mounted) {
@@ -82,19 +78,9 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
         _progressMessage = 'Creating and uploading map icon...';
       });
     }
-    await for (final _ in locate<VenuesService>().uploadIconBytes(
+    await for (final _ in locate<VenuesService>().uploadBytes(
         bytes: _localVenue.iconBytes!,
         storagePath: 'venuePhotos/${venueId}_icon')) {}
-    final String iconUrl = await locate<VenuesService>()
-        .getDownloadUrl('venuePhotos/${venueId}_icon');
-
-    await locate<VenuesService>()
-        .updateVenue(id: venueId, data: // add photo Urls to venue
-            {
-      'largePhotoUrl': largePhotoUrl,
-      'smallPhotoUrl': smallPhotoUrl,
-      'iconUrl': iconUrl,
-    });
 
     if (mounted) {
       setState(() {
