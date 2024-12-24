@@ -8,11 +8,14 @@ import 'firebase_options.dart';
 
 import 'auth/sign_in_screen.dart';
 import 'home/home_screen.dart';
+import 'players/find_team_mate_screen.dart';
+import 'players/player_profile_screen.dart';
 import 'services/auth_service.dart';
 import 'services/firestore_service.dart';
 import 'services/geo_location_service.dart';
 import 'services/images_service.dart';
 import 'services/messaging_service.dart';
+import 'services/players_service.dart';
 import 'services/storage_service.dart';
 import 'services/user_service.dart';
 import 'services/venues_service.dart';
@@ -59,6 +62,18 @@ final _router = GoRouter(
         venueId: state.pathParameters['id']!,
       ),
     ),
+    GoRoute(
+      name: 'find-team-mate',
+      path: '/find-team-mate',
+      builder: (context, state) => const FindTeamMateScreen(),
+    ),
+    GoRoute(
+      name: 'player-profile',
+      path: '/player-profile/:id',
+      builder: (context, state) => PlayerProfileScreen(
+        playerId: state.pathParameters['id']!,
+      ),
+    ),
   ],
 );
 
@@ -82,18 +97,22 @@ void main() async {
   final firestoreService = FirestoreService(firebaseApp);
   final storageService = StorageService();
 
+  // possibly also data layer
+  Locator.add<MessagingService>(MessagingService());
+  Locator.add<GeoLocationService>(GeoLocationService());
+
   Locator.add<UserService>(UserService(
     authService: authService,
     firestoreService: firestoreService,
     storageService: storageService,
   ));
 
+  // repository layer
+  Locator.add<PlayersService>(PlayersService(
+      firestoreService: firestoreService, storageService: storageService));
   Locator.add<VenuesService>(VenuesService(
       firestoreService: firestoreService, storageService: storageService));
   Locator.add<ImagesService>(ImagesService());
-
-  Locator.add<MessagingService>(MessagingService());
-  Locator.add<GeoLocationService>(GeoLocationService());
 
   runApp(const CrowdLeagueApp());
 }

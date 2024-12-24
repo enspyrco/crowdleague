@@ -87,9 +87,9 @@ class Avatar extends StatelessWidget {
               ),
             ),
           if (loading)
-            const SizedBox(
-              width: 100,
-              height: 100,
+            SizedBox(
+              width: size,
+              height: size,
               child: CircularProgressIndicator(),
             ),
         ],

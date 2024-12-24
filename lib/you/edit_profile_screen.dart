@@ -117,7 +117,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               locate<UserService>().retrieveLargeProfilePic(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData || snapshot.data == null) {
-                              return CircularProgressIndicator();
+                              return Avatar(
+                                loading: true,
+                                size: 100,
+                              );
                             }
                             return Avatar(
                               picBytes: snapshot.data!,
