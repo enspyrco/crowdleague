@@ -35,6 +35,8 @@
 	<string>so you can take a photo</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>to show nearby venues</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>to show nearby venues</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>so you can record audio of a game</string>
 	<key>NSPhotoLibraryUsageDescription</key>
