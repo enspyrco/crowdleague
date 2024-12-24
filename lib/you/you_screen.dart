@@ -66,6 +66,14 @@ class _YouScreenState extends State<YouScreen> {
           ),
           Card(
             child: ListTile(
+              title: const Text('Find a team mate'),
+              onTap: () {
+                context.push('/find-team-mate');
+              },
+            ),
+          ),
+          Card(
+            child: ListTile(
               title: const Text('Sign Out'),
               onTap: () {
                 locate<UserService>().signOut();
