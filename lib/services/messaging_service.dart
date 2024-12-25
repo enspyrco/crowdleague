@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 
 class MessagingService {
   late final FirebaseMessaging _messaging;
-  late final NotificationSettings _notificationSettings;
 
   MessagingService({FirebaseMessaging? messaging}) {
     (messaging == null)
@@ -23,8 +22,8 @@ class MessagingService {
   Future<void> init() async {
     // You may set the permission requests to "provisional" which allows the user to choose what type
     // of notifications they would like to receive once the user receives a notification.
-    _notificationSettings =
-        await FirebaseMessaging.instance.requestPermission(provisional: true);
+    NotificationSettings _notificationSettings =
+        await FirebaseMessaging.instance.requestPermission();
 
     if (defaultTargetPlatform == TargetPlatform.iOS) {
       // For apple platforms, ensure the APNS token is available before making any FCM plugin API calls
