@@ -60,4 +60,13 @@ class FirestoreServiceTestDouble implements FirestoreService {
       {required String path, required Map<String, Object?> data}) {
     return _db.doc(path).update(data);
   }
+
+  @override
+  Future<void> addItemsToList(
+      {required String docPath,
+      required String listName,
+      required List<Object> items}) {
+    // TODO: implement addItemsToList
+    throw UnimplementedError();
+  }
 }

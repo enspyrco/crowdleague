@@ -1,9 +1,11 @@
+import 'package:crowdleague/services/user_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../services/players_service.dart';
 import '../utils/avatar.dart';
 import '../utils/locator.dart';
+import 'models/player.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   const PlayerProfileScreen({required String playerId, super.key})
@@ -16,6 +18,39 @@ class PlayerProfileScreen extends StatefulWidget {
 }
 
 class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
+  bool _pending = false;
+  Player _player = EmptyPlayer();
+
+  Future<void> _getPlayer() async {
+    final player = await locate<PlayersService>().getPlayer(widget._playerId);
+    if (mounted) {
+      setState(() {
+        _player = player ?? EmptyPlayer();
+        if (_player.pendingTeamRequests
+            .contains(locate<UserService>().currentUserId!)) {
+          _pending = true;
+        }
+      });
+    }
+  }
+
+  Future<void> _requestTeamUp() async {
+    if (mounted) {
+      setState(() {
+        _pending = true;
+      });
+    }
+    await locate<PlayersService>().requestTeamUp(
+        requestee: widget._playerId,
+        requester: locate<UserService>().currentUserId!);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPlayer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,19 +72,19 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                   }
                 }),
           ),
-          FutureBuilder<Map<String, Object?>?>(
-              future: locate<PlayersService>().getPlayer(widget._playerId),
-              builder: (context, snapshot) {
-                return Text(snapshot.data?['name'] as String? ?? '?',
-                    style: Theme.of(context).textTheme.displayMedium!);
-              }),
+          Text(_player.name, style: Theme.of(context).textTheme.displayMedium!),
           Expanded(
             child: ListView(
               children: [
                 Card(
-                  child: ListTile(
-                    title: const Text('Team Up'),
-                    onTap: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: _pending ? null : () => _requestTeamUp(),
+                        child: _pending ? Text('Pending...') : Text('Team Up'),
+                      )
+                    ],
                   ),
                 ),
               ],
