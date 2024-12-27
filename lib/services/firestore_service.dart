@@ -19,12 +19,21 @@ class FirestoreService {
 
   late final FirebaseFirestore _db;
 
+  /// Returns the id of the created document.
   Future<String> addDoc({
     required String collectionPath,
     required Map<String, Object?> data,
   }) async {
     final ref = await _db.collection(collectionPath).add(data);
     return ref.id;
+  }
+
+  Future<void> addItemsToList({
+    required String docPath,
+    required String listName,
+    required List<Object> items,
+  }) {
+    return _db.doc(docPath).update({listName: FieldValue.arrayUnion(items)});
   }
 
   Future<void> deleteDoc({required String atPath}) {
