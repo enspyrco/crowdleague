@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:rxdart/subjects.dart';
 
 import '../auth/enums/auth_provider.dart';
+import '../notifications/models/notification.dart';
 import 'auth_service.dart';
 import 'firestore_service.dart';
 import 'storage_service.dart';
@@ -15,10 +16,6 @@ import 'storage_service.dart';
 /// The firestore's snapshots stream only emits once then on any updates.
 /// The BehaviourSubject at any time and get latest profile data without
 /// performing unnecessary reads.
-///
-/// The AuthService sets up the UserService listening to firestore's
-/// snapshots when the user signs in or opens the app already signed in.
-/// Snapshots are then added to the BehaviourSubject.
 class UserService {
   UserService({
     required AuthService authService,
@@ -27,9 +24,24 @@ class UserService {
   })  : _authService = authService,
         _firestoreService = firestoreService,
         _storageService = storageService {
+    // When a User object is emitted by the FirebaseAuth's onAuthStateChanges
+    // stream we cancel a subscription to the firestore (if there is one) and
+    // create a new one, to avoid listening to the firestore while signed out.
     _authService.authStateChanges().listen((user) {
       if (user != null) {
-        listenToProfileStream(user.uid);
+        if (profileStreamSubscription != null) {
+          profileStreamSubscription!.cancel();
+        }
+
+        profileStreamSubscription = _firestoreService
+            .documentStream(
+          path: 'profiles/${user.uid}',
+        )
+            .listen((profile) {
+          if (profile != null) {
+            _userSubject.add(profile);
+          }
+        });
       }
     });
   }
@@ -45,24 +57,6 @@ class UserService {
 
   String? get currentUserId {
     return _authService.currentUserId;
-  }
-
-  /// Called by the AuthService when a User object is emitted by the
-  /// FirebaseAuth's onAuthStateChanges stream.
-  void listenToProfileStream(String userId) {
-    if (profileStreamSubscription != null) {
-      profileStreamSubscription!.cancel();
-    }
-
-    profileStreamSubscription = _firestoreService
-        .documentStream(
-      path: 'profiles/$userId',
-    )
-        .listen((profile) {
-      if (profile != null) {
-        _userSubject.add(profile);
-      }
-    });
   }
 
   Future<void> signInWith({required AuthProvider provider}) async {
@@ -109,6 +103,21 @@ class UserService {
   Future<Uint8List?> retrieveLargeProfilePic() {
     final storagePathSmall = 'profilePics/${currentUserId!}_large';
     return _storageService.downloadBytes(storagePathSmall);
+  }
+
+  Future<List<Notification>> retrieveNotifications() async {
+    final notificationJson = await _firestoreService.getDocs(
+        inCollectionPath:
+            'profiles/${_authService.currentUserId}/notifications');
+
+    return notificationJson.map<Notification>((json) {
+      return Notification.fromJson(json);
+    }).toList();
+  }
+
+  Future<void> acceptTeamRequest() {
+    return _firestoreService.setDoc(
+        path: 'profiles/${_authService.currentUserId}/team-accepts', data: {});
   }
 
   Future<void> signOut() async {
