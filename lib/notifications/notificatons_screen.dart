@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:crowdleague/services/messaging_service.dart';
 import 'package:crowdleague/services/players_service.dart';
 import 'package:crowdleague/utils/avatar.dart';
 import 'package:crowdleague/utils/locator.dart';
@@ -17,18 +16,6 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  Future<void> getAToken() async {
-    await locate<MessagingService>().init();
-    String? token = await locate<MessagingService>().getToken();
-    debugPrint(token);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getAToken();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
