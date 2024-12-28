@@ -115,6 +115,11 @@ class UserService {
     }).toList();
   }
 
+  Future<void> acceptTeamRequest() {
+    return _firestoreService.setDoc(
+        path: 'profiles/${_authService.currentUserId}/team-accepts', data: {});
+  }
+
   Future<void> signOut() async {
     await profileStreamSubscription?.cancel();
     return _authService.signOut();

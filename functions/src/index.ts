@@ -36,7 +36,7 @@ exports.notifyRequesteeOnTeamRequest = onDocumentCreated({
 
     // Add a notification to the requestee's notifications list
     await dbRef.collection("profiles").doc(params.requesteeId)
-      .collection("notifications").doc(params.requesterId)
+      .collection("notifications").doc()
       .set({
         type: "team-up-request",
         requesterId: params.requesterId,

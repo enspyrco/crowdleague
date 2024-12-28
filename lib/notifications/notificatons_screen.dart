@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:crowdleague/services/messaging_service.dart';
 import 'package:crowdleague/services/players_service.dart';
+import 'package:crowdleague/utils/avatar.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart' hide Notification;
 
@@ -48,13 +51,34 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         if (playerSnapshot.hasData &&
                             playerSnapshot.data != null) {
                           final player = playerSnapshot.data!;
-                          return Card(
-                            child: ListTile(
-                              leading: Icon(Icons.notifications_sharp),
-                              title: Text('Team Up Request'),
-                              subtitle: Text('${player.name} wants to team up'),
-                            ),
-                          );
+
+                          return FutureBuilder<Uint8List?>(
+                              future: locate<PlayersService>()
+                                  .retrieveSmallProfilePic(player.id),
+                              builder: (context, snapshot) {
+                                return Card(
+                                  child: ListTile(
+                                    leading: (snapshot.data != null)
+                                        ? Avatar(picBytes: snapshot.data!)
+                                        : Avatar(loading: true),
+                                    title:
+                                        Text('${player.name} wants to team up'),
+                                    subtitle: Row(
+                                      children: [
+                                        TextButton(
+                                            onPressed: () {
+                                              locate<UserService>()
+                                                  .acceptTeamRequest();
+                                            },
+                                            child: Text('Accept')),
+                                        TextButton(
+                                            onPressed: () {},
+                                            child: Text('Decline')),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              });
                         } else {
                           return Center(child: Text('1'));
                         }
