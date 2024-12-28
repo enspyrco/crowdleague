@@ -59,6 +59,12 @@ class UserService {
     return _authService.currentUserId;
   }
 
+  Future<bool> get userHasOnboarded async {
+    final profile = await _firestoreService.getDoc(
+        atPath: 'fcmTokens/${_authService.currentUserId!}');
+    return profile != null;
+  }
+
   Future<void> signInWith({required AuthProvider provider}) async {
     switch (provider) {
       case AuthProvider.apple:
@@ -118,6 +124,13 @@ class UserService {
   Future<void> acceptTeamRequest() {
     return _firestoreService.setDoc(
         path: 'profiles/${_authService.currentUserId}/team-accepts', data: {});
+  }
+
+  Future<void> storeToken(String token) {
+    return _firestoreService.setDoc(
+      path: 'fcmTokens/${_authService.currentUserId}',
+      data: {'token': token},
+    );
   }
 
   Future<void> signOut() async {

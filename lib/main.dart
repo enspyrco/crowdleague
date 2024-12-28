@@ -8,6 +8,9 @@ import 'firebase_options.dart';
 
 import 'auth/sign_in_screen.dart';
 import 'home/home_screen.dart';
+import 'onboarding/onboard_name_screen.dart';
+import 'onboarding/onboard_notifications.dart';
+import 'onboarding/onboard_profile_pic_screen.dart';
 import 'players/find_team_mate_screen.dart';
 import 'players/player_profile_screen.dart';
 import 'services/auth_service.dart';
@@ -33,11 +36,34 @@ final _router = GoRouter(
       name: 'home',
       path: '/',
       builder: (context, state) => const HomeScreen(),
+      redirect: (BuildContext context, GoRouterState state) async {
+        bool onboarded = await locate<UserService>().userHasOnboarded;
+        if (!onboarded) {
+          return '/onboard-name';
+        } else {
+          return null;
+        }
+      },
     ),
     GoRoute(
       name: 'signin',
       path: '/signin',
       builder: (context, state) => const SignInScreen(),
+    ),
+    GoRoute(
+      name: 'onboard-name',
+      path: '/onboard-name',
+      builder: (context, state) => const OnboardNameScreen(),
+    ),
+    GoRoute(
+      name: 'onboard-profile-pic',
+      path: '/onboard-profile-pic',
+      builder: (context, state) => const OnboardProfilePicScreen(),
+    ),
+    GoRoute(
+      name: 'onboard-notifications',
+      path: '/onboard-notifications',
+      builder: (context, state) => const OnboardNotifications(),
     ),
     GoRoute(
       name: 'image-picker',
