@@ -1,13 +1,13 @@
 import {log} from "firebase-functions/logger";
 import * as admin from "firebase-admin";
-import {FieldValue,getFirestore} from "firebase-admin/firestore";
+import {FieldValue, getFirestore} from "firebase-admin/firestore";
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 
 admin.initializeApp();
 
 exports.notifyRequesteeOnTeamRequest = onDocumentCreated({
   document: "profiles/{requesterId}/team-requests/{requesteeId}",
-  database: "firestore-usa"
+  database: "firestore-usa",
 }, async (event) => {
   // Get the new checkin data
   const {params, data} = event;
@@ -19,16 +19,40 @@ exports.notifyRequesteeOnTeamRequest = onDocumentCreated({
   }
 
   try {
+    log(`requesteeId = ${params.requesteeId}, 
+      requesterId = ${params.requesterId}`);
+
     // Fetch the requestee's profile
-    const requesteeProfileRef = getFirestore("firestore-usa")
-      .doc(`profiles/${params.requesteeId}`);
+    const dbRef = getFirestore("firestore-usa");
 
     // Add the requester id to the requestee's profile
-    await requesteeProfileRef.update({
+    // so profile shows 'pending'
+    await dbRef.doc(`profiles/${params.requesteeId}`).update({
       pendingTeamRequests: FieldValue.arrayUnion(params.requesterId),
     });
 
-    log(`Added ${params.requesterId} to 'pendingTeamRequests' of profiles/${params.requesteeId}`)
+    log(`Added ${params.requesterId} to 'pendingTeamRequests' ` +
+      `of profiles/${params.requesteeId}`);
+
+    // Add a notification to the requestee's notifications list
+    await dbRef.collection("profiles").doc(params.requesteeId)
+      .collection("notifications").doc(params.requesterId)
+      .set({
+        type: "team-up-request",
+        requesterId: params.requesterId,
+        timestamp: FieldValue.serverTimestamp(),
+        opened: false,
+        viewed: false,
+      });
+
+    log(`Notification added to profiles/${params.requesteeId}/` +
+      `notifications/${params.requesterId}`);
+
+    await dbRef.doc(`profiles/${params.requesterId}/` +
+      `team-requests/${params.requesteeId}`).delete();
+
+    log(`profiles/${params.requesterId}/` +
+      `team-requests/${params.requesteeId} deleted`);
 
     // // Batch notifications with more efficient processing
     // const notificationTasks = friendIds.map(async (friendId: string) => {

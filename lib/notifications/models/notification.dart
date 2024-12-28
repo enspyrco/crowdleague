@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 sealed class Notification {
   const Notification(
-      {this.viewed = false, this.opened = false, required this.timestamp});
+      {required this.viewed, required this.opened, required this.timestamp});
   final bool viewed;
   final bool opened;
   final int timestamp;
@@ -9,12 +11,16 @@ sealed class Notification {
     switch (json['type']) {
       case 'team-up-request':
         return TeamUpRequestNotification(
+          viewed: json['viewed'] ?? false,
+          opened: json['opened'] ?? false,
           requesterId: json['requesterId'],
-          timestamp: json['timestamp'],
+          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
       case 'team-up-response':
         return TeamUpResponseNotification(
-          requestedId: json['requestedId'],
+          viewed: json['viewed'] ?? false,
+          opened: json['opened'] ?? false,
+          requesteeId: json['requesteeId'],
           timestamp: json['timestamp'],
         );
       default:
@@ -26,8 +32,12 @@ sealed class Notification {
 class TeamUpRequestNotification extends Notification {
   final String requesterId;
 
-  const TeamUpRequestNotification(
-      {required this.requesterId, required super.timestamp});
+  const TeamUpRequestNotification({
+    required this.requesterId,
+    required super.timestamp,
+    required super.opened,
+    required super.viewed,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -41,15 +51,19 @@ class TeamUpRequestNotification extends Notification {
 }
 
 class TeamUpResponseNotification extends Notification {
-  final String requestedId;
+  final String requesteeId;
 
-  const TeamUpResponseNotification(
-      {required this.requestedId, required super.timestamp});
+  const TeamUpResponseNotification({
+    required this.requesteeId,
+    required super.timestamp,
+    required super.opened,
+    required super.viewed,
+  });
 
   Map<String, dynamic> toJson() {
     return {
       'type': 'team-up-response',
-      'requestedId': requestedId,
+      'requesteeId': requesteeId,
       'viewed': viewed,
       'opened': opened,
       'timestamp': timestamp,
