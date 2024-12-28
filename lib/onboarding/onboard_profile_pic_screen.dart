@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -9,18 +10,17 @@ import '../services/user_service.dart';
 import '../utils/avatar.dart';
 import '../utils/locator.dart';
 
-class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+class OnboardProfilePicScreen extends StatefulWidget {
+  const OnboardProfilePicScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  State<OnboardProfilePicScreen> createState() =>
+      _OnboardProfilePicScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _OnboardProfilePicScreenState extends State<OnboardProfilePicScreen> {
   String? _croppedFilePath;
-  Object? _error;
   bool _uploading = false;
-  final _textController = TextEditingController();
 
   Future<void> _onPickPhotoButtonPressed(ImageSource source) async {
     try {
@@ -59,27 +59,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               .saveSmallProfilePic(_croppedFilePath!, smallSize);
 
           if (mounted) {
-            context.pop();
+            context.push('/onboard-notifications');
           }
         }
       }
     } catch (e) {
       if (mounted) {
-        setState(() {
-          _error = e;
-        });
+        log(e.toString());
       }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    locate<UserService>().profileDocStream.listen((profile) {
-      if (mounted) {
-        _textController.text = profile?['name'] as String? ?? 'null';
-      }
-    });
   }
 
   @override
@@ -89,8 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              locate<UserService>().updateProfileName(_textController.text);
-              context.pop();
+              context.push('/onboard-notifications');
             },
             icon: const Icon(Icons.check),
           )
@@ -149,19 +136,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ],
             ),
-            if (_error != null) // display any errors in a Text widget
-              Text(
-                _error.toString(),
-                style: const TextStyle(color: Colors.red),
-              ),
-            const SizedBox(
-              height: 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 100, right: 100),
-              child: TextField(controller: _textController),
-            ),
-            const Text('Name'),
           ],
         ),
       ),
