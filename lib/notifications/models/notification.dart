@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 sealed class Notification {
-  const Notification(
-      {required this.viewed, required this.opened, required this.timestamp});
+  const Notification({
+    required this.viewed,
+    required this.opened,
+    required this.timestamp,
+    required this.id,
+  });
+  final String id;
   final bool viewed;
   final bool opened;
   final int timestamp;
@@ -11,6 +16,7 @@ sealed class Notification {
     switch (json['type']) {
       case 'team-up-request':
         return TeamUpRequestNotification(
+          id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           requesterId: json['requesterId'],
@@ -18,6 +24,7 @@ sealed class Notification {
         );
       case 'team-up-response':
         return TeamUpResponseNotification(
+          id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           requesteeId: json['requesteeId'],
@@ -34,6 +41,7 @@ class TeamUpRequestNotification extends Notification {
 
   const TeamUpRequestNotification({
     required this.requesterId,
+    required super.id,
     required super.timestamp,
     required super.opened,
     required super.viewed,
@@ -41,6 +49,7 @@ class TeamUpRequestNotification extends Notification {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'type': 'team-up-request',
       'requesterId': requesterId,
       'viewed': viewed,
@@ -55,6 +64,7 @@ class TeamUpResponseNotification extends Notification {
 
   const TeamUpResponseNotification({
     required this.requesteeId,
+    required super.id,
     required super.timestamp,
     required super.opened,
     required super.viewed,
@@ -62,6 +72,7 @@ class TeamUpResponseNotification extends Notification {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'type': 'team-up-response',
       'requesteeId': requesteeId,
       'viewed': viewed,

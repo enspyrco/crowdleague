@@ -36,6 +36,14 @@ class FirestoreService {
     return _db.doc(docPath).update({listName: FieldValue.arrayUnion(items)});
   }
 
+  Future<void> removeItemsFromList({
+    required String docPath,
+    required String listName,
+    required List<Object> items,
+  }) {
+    return _db.doc(docPath).update({listName: FieldValue.arrayRemove(items)});
+  }
+
   Future<void> deleteDoc({required String atPath}) {
     return _db.doc(atPath).delete();
   }

@@ -16,6 +16,18 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+  Future<void> _declineTeamUpRequest(
+      TeamUpRequestNotification notification) async {
+    locate<UserService>().declineTeamRequest(
+      notification.id,
+      notification.requesterId,
+    );
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -59,7 +71,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                             },
                                             child: Text('Accept')),
                                         TextButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _declineTeamUpRequest(
+                                                  notification);
+                                            },
                                             child: Text('Decline')),
                                       ],
                                     ),
