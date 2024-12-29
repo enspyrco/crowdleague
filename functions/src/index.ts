@@ -19,8 +19,8 @@ exports.notifyRequesteeOnTeamRequest = onDocumentCreated({
   }
 
   try {
-    log(`requesteeId = ${params.requesteeId}, 
-      requesterId = ${params.requesterId}`);
+    log(`requesteeId = ${params.requesteeId}, ` +
+      `requesterId = ${params.requesterId}`);
 
     // Fetch the requestee's profile
     const dbRef = getFirestore("firestore-usa");
@@ -30,7 +30,6 @@ exports.notifyRequesteeOnTeamRequest = onDocumentCreated({
     await dbRef.doc(`profiles/${params.requesteeId}`).update({
       pendingTeamRequests: FieldValue.arrayUnion(params.requesterId),
     });
-
     log(`Added ${params.requesterId} to 'pendingTeamRequests' ` +
       `of profiles/${params.requesteeId}`);
 
@@ -44,15 +43,32 @@ exports.notifyRequesteeOnTeamRequest = onDocumentCreated({
         opened: false,
         viewed: false,
       });
-
     log(`Notification added to profiles/${params.requesteeId}/` +
       `notifications/${params.requesterId}`);
 
+    // delete the doc that triggered the cloud function
     await dbRef.doc(`profiles/${params.requesterId}/` +
       `team-requests/${params.requesteeId}`).delete();
-
     log(`profiles/${params.requesterId}/` +
       `team-requests/${params.requesteeId} deleted`);
+
+    const tokenDoc = await dbRef.doc(`fcmTokens/${params.requesteeId}`).get();
+    const tokenDocData = tokenDoc.data();
+
+    const profileDoc = await dbRef.doc(`profiles/${params.requesterId}`).get();
+    const profileDocData = profileDoc.data();
+
+    const message = {
+      notification: {
+        title: "Team Up?",
+        body: `${profileDocData?.name} wants to team up with you`,
+      },
+      token: tokenDocData?.token,
+    };
+
+    // Send a message to the device
+    const response = await admin.messaging().send(message);
+    log("Successfully sent message:", response);
 
     // // Batch notifications with more efficient processing
     // const notificationTasks = friendIds.map(async (friendId: string) => {
