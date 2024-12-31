@@ -121,13 +121,13 @@ class UserService {
     }).toList();
   }
 
-  Future<void> acceptTeamRequest() {
+  Future<void> acceptFollowRequest() {
     throw ('not ready yet');
     // return _firestoreService.setDoc(
-    //     path: 'profiles/${_authService.currentUserId}/team-accepts', data: {});
+    //     path: 'profiles/${_authService.currentUserId}/follow-accepts', data: {});
   }
 
-  Future<void> declineTeamRequest(
+  Future<void> declineFollowRequest(
       String notificationId, String requesterId) async {
     await _firestoreService.deleteDoc(
       atPath:
@@ -136,7 +136,7 @@ class UserService {
 
     await _firestoreService.removeItemsFromList(
       docPath: 'profiles/${_authService.currentUserId}',
-      listName: 'pendingTeamRequests',
+      listName: 'pendingFollowRequests',
       items: [requesterId],
     );
   }

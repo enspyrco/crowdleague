@@ -37,7 +37,7 @@ class _OnboardNotificationsState extends State<OnboardNotifications> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'When your team mates want to have a run\nwe will to send you a notification'),
+                'When your the players you follow want to have a run\nwe will to send you a notification'),
             SizedBox(height: 50),
             TextButton(
               onPressed: () {

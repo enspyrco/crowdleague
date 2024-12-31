@@ -16,9 +16,9 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  Future<void> _declineTeamUpRequest(
-      TeamUpRequestNotification notification) async {
-    locate<UserService>().declineTeamRequest(
+  Future<void> _declineFollowRequest(
+      FollowRequestNotification notification) async {
+    locate<UserService>().declineFollowRequest(
       notification.id,
       notification.requesterId,
     );
@@ -42,7 +42,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 itemBuilder: (context, index) {
                   final Notification notification =
                       notificatiosnSnapshot.data![index];
-                  if (notification is TeamUpRequestNotification) {
+                  if (notification is FollowRequestNotification) {
                     return FutureBuilder(
                       future: locate<PlayersService>()
                           .getPlayer(notification.requesterId),
@@ -60,19 +60,19 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     leading: (snapshot.data != null)
                                         ? Avatar(picBytes: snapshot.data!)
                                         : Avatar(loading: true),
-                                    title:
-                                        Text('${player.name} wants to team up'),
+                                    title: Text(
+                                        '${player.name} wants to follow you'),
                                     subtitle: Row(
                                       children: [
                                         TextButton(
                                             onPressed: () {
                                               locate<UserService>()
-                                                  .acceptTeamRequest();
+                                                  .acceptFollowRequest();
                                             },
                                             child: Text('Accept')),
                                         TextButton(
                                             onPressed: () {
-                                              _declineTeamUpRequest(
+                                              _declineFollowRequest(
                                                   notification);
                                             },
                                             child: Text('Decline')),
@@ -82,52 +82,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 );
                               });
                         } else {
-                          return Center(child: Text('1'));
+                          return Container();
                         }
                       },
                     );
                   } else {
-                    return Center(child: Text('5'));
+                    return Container();
                   }
                 },
               );
-              // return ListView.builder(
-              //   itemBuilder: (context, index) {
-              //     if (notificatiosnSnapshot.hasData) {
-              //       if (notificatiosnSnapshot.data!.isEmpty) {
-              //         return Container(child: Center(child: Text('5')));
-              //       }
-              //       final Notification notification =
-              //           notificatiosnSnapshot.data![index];
-              //       if (notification is TeamUpRequestNotification) {
-              //         return FutureBuilder(
-              //           future: locate<PlayersService>()
-              //               .getPlayer(notification.requesterId),
-              //           builder: (context, playerSnapshot) {
-              //             if (playerSnapshot.hasData &&
-              //                 playerSnapshot.data != null) {
-              //               return Card(
-              //                 child: ListTile(
-              //                   leading: Icon(Icons.notifications_sharp),
-              //                   title: Text('Notification 1'),
-              //                   subtitle: Text('This is a notification'),
-              //                 ),
-              //               );
-              //             } else {
-              //               return Container(child: Center(child: Text('1')));
-              //             }
-              //           },
-              //         );
-              //       } else {
-              //         return Container(child: Center(child: Text('2')));
-              //       }
-              //     } else {
-              //       return Container(child: Center(child: Text('3')));
-              //     }
-              //   },
-              // );
             } else {
-              return Center(child: Text('4'));
+              return Container();
             }
           },
         ),

@@ -32,9 +32,9 @@ class PlayersService {
     return _storageService.downloadBytes('profilePics/${playerId}_large');
   }
 
-  Future<void> requestTeamUp(
+  Future<void> requestFollow(
       {required String requestee, required String requester}) async {
-    return _firestoreService
-        .setDoc(path: 'profiles/$requester/team-requests/$requestee', data: {});
+    return _firestoreService.setDoc(
+        path: 'profiles/$requester/follow-requests/$requestee', data: {});
   }
 }

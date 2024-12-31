@@ -66,9 +66,9 @@ class _YouScreenState extends State<YouScreen> {
           ),
           Card(
             child: ListTile(
-              title: const Text('Find a team mate'),
+              title: const Text('Grow your squad'),
               onTap: () {
-                context.push('/find-team-mate');
+                context.push('/find-players');
               },
             ),
           ),

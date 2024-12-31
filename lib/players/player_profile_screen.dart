@@ -26,7 +26,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     if (mounted) {
       setState(() {
         _player = player ?? EmptyPlayer();
-        if (_player.pendingTeamRequests
+        if (_player.pendingFollowRequests
             .contains(locate<UserService>().currentUserId!)) {
           _pending = true;
         }
@@ -34,13 +34,13 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     }
   }
 
-  Future<void> _requestTeamUp() async {
+  Future<void> _requestFollow() async {
     if (mounted) {
       setState(() {
         _pending = true;
       });
     }
-    await locate<PlayersService>().requestTeamUp(
+    await locate<PlayersService>().requestFollow(
         requestee: widget._playerId,
         requester: locate<UserService>().currentUserId!);
   }
@@ -81,8 +81,8 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       TextButton(
-                        onPressed: _pending ? null : () => _requestTeamUp(),
-                        child: _pending ? Text('Pending...') : Text('Team Up'),
+                        onPressed: _pending ? null : () => _requestFollow(),
+                        child: _pending ? Text('Pending...') : Text('Follow'),
                       )
                     ],
                   ),

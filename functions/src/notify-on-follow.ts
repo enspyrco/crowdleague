@@ -58,8 +58,8 @@ export const notifyRequesteeOnFollowRequest = onDocumentCreated({
 
     const message = {
       notification: {
-        title: "Team Up?",
-        body: `${profileDocData?.name} wants to team up with you`,
+        title: "Expand you squad?",
+        body: `${profileDocData?.name} wants to follow you`,
       },
       token: tokenDocData?.token,
     };

@@ -14,21 +14,21 @@ sealed class Notification {
 
   factory Notification.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
-      case 'team-up-request':
-        return TeamUpRequestNotification(
+      case 'follow-request':
+        return FollowRequestNotification(
           id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           requesterId: json['requesterId'],
           timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
-      case 'team-up-response':
-        return TeamUpResponseNotification(
+      case 'follow-response':
+        return FollowResponseNotification(
           id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           requesteeId: json['requesteeId'],
-          timestamp: json['timestamp'],
+          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
       default:
         throw Exception('Unknown notification type');
@@ -36,10 +36,10 @@ sealed class Notification {
   }
 }
 
-class TeamUpRequestNotification extends Notification {
+class FollowRequestNotification extends Notification {
   final String requesterId;
 
-  const TeamUpRequestNotification({
+  const FollowRequestNotification({
     required this.requesterId,
     required super.id,
     required super.timestamp,
@@ -50,7 +50,7 @@ class TeamUpRequestNotification extends Notification {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'type': 'team-up-request',
+      'type': 'follow-request',
       'requesterId': requesterId,
       'viewed': viewed,
       'opened': opened,
@@ -59,10 +59,10 @@ class TeamUpRequestNotification extends Notification {
   }
 }
 
-class TeamUpResponseNotification extends Notification {
+class FollowResponseNotification extends Notification {
   final String requesteeId;
 
-  const TeamUpResponseNotification({
+  const FollowResponseNotification({
     required this.requesteeId,
     required super.id,
     required super.timestamp,
@@ -73,7 +73,7 @@ class TeamUpResponseNotification extends Notification {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'type': 'team-up-response',
+      'type': 'follow-response',
       'requesteeId': requesteeId,
       'viewed': viewed,
       'opened': opened,
