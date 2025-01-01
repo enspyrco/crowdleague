@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../services/players_service.dart';
+import '../services/user_service.dart';
 import '../utils/locator.dart';
+import 'models/player.dart';
 
 class FindPlayersScreen extends StatefulWidget {
   const FindPlayersScreen({super.key});
@@ -27,18 +29,21 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
             controller: _nameTextController,
             autofocus: true,
           ),
-          FutureBuilder<Set<Map<String, Object?>>>(
+          FutureBuilder<Set<Player>>(
               future: locate<PlayersService>().getPlayers(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return CircularProgressIndicator();
                 }
                 final playersList = snapshot.data!.toList();
+                playersList.removeWhere((element) {
+                  return element.id == locate<UserService>().currentUserId;
+                });
                 return Expanded(
                   child: ListView.builder(
                       itemCount: playersList.length,
                       itemBuilder: (context, index) {
-                        String playerId = playersList[index]['id'].toString();
+                        String playerId = playersList[index].id;
                         return Card(
                             child: ListTile(
                           onTap: () {
@@ -57,7 +62,7 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
                                 }
                                 return Avatar(loading: true, size: 40);
                               }),
-                          title: Text(playersList[index]['name'].toString()),
+                          title: Text(playersList[index].name),
                         ));
                       }),
                 );

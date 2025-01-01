@@ -17,8 +17,11 @@ class PlayersService {
   final FirestoreService _firestoreService;
   final StorageService _storageService;
 
-  Future<Set<Map<String, Object?>>> getPlayers() {
-    return _firestoreService.getDocs(inCollectionPath: 'profiles');
+  Future<Set<Player>> getPlayers() async {
+    final json = await _firestoreService.getDocs(inCollectionPath: 'profiles');
+    return json.map<Player>((element) {
+      return Player.fromJson(element);
+    }).toSet();
   }
 
   Future<Player?> getPlayer(String playerId) async {
