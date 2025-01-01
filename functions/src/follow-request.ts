@@ -1,6 +1,7 @@
 // import {log} from 'firebase-functions/logger';
 import {FieldValue, getFirestore} from 'firebase-admin/firestore';
 import {getMessaging} from 'firebase-admin/messaging';
+import {log} from 'firebase-functions/logger';
 import {HttpsError, onCall} from 'firebase-functions/v2/https';
 
 export const followRequest = onCall(
@@ -11,13 +12,12 @@ export const followRequest = onCall(
         throw new HttpsError('unauthenticated', 'request.auth was undefined.');
       }
 
-      console.log(`requesteeId = ${request.data.requesteeId}, ` +
-        `requesterId = ${request.data.requesterId}`);
-
       const db = getFirestore('firestore-usa');
 
-      // Add the requester id to the requestee's profile
-      // so profile shows 'pending'
+      log(`requesteeId = ${request.data.requesteeId}, ` +
+        `requesterId = ${request.data.requesterId}`);
+
+      // Add 'pending' entry for requester to requestee's profile
       await db.collection('profiles')
         .doc(`${request.data.requesteeId}`).update({
           pendingFollowRequests:
@@ -34,20 +34,19 @@ export const followRequest = onCall(
           timestamp: FieldValue.serverTimestamp(),
           opened: false,
           viewed: false,
+          waiting: false,
         });
-      console.log('Notification added to notifications/' +
+      log('FollowRequestNotification added to notifications/' +
         `${request.data.requesterId}`);
 
+      // Fetch requestee token
       const tokenDoc = await db
         .doc(`fcmTokens/${request.data.requesteeId}`).get();
-      const tokenDocData = tokenDoc.data();
-
       if (!tokenDoc.exists) {
         throw new HttpsError('not-found', 'Token snapshot did not exist.');
       }
-
-      const docData = tokenDoc.data();
-      if (!docData) {
+      const tokenData = tokenDoc.data();
+      if (!tokenData) {
         throw new HttpsError('not-found',
           'Token snapshot.data() was undefined.');
       }
@@ -55,35 +54,25 @@ export const followRequest = onCall(
       // Fetch the requester's profile
       const profileDoc = await db
         .doc(`profiles/${request.data.requesterId}`).get();
-      const profileDocData = profileDoc.data();
-
       if (!profileDoc.exists) {
         throw new HttpsError('not-found', 'Token snapshot did not exist.');
       }
-
       const profileData = profileDoc.data();
       if (!profileData) {
         throw new HttpsError('not-found',
           'Token snapshot.data() was undefined.');
       }
 
+      // Send an FCM message to the requestee with requester's name
       const message = {
         notification: {
           title: 'Expand your squad?',
-          body: `${profileDocData?.name} wants to follow you`,
+          body: `${profileData?.name} wants to follow you`,
         },
-        token: tokenDocData?.token,
+        token: tokenData?.token,
       };
-
-      // Send a message to the device
-      try {
-        const response = await getMessaging().send(message);
-        console.log('Successfully sent message:', response);
-      } catch (e) {
-        if (e instanceof HttpsError) {
-          throw new HttpsError('unknown', `${e.toJSON()}`);
-        }
-      }
+      const response = await getMessaging().send(message);
+      log('Successfully sent message:', response);
 
       return true;
     } catch (e) {

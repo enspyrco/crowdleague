@@ -1,5 +1,5 @@
 import {FieldValue, getFirestore} from 'firebase-admin/firestore';
-import {getMessaging} from 'firebase-admin/messaging';
+import {log} from 'firebase-functions/logger';
 import {HttpsError, onCall} from 'firebase-functions/v2/https';
 
 export const followBack = onCall(
@@ -12,59 +12,31 @@ export const followBack = onCall(
 
       const db = getFirestore('firestore-usa');
 
+      // Delete the "follow back" notification
       await db.collection('notifications')
         .doc(`${request.data.notificationId}`).delete();
+      log('Deleted the "follow back" notification');
 
+      // Get the requestee's fcm token
       const tokenSnapshot = await db
         .doc(`fcmTokens/${request.data.requesteeId}`).get();
-
       if (!tokenSnapshot.exists) {
         throw new HttpsError('not-found', 'Token snapshot did not exist.');
       }
-
       const tokenData = tokenSnapshot.data();
       if (!tokenData) {
         throw new HttpsError('not-found',
           'Token snapshot.data() was undefined.');
       }
+      log('Got the requestee\'s fcm token');
 
-      // Fetch the requester's profile
-      const profileDoc = await db
-        .doc(`profiles/${request.data.requesteeId}`).get();
-      const profileDocData = profileDoc.data();
-
-      if (!profileDoc.exists) {
-        throw new HttpsError('not-found', 'Token snapshot did not exist.');
-      }
-
-      const profileData = profileDoc.data();
-      if (!profileData) {
-        throw new HttpsError('not-found',
-          'Token snapshot.data() was undefined.');
-      }
-
-      const message = {
-        notification: {
-          title: 'Your squad is growing',
-          body: `${profileDocData?.name} followed you`,
-        },
-        token: tokenData?.token,
-      };
-
+      // Add requestee to requester's followers
       await db.collection('followers').doc(request.data.requesterId)
         .set({
           tokens: FieldValue.arrayUnion(tokenData.token),
           ids: FieldValue.arrayUnion(request.data.requesteeId),
         }, {merge: true});
-
-      // Send a message to the device
-      try {
-        await getMessaging().send(message);
-      } catch (e) {
-        if (e instanceof HttpsError) {
-          throw new HttpsError('unknown', `${e.toJSON()}`);
-        }
-      }
+      log('Added requestee to requester\'s followers');
 
       return true;
     } catch (e) {
