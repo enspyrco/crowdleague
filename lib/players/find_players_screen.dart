@@ -7,14 +7,14 @@ import 'package:go_router/go_router.dart';
 import '../services/players_service.dart';
 import '../utils/locator.dart';
 
-class FindTeamMateScreen extends StatefulWidget {
-  const FindTeamMateScreen({super.key});
+class FindPlayersScreen extends StatefulWidget {
+  const FindPlayersScreen({super.key});
 
   @override
-  State<FindTeamMateScreen> createState() => _FindTeamMateScreenState();
+  State<FindPlayersScreen> createState() => _FindPlayersScreenState();
 }
 
-class _FindTeamMateScreenState extends State<FindTeamMateScreen> {
+class _FindPlayersScreenState extends State<FindPlayersScreen> {
   final _nameTextController = TextEditingController();
 
   @override

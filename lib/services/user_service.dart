@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../auth/enums/auth_provider.dart';
@@ -21,12 +22,16 @@ class UserService {
     required AuthService authService,
     required FirestoreService firestoreService,
     required StorageService storageService,
+    FirebaseFunctions? cloudFunctions,
   })  : _authService = authService,
         _firestoreService = firestoreService,
-        _storageService = storageService {
+        _storageService = storageService,
+        _cloudFunctions = (cloudFunctions == null)
+            ? FirebaseFunctions.instance
+            : cloudFunctions {
     // When a User object is emitted by the FirebaseAuth's onAuthStateChanges
-    // stream we cancel a subscription to the firestore (if there is one) and
-    // create a new one, to avoid listening to the firestore while signed out.
+    // stream we create a subscription to the firestore, which is cancelled on
+    // sign out to avoid listening to the firestore while signed out.
     _authService.authStateChanges().listen((user) {
       if (user != null) {
         if (profileStreamSubscription != null) {
@@ -49,6 +54,7 @@ class UserService {
   late final AuthService _authService;
   late final FirestoreService _firestoreService;
   late final StorageService _storageService;
+  final FirebaseFunctions _cloudFunctions;
 
   final _userSubject = BehaviorSubject<Map<String, Object?>>.seeded({});
   StreamSubscription<Map<String, Object?>?>? profileStreamSubscription;
@@ -112,24 +118,56 @@ class UserService {
   }
 
   Future<List<Notification>> retrieveNotifications() async {
-    final notificationJson = await _firestoreService.getDocs(
-        inCollectionPath:
-            'profiles/${_authService.currentUserId}/notifications');
+    final notificationJson =
+        await _firestoreService.getDocs(inCollectionPath: 'notifications');
 
     return notificationJson.map<Notification>((json) {
       return Notification.fromJson(json);
     }).toList();
   }
 
-  Future<void> acceptTeamRequest() {
-    return _firestoreService.setDoc(
-        path: 'profiles/${_authService.currentUserId}/team-accepts', data: {});
+  Future<void> requestFollow(
+      {required String requesteeId, required String requesterId}) async {
+    await _cloudFunctions
+        .httpsCallable('followRequest')
+        .call({'requesterId': requesterId, 'requesteeId': requesteeId});
   }
 
-  Future<void> storeToken(String token) {
-    return _firestoreService.setDoc(
-      path: 'fcmTokens/${_authService.currentUserId}',
-      data: {'token': token},
+  Future<void> followBack({
+    required String requesteeId,
+    required String requesterId,
+    required String notificationId,
+  }) async {
+    await _cloudFunctions.httpsCallable('followBack').call({
+      'requesterId': requesterId,
+      'requesteeId': requesteeId,
+      'notificationId': notificationId,
+    });
+  }
+
+  Future<void> acceptFollowRequest({
+    required String requesterId,
+    required String requesteeId,
+    required String notificationId,
+  }) async {
+    await _cloudFunctions.httpsCallable('acceptFollowRequest').call({
+      'requesterId': requesterId,
+      'requesteeId': requesteeId,
+      'notificationId': notificationId,
+    });
+  }
+
+  Future<void> declineFollowRequest(
+      String notificationId, String requesterId) async {
+    await _firestoreService.deleteDoc(
+      atPath:
+          'profiles/${_authService.currentUserId}/notifications/$notificationId',
+    );
+
+    await _firestoreService.removeItemsFromList(
+      docPath: 'profiles/${_authService.currentUserId}',
+      listName: 'pendingFollowRequests',
+      items: [requesterId],
     );
   }
 

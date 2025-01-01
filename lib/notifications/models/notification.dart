@@ -1,27 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 sealed class Notification {
-  const Notification(
-      {required this.viewed, required this.opened, required this.timestamp});
+  const Notification({
+    required this.viewed,
+    required this.opened,
+    required this.timestamp,
+    required this.id,
+  });
+  final String id;
   final bool viewed;
   final bool opened;
   final int timestamp;
 
   factory Notification.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
-      case 'team-up-request':
-        return TeamUpRequestNotification(
+      case 'follow-request':
+        return FollowRequestNotification(
+          id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           requesterId: json['requesterId'],
+          requesteeId: json['requesteeId'],
           timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
-      case 'team-up-response':
-        return TeamUpResponseNotification(
+      case 'follow-response':
+        return FollowResponseNotification(
+          id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           requesteeId: json['requesteeId'],
-          timestamp: json['timestamp'],
+          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
+        );
+      case 'follow-back':
+        return FollowBackNotification(
+          id: json['id'] ?? '',
+          viewed: json['viewed'] ?? false,
+          opened: json['opened'] ?? false,
+          requesterId: json['requesterId'],
+          requesteeId: json['requesteeId'],
+          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
       default:
         throw Exception('Unknown notification type');
@@ -29,11 +46,14 @@ sealed class Notification {
   }
 }
 
-class TeamUpRequestNotification extends Notification {
+class FollowRequestNotification extends Notification {
   final String requesterId;
+  final String requesteeId;
 
-  const TeamUpRequestNotification({
+  const FollowRequestNotification({
+    required this.requesteeId,
     required this.requesterId,
+    required super.id,
     required super.timestamp,
     required super.opened,
     required super.viewed,
@@ -41,8 +61,10 @@ class TeamUpRequestNotification extends Notification {
 
   Map<String, dynamic> toJson() {
     return {
-      'type': 'team-up-request',
+      'id': id,
+      'type': 'follow-request',
       'requesterId': requesterId,
+      'requesteeId': requesteeId,
       'viewed': viewed,
       'opened': opened,
       'timestamp': timestamp,
@@ -50,11 +72,14 @@ class TeamUpRequestNotification extends Notification {
   }
 }
 
-class TeamUpResponseNotification extends Notification {
+class FollowBackNotification extends Notification {
+  final String requesterId;
   final String requesteeId;
 
-  const TeamUpResponseNotification({
+  const FollowBackNotification({
     required this.requesteeId,
+    required this.requesterId,
+    required super.id,
     required super.timestamp,
     required super.opened,
     required super.viewed,
@@ -62,7 +87,32 @@ class TeamUpResponseNotification extends Notification {
 
   Map<String, dynamic> toJson() {
     return {
-      'type': 'team-up-response',
+      'id': id,
+      'type': 'follow-back',
+      'requesterId': requesterId,
+      'requesteeId': requesteeId,
+      'viewed': viewed,
+      'opened': opened,
+      'timestamp': timestamp,
+    };
+  }
+}
+
+class FollowResponseNotification extends Notification {
+  final String requesteeId;
+
+  const FollowResponseNotification({
+    required this.requesteeId,
+    required super.id,
+    required super.timestamp,
+    required super.opened,
+    required super.viewed,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': 'follow-response',
       'requesteeId': requesteeId,
       'viewed': viewed,
       'opened': opened,

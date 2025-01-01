@@ -11,7 +11,7 @@ import 'home/home_screen.dart';
 import 'onboarding/onboard_name_screen.dart';
 import 'onboarding/onboard_notifications.dart';
 import 'onboarding/onboard_profile_pic_screen.dart';
-import 'players/find_team_mate_screen.dart';
+import 'players/find_players_screen.dart';
 import 'players/player_profile_screen.dart';
 import 'services/auth_service.dart';
 import 'services/firestore_service.dart';
@@ -89,9 +89,9 @@ final _router = GoRouter(
       ),
     ),
     GoRoute(
-      name: 'find-team-mate',
-      path: '/find-team-mate',
-      builder: (context, state) => const FindTeamMateScreen(),
+      name: 'find-players',
+      path: '/find-players',
+      builder: (context, state) => const FindPlayersScreen(),
     ),
     GoRoute(
       name: 'player-profile',
@@ -124,7 +124,10 @@ void main() async {
   final storageService = StorageService();
 
   // possibly also data layer
-  Locator.add<MessagingService>(MessagingService());
+  Locator.add<MessagingService>(MessagingService(
+    authService: authService,
+    firestoreService: firestoreService,
+  ));
   Locator.add<GeoLocationService>(GeoLocationService());
 
   Locator.add<UserService>(UserService(

@@ -1,26 +1,33 @@
+import 'package:crowdleague/services/auth_service.dart';
+import 'package:crowdleague/services/firestore_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart' as fbm;
 import 'package:flutter/foundation.dart';
 
 import '../notifications/enums/authorization_status.dart';
 
 class MessagingService {
-  late final fbm.FirebaseMessaging _messaging;
-  fbm.NotificationSettings? _notificationSettings;
-
-  MessagingService({fbm.FirebaseMessaging? messaging}) {
+  MessagingService(
+      {fbm.FirebaseMessaging? messaging,
+      required FirestoreService firestoreService,
+      required AuthService authService})
+      : _firestoreService = firestoreService,
+        _authService = authService {
     (messaging == null)
         ? _messaging = fbm.FirebaseMessaging.instance
         : _messaging = messaging;
 
     _messaging.onTokenRefresh.listen((fcmToken) {
-      // TODO: If necessary send token to application server.
-
-      // Note: This callback is fired at each app startup and whenever a new
-      // token is generated.
+      storeToken(fcmToken);
     }).onError((err) {
       // Error getting token.
     });
   }
+
+  final FirestoreService _firestoreService;
+  final AuthService _authService;
+
+  late final fbm.FirebaseMessaging _messaging;
+  fbm.NotificationSettings? _notificationSettings;
 
   Future<void> init() async {
     // You may set the permission requests to "provisional" which allows the user to choose what type
@@ -62,6 +69,13 @@ class MessagingService {
       default:
         return AuthorizationStatus.notDetermined;
     }
+  }
+
+  Future<void> storeToken(String token) {
+    return _firestoreService.setDoc(
+      path: 'fcmTokens/${_authService.currentUserId}',
+      data: {'token': token},
+    );
   }
 
   Future<String?> getToken() {
