@@ -54,6 +54,19 @@ class FirestoreService {
     });
   }
 
+  Stream<List<Map<String, Object?>?>> collectionStream({required String path}) {
+    return _db
+        .collection(path)
+        .snapshots()
+        .map<List<Map<String, Object?>?>>((snapshot) {
+      return snapshot.docs.map<Map<String, Object?>?>((snapshot) {
+        final json = snapshot.data();
+        json['id'] = snapshot.id;
+        return json;
+      }).toList();
+    });
+  }
+
   Future<Map<String, Object?>?> getDoc({
     required String atPath,
   }) async {

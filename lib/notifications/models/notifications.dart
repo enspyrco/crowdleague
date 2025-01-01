@@ -19,6 +19,7 @@ sealed class Notification {
           id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
+          waiting: json['waiting'] ?? false,
           requesterId: json['requesterId'],
           requesteeId: json['requesteeId'],
           timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
@@ -36,6 +37,7 @@ sealed class Notification {
           id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
+          waiting: json['waiting'] ?? false,
           requesterId: json['requesterId'],
           requesteeId: json['requesteeId'],
           timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
@@ -49,10 +51,12 @@ sealed class Notification {
 class FollowRequestNotification extends Notification {
   final String requesterId;
   final String requesteeId;
+  final bool waiting;
 
   const FollowRequestNotification({
     required this.requesteeId,
     required this.requesterId,
+    required this.waiting,
     required super.id,
     required super.timestamp,
     required super.opened,
@@ -65,6 +69,7 @@ class FollowRequestNotification extends Notification {
       'type': 'follow-request',
       'requesterId': requesterId,
       'requesteeId': requesteeId,
+      'waiting': waiting,
       'viewed': viewed,
       'opened': opened,
       'timestamp': timestamp,
@@ -75,10 +80,12 @@ class FollowRequestNotification extends Notification {
 class FollowBackNotification extends Notification {
   final String requesterId;
   final String requesteeId;
+  final bool waiting;
 
   const FollowBackNotification({
     required this.requesteeId,
     required this.requesterId,
+    required this.waiting,
     required super.id,
     required super.timestamp,
     required super.opened,
@@ -91,6 +98,7 @@ class FollowBackNotification extends Notification {
       'type': 'follow-back',
       'requesterId': requesterId,
       'requesteeId': requesteeId,
+      'waiting': waiting,
       'viewed': viewed,
       'opened': opened,
       'timestamp': timestamp,

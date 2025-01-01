@@ -78,4 +78,10 @@ class FirestoreServiceTestDouble implements FirestoreService {
     // TODO: implement removeItemsFromList
     throw UnimplementedError();
   }
+
+  @override
+  Stream<List<Map<String, Object?>?>> collectionStream({required String path}) {
+    // TODO: implement collectionStream
+    throw UnimplementedError();
+  }
 }

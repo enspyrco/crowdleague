@@ -2,7 +2,7 @@ import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart' hide Notification;
 
 import '../services/user_service.dart';
-import 'models/notification.dart';
+import 'models/notifications.dart';
 import 'widgets/follow_back_notification_widget.dart';
 import 'widgets/follow_request_notification_widget.dart';
 
@@ -19,8 +19,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.all(8.0),
-        child: FutureBuilder<List<Notification>>(
-          future: locate<UserService>().retrieveNotifications(),
+        child: StreamBuilder<List<Notification>>(
+          stream: locate<UserService>().listenToNotifications(),
           builder: (context, notificatiosnSnapshot) {
             if (notificatiosnSnapshot.hasData) {
               return ListView.builder(

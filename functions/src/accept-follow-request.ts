@@ -41,6 +41,7 @@ export const acceptFollowRequest = onCall(
         .collection('notifications').doc(request.data.notificationId)
         .update({
           type: 'follow-back',
+          waiting: false,
         });
     } catch (e) {
       throw new HttpsError('unknown', `${e}`);
