@@ -19,8 +19,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.all(8.0),
-        child: FutureBuilder<List<Notification>>(
-          future: locate<UserService>().retrieveNotifications(),
+        child: StreamBuilder<List<Notification>>(
+          stream: locate<UserService>().listenToNotifications(),
           builder: (context, notificatiosnSnapshot) {
             if (notificatiosnSnapshot.hasData) {
               return ListView.builder(

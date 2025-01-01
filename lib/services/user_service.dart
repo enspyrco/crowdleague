@@ -126,6 +126,16 @@ class UserService {
     }).toList();
   }
 
+  Stream<List<Notification>> listenToNotifications() {
+    return _firestoreService
+        .collectionStream(path: 'notifications')
+        .map<List<Notification>>((jsonList) {
+      return jsonList.map<Notification>((json) {
+        return Notification.fromJson(json!);
+      }).toList();
+    });
+  }
+
   Future<void> requestFollow(
       {required String requesteeId, required String requesterId}) async {
     await _cloudFunctions
