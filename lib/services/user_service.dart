@@ -5,7 +5,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../auth/enums/auth_provider.dart';
-import '../notifications/models/notification.dart';
+import '../notifications/models/notifications.dart';
 import 'auth_service.dart';
 import 'firestore_service.dart';
 import 'storage_service.dart';
@@ -143,23 +143,16 @@ class UserService {
         .call({'requesterId': requesterId, 'requesteeId': requesteeId});
   }
 
-  Future<void> followBack({
-    required String requesteeId,
-    required String requesterId,
-    required String notificationId,
-  }) async {
-    await _cloudFunctions.httpsCallable('followBack').call({
-      'requesterId': requesterId,
-      'requesteeId': requesteeId,
-      'notificationId': notificationId,
-    });
-  }
-
   Future<void> acceptFollowRequest({
     required String requesterId,
     required String requesteeId,
     required String notificationId,
   }) async {
+    await _firestoreService.setDoc(
+        path: 'notifications/$notificationId',
+        data: {'waiting': true},
+        merge: true);
+
     await _cloudFunctions.httpsCallable('acceptFollowRequest').call({
       'requesterId': requesterId,
       'requesteeId': requesteeId,
@@ -170,8 +163,7 @@ class UserService {
   Future<void> declineFollowRequest(
       String notificationId, String requesterId) async {
     await _firestoreService.deleteDoc(
-      atPath:
-          'profiles/${_authService.currentUserId}/notifications/$notificationId',
+      atPath: 'notifications/$notificationId',
     );
 
     await _firestoreService.removeItemsFromList(
@@ -179,6 +171,23 @@ class UserService {
       listName: 'pendingFollowRequests',
       items: [requesterId],
     );
+  }
+
+  Future<void> followBack({
+    required String requesteeId,
+    required String requesterId,
+    required String notificationId,
+  }) async {
+    await _firestoreService.setDoc(
+        path: 'notifications/$notificationId',
+        data: {'waiting': true},
+        merge: true);
+
+    await _cloudFunctions.httpsCallable('followBack').call({
+      'requesterId': requesterId,
+      'requesteeId': requesteeId,
+      'notificationId': notificationId,
+    });
   }
 
   Future<void> signOut() async {

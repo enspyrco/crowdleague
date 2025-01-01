@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../services/players_service.dart';
 import '../../utils/avatar.dart';
 import '../../utils/locator.dart';
-import '../models/notification.dart';
+import '../models/notifications.dart';
 
 class FollowBackNotificationWidget extends StatefulWidget {
   const FollowBackNotificationWidget(this.notification, {super.key});
@@ -41,14 +41,19 @@ class _FollowBackNotificationWidgetState
                     title: Text('${player.name} is following you'),
                     subtitle: Row(
                       children: [
-                        TextButton(
+                        if (!widget.notification.waiting)
+                          TextButton(
                             onPressed: () {
                               locate<UserService>().followBack(
-                                  requesteeId: widget.notification.requesteeId,
-                                  requesterId: widget.notification.requesterId,
-                                  notificationId: widget.notification.id);
+                                requesteeId: widget.notification.requesteeId,
+                                requesterId: widget.notification.requesterId,
+                                notificationId: widget.notification.id,
+                              );
                             },
-                            child: Text('Follow Back')),
+                            child: Text('Follow Back'),
+                          )
+                        else
+                          Text('Waiting...'),
                       ],
                     ),
                   ),

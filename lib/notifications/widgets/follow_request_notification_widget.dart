@@ -6,7 +6,7 @@ import '../../services/players_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/avatar.dart';
 import '../../utils/locator.dart';
-import '../models/notification.dart';
+import '../models/notifications.dart';
 
 class FollowRequestNotificationWidget extends StatefulWidget {
   const FollowRequestNotificationWidget({
@@ -29,10 +29,6 @@ class _FollowRequestNotificationStateWidgetFollowRequestNotificationWidget
       notification.id,
       notification.requesterId,
     );
-
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   @override
@@ -56,20 +52,24 @@ class _FollowRequestNotificationStateWidgetFollowRequestNotificationWidget
                     title: Text('${player.name} wants to follow you'),
                     subtitle: Row(
                       children: [
-                        TextButton(
-                            onPressed: () {
-                              locate<UserService>().acceptFollowRequest(
-                                requesterId: player.id,
-                                requesteeId: widget.notification.requesteeId,
-                                notificationId: widget.notification.id,
-                              );
-                            },
-                            child: Text('Accept')),
-                        TextButton(
+                        if (!widget.notification.waiting) ...[
+                          TextButton(
+                              onPressed: () {
+                                locate<UserService>().acceptFollowRequest(
+                                  requesterId: player.id,
+                                  requesteeId: widget.notification.requesteeId,
+                                  notificationId: widget.notification.id,
+                                );
+                              },
+                              child: Text('Accept')),
+                          TextButton(
                             onPressed: () {
                               _declineFollowRequest(widget.notification);
                             },
-                            child: Text('Decline')),
+                            child: Text('Decline'),
+                          ),
+                        ] else
+                          Text('Waiting...'),
                       ],
                     ),
                   ),
