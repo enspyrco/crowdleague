@@ -40,9 +40,9 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         _pending = true;
       });
     }
-    await locate<PlayersService>().requestFollow(
-        requestee: widget._playerId,
-        requester: locate<UserService>().currentUserId!);
+    await locate<UserService>().requestFollow(
+        requesteeId: widget._playerId,
+        requesterId: locate<UserService>().currentUserId!);
   }
 
   @override
@@ -54,9 +54,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
+      appBar: AppBar(),
       body: Column(
         children: [
           Padding(

@@ -124,7 +124,10 @@ void main() async {
   final storageService = StorageService();
 
   // possibly also data layer
-  Locator.add<MessagingService>(MessagingService());
+  Locator.add<MessagingService>(MessagingService(
+    authService: authService,
+    firestoreService: firestoreService,
+  ));
   Locator.add<GeoLocationService>(GeoLocationService());
 
   Locator.add<UserService>(UserService(

@@ -20,6 +20,7 @@ sealed class Notification {
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           requesterId: json['requesterId'],
+          requesteeId: json['requesteeId'],
           timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
       case 'follow-response':
@@ -27,6 +28,15 @@ sealed class Notification {
           id: json['id'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
+          requesteeId: json['requesteeId'],
+          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
+        );
+      case 'follow-back':
+        return FollowBackNotification(
+          id: json['id'] ?? '',
+          viewed: json['viewed'] ?? false,
+          opened: json['opened'] ?? false,
+          requesterId: json['requesterId'],
           requesteeId: json['requesteeId'],
           timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
@@ -38,8 +48,10 @@ sealed class Notification {
 
 class FollowRequestNotification extends Notification {
   final String requesterId;
+  final String requesteeId;
 
   const FollowRequestNotification({
+    required this.requesteeId,
     required this.requesterId,
     required super.id,
     required super.timestamp,
@@ -52,6 +64,33 @@ class FollowRequestNotification extends Notification {
       'id': id,
       'type': 'follow-request',
       'requesterId': requesterId,
+      'requesteeId': requesteeId,
+      'viewed': viewed,
+      'opened': opened,
+      'timestamp': timestamp,
+    };
+  }
+}
+
+class FollowBackNotification extends Notification {
+  final String requesterId;
+  final String requesteeId;
+
+  const FollowBackNotification({
+    required this.requesteeId,
+    required this.requesterId,
+    required super.id,
+    required super.timestamp,
+    required super.opened,
+    required super.viewed,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': 'follow-back',
+      'requesterId': requesterId,
+      'requesteeId': requesteeId,
       'viewed': viewed,
       'opened': opened,
       'timestamp': timestamp,

@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:cloud_functions/cloud_functions.dart';
+
 import '../players/models/player.dart';
 import 'firestore_service.dart';
 import 'storage_service.dart';
@@ -7,7 +9,8 @@ import 'storage_service.dart';
 class PlayersService {
   PlayersService(
       {required FirestoreService firestoreService,
-      required StorageService storageService})
+      required StorageService storageService,
+      FirebaseFunctions? cloudFunctions})
       : _firestoreService = firestoreService,
         _storageService = storageService;
 
@@ -30,11 +33,5 @@ class PlayersService {
 
   Future<Uint8List?> retrieveLargeProfilePic(String playerId) {
     return _storageService.downloadBytes('profilePics/${playerId}_large');
-  }
-
-  Future<void> requestFollow(
-      {required String requestee, required String requester}) async {
-    return _firestoreService.setDoc(
-        path: 'profiles/$requester/follow-requests/$requestee', data: {});
   }
 }

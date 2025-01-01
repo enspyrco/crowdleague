@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../services/messaging_service.dart';
-import '../services/user_service.dart';
 import '../utils/locator.dart';
 
 class OnboardNotifications extends StatefulWidget {
@@ -15,13 +14,13 @@ class OnboardNotifications extends StatefulWidget {
 }
 
 class _OnboardNotificationsState extends State<OnboardNotifications> {
-  Future<void> getAToken(BuildContext context) async {
+  Future<void> _getAToken(BuildContext context) async {
     await locate<MessagingService>().init();
     String? token = await locate<MessagingService>().getToken();
     if (token == null) {
       log('FCM Token was null');
     } else {
-      await locate<UserService>().storeToken(token);
+      await locate<MessagingService>().storeToken(token);
       if (context.mounted) {
         context.go('/');
       }
@@ -41,7 +40,7 @@ class _OnboardNotificationsState extends State<OnboardNotifications> {
             SizedBox(height: 50),
             TextButton(
               onPressed: () {
-                getAToken(context);
+                _getAToken(context);
               },
               child: Text('OK'),
             )

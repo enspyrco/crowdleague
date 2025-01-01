@@ -69,4 +69,13 @@ class FirestoreServiceTestDouble implements FirestoreService {
     // TODO: implement addItemsToList
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> removeItemsFromList(
+      {required String docPath,
+      required String listName,
+      required List<Object> items}) {
+    // TODO: implement removeItemsFromList
+    throw UnimplementedError();
+  }
 }

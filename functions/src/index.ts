@@ -1,5 +1,7 @@
-import * as admin from "firebase-admin";
+import * as admin from 'firebase-admin';
 
 admin.initializeApp();
 
-export * from "./notify-on-follow";
+export * from './follow-request';
+export * from './accept-follow-request';
+export * from './follow-back';
