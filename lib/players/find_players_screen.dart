@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../services/players_service.dart';
-import '../services/user_service.dart';
+import '../services/user_auth_service.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
 
@@ -29,7 +29,7 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
             controller: _nameTextController,
             autofocus: true,
           ),
-          FutureBuilder<Set<Player>>(
+          FutureBuilder<List<Player>>(
               future: locate<PlayersService>().getPlayers(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -37,7 +37,7 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
                 }
                 final playersList = snapshot.data!.toList();
                 playersList.removeWhere((element) {
-                  return element.id == locate<UserService>().currentUserId;
+                  return element.id == locate<UserAuthService>().currentUserId;
                 });
                 return Expanded(
                   child: ListView.builder(

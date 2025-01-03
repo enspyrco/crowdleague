@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../services/user_service.dart';
+import '../../services/user_auth_service.dart';
 import '../../services/venues_service.dart';
 import '../../utils/locator.dart';
 import '../models/venue.dart';
@@ -152,7 +152,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
             ),
             const SizedBox(height: 15),
             if (_venue != null &&
-                _venue!.createdBy == locate<UserService>().currentUserId!)
+                _venue!.createdBy == locate<UserAuthService>().currentUserId!)
               TextButton(
                   onPressed: () {
                     _deleteVenue();

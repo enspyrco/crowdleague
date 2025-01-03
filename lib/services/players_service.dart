@@ -1,40 +1,43 @@
 import 'dart:typed_data';
 
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../players/models/player.dart';
-import 'firestore_service.dart';
-import 'storage_service.dart';
 
 class PlayersService {
-  PlayersService(
-      {required FirestoreService firestoreService,
-      required StorageService storageService,
-      FirebaseFunctions? cloudFunctions})
-      : _firestoreService = firestoreService,
-        _storageService = storageService;
+  PlayersService({
+    required FirebaseFirestore firestore,
+    required FirebaseStorage storage,
+  })  : _firestore = firestore,
+        _storage = storage;
 
-  final FirestoreService _firestoreService;
-  final StorageService _storageService;
+  final FirebaseFirestore _firestore;
+  final FirebaseStorage _storage;
 
-  Future<Set<Player>> getPlayers() async {
-    final json = await _firestoreService.getDocs(inCollectionPath: 'profiles');
-    return json.map<Player>((element) {
-      return Player.fromJson(element);
-    }).toSet();
+  Future<List<Player>> getPlayers() async {
+    final docsSnapshot = await _firestore.collection('profiles').get();
+    return docsSnapshot.docs.map<Player>((snapshot) {
+      final json = snapshot.data();
+      json['id'] = snapshot.id;
+      return Player.fromJson(json);
+    }).toList();
   }
 
   Future<Player?> getPlayer(String playerId) async {
-    final json = await _firestoreService.getDoc(atPath: 'profiles/$playerId');
+    final reference =
+        await _firestore.collection('profiles').doc(playerId).get();
+    final json = reference.data();
     if (json == null) return null;
+    json['id'] = reference.id;
     return Player.fromJson(json);
   }
 
   Future<Uint8List?> retrieveSmallProfilePic(String playerId) {
-    return _storageService.downloadBytes('profilePics/${playerId}_small');
+    return _storage.ref('profilePics/${playerId}_small').getData();
   }
 
   Future<Uint8List?> retrieveLargeProfilePic(String playerId) {
-    return _storageService.downloadBytes('profilePics/${playerId}_large');
+    return _storage.ref('profilePics/${playerId}_large').getData();
   }
 }

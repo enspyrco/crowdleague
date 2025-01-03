@@ -69,7 +69,7 @@ class _FollowRequestNotificationStateWidgetFollowRequestNotificationWidget
                             child: Text('Decline'),
                           ),
                         ] else
-                          Text('Waiting...'),
+                          Text('Updating followers...'),
                       ],
                     ),
                   ),

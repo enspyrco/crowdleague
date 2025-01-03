@@ -1,6 +1,10 @@
-import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
@@ -13,13 +17,11 @@ import 'onboarding/onboard_notifications.dart';
 import 'onboarding/onboard_profile_pic_screen.dart';
 import 'players/find_players_screen.dart';
 import 'players/player_profile_screen.dart';
-import 'services/auth_service.dart';
-import 'services/firestore_service.dart';
 import 'services/geo_location_service.dart';
 import 'services/images_service.dart';
 import 'services/messaging_service.dart';
 import 'services/players_service.dart';
-import 'services/storage_service.dart';
+import 'services/user_auth_service.dart';
 import 'services/user_service.dart';
 import 'services/venues_service.dart';
 import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
@@ -30,7 +32,7 @@ import 'utils/locator.dart';
 
 final _router = GoRouter(
   initialLocation:
-      locate<UserService>().currentUserId == null ? '/signin' : '/',
+      locate<UserAuthService>().currentUserId == null ? '/signin' : '/',
   routes: [
     GoRoute(
       name: 'home',
@@ -118,30 +120,40 @@ void main() async {
     return true;
   };
 
-  // the data layer
-  final authService = AuthService();
-  final firestoreService = FirestoreService(firebaseApp);
-  final storageService = StorageService();
+  // Setup the data layer of the "data layer architecture"
+  final firestore = kReleaseMode
+      ? FirebaseFirestore.instanceFor(app: firebaseApp, databaseId: '(default)')
+      : FirebaseFirestore.instanceFor(
+          app: firebaseApp, databaseId: 'firestore-usa');
+  final storage = kReleaseMode
+      ? FirebaseStorage.instanceFor(bucket: 'gs://crowdleague-project-aus')
+      : FirebaseStorage.instanceFor(
+          bucket: 'gs://crowdleague-project.firebasestorage.app');
+  final firebaseAuth = FirebaseAuth.instance;
+  final messaging = FirebaseMessaging.instance;
+  final cloudFunctions = FirebaseFunctions.instance;
 
-  // possibly also data layer
+  // The services make up the repositories layer of the "data layer architecture"
   Locator.add<MessagingService>(MessagingService(
-    authService: authService,
-    firestoreService: firestoreService,
+    firestore: firestore,
+    firebaseAuth: firebaseAuth,
+    messaging: messaging,
   ));
   Locator.add<GeoLocationService>(GeoLocationService());
-
   Locator.add<UserService>(UserService(
-    authService: authService,
-    firestoreService: firestoreService,
-    storageService: storageService,
+      cloudFunctions: cloudFunctions,
+      firebaseAuth: firebaseAuth,
+      firestore: firestore));
+  Locator.add<UserAuthService>(UserAuthService(
+    firebaseAuth: firebaseAuth,
+    firestore: firestore,
   ));
-
-  // repository layer
-  Locator.add<PlayersService>(PlayersService(
-      firestoreService: firestoreService, storageService: storageService));
-  Locator.add<VenuesService>(VenuesService(
-      firestoreService: firestoreService, storageService: storageService));
-  Locator.add<ImagesService>(ImagesService());
+  Locator.add<PlayersService>(
+      PlayersService(firestore: firestore, storage: storage));
+  Locator.add<VenuesService>(
+      VenuesService(firestore: firestore, storage: storage));
+  Locator.add<ImagesService>(
+      ImagesService(storage: storage, firebaseAuth: firebaseAuth));
 
   runApp(const CrowdLeagueApp());
 }

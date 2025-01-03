@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:crowdleague/services/venues_service.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:crowdleague/venues/add-venue/widgets/court_surface_dropdown.dart';
@@ -12,15 +14,14 @@ import 'package:crowdleague/venues/models/local_venue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'test-doubles/firestore_service_test_double.dart';
-import 'test-doubles/storage_service_test_double.dart';
-
 void main() {
   testWidgets('Court surface dropdown sets new venue map',
       (WidgetTester tester) async {
-    Locator.add<VenuesService>(VenuesService(
-        firestoreService: FirestoreServiceTestDouble(),
-        storageService: StorageServiceTestDouble()));
+    final firestoreFake = FakeFirebaseFirestore();
+    final fakeStorage = MockFirebaseStorage();
+
+    Locator.add<VenuesService>(
+        VenuesService(firestore: firestoreFake, storage: fakeStorage));
 
     final localVenue = LocalVenue();
 
