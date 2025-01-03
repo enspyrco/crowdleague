@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../services/images_service.dart';
+import '../services/user_auth_service.dart';
 import '../services/user_service.dart';
 import '../utils/avatar.dart';
 import '../utils/locator.dart';
@@ -49,13 +50,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _croppedFilePath = croppedFilePath;
             });
           }
-          locate<UserService>().saveLargeProfilePic(_croppedFilePath!);
+          locate<ImagesService>().saveLargeProfilePic(_croppedFilePath!);
 
           final int smallSize = 100;
           await locate<ImagesService>()
               .resizeImage(filePath: _croppedFilePath!, size: smallSize);
 
-          locate<UserService>()
+          locate<ImagesService>()
               .saveSmallProfilePic(_croppedFilePath!, smallSize);
 
           if (mounted) {
@@ -75,7 +76,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    locate<UserService>().profileDocStream.listen((profile) {
+    locate<UserAuthService>().profileDocStream.listen((profile) {
       if (mounted) {
         _textController.text = profile?['name'] as String? ?? 'null';
       }
@@ -110,11 +111,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                 if (_croppedFilePath == null)
                   StreamBuilder<Map<String, Object?>?>(
-                    stream: locate<UserService>().profileDocStream,
+                    stream: locate<UserAuthService>().profileDocStream,
                     builder: (context, snapshot) {
                       return FutureBuilder<Uint8List?>(
                           future:
-                              locate<UserService>().retrieveLargeProfilePic(),
+                              locate<ImagesService>().retrieveLargeProfilePic(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData || snapshot.data == null) {
                               return Avatar(

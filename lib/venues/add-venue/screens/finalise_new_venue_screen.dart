@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../services/user_service.dart';
+import '../../../services/images_service.dart';
+import '../../../services/user_auth_service.dart';
 import '../../../services/venues_service.dart';
 import '../../../utils/locator.dart';
 import '../../models/local_venue.dart';
@@ -38,7 +39,7 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     // Update the name & address of the LocalVenue stored in the VenuesService
     _localVenue.name = name;
     _localVenue.address = address;
-    _localVenue.createdBy = locate<UserService>().currentUserId!;
+    _localVenue.createdBy = locate<UserAuthService>().currentUserId!;
 
     if (mounted) {
       setState(() {
@@ -62,8 +63,8 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
 
     // resize large photo
     final int smallSize = 50;
-    await locate<VenuesService>().resizeLargeImage(
-        localPath: _localVenue.largePhotoPath!, smallSize: smallSize);
+    await locate<ImagesService>()
+        .resizeImage(filePath: _localVenue.largePhotoPath!, size: smallSize);
     _localVenue.smallPhotoPath = '${_localVenue.largePhotoPath!}_$smallSize';
 
     // upload small photo

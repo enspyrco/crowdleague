@@ -2,10 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/user_service.dart';
+import '../services/user_auth_service.dart';
 import '../utils/icons/custom_icons.dart';
 import '../utils/locator.dart';
-import 'enums/auth_provider.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -21,7 +20,7 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       isSigningIn = true;
     });
-    await locate<UserService>().signInWith(provider: AuthProvider.apple);
+    await locate<UserAuthService>().signInWithApple();
     if (context.mounted) context.pushReplacement('/');
   }
 
@@ -29,7 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       isSigningIn = true;
     });
-    await locate<UserService>().signInWith(provider: AuthProvider.google);
+    await locate<UserAuthService>().signInWithGoogle();
     if (context.mounted) context.pushReplacement('/');
   }
 

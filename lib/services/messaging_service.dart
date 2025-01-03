@@ -1,21 +1,18 @@
-import 'package:crowdleague/services/auth_service.dart';
-import 'package:crowdleague/services/firestore_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart' as fbm;
 import 'package:flutter/foundation.dart';
 
 import '../notifications/enums/authorization_status.dart';
 
 class MessagingService {
-  MessagingService(
-      {fbm.FirebaseMessaging? messaging,
-      required FirestoreService firestoreService,
-      required AuthService authService})
-      : _firestoreService = firestoreService,
-        _authService = authService {
-    (messaging == null)
-        ? _messaging = fbm.FirebaseMessaging.instance
-        : _messaging = messaging;
-
+  MessagingService({
+    required fbm.FirebaseMessaging messaging,
+    required FirebaseFirestore firestore,
+    required FirebaseAuth firebaseAuth,
+  })  : _firestore = firestore,
+        _auth = firebaseAuth,
+        _messaging = messaging {
     _messaging.onTokenRefresh.listen((fcmToken) {
       storeToken(fcmToken);
     }).onError((err) {
@@ -23,10 +20,9 @@ class MessagingService {
     });
   }
 
-  final FirestoreService _firestoreService;
-  final AuthService _authService;
-
-  late final fbm.FirebaseMessaging _messaging;
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
+  final fbm.FirebaseMessaging _messaging;
   fbm.NotificationSettings? _notificationSettings;
 
   Future<void> init() async {
@@ -72,10 +68,10 @@ class MessagingService {
   }
 
   Future<void> storeToken(String token) {
-    return _firestoreService.setDoc(
-      path: 'fcmTokens/${_authService.currentUserId}',
-      data: {'token': token},
-    );
+    return _firestore
+        .collection('fcmTokens')
+        .doc('${_auth.currentUser?.uid}')
+        .set({'token': token});
   }
 
   Future<String?> getToken() {

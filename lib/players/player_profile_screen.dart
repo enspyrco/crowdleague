@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../services/players_service.dart';
+import '../services/user_auth_service.dart';
 import '../utils/avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
@@ -27,7 +28,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
       setState(() {
         _player = player ?? EmptyPlayer();
         if (_player.pendingFollowRequests
-            .contains(locate<UserService>().currentUserId!)) {
+            .contains(locate<UserAuthService>().currentUserId!)) {
           _pending = true;
         }
       });
@@ -42,7 +43,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     }
     await locate<UserService>().requestFollow(
         requesteeId: widget._playerId,
-        requesterId: locate<UserService>().currentUserId!);
+        requesterId: locate<UserAuthService>().currentUserId!);
   }
 
   @override
