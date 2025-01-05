@@ -16,7 +16,7 @@ class MessagingService {
     _messaging.onTokenRefresh.listen((fcmToken) {
       storeToken(fcmToken);
     }).onError((err) {
-      // Error getting token.
+      throw 'Error getting token: $err';
     });
   }
 

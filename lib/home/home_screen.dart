@@ -1,5 +1,7 @@
 import 'package:crowdleague/messages/messages_screen.dart';
 import 'package:crowdleague/notifications/notificatons_screen.dart';
+import 'package:crowdleague/services/messaging_service.dart';
+import 'package:crowdleague/utils/locator.dart';
 import 'package:crowdleague/venues/venues_screen.dart';
 import 'package:crowdleague/you/you_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
+  late final AppLifecycleListener _lifecycleListener;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the AppLifecycleListener class and pass a callback that
+    // stores the latest FCM token.
+    _lifecycleListener = AppLifecycleListener(
+      onStateChange: (lifecycleState) async {
+        if (lifecycleState == AppLifecycleState.resumed) {
+          String? token = await locate<MessagingService>().getToken();
+          if (token != null) {
+            locate<MessagingService>().storeToken(token);
+          }
+        }
+        // If the NotificationsScreen is open and there is a new Notification
+        // we want to rebuild the screen.
+        setState(() {});
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,5 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
         const YouScreen(),
       ][currentPageIndex],
     );
+  }
+
+  @override
+  void dispose() {
+    _lifecycleListener.dispose();
+    super.dispose();
   }
 }
