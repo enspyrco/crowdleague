@@ -8,24 +8,23 @@ import '../../utils/avatar.dart';
 import '../../utils/locator.dart';
 import '../models/notifications.dart';
 
-class FollowRequestNotificationWidget extends StatefulWidget {
-  const FollowRequestNotificationWidget({
+class CrewRequestNotificationWidget extends StatefulWidget {
+  const CrewRequestNotificationWidget({
     required this.notification,
     super.key,
   });
 
-  final FollowRequestNotification notification;
+  final CrewRequestNotification notification;
 
   @override
-  State<FollowRequestNotificationWidget> createState() =>
-      _FollowRequestNotificationStateWidgetFollowRequestNotificationWidget();
+  State<CrewRequestNotificationWidget> createState() =>
+      _CrewRequestNotificationStateWidgetCrewRequestNotificationWidget();
 }
 
-class _FollowRequestNotificationStateWidgetFollowRequestNotificationWidget
-    extends State<FollowRequestNotificationWidget> {
-  Future<void> _declineFollowRequest(
-      FollowRequestNotification notification) async {
-    locate<UserService>().declineFollowRequest(
+class _CrewRequestNotificationStateWidgetCrewRequestNotificationWidget
+    extends State<CrewRequestNotificationWidget> {
+  Future<void> _declineCrewRequest(CrewRequestNotification notification) async {
+    locate<UserService>().declineCrewRequest(
       notification.id,
       notification.requesterId,
     );
@@ -49,13 +48,13 @@ class _FollowRequestNotificationStateWidgetFollowRequestNotificationWidget
                     leading: (snapshot.data != null)
                         ? Avatar(picBytes: snapshot.data!)
                         : Avatar(loading: true),
-                    title: Text('${player.name} wants to follow you'),
+                    title: Text('${player.name} wants to join crews'),
                     subtitle: Row(
                       children: [
                         if (!widget.notification.waiting) ...[
                           TextButton(
                               onPressed: () {
-                                locate<UserService>().acceptFollowRequest(
+                                locate<UserService>().acceptCrewRequest(
                                   requesterId: player.id,
                                   requesteeId: widget.notification.requesteeId,
                                   notificationId: widget.notification.id,
@@ -64,12 +63,12 @@ class _FollowRequestNotificationStateWidgetFollowRequestNotificationWidget
                               child: Text('Accept')),
                           TextButton(
                             onPressed: () {
-                              _declineFollowRequest(widget.notification);
+                              _declineCrewRequest(widget.notification);
                             },
                             child: Text('Decline'),
                           ),
                         ] else
-                          Text('Updating followers...'),
+                          Text('Updating crew members...'),
                       ],
                     ),
                   ),

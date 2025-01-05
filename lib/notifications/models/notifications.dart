@@ -6,17 +6,20 @@ sealed class Notification {
     required this.opened,
     required this.timestamp,
     required this.id,
+    required this.playerId,
   });
   final String id;
   final bool viewed;
   final bool opened;
   final int timestamp;
+  final String playerId;
 
   factory Notification.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
-      case 'follow-request':
-        return FollowRequestNotification(
+      case 'crew-request':
+        return CrewRequestNotification(
           id: json['id'] ?? '',
+          playerId: json['playerId'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           waiting: json['waiting'] ?? false,
@@ -24,17 +27,10 @@ sealed class Notification {
           requesteeId: json['requesteeId'],
           timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
-      case 'follow-response':
-        return FollowResponseNotification(
+      case 'crew-accepted':
+        return CrewAcceptedNotification(
           id: json['id'] ?? '',
-          viewed: json['viewed'] ?? false,
-          opened: json['opened'] ?? false,
-          requesteeId: json['requesteeId'],
-          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
-        );
-      case 'follow-back':
-        return FollowBackNotification(
-          id: json['id'] ?? '',
+          playerId: json['playerId'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
           waiting: json['waiting'] ?? false,
@@ -48,16 +44,17 @@ sealed class Notification {
   }
 }
 
-class FollowRequestNotification extends Notification {
+class CrewRequestNotification extends Notification {
   final String requesterId;
   final String requesteeId;
   final bool waiting;
 
-  const FollowRequestNotification({
+  const CrewRequestNotification({
     required this.requesteeId,
     required this.requesterId,
     required this.waiting,
     required super.id,
+    required super.playerId,
     required super.timestamp,
     required super.opened,
     required super.viewed,
@@ -66,6 +63,7 @@ class FollowRequestNotification extends Notification {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'playerId': playerId,
       'type': 'follow-request',
       'requesterId': requesterId,
       'requesteeId': requesteeId,
@@ -77,16 +75,17 @@ class FollowRequestNotification extends Notification {
   }
 }
 
-class FollowBackNotification extends Notification {
+class CrewAcceptedNotification extends Notification {
   final String requesterId;
   final String requesteeId;
   final bool waiting;
 
-  const FollowBackNotification({
+  const CrewAcceptedNotification({
     required this.requesteeId,
     required this.requesterId,
     required this.waiting,
     required super.id,
+    required super.playerId,
     required super.timestamp,
     required super.opened,
     required super.viewed,
@@ -95,33 +94,11 @@ class FollowBackNotification extends Notification {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'type': 'follow-back',
+      'playerId': playerId,
+      'type': 'crew-accepted',
       'requesterId': requesterId,
       'requesteeId': requesteeId,
       'waiting': waiting,
-      'viewed': viewed,
-      'opened': opened,
-      'timestamp': timestamp,
-    };
-  }
-}
-
-class FollowResponseNotification extends Notification {
-  final String requesteeId;
-
-  const FollowResponseNotification({
-    required this.requesteeId,
-    required super.id,
-    required super.timestamp,
-    required super.opened,
-    required super.viewed,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'type': 'follow-response',
-      'requesteeId': requesteeId,
       'viewed': viewed,
       'opened': opened,
       'timestamp': timestamp,

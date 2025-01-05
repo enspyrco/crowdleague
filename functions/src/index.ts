@@ -4,4 +4,3 @@ admin.initializeApp();
 
 export * from './crew-request';
 export * from './accept-crew-request';
-export * from './follow-back';

@@ -1,19 +1,19 @@
 class Player {
   final String id;
   final String name;
-  final List<String> pendingFollowRequests;
+  final List<String> pendingCrewRequests;
 
   const Player({
     required this.id,
     required this.name,
-    required this.pendingFollowRequests,
+    required this.pendingCrewRequests,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
-      'followRequests': pendingFollowRequests,
+      'crewRequests': pendingCrewRequests,
     };
   }
 
@@ -21,21 +21,19 @@ class Player {
     return Player(
       id: json['id'],
       name: json['name'],
-      pendingFollowRequests: (json['pendingFollowRequests'] == null)
+      pendingCrewRequests: (json['pendingCrewRequests'] == null)
           ? []
-          : List<String>.from(json['pendingFollowRequests']),
+          : List<String>.from(json['pendingCrewRequests']),
     );
   }
 
   @override
   String toString() {
-    return 'Player{id: $id, name: $name, pendingFollowRequests: $pendingFollowRequests}';
+    return 'Player{id: $id, name: $name, pendingCrewRequests: $pendingCrewRequests}';
   }
 }
 
 class EmptyPlayer extends Player {
   const EmptyPlayer(
-      {super.id = '',
-      super.name = '?',
-      super.pendingFollowRequests = const []});
+      {super.id = '', super.name = '?', super.pendingCrewRequests = const []});
 }
