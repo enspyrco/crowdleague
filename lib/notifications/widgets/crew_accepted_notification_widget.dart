@@ -1,9 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 
 import '../../services/players_service.dart';
-import '../../utils/avatar.dart';
+import '../../utils/async_avatar.dart';
 import '../../utils/locator.dart';
 import '../models/notifications.dart';
 
@@ -28,22 +26,15 @@ class _CrewAcceptedNotificationWidgetState
         if (playerSnapshot.hasData && playerSnapshot.data != null) {
           final player = playerSnapshot.data!;
 
-          return FutureBuilder<Uint8List?>(
-              future:
-                  locate<PlayersService>().retrieveSmallProfilePic(player.id),
-              builder: (context, snapshot) {
-                return Card(
-                  child: ListTile(
-                    leading: (snapshot.data != null)
-                        ? Avatar(picBytes: snapshot.data!)
-                        : Avatar(loading: true),
-                    title: Text(
-                        '${player.name} is now crew and you are following each other'),
-                  ),
-                );
-              });
+          return Card(
+              child: ListTile(
+                  leading: AsyncAvatar(
+                      bytesFuture: locate<PlayersService>()
+                          .retrieveSmallProfilePic(player.id)),
+                  title: Text(
+                      '${player.name} is in your crew and you are following each other')));
         } else {
-          return Container();
+          return SizedBox.shrink();
         }
       },
     );

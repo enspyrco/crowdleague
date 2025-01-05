@@ -1,10 +1,9 @@
 import 'package:crowdleague/services/user_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../services/players_service.dart';
 import '../services/user_auth_service.dart';
-import '../utils/avatar.dart';
+import '../utils/async_avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
 
@@ -60,16 +59,10 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(5),
-            child: FutureBuilder<Uint8List?>(
-                future: locate<PlayersService>()
+            child: AsyncAvatar(
+                bytesFuture: locate<PlayersService>()
                     .retrieveLargeProfilePic(widget._playerId),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Avatar(picBytes: snapshot.data, size: 100);
-                  } else {
-                    return Avatar(loading: true, size: 100);
-                  }
-                }),
+                size: 100),
           ),
           Text(_player.name, style: Theme.of(context).textTheme.displayMedium!),
           Expanded(

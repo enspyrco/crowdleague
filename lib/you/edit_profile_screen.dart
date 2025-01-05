@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import '../services/images_service.dart';
 import '../services/user_auth_service.dart';
 import '../services/user_service.dart';
-import '../utils/avatar.dart';
+import '../utils/async_avatar.dart';
+import '../utils/file_avatar.dart';
 import '../utils/locator.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -104,33 +103,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Stack(
               children: [
                 if (_croppedFilePath != null)
-                  Avatar(
+                  FileAvatar(
                     picPath: _croppedFilePath!,
-                    loading: _uploading,
                     size: 100,
                   ),
                 if (_croppedFilePath == null)
                   StreamBuilder<Map<String, Object?>?>(
                     stream: locate<UserAuthService>().profileDocStream,
                     builder: (context, snapshot) {
-                      return FutureBuilder<Uint8List?>(
-                          future:
-                              locate<ImagesService>().retrieveLargeProfilePic(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData || snapshot.data == null) {
-                              return Avatar(
-                                loading: true,
-                                size: 100,
-                              );
-                            }
-                            return Avatar(
-                              picBytes: snapshot.data!,
-                              loading: _uploading,
-                              size: 100,
-                            );
-                          });
+                      return AsyncAvatar(
+                        bytesFuture:
+                            locate<ImagesService>().retrieveLargeProfilePic(),
+                        size: 100,
+                      );
                     },
                   ),
+                if (_uploading) LinearProgressIndicator(),
               ],
             ),
             const SizedBox(height: 30),
