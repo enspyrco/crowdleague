@@ -59,14 +59,6 @@ class _YouScreenState extends State<YouScreen> {
         children: [
           Card(
             child: ListTile(
-              title: const Text('Add a Venue'),
-              onTap: () {
-                context.push('/select-new-venue-location');
-              },
-            ),
-          ),
-          Card(
-            child: ListTile(
               title: const Text('Grow your crew'),
               onTap: () {
                 context.push('/find-players');
