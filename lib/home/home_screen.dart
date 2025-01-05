@@ -5,6 +5,7 @@ import 'package:crowdleague/utils/locator.dart';
 import 'package:crowdleague/venues/venues_screen.dart';
 import 'package:crowdleague/you/you_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentPageIndex = 0;
+  int _currentPageIndex = 0;
   late final AppLifecycleListener _lifecycleListener;
 
   @override
@@ -43,12 +44,12 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
-            currentPageIndex = index;
+            _currentPageIndex = index;
           });
         },
         indicatorColor: Colors.grey.shade200,
         backgroundColor: Colors.grey.shade200,
-        selectedIndex: currentPageIndex,
+        selectedIndex: _currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.map),
@@ -77,7 +78,17 @@ class _HomeScreenState extends State<HomeScreen> {
         const NotificationsScreen(),
         const MessagesScreen(),
         const YouScreen(),
-      ][currentPageIndex],
+      ][_currentPageIndex],
+      floatingActionButton: _currentPageIndex == 0
+          ? FloatingActionButton(
+              onPressed: () {
+                context.push('/select-new-venue-location');
+              },
+              child: Icon(Icons.add),
+            )
+          : const SizedBox.shrink(),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 
