@@ -1,4 +1,3 @@
-// import {log} from 'firebase-functions/logger';
 import {FieldValue, getFirestore} from 'firebase-admin/firestore';
 import {getMessaging} from 'firebase-admin/messaging';
 import {log} from 'firebase-functions/logger';
@@ -50,6 +49,7 @@ export const followRequest = onCall(
         throw new HttpsError('not-found',
           'Token snapshot.data() was undefined.');
       }
+      log(`Fetched requestee token: ${tokenData?.token}`);
 
       // Fetch the requester's profile
       const profileDoc = await db
@@ -62,6 +62,7 @@ export const followRequest = onCall(
         throw new HttpsError('not-found',
           'Token snapshot.data() was undefined.');
       }
+      log('Fetched the requester\'s profile');
 
       // Send an FCM message to the requestee with requester's name
       const message = {
