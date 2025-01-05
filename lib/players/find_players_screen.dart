@@ -1,11 +1,9 @@
-import 'dart:typed_data';
-
-import 'package:crowdleague/utils/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../services/players_service.dart';
 import '../services/user_auth_service.dart';
+import '../utils/async_avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
 
@@ -50,18 +48,11 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
                             context.pushNamed('player-profile',
                                 pathParameters: {'id': playerId});
                           },
-                          leading: FutureBuilder<Uint8List?>(
-                              future: locate<PlayersService>()
-                                  .retrieveSmallProfilePic(playerId),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData && snapshot.data != null) {
-                                  return Avatar(
-                                    picBytes: snapshot.data,
-                                    size: 40,
-                                  );
-                                }
-                                return Avatar(loading: true, size: 40);
-                              }),
+                          leading: AsyncAvatar(
+                            bytesFuture: locate<PlayersService>()
+                                .retrieveSmallProfilePic(playerId),
+                            size: 40,
+                          ),
                           title: Text(playersList[index].name),
                         ));
                       }),

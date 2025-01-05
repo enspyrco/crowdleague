@@ -1,11 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:crowdleague/services/images_service.dart';
+import 'package:crowdleague/utils/async_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../services/user_auth_service.dart';
-import '../utils/avatar.dart';
 import '../utils/locator.dart';
 
 class YouScreen extends StatefulWidget {
@@ -29,15 +27,8 @@ class _YouScreenState extends State<YouScreen> {
             }),
         leading: Padding(
           padding: const EdgeInsets.all(5),
-          child: FutureBuilder<Uint8List?>(
-              future: locate<ImagesService>().retrieveSmallProfilePic(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Avatar(picBytes: snapshot.data);
-                } else {
-                  return Avatar(loading: true);
-                }
-              }),
+          child: AsyncAvatar(
+              bytesFuture: locate<ImagesService>().retrieveSmallProfilePic()),
         ),
         actions: [
           Padding(
