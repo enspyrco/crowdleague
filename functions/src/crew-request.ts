@@ -3,7 +3,7 @@ import {getMessaging} from 'firebase-admin/messaging';
 import {log} from 'firebase-functions/logger';
 import {HttpsError, onCall} from 'firebase-functions/v2/https';
 
-export const followRequest = onCall(
+export const crewRequest = onCall(
   {cors: true},
   async (request) => {
     try {
@@ -19,7 +19,7 @@ export const followRequest = onCall(
       // Add 'pending' entry for requester to requestee's profile
       await db.collection('profiles')
         .doc(`${request.data.requesteeId}`).update({
-          pendingFollowRequests:
+          pendingCrewRequests:
             FieldValue.arrayUnion(request.data.requesterId),
         });
 
@@ -27,7 +27,8 @@ export const followRequest = onCall(
       await db
         .collection('notifications').doc()
         .set({
-          type: 'follow-request',
+          playerId: request.data.requesteeId,
+          type: 'crew-request',
           requesteeId: request.data.requesteeId,
           requesterId: request.data.requesterId,
           timestamp: FieldValue.serverTimestamp(),
@@ -35,7 +36,7 @@ export const followRequest = onCall(
           viewed: false,
           waiting: false,
         });
-      log('FollowRequestNotification added to notifications/' +
+      log('CrewRequestNotification added to notifications/' +
         `${request.data.requesterId}`);
 
       // Fetch requestee token
@@ -67,8 +68,8 @@ export const followRequest = onCall(
       // Send an FCM message to the requestee with requester's name
       const message = {
         notification: {
-          title: 'Expand your squad?',
-          body: `${profileData?.name} wants to follow you`,
+          title: 'Expand your crew?',
+          body: `${profileData?.name} wants to join crews`,
         },
         token: tokenData?.token,
       };

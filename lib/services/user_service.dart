@@ -33,8 +33,11 @@ class UserService {
   }
 
   Future<List<Notification>> retrieveNotifications() async {
-    final docsSnapshot = await _firestore.collection('notifications').get();
-    return docsSnapshot.docs.map<Notification>((snapshot) {
+    final querySnapshot = await _firestore
+        .collection('notifications')
+        .where('playerId', isEqualTo: _auth.currentUser!.uid)
+        .get();
+    return querySnapshot.docs.map<Notification>((snapshot) {
       final json = snapshot.data();
       json['id'] = snapshot.id;
       return Notification.fromJson(json);
@@ -44,6 +47,7 @@ class UserService {
   Stream<List<Notification>> listenToNotifications() {
     return _firestore
         .collection('notifications')
+        .where('playerId', isEqualTo: _auth.currentUser!.uid)
         .snapshots()
         .map<List<Notification>>((querySnapshot) {
       return querySnapshot.docs.map<Notification>((docSnapshot) {
@@ -54,14 +58,14 @@ class UserService {
     });
   }
 
-  Future<void> requestFollow(
+  Future<void> requestCrew(
       {required String requesteeId, required String requesterId}) async {
     await _cloudFunctions
-        .httpsCallable('followRequest')
+        .httpsCallable('crewRequest')
         .call({'requesterId': requesterId, 'requesteeId': requesteeId});
   }
 
-  Future<void> acceptFollowRequest({
+  Future<void> acceptCrewRequest({
     required String requesterId,
     required String requesteeId,
     required String notificationId,
@@ -70,19 +74,19 @@ class UserService {
         .doc('notifications/$notificationId')
         .set({'waiting': true}, SetOptions(merge: true));
 
-    await _cloudFunctions.httpsCallable('acceptFollowRequest').call({
+    await _cloudFunctions.httpsCallable('acceptCrewRequest').call({
       'requesterId': requesterId,
       'requesteeId': requesteeId,
       'notificationId': notificationId,
     });
   }
 
-  Future<void> declineFollowRequest(
+  Future<void> declineCrewRequest(
       String notificationId, String requesterId) async {
     await _firestore.doc('notifications/$notificationId').delete();
 
     await _firestore.doc('profiles/${_auth.currentUser?.uid}').update({
-      'pendingFollowRequests': FieldValue.arrayRemove([requesterId])
+      'pendingCrewRequests': FieldValue.arrayRemove([requesterId])
     });
   }
 
