@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:crowdleague/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,17 +11,19 @@ import '../utils/async_avatar.dart';
 import '../utils/file_avatar.dart';
 import '../utils/locator.dart';
 
-class OnboardProfilePicScreen extends StatefulWidget {
-  const OnboardProfilePicScreen({super.key});
+class EditProfilePicScreen extends StatefulWidget {
+  const EditProfilePicScreen({required this.onboarding, super.key});
+
+  final String onboarding;
 
   @override
-  State<OnboardProfilePicScreen> createState() =>
-      _OnboardProfilePicScreenState();
+  State<EditProfilePicScreen> createState() => _EditProfilePicScreenState();
 }
 
-class _OnboardProfilePicScreenState extends State<OnboardProfilePicScreen> {
+class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
   String? _croppedFilePath;
   bool _uploading = false;
+  bool _onboarding = false;
 
   Future<void> _onPickPhotoButtonPressed(ImageSource source) async {
     try {
@@ -71,13 +74,21 @@ class _OnboardProfilePicScreenState extends State<OnboardProfilePicScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _onboarding = widget.onboarding.parseBool();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () {
-              context.push('/onboard-notifications');
+              (_onboarding)
+                  ? context.push('/onboard-notifications')
+                  : context.pop();
             },
             icon: const Icon(Icons.check),
           )
@@ -86,7 +97,7 @@ class _OnboardProfilePicScreenState extends State<OnboardProfilePicScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 25),
+            const SizedBox(height: 50),
             Stack(
               children: [
                 if (_croppedFilePath != null)
@@ -109,21 +120,52 @@ class _OnboardProfilePicScreenState extends State<OnboardProfilePicScreen> {
               ],
             ),
             const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton.outlined(
-                  onPressed: () =>
-                      _onPickPhotoButtonPressed(ImageSource.gallery),
-                  icon: const Icon(Icons.photo),
-                ),
-                const SizedBox(width: 50),
-                IconButton.outlined(
-                  onPressed: () =>
-                      _onPickPhotoButtonPressed(ImageSource.camera),
-                  icon: const Icon(Icons.camera_alt),
-                ),
-              ],
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(flex: 1, child: Container()),
+                      Flexible(
+                        flex: 1,
+                        child: IconButton.outlined(
+                          onPressed: () =>
+                              _onPickPhotoButtonPressed(ImageSource.gallery),
+                          icon: const Icon(Icons.photo),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text('Pick from Gallery'),
+                          ))
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(flex: 1, child: Container()),
+                      Flexible(
+                        flex: 1,
+                        child: IconButton.outlined(
+                          onPressed: () =>
+                              _onPickPhotoButtonPressed(ImageSource.camera),
+                          icon: const Icon(Icons.camera_alt),
+                        ),
+                      ),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text('Take a Photo'),
+                      )),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

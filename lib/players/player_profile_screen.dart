@@ -1,5 +1,6 @@
 import 'package:crowdleague/services/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../services/players_service.dart';
 import '../services/user_auth_service.dart';
@@ -19,6 +20,7 @@ class PlayerProfileScreen extends StatefulWidget {
 
 class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   bool _pending = false;
+  bool _owner = false;
   Player _player = EmptyPlayer();
 
   Future<void> _getPlayer() async {
@@ -49,6 +51,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   void initState() {
     super.initState();
     _getPlayer();
+    _owner = widget._playerId == locate<UserAuthService>().currentUserId!;
   }
 
   @override
@@ -57,28 +60,59 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
       appBar: AppBar(),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: AsyncAvatar(
-                bytesFuture: locate<PlayersService>()
-                    .retrieveLargeProfilePic(widget._playerId),
-                size: 100),
+          SizedBox(
+            height: 50,
           ),
-          Text(_player.name, style: Theme.of(context).textTheme.displayMedium!),
+          GestureDetector(
+            onTap: () => (_owner)
+                ? context.pushNamed('edit-profile-pic', pathParameters: {
+                    'onboarding': 'false',
+                  })
+                : null,
+            child: Stack(
+              children: [
+                AsyncAvatar(
+                    bytesFuture: locate<PlayersService>()
+                        .retrieveLargeProfilePic(widget._playerId),
+                    size: 100),
+                if (_owner)
+                  Positioned(bottom: 0.0, right: 0.0, child: Icon(Icons.edit))
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          GestureDetector(
+            onTap: () {
+              context.pushNamed('edit-name',
+                  pathParameters: {'onboarding': 'false'});
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(_player.name,
+                    style: Theme.of(context).textTheme.displayMedium!),
+                if (_owner) Icon(Icons.edit)
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 50,
+          ),
           Expanded(
             child: ListView(
               children: [
-                Card(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    if (!_owner)
                       TextButton(
                         onPressed: _pending ? null : () => _requestCrew(),
                         child:
-                            _pending ? Text('Pending...') : Text('Join Crews'),
+                            _pending ? Text('Pending...') : Text('Join Crew'),
                       )
-                    ],
-                  ),
+                  ],
                 ),
               ],
             ),
