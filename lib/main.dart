@@ -12,9 +12,9 @@ import 'firebase_options.dart';
 
 import 'auth/sign_in_screen.dart';
 import 'home/home_screen.dart';
-import 'onboarding/onboard_name_screen.dart';
+import 'onboarding/edit_name_screen.dart';
 import 'onboarding/onboard_notifications.dart';
-import 'onboarding/onboard_profile_pic_screen.dart';
+import 'onboarding/edit_profile_pic_screen.dart';
 import 'players/find_players_screen.dart';
 import 'players/player_profile_screen.dart';
 import 'services/geo_location_service.dart';
@@ -27,7 +27,6 @@ import 'services/venues_service.dart';
 import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
 import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'venues/venue-detail/venue_detail_screen.dart';
-import 'you/edit_profile_screen.dart';
 import 'utils/locator.dart';
 
 final _router = GoRouter(
@@ -41,7 +40,7 @@ final _router = GoRouter(
       redirect: (BuildContext context, GoRouterState state) async {
         bool onboarded = await locate<UserService>().userHasOnboarded;
         if (!onboarded) {
-          return '/onboard-name';
+          return '/edit-name';
         } else {
           return null;
         }
@@ -53,24 +52,23 @@ final _router = GoRouter(
       builder: (context, state) => const SignInScreen(),
     ),
     GoRoute(
-      name: 'onboard-name',
-      path: '/onboard-name',
-      builder: (context, state) => const OnboardNameScreen(),
+      name: 'edit-name',
+      path: '/edit-name/onboarding/:onboarding',
+      builder: (context, state) => EditNameScreen(
+        onboarding: state.pathParameters['onboarding']!,
+      ),
     ),
     GoRoute(
-      name: 'onboard-profile-pic',
-      path: '/onboard-profile-pic',
-      builder: (context, state) => const OnboardProfilePicScreen(),
+      name: 'edit-profile-pic',
+      path: '/edit-profile-pic/onboarding/:onboarding',
+      builder: (context, state) => EditProfilePicScreen(
+        onboarding: state.pathParameters['onboarding']!,
+      ),
     ),
     GoRoute(
       name: 'onboard-notifications',
       path: '/onboard-notifications',
       builder: (context, state) => const OnboardNotifications(),
-    ),
-    GoRoute(
-      name: 'image-picker',
-      path: '/image-picker',
-      builder: (context, state) => const EditProfileScreen(),
     ),
     GoRoute(
         name: 'select-new-venue-location',

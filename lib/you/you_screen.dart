@@ -27,24 +27,16 @@ class _YouScreenState extends State<YouScreen> {
             }),
         leading: Padding(
           padding: const EdgeInsets.all(5),
-          child: AsyncAvatar(
-              bytesFuture: locate<ImagesService>().retrieveSmallProfilePic()),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                context.push('/image-picker').then((value) {
-                  if (mounted) {
-                    setState(() {});
-                  }
-                });
-              },
-            ),
+          child: GestureDetector(
+            child: AsyncAvatar(
+                bytesFuture: locate<ImagesService>().retrieveSmallProfilePic()),
+            onTap: () {
+              context.pushNamed('player-profile', pathParameters: {
+                'id': locate<UserAuthService>().currentUserId!
+              });
+            },
           ),
-        ],
+        ),
       ),
       body: ListView(
         children: [
