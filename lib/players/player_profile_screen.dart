@@ -20,37 +20,11 @@ class PlayerProfileScreen extends StatefulWidget {
 }
 
 class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
-  bool _pending = false; // if there is a pending crew request
-  bool _crew = false;
   bool _owner = false; // if the profile is the user's profile
-  Player _player = EmptyPlayer();
-
-  Future<void> _getPlayer() async {
-    final player = await locate<PlayersService>().getPlayer(widget._playerId);
-    if (mounted) {
-      setState(() {
-        _player = player ?? EmptyPlayer();
-        _pending = _player.pendingCrewRequests
-            .contains(locate<UserAuthService>().currentUserId!);
-        _crew =
-            _player.crewIds.contains(locate<UserAuthService>().currentUserId!);
-      });
-    }
-  }
-
-  Future<void> _requestCrew() async {
-    if (mounted) {
-      setState(() {
-        _pending = true;
-      });
-    }
-    await locate<UserService>().requestCrew(playerId: widget._playerId);
-  }
 
   @override
   void initState() {
     super.initState();
-    _getPlayer();
     _owner = widget._playerId == locate<UserAuthService>().currentUserId!;
   }
 
@@ -58,68 +32,84 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50,
-          ),
-          GestureDetector(
-            onTap: () => (_owner)
-                ? context.pushNamed('edit-profile-pic', pathParameters: {
-                    'onboarding': 'false',
-                  })
-                : null,
-            child: Stack(
+      body: StreamBuilder<Player?>(
+          stream: locate<PlayersService>().listenToPlayer(widget._playerId),
+          builder: (context, snapshot) {
+            final Player player = snapshot.data ?? EmptyPlayer();
+            final pending = player.pendingCrewRequests
+                .contains(locate<UserAuthService>().currentUserId!);
+            final crew = player.crewIds
+                .contains(locate<UserAuthService>().currentUserId!);
+
+            return Column(
               children: [
-                AsyncAvatar(
-                    bytesFuture: locate<PlayersService>()
-                        .retrieveLargeProfilePic(widget._playerId),
-                    size: 100),
-                if (_owner)
-                  Positioned(bottom: 0.0, right: 0.0, child: Icon(Icons.edit))
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          GestureDetector(
-            onTap: () {
-              context.pushNamed('edit-name',
-                  pathParameters: {'onboarding': 'false'});
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(_player.name,
-                    style: Theme.of(context).textTheme.displayMedium!),
-                if (_owner) Icon(Icons.edit)
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    if (!_owner && !_crew)
-                      TextButton(
-                        onPressed: _pending ? null : () => _requestCrew(),
-                        child:
-                            _pending ? Text('Pending...') : Text('Join Crews'),
+                SizedBox(
+                  height: 50,
+                ),
+                GestureDetector(
+                  onTap: () => (_owner)
+                      ? context.pushNamed('edit-profile-pic', pathParameters: {
+                          'onboarding': 'false',
+                        })
+                      : null,
+                  child: Stack(
+                    children: [
+                      AsyncAvatar(
+                          bytesFuture: locate<PlayersService>()
+                              .retrieveLargeProfilePic(widget._playerId),
+                          size: 100),
+                      if (_owner)
+                        Positioned(
+                            bottom: 0.0, right: 0.0, child: Icon(Icons.edit))
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.pushNamed('edit-name',
+                        pathParameters: {'onboarding': 'false'});
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(player.name,
+                          style: Theme.of(context).textTheme.displayMedium!),
+                      if (_owner) Icon(Icons.edit)
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (!_owner && !crew)
+                            TextButton(
+                              onPressed: pending
+                                  ? null
+                                  : () => locate<UserService>()
+                                      .requestCrew(playerId: widget._playerId),
+                              child: pending
+                                  ? Text('Pending...')
+                                  : Text('Join Crews'),
+                            ),
+                          if (!_owner && crew)
+                            CrewMenuButton(playerId: player.id),
+                        ],
                       ),
-                    if (!_owner && _crew) CrewMenuButton(playerId: _player.id),
-                  ],
+                    ],
+                  ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
+            );
+          }),
     );
   }
 }
