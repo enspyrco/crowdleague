@@ -33,6 +33,19 @@ class PlayersService {
     return Player.fromJson(json);
   }
 
+  Stream<Player?> listenToPlayer(String playerId) {
+    return _firestore
+        .collection('profiles')
+        .doc(playerId)
+        .snapshots()
+        .map<Player?>((snapshot) {
+      if (snapshot.data() == null) return null;
+      final json = Map<String, Object?>.from(snapshot.data()!);
+      json['id'] = snapshot.id;
+      return Player.fromJson(json);
+    });
+  }
+
   Future<Uint8List?> retrieveSmallProfilePic(String playerId) {
     return _storage.ref('profilePics/${playerId}_small').getData();
   }
