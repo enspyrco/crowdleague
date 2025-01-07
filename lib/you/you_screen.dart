@@ -1,4 +1,4 @@
-import 'package:crowdleague/services/images_service.dart';
+import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/utils/async_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -29,7 +29,7 @@ class _YouScreenState extends State<YouScreen> {
           padding: const EdgeInsets.all(5),
           child: GestureDetector(
             child: AsyncAvatar(
-                bytesFuture: locate<ImagesService>().retrieveSmallProfilePic()),
+                locate<UserAuthService>().currentUserId!, PicSize.large),
             onTap: () {
               context.pushNamed('player-profile', pathParameters: {
                 'id': locate<UserAuthService>().currentUserId!

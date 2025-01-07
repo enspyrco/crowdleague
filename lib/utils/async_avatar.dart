@@ -1,26 +1,33 @@
+import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../players/enums/pic_size.dart';
+import '../services/players_service.dart';
+
 /// An avatar widget that uses either a Storage path build a CircleAvatar that uses a MemoryImage.
 class AsyncAvatar extends StatelessWidget {
-  const AsyncAvatar({
+  const AsyncAvatar(
+    this.playerId,
+    this.picSize, {
     super.key,
-    required this.bytesFuture,
     this.backgroundColor = Colors.black,
-    this.size = 50,
+    this.widgetSize = 50,
   });
 
-  final Future<Uint8List?> bytesFuture;
   final Color backgroundColor;
-  final double size;
+  final double widgetSize;
+  final String playerId;
+  final PicSize picSize;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size,
-      height: size,
+      width: widgetSize,
+      height: widgetSize,
       child: FutureBuilder<Uint8List?>(
-          future: bytesFuture,
+          future:
+              locate<PlayersService>().retrieveProfilePic(playerId, picSize),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
               return CircleAvatar(

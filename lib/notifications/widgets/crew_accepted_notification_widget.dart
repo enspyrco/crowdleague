@@ -1,3 +1,4 @@
+import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,9 +34,7 @@ class _CrewAcceptedNotificationWidgetState
                     context.pushNamed('player-profile',
                         pathParameters: {'id': player.id});
                   },
-                  leading: AsyncAvatar(
-                      bytesFuture: locate<PlayersService>()
-                          .retrieveSmallProfilePic(player.id)),
+                  leading: AsyncAvatar(player.id, PicSize.small),
                   title: Text(
                       '${player.name} is in your crew and you are following each other')));
         } else {

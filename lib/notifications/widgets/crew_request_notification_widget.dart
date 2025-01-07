@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../players/enums/pic_size.dart';
 import '../../services/players_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/async_avatar.dart';
@@ -35,9 +36,7 @@ class _CrewRequestNotificationStateWidgetCrewRequestNotificationWidget
           final player = playerSnapshot.data!;
           return Card(
             child: ListTile(
-              leading: AsyncAvatar(
-                  bytesFuture: locate<PlayersService>()
-                      .retrieveSmallProfilePic(player.id)),
+              leading: AsyncAvatar(player.id, PicSize.small),
               title: Text('${player.name} wants to join crews'),
               subtitle: Row(
                 children: [
