@@ -40,9 +40,12 @@ class _YouScreenState extends State<YouScreen> {
       ),
       body: ListView(
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Card(
             child: ListTile(
-              title: const Text('Grow your crew'),
+              title: const Text('Expand your crew'),
               onTap: () {
                 context.push('/find-players');
               },

@@ -1,0 +1,46 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../services/players_service.dart';
+import '../../utils/async_avatar.dart';
+import '../../utils/locator.dart';
+import '../models/notifications.dart';
+
+class SplitCrewsNotificationWidget extends StatefulWidget {
+  const SplitCrewsNotificationWidget(this.notification, {super.key});
+
+  final SplitCrewsNotification notification;
+
+  @override
+  State<SplitCrewsNotificationWidget> createState() =>
+      _SplitCrewsNotificationWidgetState();
+}
+
+class _SplitCrewsNotificationWidgetState
+    extends State<SplitCrewsNotificationWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future:
+          locate<PlayersService>().getPlayer(widget.notification.requesteeId),
+      builder: (context, playerSnapshot) {
+        if (playerSnapshot.hasData && playerSnapshot.data != null) {
+          final player = playerSnapshot.data!;
+
+          return Card(
+              child: ListTile(
+                  onTap: () {
+                    context.pushNamed('player-profile',
+                        pathParameters: {'id': player.id});
+                  },
+                  leading: AsyncAvatar(
+                      bytesFuture: locate<PlayersService>()
+                          .retrieveSmallProfilePic(player.id)),
+                  title: Text('${player.name}\'s crew was split from yours')));
+        } else {
+          return SizedBox.shrink();
+        }
+      },
+    );
+  }
+}

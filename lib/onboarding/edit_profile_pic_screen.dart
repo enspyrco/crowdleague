@@ -119,7 +119,7 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
                 if (_uploading) LinearProgressIndicator(),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 50),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +144,7 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
                           ))
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

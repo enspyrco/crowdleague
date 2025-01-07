@@ -20,13 +20,11 @@ export const acceptCrewRequest = onCall(
         });
       await db.collection('profiles')
         .doc(`${request.data.requesteeId}`).update({
-          crew:
-            FieldValue.arrayUnion(request.data.requesterId),
+          crewIds: FieldValue.arrayUnion(request.data.requesterId),
         });
       await db.collection('profiles')
         .doc(`${request.data.requesterId}`).update({
-          crew:
-            FieldValue.arrayUnion(request.data.requesteeId),
+          crewIds: FieldValue.arrayUnion(request.data.requesteeId),
         });
       log('Removed the pending member and added the crew members');
 
@@ -34,7 +32,7 @@ export const acceptCrewRequest = onCall(
       const requesterTokenSnapshot = await db.collection('fcmTokens')
         .doc(`${request.data.requesterId}`).get();
       const requesteeTokenSnapshot = await db.collection('fcmTokens')
-        .doc(`${request.auth.uid}`).get();
+        .doc(`${request.data.requesteeId}`).get();
       if (!requesterTokenSnapshot.exists || !requesteeTokenSnapshot.exists) {
         throw new HttpsError('not-found', 'Token snapshot did not exist.');
       }
@@ -46,23 +44,19 @@ export const acceptCrewRequest = onCall(
       }
       log('Got the requester\'s and requestee\'s fcm token');
 
-      // Store the requestee's id and fcm token in followers
-      await db.collection('followers').doc(request.auth.uid)
+      // Store the requestee's id and fcm token under followers
+      await db.collection('profiles').doc(request.auth.uid)
         .set({
-          tokensAndIds: FieldValue.arrayUnion(
-            {token: requesterTokenData.token, uid: request.data.requesterId}
-          ),
+          followerTokens: FieldValue.arrayUnion(requesterTokenData.token),
         }, {merge: true});
-      log('Stored the requestee\'s id and fcm token in followers');
+      log('Stored the requestee\'s id and fcm token under followers');
 
-      // Store the requester's id and fcm token in followers
-      await db.collection('followers').doc(request.data.requesterId)
+      // Store the requester's id and fcm token under followers
+      await db.collection('profiles').doc(request.data.requesterId)
         .set({
-          tokensAndIds: FieldValue.arrayUnion(
-            {token: requesteeTokenData.token, uid: request.auth.uid}
-          ),
+          followerTokens: FieldValue.arrayUnion(requesteeTokenData.token),
         }, {merge: true});
-      log('Stored the requester\'s id and fcm token in followers');
+      log('Stored the requester\'s id and fcm token under followers');
 
       // Change the type of the notification to a CrewAcceptedNotification
       await db
