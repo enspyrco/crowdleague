@@ -58,11 +58,11 @@ class UserService {
     });
   }
 
-  Future<void> requestCrew(
-      {required String requesteeId, required String requesterId}) async {
-    await _cloudFunctions
-        .httpsCallable('crewRequest')
-        .call({'requesterId': requesterId, 'requesteeId': requesteeId});
+  Future<void> requestCrew({required String playerId}) async {
+    await _cloudFunctions.httpsCallable('crewRequest').call({
+      'requesterId': _auth.currentUser?.uid,
+      'requesteeId': playerId,
+    });
   }
 
   Future<void> acceptCrewRequest({
@@ -87,6 +87,13 @@ class UserService {
 
     await _firestore.doc('profiles/${_auth.currentUser?.uid}').update({
       'pendingCrewRequests': FieldValue.arrayRemove([requesterId])
+    });
+  }
+
+  Future<void> splitCrews(String playerId) async {
+    await _cloudFunctions.httpsCallable('splitCrews').call({
+      'requesterId': '${_auth.currentUser?.uid}',
+      'requesteeId': playerId,
     });
   }
 }

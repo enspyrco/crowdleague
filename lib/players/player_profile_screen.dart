@@ -32,7 +32,8 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         _player = player ?? EmptyPlayer();
         _pending = _player.pendingCrewRequests
             .contains(locate<UserAuthService>().currentUserId!);
-        _crew = _player.crew.contains(locate<UserAuthService>().currentUserId!);
+        _crew =
+            _player.crewIds.contains(locate<UserAuthService>().currentUserId!);
       });
     }
   }
@@ -43,9 +44,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         _pending = true;
       });
     }
-    await locate<UserService>().requestCrew(
-        requesteeId: widget._playerId,
-        requesterId: locate<UserAuthService>().currentUserId!);
+    await locate<UserService>().requestCrew(playerId: widget._playerId);
   }
 
   @override
@@ -111,9 +110,9 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                       TextButton(
                         onPressed: _pending ? null : () => _requestCrew(),
                         child:
-                            _pending ? Text('Pending...') : Text('Join Crew'),
+                            _pending ? Text('Pending...') : Text('Join Crews'),
                       ),
-                    if (!_owner && _crew) CrewMenuButton(),
+                    if (!_owner && _crew) CrewMenuButton(playerId: _player.id),
                   ],
                 ),
               ],

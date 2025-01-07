@@ -38,6 +38,16 @@ sealed class Notification {
           requesteeId: json['requesteeId'],
           timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
         );
+      case 'split-crew':
+        return SplitCrewsNotification(
+          id: json['id'] ?? '',
+          playerId: json['playerId'] ?? '',
+          viewed: json['viewed'] ?? false,
+          opened: json['opened'] ?? false,
+          requesterId: json['requesterId'],
+          requesteeId: json['requesteeId'],
+          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
+        );
       default:
         throw Exception('Unknown notification type');
     }
@@ -99,6 +109,34 @@ class CrewAcceptedNotification extends Notification {
       'requesterId': requesterId,
       'requesteeId': requesteeId,
       'waiting': waiting,
+      'viewed': viewed,
+      'opened': opened,
+      'timestamp': timestamp,
+    };
+  }
+}
+
+class SplitCrewsNotification extends Notification {
+  final String requesterId;
+  final String requesteeId;
+
+  const SplitCrewsNotification({
+    required this.requesteeId,
+    required this.requesterId,
+    required super.id,
+    required super.playerId,
+    required super.timestamp,
+    required super.opened,
+    required super.viewed,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'playerId': playerId,
+      'type': 'split-crew',
+      'requesterId': requesterId,
+      'requesteeId': requesteeId,
       'viewed': viewed,
       'opened': opened,
       'timestamp': timestamp,

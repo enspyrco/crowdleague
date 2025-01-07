@@ -7,10 +7,7 @@ import '../../utils/locator.dart';
 import '../models/notifications.dart';
 
 class CrewRequestNotificationWidget extends StatefulWidget {
-  const CrewRequestNotificationWidget({
-    required this.notification,
-    super.key,
-  });
+  const CrewRequestNotificationWidget(this.notification, {super.key});
 
   final CrewRequestNotification notification;
 

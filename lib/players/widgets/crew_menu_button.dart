@@ -1,7 +1,11 @@
+import 'package:crowdleague/services/user_service.dart';
+import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
 
 class CrewMenuButton extends StatefulWidget {
-  const CrewMenuButton({super.key});
+  const CrewMenuButton({required this.playerId, super.key});
+
+  final String playerId;
 
   @override
   State<CrewMenuButton> createState() => _CrewMenuButtonState();
@@ -22,7 +26,9 @@ class _CrewMenuButtonState extends State<CrewMenuButton> {
       childFocusNode: _buttonFocusNode,
       menuChildren: <Widget>[
         MenuItemButton(
-          onPressed: () {},
+          onPressed: () {
+            locate<UserService>().splitCrews(widget.playerId);
+          },
           child: const Text('Split your crews'),
         ),
         MenuItemButton(
