@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../players/models/player.dart';
@@ -46,11 +47,9 @@ class PlayersService {
     });
   }
 
-  Future<Uint8List?> retrieveSmallProfilePic(String playerId) {
-    return _storage.ref('profilePics/${playerId}_small').getData();
-  }
-
-  Future<Uint8List?> retrieveLargeProfilePic(String playerId) {
-    return _storage.ref('profilePics/${playerId}_large').getData();
+  Future<Uint8List?> retrieveProfilePic(String playerId, PicSize picSize) {
+    return (picSize == PicSize.small)
+        ? _storage.ref('profilePics/${playerId}_small').getData()
+        : _storage.ref('profilePics/${playerId}_large').getData();
   }
 }

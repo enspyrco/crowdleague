@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:fc_native_image_resize/fc_native_image_resize.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,17 +78,5 @@ class ImagesService {
     final storageRef =
         _storage.ref('profilePics/${_auth.currentUser!.uid}_small');
     await storageRef.putFile(File('${filePath}_$smallSize'));
-  }
-
-  Future<Uint8List?> retrieveSmallProfilePic() {
-    final storageRef =
-        _storage.ref('profilePics/${_auth.currentUser!.uid}_small');
-    return storageRef.getData();
-  }
-
-  Future<Uint8List?> retrieveLargeProfilePic() {
-    final storageRef =
-        _storage.ref('profilePics/${_auth.currentUser!.uid}_large');
-    return storageRef.getData();
   }
 }

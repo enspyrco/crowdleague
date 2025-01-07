@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -110,9 +111,9 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
                     stream: locate<UserAuthService>().profileDocStream,
                     builder: (context, snapshot) {
                       return AsyncAvatar(
-                        bytesFuture:
-                            locate<ImagesService>().retrieveLargeProfilePic(),
-                        size: 100,
+                        locate<UserAuthService>().currentUserId!,
+                        PicSize.large,
+                        widgetSize: 100,
                       );
                     },
                   ),

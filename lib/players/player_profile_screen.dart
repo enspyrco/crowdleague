@@ -1,3 +1,4 @@
+import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -55,9 +56,10 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                   child: Stack(
                     children: [
                       AsyncAvatar(
-                          bytesFuture: locate<PlayersService>()
-                              .retrieveLargeProfilePic(widget._playerId),
-                          size: 100),
+                        widget._playerId,
+                        PicSize.large,
+                        widgetSize: 100,
+                      ),
                       if (_owner)
                         Positioned(
                             bottom: 0.0, right: 0.0, child: Icon(Icons.edit))
@@ -82,7 +84,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 Expanded(
                   child: ListView(
@@ -103,6 +105,25 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                           if (!_owner && crew)
                             CrewMenuButton(playerId: player.id),
                         ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: Text('Crew Members'),
+                      ),
+                      SizedBox(
+                        height: 60,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: player.crewIds.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: AsyncAvatar(
+                                  player.crewIds[index],
+                                  PicSize.small,
+                                ),
+                              );
+                            }),
                       ),
                     ],
                   ),

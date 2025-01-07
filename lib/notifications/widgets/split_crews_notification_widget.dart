@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../players/enums/pic_size.dart';
 import '../../services/players_service.dart';
 import '../../utils/async_avatar.dart';
 import '../../utils/locator.dart';
@@ -33,9 +34,7 @@ class _SplitCrewsNotificationWidgetState
                     context.pushNamed('player-profile',
                         pathParameters: {'id': player.id});
                   },
-                  leading: AsyncAvatar(
-                      bytesFuture: locate<PlayersService>()
-                          .retrieveSmallProfilePic(player.id)),
+                  leading: AsyncAvatar(player.id, PicSize.small),
                   title: Text('${player.name}\'s crew was split from yours')));
         } else {
           return SizedBox.shrink();
