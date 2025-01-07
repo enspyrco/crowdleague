@@ -7,6 +7,7 @@ import '../services/user_auth_service.dart';
 import '../utils/async_avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
+import 'widgets/crew_menu_button.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   const PlayerProfileScreen({required String playerId, super.key})
@@ -19,8 +20,9 @@ class PlayerProfileScreen extends StatefulWidget {
 }
 
 class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
-  bool _pending = false;
-  bool _owner = false;
+  bool _pending = false; // if there is a pending crew request
+  bool _crew = false;
+  bool _owner = false; // if the profile is the user's profile
   Player _player = EmptyPlayer();
 
   Future<void> _getPlayer() async {
@@ -28,10 +30,9 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     if (mounted) {
       setState(() {
         _player = player ?? EmptyPlayer();
-        if (_player.pendingCrewRequests
-            .contains(locate<UserAuthService>().currentUserId!)) {
-          _pending = true;
-        }
+        _pending = _player.pendingCrewRequests
+            .contains(locate<UserAuthService>().currentUserId!);
+        _crew = _player.crew.contains(locate<UserAuthService>().currentUserId!);
       });
     }
   }
@@ -106,12 +107,13 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    if (!_owner)
+                    if (!_owner && !_crew)
                       TextButton(
                         onPressed: _pending ? null : () => _requestCrew(),
                         child:
                             _pending ? Text('Pending...') : Text('Join Crew'),
-                      )
+                      ),
+                    if (!_owner && _crew) CrewMenuButton(),
                   ],
                 ),
               ],

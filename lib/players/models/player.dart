@@ -2,11 +2,13 @@ class Player {
   final String id;
   final String name;
   final List<String> pendingCrewRequests;
+  final List<String> crew;
 
   const Player({
     required this.id,
     required this.name,
     required this.pendingCrewRequests,
+    required this.crew,
   });
 
   Map<String, dynamic> toJson() {
@@ -14,6 +16,7 @@ class Player {
       'id': id,
       'name': name,
       'crewRequests': pendingCrewRequests,
+      'crew': crew,
     };
   }
 
@@ -24,6 +27,7 @@ class Player {
       pendingCrewRequests: (json['pendingCrewRequests'] == null)
           ? []
           : List<String>.from(json['pendingCrewRequests']),
+      crew: (json['crew'] == null) ? [] : List<String>.from(json['crew']),
     );
   }
 
@@ -34,6 +38,10 @@ class Player {
 }
 
 class EmptyPlayer extends Player {
-  const EmptyPlayer(
-      {super.id = '', super.name = '?', super.pendingCrewRequests = const []});
+  const EmptyPlayer({
+    super.id = '',
+    super.name = '?',
+    super.pendingCrewRequests = const [],
+    super.crew = const [],
+  });
 }
