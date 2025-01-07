@@ -89,20 +89,4 @@ class UserService {
       'pendingCrewRequests': FieldValue.arrayRemove([requesterId])
     });
   }
-
-  Future<void> followBack({
-    required String requesteeId,
-    required String requesterId,
-    required String notificationId,
-  }) async {
-    await _firestore
-        .doc('notifications/$notificationId')
-        .set({'waiting': true}, SetOptions(merge: true));
-
-    await _cloudFunctions.httpsCallable('followBack').call({
-      'requesterId': requesterId,
-      'requesteeId': requesteeId,
-      'notificationId': notificationId,
-    });
-  }
 }

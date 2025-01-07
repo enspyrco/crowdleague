@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../services/players_service.dart';
 import '../../utils/async_avatar.dart';
@@ -28,6 +29,10 @@ class _CrewAcceptedNotificationWidgetState
 
           return Card(
               child: ListTile(
+                  onTap: () {
+                    context.pushNamed('player-profile',
+                        pathParameters: {'id': player.id});
+                  },
                   leading: AsyncAvatar(
                       bytesFuture: locate<PlayersService>()
                           .retrieveSmallProfilePic(player.id)),
