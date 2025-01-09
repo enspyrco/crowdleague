@@ -19,6 +19,10 @@ class UserService {
   final FirebaseFirestore _firestore;
   final FirebaseFunctions _cloudFunctions;
 
+  final _numNotificationsViewedStreamController = StreamController<int>();
+  Stream<int> get numNotificationsViewedStream =>
+      _numNotificationsViewedStreamController.stream;
+
   /// Check for a saved FCM token, which is the last part of onboarding.
   Future<bool> get userHasOnboarded async {
     final tokenReference =
@@ -36,6 +40,7 @@ class UserService {
     final querySnapshot = await _firestore
         .collection('notifications')
         .where('playerId', isEqualTo: _auth.currentUser!.uid)
+        .orderBy('timestamp')
         .get();
     return querySnapshot.docs.map<Notification>((snapshot) {
       final json = snapshot.data();
@@ -44,10 +49,11 @@ class UserService {
     }).toList();
   }
 
-  Stream<List<Notification>> listenToNotifications() {
+  Stream<List<Notification>> notificationsStream() {
     return _firestore
         .collection('notifications')
         .where('playerId', isEqualTo: _auth.currentUser!.uid)
+        .orderBy('timestamp')
         .snapshots()
         .map<List<Notification>>((querySnapshot) {
       return querySnapshot.docs.map<Notification>((docSnapshot) {
@@ -58,9 +64,41 @@ class UserService {
     });
   }
 
+  Future<void> updateNotification(String id, {required bool? viewed}) async {
+    if (viewed != null) {
+      await _firestore
+          .collection('notifications')
+          .doc(id)
+          .update({'viewed': viewed});
+
+      int numViewed = await readNotificationsViewed();
+      _numNotificationsViewedStreamController.add(numViewed);
+    }
+  }
+
+  Future<int> readNotificationsViewed() async {
+    final aggregateQuery = await _firestore
+        .collection('notifications')
+        .where('viewed', isEqualTo: false)
+        .count()
+        .get();
+
+    return aggregateQuery.count ?? 0;
+  }
+
+  void readAndEmitNotificationsViewed() async {
+    final aggregateQuery = await _firestore
+        .collection('notifications')
+        .where('viewed', isEqualTo: false)
+        .count()
+        .get();
+
+    _numNotificationsViewedStreamController.add(aggregateQuery.count ?? 0);
+  }
+
   Future<void> requestCrew({required String playerId}) async {
     await _cloudFunctions.httpsCallable('crewRequest').call({
-      'requesterId': _auth.currentUser?.uid,
+      'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
     });
   }
@@ -85,14 +123,14 @@ class UserService {
       String notificationId, String requesterId) async {
     await _firestore.doc('notifications/$notificationId').delete();
 
-    await _firestore.doc('profiles/${_auth.currentUser?.uid}').update({
+    await _firestore.doc('profiles/${_auth.currentUser!.uid}').update({
       'pendingCrewRequests': FieldValue.arrayRemove([requesterId])
     });
   }
 
   Future<void> splitCrews(String playerId) async {
     await _cloudFunctions.httpsCallable('splitCrews').call({
-      'requesterId': '${_auth.currentUser?.uid}',
+      'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
     });
   }

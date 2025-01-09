@@ -70,7 +70,7 @@ class MessagingService {
   Future<void> storeToken(String token) {
     return _firestore
         .collection('fcmTokens')
-        .doc('${_auth.currentUser?.uid}')
+        .doc(_auth.currentUser!.uid)
         .set({'token': token});
   }
 

@@ -7,6 +7,9 @@ import 'package:crowdleague/you/you_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../services/user_service.dart';
+import 'enums/navigation_destinations.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -21,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize the AppLifecycleListener class and pass a callback that
-    // stores the latest FCM token.
+    // On resume, check for unviewed Notificaatios and store the latest FCM
+    // token.
     _lifecycleListener = AppLifecycleListener(
       onStateChange: (lifecycleState) async {
         if (lifecycleState == AppLifecycleState.resumed) {
@@ -31,9 +34,15 @@ class _HomeScreenState extends State<HomeScreen> {
             locate<MessagingService>().storeToken(token);
           }
         }
-        // If the NotificationsScreen is open and there is a new Notification
-        // we want to rebuild the screen.
-        setState(() {});
+        // If the NotificationsScreen is open we rebuild the screen, in case
+        // there is a new Notification.
+        if (_currentPageIndex == NavigationDestinations.notifications.index) {
+          setState(() {});
+          // Otherwise read the count of unviewed notifications and emit so
+          // the listeners (Notifications badge) can update
+        } else {
+          locate<UserService>().readAndEmitNotificationsViewed();
+        }
       },
     );
   }
@@ -50,26 +59,41 @@ class _HomeScreenState extends State<HomeScreen> {
         indicatorColor: Colors.grey.shade200,
         backgroundColor: Colors.grey.shade200,
         selectedIndex: _currentPageIndex,
-        destinations: const <Widget>[
+        destinations: <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.map),
             icon: Icon(Icons.map_outlined),
-            label: 'Venues',
+            label: NavigationDestinations.venues.description,
           ),
-          NavigationDestination(
-            selectedIcon: Badge(child: Icon(Icons.notifications_on_sharp)),
-            icon: Badge(child: Icon(Icons.notifications_none_outlined)),
-            label: 'Notifications',
-          ),
+          StreamBuilder<int>(
+              stream: locate<UserService>().numNotificationsViewedStream,
+              builder: (context, snapshot) {
+                int numNotifications = snapshot.data ?? 0;
+                return (numNotifications == 0)
+                    ? NavigationDestination(
+                        selectedIcon: Icon(Icons.notifications_on_sharp),
+                        icon: Icon(Icons.notifications_none_outlined),
+                        label: NavigationDestinations.notifications.description,
+                      )
+                    : NavigationDestination(
+                        selectedIcon: Badge(
+                            label: Text(numNotifications.toString()),
+                            child: Icon(Icons.notifications_on_sharp)),
+                        icon: Badge(
+                            label: Text(numNotifications.toString()),
+                            child: Icon(Icons.notifications_none_outlined)),
+                        label: 'Notifications',
+                      );
+              }),
           NavigationDestination(
             selectedIcon: Badge(label: Text('2'), child: Icon(Icons.message)),
             icon: Badge(label: Text('2'), child: Icon(Icons.message_outlined)),
-            label: 'Messages',
+            label: NavigationDestinations.messages.description,
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.person),
             icon: Icon(Icons.person_2_outlined),
-            label: 'You',
+            label: NavigationDestinations.you.description,
           ),
         ],
       ),
@@ -79,14 +103,15 @@ class _HomeScreenState extends State<HomeScreen> {
         const MessagesScreen(),
         const YouScreen(),
       ][_currentPageIndex],
-      floatingActionButton: _currentPageIndex == 0
-          ? FloatingActionButton(
-              onPressed: () {
-                context.push('/select-new-venue-location');
-              },
-              child: Icon(Icons.add),
-            )
-          : const SizedBox.shrink(),
+      floatingActionButton:
+          _currentPageIndex == NavigationDestinations.venues.index
+              ? FloatingActionButton(
+                  onPressed: () {
+                    context.push('/select-new-venue-location');
+                  },
+                  child: Icon(Icons.add),
+                )
+              : const SizedBox.shrink(),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
     );
