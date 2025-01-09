@@ -9,7 +9,7 @@
 // locate a service:
 //   var service = locate<ServiceType>();
 
-/// A global variable for more readable calls eg. locate<Type>();
+/// `A global variable for more readable calls eg. locate<Type>();`
 final locate = Locator.instance;
 
 /// The singleton Locator class

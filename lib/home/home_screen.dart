@@ -33,15 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
           if (token != null) {
             locate<MessagingService>().storeToken(token);
           }
-        }
-        // If the NotificationsScreen is open we rebuild the screen, in case
-        // there is a new Notification.
-        if (_currentPageIndex == NavigationDestinations.notifications.index) {
-          setState(() {});
-          // Otherwise read the count of unviewed notifications and emit so
-          // the listeners (Notifications badge) can update
-        } else {
-          locate<UserService>().readAndEmitNotificationsViewed();
+
+          // If the NotificationsScreen is open we rebuild the screen, in case
+          // there is a new Notification.
+          if (_currentPageIndex == NavigationDestinations.notifications.index) {
+            setState(() {});
+            // Otherwise read the count of unviewed notifications and emit so
+            // the listeners (Notifications badge) can update
+          } else {
+            locate<UserService>().readAndEmitNotificationsViewed();
+          }
         }
       },
     );
@@ -49,6 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Each time the NotificationsScreen is built (ie. when the user taps
+    // "Notifications") we update the unviewed notifications count for the badge.
+    locate<UserService>().readAndEmitNotificationsViewed();
+
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {

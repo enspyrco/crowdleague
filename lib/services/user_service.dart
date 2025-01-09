@@ -71,24 +71,22 @@ class UserService {
           .doc(id)
           .update({'viewed': viewed});
 
-      int numViewed = await readNotificationsViewed();
+      final aggregateQuery = await _firestore
+          .collection('notifications')
+          .where('viewed', isEqualTo: false)
+          .count()
+          .get();
+
+      int numViewed = aggregateQuery.count ?? 0;
+
       _numNotificationsViewedStreamController.add(numViewed);
     }
-  }
-
-  Future<int> readNotificationsViewed() async {
-    final aggregateQuery = await _firestore
-        .collection('notifications')
-        .where('viewed', isEqualTo: false)
-        .count()
-        .get();
-
-    return aggregateQuery.count ?? 0;
   }
 
   void readAndEmitNotificationsViewed() async {
     final aggregateQuery = await _firestore
         .collection('notifications')
+        .where('playerId', isEqualTo: _auth.currentUser!.uid)
         .where('viewed', isEqualTo: false)
         .count()
         .get();
