@@ -21,7 +21,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: StreamBuilder<List<Notification>>(
-          stream: locate<UserService>().listenToNotifications(),
+          stream: locate<UserService>().notificationsStream(),
           builder: (context, notificatiosnSnapshot) {
             if (notificatiosnSnapshot.hasData) {
               return ListView.builder(
@@ -29,6 +29,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 itemBuilder: (context, index) {
                   final Notification notification =
                       notificatiosnSnapshot.data![index];
+                  if (!notification.viewed) {
+                    locate<UserService>()
+                        .updateNotification(notification.id, viewed: true);
+                  }
                   // TODO: use a pattern here
                   if (notification is CrewRequestNotification) {
                     return CrewRequestNotificationWidget(notification);

@@ -36,8 +36,8 @@ export const crewRequest = onCall(
           viewed: false,
           waiting: false,
         });
-      log('CrewRequestNotification added to notifications/' +
-        `${request.data.requesterId}`);
+      log('CrewRequestNotification added to notifications collection' +
+        `with playerId: ${request.data.requesteeId}`);
 
       // Fetch requestee token
       const tokenDoc = await db

@@ -64,6 +64,7 @@ export const acceptCrewRequest = onCall(
         .update({
           type: 'crew-accepted',
           waiting: false,
+          viewed: false,
         });
       log('Changed the type of the notification to a CrewAcceptedNotification');
 
