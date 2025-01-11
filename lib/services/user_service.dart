@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../notifications/models/notifications.dart';
+import '../utils/globals.dart';
 
 class UserService {
   UserService({
@@ -95,7 +96,7 @@ class UserService {
   }
 
   Future<void> requestCrew({required String playerId}) async {
-    await _cloudFunctions.httpsCallable('crewRequest').call({
+    await _cloudFunctions.httpsCallable('crewRequest$callRegionString').call({
       'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
     });
@@ -110,7 +111,9 @@ class UserService {
         .doc('notifications/$notificationId')
         .set({'waiting': true}, SetOptions(merge: true));
 
-    await _cloudFunctions.httpsCallable('acceptCrewRequest').call({
+    await _cloudFunctions
+        .httpsCallable('acceptCrewRequest$callRegionString')
+        .call({
       'requesterId': requesterId,
       'requesteeId': requesteeId,
       'notificationId': notificationId,
@@ -127,7 +130,7 @@ class UserService {
   }
 
   Future<void> splitCrews(String playerId) async {
-    await _cloudFunctions.httpsCallable('splitCrews').call({
+    await _cloudFunctions.httpsCallable('splitCrews$callRegionString').call({
       'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
     });
