@@ -49,7 +49,7 @@ class _EditNameScreenState extends State<EditNameScreen> {
                   ? context.pushNamed(
                       'edit-profile-pic',
                       pathParameters: {
-                        'onbording': 'true',
+                        'onboarding': 'true',
                       },
                     )
                   : context.pop();

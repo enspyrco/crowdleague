@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../notifications/models/notifications.dart';
 
@@ -25,9 +26,8 @@ class UserService {
 
   /// Check for a saved FCM token, which is the last part of onboarding.
   Future<bool> get userHasOnboarded async {
-    final tokenReference =
-        await _firestore.doc('fcmTokens/${_auth.currentUser!.uid}').get();
-    return tokenReference.data() != null;
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('onboarded') ?? false;
   }
 
   Future<void> updateProfileName(String name) {
