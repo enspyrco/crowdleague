@@ -64,6 +64,6 @@ export const splitCrews = onCall(
 
       return true;
     } catch (e) {
-      throw new HttpsError('unknown', `${e}.`);
+      throw new HttpsError('aborted', `${e}.`);
     }
   });
