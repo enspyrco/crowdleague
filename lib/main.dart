@@ -40,7 +40,7 @@ final _router = GoRouter(
       redirect: (BuildContext context, GoRouterState state) async {
         bool onboarded = await locate<UserService>().userHasOnboarded;
         if (!onboarded) {
-          return '/edit-name';
+          return '/edit-name/onboarding/true';
         } else {
           return null;
         }

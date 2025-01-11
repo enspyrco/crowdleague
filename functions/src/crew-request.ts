@@ -36,8 +36,8 @@ export const crewRequest = onCall(
           viewed: false,
           waiting: false,
         });
-      log('CrewRequestNotification added to notifications collection' +
-        `with playerId: ${request.data.requesteeId}`);
+      log('CrewRequestNotification added to notifications/' +
+        `${request.data.requesterId}`);
 
       // Fetch requestee token
       const tokenDoc = await db
@@ -78,6 +78,6 @@ export const crewRequest = onCall(
 
       return true;
     } catch (e) {
-      throw new HttpsError('unknown', `${e}.`);
+      throw new HttpsError('aborted', `${e}.`);
     }
   });

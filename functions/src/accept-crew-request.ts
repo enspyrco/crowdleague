@@ -1,62 +1,68 @@
 import {onCall, HttpsError} from 'firebase-functions/v2/https';
 import {FieldValue, getFirestore} from 'firebase-admin/firestore';
 import {log} from 'firebase-functions/logger';
+import {getMessaging} from 'firebase-admin/messaging';
+import {getDocumentSnapshot} from './utils';
 
 export const acceptCrewRequest = onCall(
   {cors: true},
   async (request) => {
     try {
+      const db = getFirestore('firestore-usa');
+
       if (!request.auth) {
         throw new HttpsError('unauthenticated', 'request.auth was undefined.');
       }
 
-      const db = getFirestore('firestore-usa');
+      log(`requester: ${request.data.requesterId},` +
+        `requestee: ${request.data.requesteeId}`);
 
-      // Remove the pending member and add the crew member
-      await db.collection('profiles')
-        .doc(`${request.data.requesteeId}`).update({
-          pendingCrewRequests:
-            FieldValue.arrayRemove(request.data.requesterId),
-        });
-      await db.collection('profiles')
-        .doc(`${request.data.requesteeId}`).update({
-          crewIds: FieldValue.arrayUnion(request.data.requesterId),
-        });
-      await db.collection('profiles')
-        .doc(`${request.data.requesterId}`).update({
-          crewIds: FieldValue.arrayUnion(request.data.requesteeId),
-        });
+      // Retrieve FCM tokens
+      const requesterTokenRef = db.collection('fcmTokens')
+        .doc(request.data.requesterId);
+      const requesterSnapshot = await getDocumentSnapshot(requesterTokenRef);
+      if (!requesterSnapshot) {
+        throw new HttpsError('not-found', `fcmToken/${requesterTokenRef.id}` +
+          'data() was undefined.');
+      }
+      const requesteeTokenRef = db.collection('fcmTokens')
+        .doc(request.data.requesteeId);
+      const requesteeSnapshot = await getDocumentSnapshot(requesteeTokenRef);
+      if (!requesteeSnapshot) {
+        throw new HttpsError('not-found', `fcmToken/${requesteeTokenRef.id}` +
+          'data() was undefined.');
+      }
+      const requesterToken = requesterSnapshot.token;
+      const requesteeToken = requesteeSnapshot.token;
+      log(`Retrieved FCM tokens - requester: ${requesterToken},` +
+        `requestee: ${requesteeToken}`);
+
+      // Setup variables for database references
+      const requesteeProfilesRef = db.collection('profiles')
+        .doc(`${request.data.requesteeId}`);
+      const requesterProfilesRef = db.collection('profiles')
+        .doc(`${request.data.requesterId}`);
+
+      // Remove the pending member and add the crew members
+      await requesteeProfilesRef.update({pendingCrewRequests:
+        FieldValue.arrayRemove(request.data.requesterId),
+      });
+      await requesteeProfilesRef.update({
+        crewIds: FieldValue.arrayUnion(request.data.requesterId),
+      });
+      await requesterProfilesRef.update({
+        crewIds: FieldValue.arrayUnion(request.data.requesteeId),
+      });
       log('Removed the pending member and added the crew members');
 
-      // Get the requestee & requester's fcm token
-      const requesterTokenSnapshot = await db.collection('fcmTokens')
-        .doc(`${request.data.requesterId}`).get();
-      const requesteeTokenSnapshot = await db.collection('fcmTokens')
-        .doc(`${request.data.requesteeId}`).get();
-      if (!requesterTokenSnapshot.exists || !requesteeTokenSnapshot.exists) {
-        throw new HttpsError('not-found', 'Token snapshot did not exist.');
-      }
-      const requesterTokenData = requesterTokenSnapshot.data();
-      const requesteeTokenData = requesteeTokenSnapshot.data();
-      if (!requesterTokenData || !requesteeTokenData) {
-        throw new HttpsError('not-found', 'Token snapshot.data() ' +
-          'was undefined.');
-      }
-      log('Got the requester\'s and requestee\'s fcm token');
-
-      // Store the requestee's id and fcm token under followers
-      await db.collection('profiles').doc(request.auth.uid)
-        .set({
-          followerTokens: FieldValue.arrayUnion(requesterTokenData.token),
-        }, {merge: true});
-      log('Stored the requestee\'s id and fcm token under followers');
-
-      // Store the requester's id and fcm token under followers
-      await db.collection('profiles').doc(request.data.requesterId)
-        .set({
-          followerTokens: FieldValue.arrayUnion(requesteeTokenData.token),
-        }, {merge: true});
-      log('Stored the requester\'s id and fcm token under followers');
+      // Store the requester & requestee's fcm token under followers
+      await requesteeProfilesRef.set({
+        followerTokens: FieldValue.arrayUnion(requesterToken),
+      }, {merge: true});
+      await requesterProfilesRef.set({
+        followerTokens: FieldValue.arrayUnion(requesteeToken),
+      }, {merge: true});
+      log('Stored the requester\'s fcm token under followers');
 
       // Change the type of the notification to a CrewAcceptedNotification
       await db
@@ -82,9 +88,40 @@ export const acceptCrewRequest = onCall(
           waiting: false,
         });
       log('CrewAcceptedNotification added to notifications/' +
-      `${request.data.requesterId}`);
+        `${request.data.requesterId}`);
+
+      // Fetch the requester's & requestee's profile
+      const requesterProfileSnapshot =
+        await getDocumentSnapshot(requesterProfilesRef);
+      const requesteeProfileSnapshot =
+        await getDocumentSnapshot(requesteeProfilesRef);
+      log('Retrieved the requester\'s & requestee\'s profile snapshots');
+
+      // Send an FCM message to the requestee with requester's name
+      const requesterMessage = {
+        notification: {
+          title: 'Your crew is growing',
+          body: `${requesterProfileSnapshot?.name} is now part of your crew.`,
+        },
+        token: requesteeToken,
+      };
+      const requesteresponse = await getMessaging().send(requesterMessage);
+      log(`Successfully sent message to ${request.data.requesterId} :`,
+        requesteresponse);
+
+      // Send an FCM message to the requester with requestee's name
+      const requesteeMessage = {
+        notification: {
+          title: 'Your crew is growing',
+          body: `${requesteeProfileSnapshot?.name} is now part of your crew.`,
+        },
+        token: requesterToken,
+      };
+      const requesteeResponse = await getMessaging().send(requesteeMessage);
+      log(`Successfully sent message to ${request.data.requesteeId} :`,
+        requesteeResponse);
     } catch (e) {
-      throw new HttpsError('unknown', `${e}`);
+      throw new HttpsError('aborted', `${e}`);
     }
 
     return true;

@@ -28,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // token.
     _lifecycleListener = AppLifecycleListener(
       onStateChange: (lifecycleState) async {
-        if (lifecycleState == AppLifecycleState.resumed) {
+        final onboarded = await locate<UserService>().userHasOnboarded;
+        if (lifecycleState == AppLifecycleState.resumed && onboarded) {
           String? token = await locate<MessagingService>().getToken();
           if (token != null) {
             locate<MessagingService>().storeToken(token);
