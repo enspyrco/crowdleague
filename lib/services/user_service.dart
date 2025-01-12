@@ -96,9 +96,10 @@ class UserService {
   }
 
   Future<void> requestCrew({required String playerId}) async {
-    await _cloudFunctions.httpsCallable('crewRequest$callPostfix').call({
+    await _cloudFunctions.httpsCallable('crewRequest').call({
       'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
+      'dbName': dbName,
     });
   }
 
@@ -111,10 +112,11 @@ class UserService {
         .doc('notifications/$notificationId')
         .set({'waiting': true}, SetOptions(merge: true));
 
-    await _cloudFunctions.httpsCallable('acceptCrewRequest$callPostfix').call({
+    await _cloudFunctions.httpsCallable('acceptCrewRequest').call({
       'requesterId': requesterId,
       'requesteeId': requesteeId,
       'notificationId': notificationId,
+      'dbName': dbName,
     });
   }
 
@@ -128,9 +130,10 @@ class UserService {
   }
 
   Future<void> splitCrews(String playerId) async {
-    await _cloudFunctions.httpsCallable('splitCrews$callPostfix').call({
+    await _cloudFunctions.httpsCallable('splitCrews').call({
       'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
+      'dbName': dbName,
     });
   }
 }
