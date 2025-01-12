@@ -6,7 +6,7 @@ import {CallableRequest, HttpsError, onCall} from 'firebase-functions/v2/https';
 export const crewRequestRel = onCall(
   {
     cors: true,
-    region: 'australia-southeast2',
+    region: 'australia-southeast1',
   },
   async (request) => {
     await crewRequest('(default)', request);

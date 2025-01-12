@@ -129,7 +129,9 @@ void main() async {
           bucket: 'gs://crowdleague-project.firebasestorage.app');
   final firebaseAuth = FirebaseAuth.instance;
   final messaging = FirebaseMessaging.instance;
-  final cloudFunctions = FirebaseFunctions.instance;
+  final cloudFunctions = (kReleaseMode)
+      ? FirebaseFunctions.instanceFor(region: 'australia-southeast1')
+      : FirebaseFunctions.instanceFor(region: 'us-central1');
 
   // The services make up the repositories layer of the "data layer architecture"
   Locator.add<MessagingService>(MessagingService(
