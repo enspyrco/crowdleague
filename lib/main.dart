@@ -130,7 +130,7 @@ void main() async {
   final firebaseAuth = FirebaseAuth.instance;
   final messaging = FirebaseMessaging.instance;
   final cloudFunctions = (kReleaseMode)
-      ? FirebaseFunctions.instanceFor(region: 'australia-southeast1')
+      ? FirebaseFunctions.instanceFor(region: 'australia-southeast2')
       : FirebaseFunctions.instanceFor(region: 'us-central1');
 
   // The services make up the repositories layer of the "data layer architecture"

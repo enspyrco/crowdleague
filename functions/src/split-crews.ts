@@ -5,7 +5,7 @@ import {HttpsError, onCall} from 'firebase-functions/v2/https';
 export const splitCrews = onCall(
   {
     cors: true,
-    region: ['australia-southeast1', 'us-central1'],
+    region: ['australia-southeast2', 'us-central1'],
   },
   async (request) => {
     try {

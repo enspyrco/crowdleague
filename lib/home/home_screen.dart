@@ -27,9 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // On resume, check for unviewed Notificaatios and store the latest FCM
     // token.
     _lifecycleListener = AppLifecycleListener(
-      onStateChange: (lifecycleState) async {
+      onResume: () async {
         final onboarded = await locate<UserService>().userHasOnboarded;
-        if (lifecycleState == AppLifecycleState.resumed && onboarded) {
+        if (onboarded) {
           String? token = await locate<MessagingService>().getToken();
           if (token != null) {
             locate<MessagingService>().storeToken(token);
