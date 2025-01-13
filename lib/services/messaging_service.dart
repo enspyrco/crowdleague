@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart' as fbm;
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../notifications/enums/authorization_status.dart';
 import '../utils/locator.dart';
@@ -17,8 +18,8 @@ class MessagingService {
   })  : _firestore = firestore,
         _auth = firebaseAuth,
         _messaging = messaging {
-    _messaging.onTokenRefresh.listen((fcmToken) {
-      storeToken(fcmToken);
+    _messaging.onTokenRefresh.listen((_) {
+      checkAndUpdateFcmTokenIfFresh();
     }).onError((err) {
       throw 'Error getting token: $err';
     });
@@ -40,6 +41,7 @@ class MessagingService {
   final fbm.FirebaseMessaging _messaging;
   fbm.NotificationSettings? _notificationSettings;
 
+  /// Asks for permission, stores a new token if the token is fresh
   Future<void> init() async {
     // You may set the permission requests to "provisional" which allows the user to choose what type
     // of notifications they would like to receive once the user receives a notification.
@@ -54,7 +56,7 @@ class MessagingService {
       final int maxTries = 20;
       for (counter = 0; counter < maxTries; counter++) {
         if (apnsToken == null) {
-          Future.delayed(Duration(milliseconds: 100));
+          await Future.delayed(Duration(milliseconds: 100));
           apnsToken = await fbm.FirebaseMessaging.instance.getAPNSToken();
         } else {
           break;
@@ -65,6 +67,7 @@ class MessagingService {
       }
     }
     // APNS token is available, we can make FCM plugin API requests...
+    checkAndUpdateFcmTokenIfFresh();
   }
 
   AuthorizationStatus getAuthorizatinStatus() {
@@ -82,14 +85,26 @@ class MessagingService {
     }
   }
 
-  Future<void> storeToken(String token) {
-    return _firestore
-        .collection('fcmTokens')
-        .doc(_auth.currentUser!.uid)
-        .set({'token': token});
-  }
+  Future<void> checkAndUpdateFcmTokenIfFresh() async {
+    // Get a token from the SDK
+    String? token = await _messaging.getToken();
 
-  Future<String?> getToken() {
-    return _messaging.getToken();
+    if (_auth.currentUser == null || token == null) {
+      return;
+    }
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? oldToken = prefs.getString('oldFcmToken');
+    if (oldToken != token && oldToken != null && _auth.currentUser != null) {
+      // If token is fresh, update the relevant doc and set shared preferences.
+      // A cloud function reacts to the doc update and updates the token everywhere.
+
+      await _firestore
+          .collection('fcmTokens')
+          .doc(_auth.currentUser!.uid)
+          .set({'token': token}, SetOptions(merge: true));
+
+      await prefs.setString('oldFcmToken', token);
+    }
   }
 }

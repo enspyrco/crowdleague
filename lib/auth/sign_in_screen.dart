@@ -1,3 +1,4 @@
+import 'package:crowdleague/services/messaging_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,19 +17,25 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   bool isSigningIn = false;
 
-  Future<void> signInWithApple(BuildContext context) async {
+  Future<void> _signInWithApple(BuildContext context) async {
     setState(() {
       isSigningIn = true;
     });
     await locate<UserAuthService>().signInWithApple();
+    // We have just signed in so we check if we need to store a new token, in
+    // case onTokenRefresh was called before the user signed in.
+    await locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
     if (context.mounted) context.pushReplacement('/');
   }
 
-  Future<void> signInWithGoogle(BuildContext context) async {
+  Future<void> _signInWithGoogle(BuildContext context) async {
     setState(() {
       isSigningIn = true;
     });
     await locate<UserAuthService>().signInWithGoogle();
+    // We have just signed in so we check if we need to store a new token, in
+    // case onTokenRefresh was called before the user signed in.
+    await locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
     if (context.mounted) context.pushReplacement('/');
   }
 
@@ -50,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           CustomIcons.apple,
                           size: 16,
                         ),
-                        onPressed: () => signInWithApple(context),
+                        onPressed: () => _signInWithApple(context),
                         label: const Text('Sign in with Apple'),
                         style: const ButtonStyle(
                           foregroundColor: WidgetStatePropertyAll(Colors.white),
@@ -76,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           height: 24,
                         ),
                         onPressed: () {
-                          signInWithGoogle(context);
+                          _signInWithGoogle(context);
                         },
                         label: const Text('Sign in with Google'),
                         style: ButtonStyle(

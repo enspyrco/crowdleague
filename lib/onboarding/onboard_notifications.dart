@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,17 +14,13 @@ class OnboardNotifications extends StatefulWidget {
 
 class _OnboardNotificationsState extends State<OnboardNotifications> {
   Future<void> _getAToken(BuildContext context) async {
+    // Asks for permission, stores a new token if the token is fresh
     await locate<MessagingService>().init();
-    String? token = await locate<MessagingService>().getToken();
-    if (token == null) {
-      log('FCM Token was null');
-    } else {
-      await locate<MessagingService>().storeToken(token);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('onboarded', true);
-      if (context.mounted) {
-        context.go('/');
-      }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarded', true);
+    if (context.mounted) {
+      context.go('/');
     }
   }
 
