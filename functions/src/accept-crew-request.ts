@@ -7,7 +7,7 @@ import {getDocumentSnapshot} from './utils';
 export const acceptCrewRequest = onCall(
   {
     cors: true,
-    region: ['australia-southeast1', 'us-central1'],
+    region: ['australia-southeast2', 'us-central1'],
   },
   async (request) => {
     try {
