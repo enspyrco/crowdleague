@@ -108,9 +108,15 @@ export const acceptCrewRequest = onCall(
         },
         token: requesteeToken,
       };
-      const requesteresponse = await getMessaging().send(requesterMessage);
-      log(`Successfully sent message to ${request.data.requesterId} :`,
-        requesteresponse);
+      try {
+        // Don't remove old tokens as we rely on them to find profiles that need
+        // updating when a token refresh occurs on the client and we update the
+        // fcmTokens/{playerId} doc
+        await getMessaging().send(requesterMessage);
+        log(`Successfully sent message to: ${request.data.requesterId}`);
+      } catch (error) {
+        console.log(error);
+      }
 
       // Send an FCM message to the requester with requestee's name
       const requesteeMessage = {
@@ -120,9 +126,15 @@ export const acceptCrewRequest = onCall(
         },
         token: requesterToken,
       };
-      const requesteeResponse = await getMessaging().send(requesteeMessage);
-      log(`Successfully sent message to ${request.data.requesteeId} :`,
-        requesteeResponse);
+      try {
+        // Don't remove old tokens as we rely on them to find profiles that need
+        // updating when a token refresh occurs on the client and we update the
+        // fcmTokens/{playerId} doc
+        await getMessaging().send(requesteeMessage);
+        log(`Successfully sent message to: ${request.data.requesterId}`);
+      } catch (error) {
+        console.log(error);
+      }
     } catch (e) {
       throw new HttpsError('aborted', `${e}`);
     }

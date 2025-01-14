@@ -28,22 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
     // token.
     _lifecycleListener = AppLifecycleListener(
       onResume: () async {
-        final onboarded = await locate<UserService>().userHasOnboarded;
-        if (onboarded) {
-          String? token = await locate<MessagingService>().getToken();
-          if (token != null) {
-            locate<MessagingService>().storeToken(token);
-          }
-
-          // If the NotificationsScreen is open we rebuild the screen, in case
-          // there is a new Notification.
-          if (_currentPageIndex == NavigationDestinations.notifications.index) {
-            setState(() {});
-            // Otherwise read the count of unviewed notifications and emit so
-            // the listeners (Notifications badge) can update
-          } else {
-            locate<UserService>().readAndEmitNotificationsViewed();
-          }
+        locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
+        // If the NotificationsScreen is open we rebuild the screen, in case
+        // there is a new Notification.
+        if (_currentPageIndex == NavigationDestinations.notifications.index) {
+          setState(() {});
+          // Otherwise read the count of unviewed notifications and emit so
+          // the listeners (Notifications badge) can update
+        } else {
+          locate<UserService>().readAndEmitNotificationsViewed();
         }
       },
     );

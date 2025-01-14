@@ -53,7 +53,7 @@ class UserAuthService {
     return _auth.currentUser?.uid;
   }
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
@@ -62,12 +62,13 @@ class UserAuthService {
       idToken: googleAuth?.idToken,
     );
 
-    return _auth.signInWithCredential(credential);
+    final _ = await _auth.signInWithCredential(credential);
   }
 
-  Future<UserCredential> signInWithApple() {
+  Future<void> signInWithApple() async {
     final provider = AppleAuthProvider();
-    return _auth.signInWithProvider(provider);
+
+    final _ = _auth.signInWithProvider(provider);
   }
 
   Future<void> signOut() async {

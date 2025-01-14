@@ -76,8 +76,15 @@ export const crewRequest = onCall(
         },
         token: tokenData?.token,
       };
-      const response = await getMessaging().send(message);
-      log('Successfully sent message:', response);
+      try {
+        // Don't remove old tokens as we rely on them to find profiles that need
+        // updating when a token refresh occurs on the client and we update the
+        // fcmTokens/{playerId} doc
+        await getMessaging().send(message);
+        log(`Successfully sent message to: ${request.data.requesterId}`);
+      } catch (error) {
+        console.log(error);
+      }
     } catch (e) {
       throw new HttpsError('aborted', `${e}.`);
     }
