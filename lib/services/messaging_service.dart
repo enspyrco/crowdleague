@@ -95,7 +95,7 @@ class MessagingService {
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? oldToken = prefs.getString('oldFcmToken');
-    if (oldToken != token && oldToken != null && _auth.currentUser != null) {
+    if (oldToken != token && _auth.currentUser != null) {
       // If token is fresh, update the relevant doc and set shared preferences.
       // A cloud function reacts to the doc update and updates the token everywhere.
 
