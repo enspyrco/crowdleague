@@ -12,7 +12,7 @@ export const updateTokensEverywhereAus = onDocumentUpdated({
   region: 'australia-southeast2',
 },
 async (event) => {
-  return updateTokensEverywhere(event, 'australia-southeast2');
+  return updateTokensEverywhere(event, '(default)');
 });
 
 export const updateTokensEverywhereUsa = onDocumentUpdated({
@@ -21,7 +21,7 @@ export const updateTokensEverywhereUsa = onDocumentUpdated({
   region: 'us-central1',
 },
 async (event) => {
-  return updateTokensEverywhere(event, '(default)');
+  return updateTokensEverywhere(event, 'firestore-usa');
 });
 
 /**
@@ -45,6 +45,8 @@ async function updateTokensEverywhere(
 
   const oldToken = beforeData.token;
   const newToken = afterData.token;
+
+  console.log(`Before: ${beforeData.token}\nAfter: ${afterData.token}`);
 
   // Exit if token hasn't changed
   if (oldToken === newToken) {
