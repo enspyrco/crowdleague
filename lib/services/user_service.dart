@@ -41,7 +41,7 @@ class UserService {
     final querySnapshot = await _firestore
         .collection('notifications')
         .where('playerId', isEqualTo: _auth.currentUser!.uid)
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .get();
     return querySnapshot.docs.map<Notification>((snapshot) {
       final json = snapshot.data();
@@ -54,7 +54,7 @@ class UserService {
     return _firestore
         .collection('notifications')
         .where('playerId', isEqualTo: _auth.currentUser!.uid)
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .snapshots()
         .map<List<Notification>>((querySnapshot) {
       return querySnapshot.docs.map<Notification>((docSnapshot) {
