@@ -16,6 +16,8 @@ class PlayersService {
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
 
+  final Map<String, Uint8List?> _imagesCache = {};
+
   Future<List<Player>> getPlayers() async {
     final docsSnapshot = await _firestore.collection('profiles').get();
     return docsSnapshot.docs.map<Player>((snapshot) {
@@ -47,9 +49,17 @@ class PlayersService {
     });
   }
 
-  Future<Uint8List?> retrieveProfilePic(String playerId, PicSize picSize) {
-    return (picSize == PicSize.small)
-        ? _storage.ref('profilePics/${playerId}_small').getData()
-        : _storage.ref('profilePics/${playerId}_large').getData();
+  Future<Uint8List?> retrieveProfilePic(
+      String playerId, PicSize picSize) async {
+    final String picUriString;
+    if (picSize == PicSize.small) {
+      picUriString = 'profilePics/${playerId}_small';
+    } else {
+      picUriString = 'profilePics/${playerId}_large';
+    }
+    if (!_imagesCache.containsKey(picUriString)) {
+      _imagesCache[picUriString] = await _storage.ref(picUriString).getData();
+    }
+    return Future.value(_imagesCache[picUriString]);
   }
 }
