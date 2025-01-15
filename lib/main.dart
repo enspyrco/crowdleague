@@ -184,6 +184,10 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
             fontFamily: 'Raleway',
             fontSize: 18,
           ),
+          displaySmall: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 14,
+          ),
         ),
       ),
       darkTheme: ThemeData.dark().copyWith(
@@ -199,6 +203,10 @@ class _CrowdLeagueAppState extends State<CrowdLeagueApp> {
           displayMedium: TextStyle(
             fontFamily: 'Raleway',
             fontSize: 18,
+          ),
+          displaySmall: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 14,
           ),
         ),
       ),

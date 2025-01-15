@@ -22,11 +22,19 @@ class PlayerProfileScreen extends StatefulWidget {
 
 class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   bool _owner = false; // if the profile is the user's profile
+  bool _localPending = false;
 
   @override
   void initState() {
     super.initState();
     _owner = widget._playerId == locate<UserAuthService>().currentUserId!;
+  }
+
+  Future<void> splitCrewsCallback() async {
+    await locate<UserService>().splitCrews(widget._playerId);
+    setState(() {
+      _localPending = false;
+    });
   }
 
   @override
@@ -37,7 +45,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
           stream: locate<PlayersService>().listenToPlayer(widget._playerId),
           builder: (context, snapshot) {
             final Player player = snapshot.data ?? EmptyPlayer();
-            final pending = player.pendingCrewRequests
+            final bool pending = player.pendingCrewRequests
                 .contains(locate<UserAuthService>().currentUserId!);
             final crew = player.crewIds
                 .contains(locate<UserAuthService>().currentUserId!);
@@ -93,22 +101,44 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           if (!_owner && !crew)
-                            TextButton(
-                              onPressed: pending
-                                  ? null
-                                  : () => locate<UserService>()
-                                      .requestCrew(playerId: widget._playerId),
-                              child: pending
-                                  ? Text('Pending...')
-                                  : Text('Join Crews'),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: OutlinedButton(
+                                onPressed: pending || _localPending
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          _localPending = true;
+                                        });
+                                        locate<UserService>().requestCrew(
+                                            playerId: widget._playerId);
+                                      },
+                                child: pending || _localPending
+                                    ? Text(
+                                        'Pending...',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!,
+                                      )
+                                    : Text(
+                                        'Join Crew',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!,
+                                      ),
+                              ),
                             ),
                           if (!_owner && crew)
-                            CrewMenuButton(playerId: player.id),
+                            CrewMenuButton(callback: splitCrewsCallback),
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: Text('Crew Members'),
+                        padding: const EdgeInsets.only(
+                            left: 8.0, top: 20, bottom: 20),
+                        child: Text(
+                          'Crew Members',
+                          style: Theme.of(context).textTheme.displaySmall!,
+                        ),
                       ),
                       SizedBox(
                         height: 60,

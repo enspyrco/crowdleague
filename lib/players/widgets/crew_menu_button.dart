@@ -1,11 +1,9 @@
-import 'package:crowdleague/services/user_service.dart';
-import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
 
 class CrewMenuButton extends StatefulWidget {
-  const CrewMenuButton({required this.playerId, super.key});
+  const CrewMenuButton({required this.callback, super.key});
 
-  final String playerId;
+  final Function callback;
 
   @override
   State<CrewMenuButton> createState() => _CrewMenuButtonState();
@@ -27,17 +25,23 @@ class _CrewMenuButtonState extends State<CrewMenuButton> {
       menuChildren: <Widget>[
         MenuItemButton(
           onPressed: () {
-            locate<UserService>().splitCrews(widget.playerId);
+            widget.callback();
           },
-          child: const Text('Split your crews'),
+          child: Text(
+            'Split your crews',
+            style: Theme.of(context).textTheme.displaySmall!,
+          ),
         ),
         MenuItemButton(
           onPressed: () {},
-          child: const Text('Unfollow'),
+          child: Text(
+            'Unfollow',
+            style: Theme.of(context).textTheme.displaySmall!,
+          ),
         ),
       ],
       builder: (_, MenuController controller, Widget? child) {
-        return TextButton(
+        return TextButton.icon(
           focusNode: _buttonFocusNode,
           onPressed: () {
             if (controller.isOpen) {
@@ -46,7 +50,11 @@ class _CrewMenuButtonState extends State<CrewMenuButton> {
               controller.open();
             }
           },
-          child: Text('Part of your crew'),
+          icon: Icon(Icons.arrow_drop_down),
+          label: Text(
+            'Part of your crew',
+            style: Theme.of(context).textTheme.displaySmall!,
+          ),
         );
       },
     );
