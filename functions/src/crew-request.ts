@@ -72,7 +72,7 @@ export const crewRequest = onCall(
       const message = {
         notification: {
           title: 'Expand your crew?',
-          body: `${profileData?.name} wants to join crews`,
+          body: `${profileData?.name} wants to join your crew`,
         },
         token: tokenData?.token,
       };
