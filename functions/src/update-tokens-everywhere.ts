@@ -12,7 +12,7 @@ export const updateTokensEverywhereAus = onDocumentUpdated({
   region: 'australia-southeast2',
 },
 async (event) => {
-  updateTokensEverywhere(event, 'australia-southeast2');
+  return updateTokensEverywhere(event, '(default)');
 });
 
 export const updateTokensEverywhereUsa = onDocumentUpdated({
@@ -21,7 +21,7 @@ export const updateTokensEverywhereUsa = onDocumentUpdated({
   region: 'us-central1',
 },
 async (event) => {
-  updateTokensEverywhere(event, '(default)');
+  return updateTokensEverywhere(event, 'firestore-usa');
 });
 
 /**
@@ -29,7 +29,7 @@ async (event) => {
  * @param {FirestoreEvent<Change<QueryDocumentSnapshot> |
  *    undefined, {playerId: string}>} event
  * @param {string} dbName,
- * @return {Promise}
+ * @return {Promise<null>}
  */
 async function updateTokensEverywhere(
   event : FirestoreEvent<Change<QueryDocumentSnapshot> | undefined,
@@ -45,6 +45,8 @@ async function updateTokensEverywhere(
 
   const oldToken = beforeData.token;
   const newToken = afterData.token;
+
+  console.log(`Before: ${beforeData.token}\nAfter: ${afterData.token}`);
 
   // Exit if token hasn't changed
   if (oldToken === newToken) {
@@ -62,19 +64,22 @@ async function updateTokensEverywhere(
     if (snapshot.empty) {
       console.log('No documents found containing the old token');
       return null;
+    } else {
+      console.log('Got a snapshot of followers that have the old token.');
     }
 
     // Batch updates for better performance and atomicity
     const batch = getFirestore(dbName).batch();
+    console.log('Got a batch object from firestore.');
 
     for (const doc of snapshot.docs) {
       // Update the token in the list
       batch.update(doc.ref, {followerTokens: FieldValue.arrayRemove(oldToken)});
       batch.update(doc.ref, {followerTokens: FieldValue.arrayUnion(newToken)});
     }
+    console.log('Added updates to batch.');
 
     await batch.commit();
-
     console.log(`Successfully updated ${snapshot.size} documents`);
   } catch (error) {
     console.error('Error updating tokens:', error);
