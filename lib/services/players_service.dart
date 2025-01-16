@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,6 +18,7 @@ class PlayersService {
   final FirebaseStorage _storage;
 
   final Map<String, Uint8List?> _imagesCache = {};
+  final Map<String, Player?> _playersCache = {};
 
   Future<List<Player>> getPlayers() async {
     final docsSnapshot = await _firestore.collection('profiles').get();
@@ -28,12 +30,15 @@ class PlayersService {
   }
 
   Future<Player?> getPlayer(String playerId) async {
-    final reference =
-        await _firestore.collection('profiles').doc(playerId).get();
-    final json = reference.data();
-    if (json == null) return null;
-    json['id'] = reference.id;
-    return Player.fromJson(json);
+    if (!_playersCache.containsKey(playerId)) {
+      final reference =
+          await _firestore.collection('profiles').doc(playerId).get();
+      final json = reference.data();
+      if (json == null) return null;
+      json['id'] = reference.id;
+      _playersCache[playerId] = Player.fromJson(json);
+    }
+    return Future.value(_playersCache[playerId]);
   }
 
   Stream<Player?> listenToPlayer(String playerId) {
