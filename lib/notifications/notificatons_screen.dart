@@ -25,6 +25,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           builder: (context, notificatiosnSnapshot) {
             if (notificatiosnSnapshot.hasData) {
               return ListView.builder(
+                prototypeItem: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: 80),
+                  child: Container(),
+                ),
                 itemCount: notificatiosnSnapshot.data!.length,
                 itemBuilder: (context, index) {
                   final Notification notification =
