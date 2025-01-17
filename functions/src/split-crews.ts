@@ -18,27 +18,11 @@ export const splitCrews = onCall(
       log(`requesteeId = ${request.data.requesteeId}, ` +
         `requesterId = ${request.data.requesterId}`);
 
-      // Get the requestee & requester's fcm token
-      const requesterTokenSnapshot = await db.collection('fcmTokens')
-        .doc(`${request.data.requesterId}`).get();
-      const requesteeTokenSnapshot = await db.collection('fcmTokens')
-        .doc(`${request.data.requesteeId}`).get();
-      if (!requesterTokenSnapshot.exists || !requesteeTokenSnapshot.exists) {
-        throw new HttpsError('not-found', 'Token snapshot did not exist.');
-      }
-      const requesterTokenData = requesterTokenSnapshot.data();
-      const requesteeTokenData = requesteeTokenSnapshot.data();
-      if (!requesterTokenData || !requesteeTokenData) {
-        throw new HttpsError('not-found', 'Token snapshot.data() ' +
-          'was undefined.');
-      }
-      log('Got the requester\'s and requestee\'s fcm token');
-
-      // Remove the requester's crew id and fcm token as followers
+      // Remove the requester's crew id any follower id
       await db.collection('profiles').doc(request.data.requesteeId)
         .set({
           crewIds: FieldValue.arrayRemove(request.data.requesterId),
-          followerTokens: FieldValue.arrayRemove(requesterTokenData.token),
+          followerIds: FieldValue.arrayRemove(request.data.requesterId),
         }, {merge: true});
       log('Removed the requester\'s crew id and fcm token as followers');
 
@@ -46,7 +30,7 @@ export const splitCrews = onCall(
       await db.collection('profiles').doc(request.data.requesterId)
         .set({
           crewIds: FieldValue.arrayRemove(request.data.requesteeId),
-          followerTokens: FieldValue.arrayRemove(requesteeTokenData.token),
+          followerIds: FieldValue.arrayRemove(request.data.requesteeId),
         }, {merge: true});
       log('Removed the requestee\'s crew id and fcm token as followers');
 

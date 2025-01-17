@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:crowdleague/conversations/messages_screen.dart';
+import 'package:crowdleague/services/conversations_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -100,6 +102,13 @@ final _router = GoRouter(
         playerId: state.pathParameters['id']!,
       ),
     ),
+    GoRoute(
+      name: 'conversation',
+      path: '/conversation/:id',
+      builder: (context, state) => MessagesScreen(
+        conversationId: state.pathParameters['id']!,
+      ),
+    ),
   ],
 );
 
@@ -134,6 +143,11 @@ void main() async {
       : FirebaseFunctions.instanceFor(region: 'us-central1');
 
   // The services make up the repositories layer of the "data layer architecture"
+  Locator.add<ConversationsService>(ConversationsService(
+    firestore: firestore,
+    firebaseAuth: firebaseAuth,
+    cloudFunctions: cloudFunctions,
+  ));
   Locator.add<MessagingService>(MessagingService(
     firestore: firestore,
     firebaseAuth: firebaseAuth,
