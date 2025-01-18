@@ -15,6 +15,16 @@ class Message {
   final int timestamp;
   final List<String> readBy;
 
+  factory Message.fromJsonWithId(String id, Map<String, dynamic> json) {
+    return Message(
+      id: id,
+      value: json['value'] as String,
+      senderId: json['senderId'] as String,
+      timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
+      readBy: List<String>.from(json['readBy'] as List),
+    );
+  }
+
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       id: json['id'],

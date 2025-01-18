@@ -96,9 +96,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 ),
                 IconButton(
                     onPressed: () {
-                      locate<ConversationsService>()
-                          .sendMessage(widget.conversationId, _controller.text);
-                      _controller.clear();
+                      if (_controller.text.isNotEmpty) {
+                        locate<ConversationsService>().sendMessage(
+                            widget.conversationId, _controller.text);
+                        _controller.clear();
+                      }
                     },
                     icon: Icon(Icons.arrow_upward_rounded))
               ],
