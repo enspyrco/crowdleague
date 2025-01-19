@@ -11,14 +11,17 @@ class PlayersService {
   PlayersService({
     required FirebaseFirestore firestore,
     required FirebaseStorage storage,
+    required Map<String, Player> playerCache,
+    required Map<String, Uint8List> imageCache,
   })  : _firestore = firestore,
-        _storage = storage;
+        _storage = storage,
+        _playerCache = playerCache,
+        _imageCache = imageCache;
 
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
-
-  final Map<String, Uint8List?> _imagesCache = {};
-  final Map<String, Player?> _playersCache = {};
+  final Map<String, Player> _playerCache;
+  final Map<String, Uint8List> _imageCache;
 
   Future<List<Player>> getPlayers() async {
     final docsSnapshot = await _firestore.collection('profiles').get();
@@ -30,15 +33,15 @@ class PlayersService {
   }
 
   Future<Player?> getPlayer(String playerId) async {
-    if (!_playersCache.containsKey(playerId)) {
+    if (!_playerCache.containsKey(playerId)) {
       final reference =
           await _firestore.collection('profiles').doc(playerId).get();
       final json = reference.data();
       if (json == null) return null;
       json['id'] = reference.id;
-      _playersCache[playerId] = Player.fromJson(json);
+      _playerCache[playerId] = Player.fromJson(json);
     }
-    return Future.value(_playersCache[playerId]);
+    return Future.value(_playerCache[playerId]);
   }
 
   Stream<Player?> listenToPlayer(String playerId) {
@@ -62,9 +65,10 @@ class PlayersService {
     } else {
       picUriString = 'profilePics/${playerId}_large';
     }
-    if (!_imagesCache.containsKey(picUriString)) {
-      _imagesCache[picUriString] = await _storage.ref(picUriString).getData();
+    if (!_imageCache.containsKey(picUriString)) {
+      _imageCache[picUriString] =
+          await _storage.ref(picUriString).getData() ?? Uint8List(0);
     }
-    return Future.value(_imagesCache[picUriString]);
+    return Future.value(_imageCache[picUriString]);
   }
 }

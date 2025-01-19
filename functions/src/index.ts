@@ -5,4 +5,4 @@ admin.initializeApp();
 export * from './crew-request';
 export * from './accept-crew-request';
 export * from './split-crews';
-export * from './update-tokens-everywhere';
+export * from './send-message-to-participants';

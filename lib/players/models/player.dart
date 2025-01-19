@@ -32,6 +32,18 @@ class Player {
     );
   }
 
+  factory Player.fromJsonWithId(String id, Map<String, dynamic> json) {
+    return Player(
+      id: id,
+      name: json['name'],
+      pendingCrewRequests: (json['pendingCrewRequests'] == null)
+          ? []
+          : List<String>.from(json['pendingCrewRequests']),
+      crewIds:
+          (json['crewIds'] == null) ? [] : List<String>.from(json['crewIds']),
+    );
+  }
+
   @override
   String toString() {
     return 'Player{id: $id, name: $name, pendingCrewRequests: $pendingCrewRequests}';

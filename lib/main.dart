@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:crowdleague/conversations/messages_screen.dart';
+import 'package:crowdleague/services/conversations_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,6 +18,7 @@ import 'onboarding/edit_name_screen.dart';
 import 'onboarding/onboard_notifications.dart';
 import 'onboarding/edit_profile_pic_screen.dart';
 import 'players/find_players_screen.dart';
+import 'players/models/player.dart';
 import 'players/player_profile_screen.dart';
 import 'services/geo_location_service.dart';
 import 'services/images_service.dart';
@@ -100,6 +103,13 @@ final _router = GoRouter(
         playerId: state.pathParameters['id']!,
       ),
     ),
+    GoRoute(
+      name: 'conversation',
+      path: '/conversation/:id',
+      builder: (context, state) => MessagesScreen(
+        conversationId: state.pathParameters['id']!,
+      ),
+    ),
   ],
 );
 
@@ -127,33 +137,49 @@ void main() async {
       ? FirebaseStorage.instanceFor(bucket: 'gs://crowdleague-project-aus')
       : FirebaseStorage.instanceFor(
           bucket: 'gs://crowdleague-project.firebasestorage.app');
-  final firebaseAuth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   final messaging = FirebaseMessaging.instance;
   final cloudFunctions = (kReleaseMode)
       ? FirebaseFunctions.instanceFor(region: 'australia-southeast2')
       : FirebaseFunctions.instanceFor(region: 'us-central1');
 
+  // Create caches for frequently retrieved objects
+  final Map<String, Uint8List> imageCache = {};
+  final Map<String, Player> playerCache = {};
+
   // The services make up the repositories layer of the "data layer architecture"
+  Locator.add<ConversationsService>(ConversationsService(
+    firestore: firestore,
+    auth: auth,
+    cloudFunctions: cloudFunctions,
+    imageCache: imageCache,
+    playerCache: playerCache,
+    storage: storage,
+  ));
   Locator.add<MessagingService>(MessagingService(
     firestore: firestore,
-    firebaseAuth: firebaseAuth,
+    firebaseAuth: auth,
     messaging: messaging,
   ));
   Locator.add<GeoLocationService>(GeoLocationService());
   Locator.add<UserService>(UserService(
       cloudFunctions: cloudFunctions,
-      firebaseAuth: firebaseAuth,
+      firebaseAuth: auth,
       firestore: firestore));
   Locator.add<UserAuthService>(UserAuthService(
-    firebaseAuth: firebaseAuth,
+    firebaseAuth: auth,
     firestore: firestore,
   ));
-  Locator.add<PlayersService>(
-      PlayersService(firestore: firestore, storage: storage));
+  Locator.add<PlayersService>(PlayersService(
+    firestore: firestore,
+    storage: storage,
+    playerCache: playerCache,
+    imageCache: imageCache,
+  ));
   Locator.add<VenuesService>(
       VenuesService(firestore: firestore, storage: storage));
   Locator.add<ImagesService>(
-      ImagesService(storage: storage, firebaseAuth: firebaseAuth));
+      ImagesService(storage: storage, firebaseAuth: auth));
 
   runApp(const CrowdLeagueApp());
 }

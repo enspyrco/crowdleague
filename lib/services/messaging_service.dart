@@ -7,8 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../notifications/enums/authorization_status.dart';
-import '../utils/locator.dart';
-import 'user_service.dart';
 
 class MessagingService {
   MessagingService({
@@ -31,7 +29,6 @@ class MessagingService {
       if (message.notification != null) {
         print(
             'Message also contained a notification: ${jsonEncode(message.notification?.toMap())}');
-        locate<UserService>().readAndEmitNotificationsViewed();
       }
     });
   }

@@ -58,14 +58,14 @@ export const acceptCrewRequest = onCall(
       });
       log('Removed the pending member and added the crew members');
 
-      // Store the requester & requestee's fcm token under followers
+      // Store the requester & requestee's ids under followers
       await requesteeProfilesRef.set({
-        followerTokens: FieldValue.arrayUnion(requesterToken),
+        followerIds: FieldValue.arrayUnion(request.data.requesterId),
       }, {merge: true});
       await requesterProfilesRef.set({
-        followerTokens: FieldValue.arrayUnion(requesteeToken),
+        followerIds: FieldValue.arrayUnion(request.data.requesteeId),
       }, {merge: true});
-      log('Stored the requester\'s fcm token under followers');
+      log('Stored the requester\'s & requestee\'s ids under followers');
 
       // Change the type of the notification to a CrewAcceptedNotification
       await db

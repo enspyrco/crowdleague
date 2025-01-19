@@ -1,4 +1,5 @@
 import 'package:crowdleague/players/enums/pic_size.dart';
+import 'package:crowdleague/services/conversations_service.dart';
 import 'package:crowdleague/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -22,19 +23,44 @@ class PlayerProfileScreen extends StatefulWidget {
 
 class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   bool _owner = false; // if the profile is the user's profile
-  bool _localPending = false;
+  bool _localPending = false; // so we can change pending UI locally on tap
+  bool _findingConversation = false;
 
   @override
   void initState() {
     super.initState();
+    // Is the profile the user's profile?
     _owner = widget._playerId == locate<UserAuthService>().currentUserId!;
   }
 
-  Future<void> splitCrewsCallback() async {
+  // Remove playerId from crew list and tokenId from followerTokens if there
+  Future<void> _splitCrewsCallback() async {
+    if (mounted) {
+      setState(() {
+        _localPending = true;
+      });
+    }
     await locate<UserService>().splitCrews(widget._playerId);
+    if (mounted) {
+      setState(() {
+        _localPending = false;
+      });
+    }
+  }
+
+  Future<void> _openConversation() async {
     setState(() {
-      _localPending = false;
+      _findingConversation = true;
     });
+    final String conversationId = await locate<ConversationsService>()
+        .findOrCreateConversation(widget._playerId);
+    if (mounted) {
+      await context
+          .pushNamed('conversation', pathParameters: {'id': conversationId});
+      setState(() {
+        _findingConversation = false;
+      });
+    }
   }
 
   @override
@@ -47,7 +73,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
             final Player player = snapshot.data ?? EmptyPlayer();
             final bool pending = player.pendingCrewRequests
                 .contains(locate<UserAuthService>().currentUserId!);
-            final crew = player.crewIds
+            final bool crew = player.crewIds
                 .contains(locate<UserAuthService>().currentUserId!);
 
             return Column(
@@ -129,7 +155,16 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                               ),
                             ),
                           if (!_owner && crew)
-                            CrewMenuButton(callback: splitCrewsCallback),
+                            CrewMenuButton(callback: _splitCrewsCallback),
+                          if (!_owner)
+                            OutlinedButton(
+                              onPressed: (_findingConversation)
+                                  ? null
+                                  : () => _openConversation(),
+                              child: (_findingConversation)
+                                  ? Text('Finding conversation...')
+                                  : Text('Message'),
+                            ),
                         ],
                       ),
                       Padding(

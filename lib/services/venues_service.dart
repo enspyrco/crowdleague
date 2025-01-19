@@ -5,11 +5,10 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:crowdleague/venues/models/upload_event.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../utils/api_keys.dart';
+import '../venues/models/upload_event.dart';
 import '../venues/models/venue.dart';
 
 class VenuesService {

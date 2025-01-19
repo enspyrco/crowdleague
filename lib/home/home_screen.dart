@@ -1,4 +1,4 @@
-import 'package:crowdleague/messages/messages_screen.dart';
+import 'package:crowdleague/conversations/conversations_screen.dart';
 import 'package:crowdleague/notifications/notificatons_screen.dart';
 import 'package:crowdleague/services/messaging_service.dart';
 import 'package:crowdleague/utils/locator.dart';
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: <Widget>[
         const VenuesScreen(),
         const NotificationsScreen(),
-        const MessagesScreen(),
+        const ConversationsScreen(),
         const YouScreen(),
       ][_currentPageIndex],
       floatingActionButton:
@@ -108,11 +108,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     context.push('/select-new-venue-location');
                   },
+                  backgroundColor: Colors.white,
                   child: Icon(Icons.add),
                 )
               : const SizedBox.shrink(),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
     );
   }
 
