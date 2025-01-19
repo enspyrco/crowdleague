@@ -29,14 +29,20 @@ class _CrewAcceptedNotificationWidgetState
           final player = playerSnapshot.data!;
 
           return Card(
-              child: ListTile(
-                  onTap: () {
-                    context.pushNamed('player-profile',
-                        pathParameters: {'id': player.id});
-                  },
-                  leading: AsyncAvatar(player.id, PicSize.small),
-                  title: Text(
-                      '${player.name} is in your crew and you are following each other')));
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey.shade800
+                : Colors.white,
+            child: ListTile(
+              onTap: () {
+                context.pushNamed('player-profile',
+                    pathParameters: {'id': player.id});
+              },
+              leading: AsyncAvatar(player.id, PicSize.small),
+              title: Text(
+                  '${player.name} is in your crew and you are following each other',
+                  style: Theme.of(context).textTheme.bodyLarge!),
+            ),
+          );
         } else {
           return SizedBox.shrink();
         }
