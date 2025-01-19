@@ -31,14 +31,18 @@ class _VenuesScreenState extends State<VenuesScreen> {
   final Set<Marker> _markers = {};
 
   Future _loadMapStyles() async {
-    _darkMapStyle =
+    final styleString =
         await rootBundle.loadString('assets/json/dark_mode_style.json');
+    setState(() {
+      _darkMapStyle = styleString;
+    });
   }
 
   Future<void> _openVenueDetailScreen(String id) async {
     String? venueId =
         await context.pushNamed('venue-detail', pathParameters: {'id': id});
 
+    // A venue id is returned if the user deleted the venue so we remove the marker
     if (venueId != null) {
       Marker marker =
           _markers.firstWhere((marker) => marker.markerId.value == venueId);
@@ -58,7 +62,6 @@ class _VenuesScreenState extends State<VenuesScreen> {
     await Future.wait(
       venues.map(
         (venue) async {
-          // final response = await http.get(Uri.parse(venue.iconUrl));
           final bytes = await locate<VenuesService>().downloadIcon(venue.id);
           if (bytes != null) {
             final descriptor = BitmapDescriptor.bytes(bytes);
