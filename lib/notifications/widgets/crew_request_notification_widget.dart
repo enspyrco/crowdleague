@@ -35,26 +35,42 @@ class _CrewRequestNotificationStateWidgetCrewRequestNotificationWidget
         if (playerSnapshot.hasData && playerSnapshot.data != null) {
           final player = playerSnapshot.data!;
           return Card(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey.shade800
+                : Colors.white,
             child: ListTile(
               leading: AsyncAvatar(player.id, PicSize.small),
-              title: Text('${player.name} wants to join crews'),
+              title: Text(
+                '${player.name} wants to join crews',
+                style: Theme.of(context).textTheme.bodyLarge!,
+              ),
               subtitle: Row(
                 children: [
                   if (!widget.notification.waiting) ...[
-                    TextButton(
-                        onPressed: () {
-                          locate<UserService>().acceptCrewRequest(
-                            requesterId: player.id,
-                            requesteeId: widget.notification.requesteeId,
-                            notificationId: widget.notification.id,
-                          );
-                        },
-                        child: Text('Accept')),
-                    TextButton(
+                    OutlinedButton(
+                      onPressed: () {
+                        locate<UserService>().acceptCrewRequest(
+                          requesterId: player.id,
+                          requesteeId: widget.notification.requesteeId,
+                          notificationId: widget.notification.id,
+                        );
+                      },
+                      child: Text(
+                        'Accept',
+                        style: Theme.of(context).textTheme.bodyMedium!,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    OutlinedButton(
                       onPressed: () {
                         _declineCrewRequest(widget.notification);
                       },
-                      child: Text('Decline'),
+                      child: Text(
+                        'Decline',
+                        style: Theme.of(context).textTheme.bodyMedium!,
+                      ),
                     ),
                   ] else
                     Text('Updating crew members...'),

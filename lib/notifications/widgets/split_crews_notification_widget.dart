@@ -29,13 +29,19 @@ class _SplitCrewsNotificationWidgetState
           final player = playerSnapshot.data!;
 
           return Card(
-              child: ListTile(
-                  onTap: () {
-                    context.pushNamed('player-profile',
-                        pathParameters: {'id': player.id});
-                  },
-                  leading: AsyncAvatar(player.id, PicSize.small),
-                  title: Text('${player.name}\'s crew was split from yours')));
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey.shade800
+                : Colors.white,
+            child: ListTile(
+              onTap: () {
+                context.pushNamed('player-profile',
+                    pathParameters: {'id': player.id});
+              },
+              leading: AsyncAvatar(player.id, PicSize.small),
+              title: Text('${player.name}\'s crew was split from yours',
+                  style: Theme.of(context).textTheme.bodyLarge!),
+            ),
+          );
         } else {
           return SizedBox.shrink();
         }

@@ -22,17 +22,25 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         padding: EdgeInsets.all(8.0),
         child: StreamBuilder<List<Notification>>(
           stream: locate<UserService>().notificationsStream(),
-          builder: (context, notificatiosnSnapshot) {
-            if (notificatiosnSnapshot.hasData) {
+          builder: (context, notificationsSnapshot) {
+            if (notificationsSnapshot.hasData) {
+              final notifications = notificationsSnapshot.data!;
               return ListView.builder(
-                prototypeItem: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: 80),
-                  child: Container(),
-                ),
-                itemCount: notificatiosnSnapshot.data!.length,
+                itemExtentBuilder: (index, dimensions) {
+                  if (index > notifications.length) return null;
+                  final Notification notification = notifications[index];
+                  if (notification is CrewRequestNotification) {
+                    return 120;
+                  } else if (notification is CrewAcceptedNotification) {
+                    return 90;
+                  } else if (notification is SplitCrewsNotification) {
+                    return 90;
+                  }
+                  return 0;
+                },
+                itemCount: notifications.length,
                 itemBuilder: (context, index) {
-                  final Notification notification =
-                      notificatiosnSnapshot.data![index];
+                  final Notification notification = notifications[index];
                   if (!notification.viewed) {
                     locate<UserService>()
                         .updateNotification(notification.id, viewed: true);
