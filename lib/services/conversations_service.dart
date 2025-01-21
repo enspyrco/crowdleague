@@ -102,7 +102,7 @@ class ConversationsService {
     final Player otherPlayer = _playerCache[otherPlayerId]!;
 
     final picUriString = 'profilePics/${otherPlayer.id}_small';
-    if (!_imageCache.containsKey(otherPlayer.id)) {
+    if (!_imageCache.containsKey(picUriString)) {
       _imageCache[picUriString] =
           await _storage.ref(picUriString).getData() ?? Uint8List(0);
     }
