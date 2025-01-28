@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../services/players_service.dart';
 import '../services/user_auth_service.dart';
-import '../utils/async_avatar.dart';
+import '../utils/avatar/async_avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
 import 'widgets/crew_menu_button.dart';

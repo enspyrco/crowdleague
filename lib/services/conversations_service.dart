@@ -1,16 +1,17 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:crowdleague/conversations/models/conversation.dart';
 import 'package:crowdleague/conversations/models/view/conversation_view_model.dart';
+import 'package:crowdleague/utils/cache/player_cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../conversations/models/message.dart';
 import '../players/models/player.dart';
+import '../utils/cache/image_bytes_cache.dart';
 import '../utils/globals.dart';
 
 class ConversationsService {
@@ -19,13 +20,12 @@ class ConversationsService {
     required FirebaseStorage storage,
     required FirebaseFunctions cloudFunctions,
     required FirebaseFirestore firestore,
-    required Map<String, Uint8List> imageCache,
-    required Map<String, Player> playerCache,
+    required ImageBytesCache imageBytesCache,
+    required PlayerCache playerCache,
   })  : _firestore = firestore,
         _auth = auth,
-        _storage = storage,
         _cloudFunctions = cloudFunctions,
-        _imageCache = imageCache,
+        _imageBytesCache = imageBytesCache,
         _playerCache = playerCache {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
@@ -38,12 +38,11 @@ class ConversationsService {
     });
   }
 
-  final FirebaseStorage _storage;
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
   final FirebaseFunctions _cloudFunctions;
-  final Map<String, Uint8List> _imageCache;
-  final Map<String, Player> _playerCache;
+  final ImageBytesCache _imageBytesCache;
+  final PlayerCache _playerCache;
 
   Future<String> findOrCreateConversation(String playerId) async {
     final String userId = _auth.currentUser!.uid;
@@ -70,13 +69,13 @@ class ConversationsService {
         await Future.wait(collectionSnapshot.docs.map((docSnapshot) async {
       final conversation =
           Conversation.fromJsonWithId(docSnapshot.id, docSnapshot.data());
-      return await convertToConverationViewModel(conversation);
+      return await _convertToViewModel(conversation);
     }));
 
     return convertedList;
   }
 
-  Future<ConversationViewModel> convertToConverationViewModel(
+  Future<ConversationViewModel> _convertToViewModel(
       Conversation conversation) async {
     QuerySnapshot<Map<String, Object?>> snapshot = await _firestore
         .collection('conversations')
@@ -93,20 +92,10 @@ class ConversationsService {
         conversation.participantIds.first == _auth.currentUser!.uid
             ? conversation.participantIds.last
             : conversation.participantIds.first;
-    if (!_playerCache.containsKey(otherPlayerId)) {
-      final reference =
-          await _firestore.collection('profiles').doc(otherPlayerId).get();
-      _playerCache[otherPlayerId] =
-          Player.fromJsonWithId(reference.id, reference.data() ?? {});
-    }
-    final Player otherPlayer = _playerCache[otherPlayerId]!;
+    final Player otherPlayer = await _playerCache.retrievePlayer(otherPlayerId);
 
-    final picUriString = 'profilePics/${otherPlayer.id}_small';
-    if (!_imageCache.containsKey(picUriString)) {
-      _imageCache[picUriString] =
-          await _storage.ref(picUriString).getData() ?? Uint8List(0);
-    }
-    final iconData = _imageCache[picUriString];
+    final picData = await _imageBytesCache
+        .retrieveImage('profilePics/${otherPlayer.id}_small');
 
     String maybeYou = '';
     if (lastMessage.senderId == _auth.currentUser!.uid) {
@@ -115,7 +104,7 @@ class ConversationsService {
 
     return ConversationViewModel(
       conversation: conversation,
-      lastMessagePicData: iconData ?? Uint8List(0),
+      lastMessagePicData: picData,
       lastMessageName: otherPlayer.name,
       identifyingLastMessageValue: maybeYou + lastMessage.value,
     );

@@ -93,15 +93,17 @@ export const sendMessageToParticipants = onCall(
       const response = await messaging().sendEachForMulticast(message);
       log(`Sent the message, response: ${response}`);
 
-      // Return the response
-      return {
-        successCount: response.successCount,
-        failureCount: response.failureCount,
-        failedTokens: response.responses
-          .map((resp, idx) => (!resp.success ?
-            conversationData.participantTokens[idx] : null))
-          .filter((token): token is string => token !== null),
-      };
+      // we were getting a 409 error in the logs but all logs in the code were
+      // being printed so I've commented out the return statement.
+      // // Return the response
+      // return {
+      //   successCount: response.successCount,
+      //   failureCount: response.failureCount,
+      //   failedTokens: response.responses
+      //     .map((resp, idx) => (!resp.success ?
+      //       conversationData.participantTokens[idx] : null))
+      //     .filter((token): token is string => token !== null),
+      // };
     } catch (e) {
       throw new HttpsError('aborted', `${e}.`);
     }

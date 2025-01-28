@@ -22,7 +22,7 @@ class _EditNameScreenState extends State<EditNameScreen> {
 
   Future<void> _getCurrentName() async {
     final player = await locate<PlayersService>()
-        .getPlayer(locate<UserAuthService>().currentUserId!);
+        .retrievePlayer(locate<UserAuthService>().currentUserId!);
     _textController.text = player?.name ?? '';
     _textController.selection = TextSelection(
       baseOffset: 0,

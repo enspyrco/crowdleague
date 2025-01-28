@@ -8,8 +8,8 @@ import 'package:image_picker/image_picker.dart';
 
 import '../services/images_service.dart';
 import '../services/user_auth_service.dart';
-import '../utils/async_avatar.dart';
-import '../utils/file_avatar.dart';
+import '../utils/avatar/async_avatar.dart';
+import '../utils/avatar/file_avatar.dart';
 import '../utils/locator.dart';
 
 class EditProfilePicScreen extends StatefulWidget {
