@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// The json that comes down from the cloud_firestore methods contains Timestamps
+import 'package:cloud_firestore/cloud_firestore.dart' show Timestamp;
 
 sealed class Notification {
   const Notification({
@@ -11,7 +12,7 @@ sealed class Notification {
   final String id;
   final bool viewed;
   final bool opened;
-  final int timestamp;
+  final Timestamp timestamp;
   final String playerId;
 
   factory Notification.fromJson(Map<String, dynamic> json) {
@@ -25,7 +26,7 @@ sealed class Notification {
           waiting: json['waiting'] ?? false,
           requesterId: json['requesterId'],
           requesteeId: json['requesteeId'],
-          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
+          timestamp: json['timestamp'],
         );
       case 'crew-accepted':
         return CrewAcceptedNotification(
@@ -36,7 +37,7 @@ sealed class Notification {
           waiting: json['waiting'] ?? false,
           requesterId: json['requesterId'],
           requesteeId: json['requesteeId'],
-          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
+          timestamp: json['timestamp'],
         );
       case 'split-crew':
         return SplitCrewsNotification(
@@ -46,12 +47,14 @@ sealed class Notification {
           opened: json['opened'] ?? false,
           requesterId: json['requesterId'],
           requesteeId: json['requesteeId'],
-          timestamp: (json['timestamp'] as Timestamp).millisecondsSinceEpoch,
+          timestamp: json['timestamp'],
         );
       default:
         throw Exception('Unknown notification type');
     }
   }
+
+  Map<String, Object?> toJson();
 }
 
 class CrewRequestNotification extends Notification {
@@ -70,6 +73,7 @@ class CrewRequestNotification extends Notification {
     required super.viewed,
   });
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -101,6 +105,7 @@ class CrewAcceptedNotification extends Notification {
     required super.viewed,
   });
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -130,6 +135,7 @@ class SplitCrewsNotification extends Notification {
     required super.viewed,
   });
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,

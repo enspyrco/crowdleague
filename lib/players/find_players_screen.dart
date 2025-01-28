@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../services/players_service.dart';
 import '../services/user_auth_service.dart';
-import '../utils/async_avatar.dart';
+import '../utils/avatar/async_avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
 
@@ -29,7 +29,7 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
             autofocus: true,
           ),
           FutureBuilder<List<Player>>(
-              future: locate<PlayersService>().getPlayers(),
+              future: locate<PlayersService>().retrievePlayers(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return CircularProgressIndicator();

@@ -3,27 +3,27 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/players/enums/pic_size.dart';
+import 'package:crowdleague/utils/cache/image_bytes_cache.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../players/models/player.dart';
+import '../utils/cache/player_cache.dart';
 
 class PlayersService {
   PlayersService({
     required FirebaseFirestore firestore,
     required FirebaseStorage storage,
-    required Map<String, Player> playerCache,
-    required Map<String, Uint8List> imageCache,
+    required PlayerCache playerCache,
+    required ImageBytesCache imageBytesCache,
   })  : _firestore = firestore,
-        _storage = storage,
         _playerCache = playerCache,
-        _imageCache = imageCache;
+        _imageBytesCache = imageBytesCache;
 
   final FirebaseFirestore _firestore;
-  final FirebaseStorage _storage;
-  final Map<String, Player> _playerCache;
-  final Map<String, Uint8List> _imageCache;
+  final PlayerCache _playerCache;
+  final ImageBytesCache _imageBytesCache;
 
-  Future<List<Player>> getPlayers() async {
+  Future<List<Player>> retrievePlayers() async {
     final docsSnapshot = await _firestore.collection('profiles').get();
     return docsSnapshot.docs.map<Player>((snapshot) {
       final json = snapshot.data();
@@ -32,16 +32,8 @@ class PlayersService {
     }).toList();
   }
 
-  Future<Player?> getPlayer(String playerId) async {
-    if (!_playerCache.containsKey(playerId)) {
-      final reference =
-          await _firestore.collection('profiles').doc(playerId).get();
-      final json = reference.data();
-      if (json == null) return null;
-      json['id'] = reference.id;
-      _playerCache[playerId] = Player.fromJson(json);
-    }
-    return Future.value(_playerCache[playerId]);
+  Future<Player?> retrievePlayer(String playerId) {
+    return _playerCache.retrievePlayer(playerId);
   }
 
   Stream<Player?> listenToPlayer(String playerId) {
@@ -65,10 +57,6 @@ class PlayersService {
     } else {
       picUriString = 'profilePics/${playerId}_large';
     }
-    if (!_imageCache.containsKey(picUriString)) {
-      _imageCache[picUriString] =
-          await _storage.ref(picUriString).getData() ?? Uint8List(0);
-    }
-    return Future.value(_imageCache[picUriString]);
+    return await _imageBytesCache.retrieveImage(picUriString);
   }
 }

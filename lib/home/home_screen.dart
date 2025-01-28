@@ -1,13 +1,13 @@
 import 'package:crowdleague/conversations/conversations_screen.dart';
 import 'package:crowdleague/notifications/notificatons_screen.dart';
 import 'package:crowdleague/services/messaging_service.dart';
+import 'package:crowdleague/services/notifications_service.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:crowdleague/venues/venues_screen.dart';
 import 'package:crowdleague/you/you_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/user_service.dart';
 import 'enums/navigation_destinations.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Otherwise read the count of unviewed notifications and emit so
           // the listeners (Notifications badge) can update
         } else {
-          locate<UserService>().readAndEmitNotificationsViewed();
+          locate<NotificationsService>().readAndEmitNotificationsViewed();
         }
       },
     );
@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // Each time the NotificationsScreen is built (ie. when the user taps
     // "Notifications") we update the unviewed notifications count for the badge.
-    locate<UserService>().readAndEmitNotificationsViewed();
+    locate<NotificationsService>().readAndEmitNotificationsViewed();
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(
@@ -65,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: NavigationDestinations.venues.description,
           ),
           StreamBuilder<int>(
-              stream: locate<UserService>().numNotificationsViewedStream,
+              stream:
+                  locate<NotificationsService>().numNotificationsViewedStream,
               builder: (context, snapshot) {
                 int numNotifications = snapshot.data ?? 0;
                 return (numNotifications == 0)

@@ -2,8 +2,8 @@ import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../players/enums/pic_size.dart';
-import '../services/players_service.dart';
+import '../../players/enums/pic_size.dart';
+import '../../services/players_service.dart';
 
 /// An avatar widget that uses either a Storage path build a CircleAvatar that uses a MemoryImage.
 class AsyncAvatar extends StatelessWidget {

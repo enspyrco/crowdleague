@@ -1,87 +1,72 @@
+import 'package:crowdleague/utils/avatar/bytes_avatar.dart';
 import 'package:flutter/material.dart';
 
-import '../../players/enums/pic_size.dart';
-import '../../services/players_service.dart';
 import '../../services/user_service.dart';
-import '../../utils/async_avatar.dart';
 import '../../utils/locator.dart';
-import '../models/notifications.dart';
+import '../models/views/notification_view_model.dart';
 
-class CrewRequestNotificationWidget extends StatefulWidget {
-  const CrewRequestNotificationWidget(this.notification, {super.key});
+class CrewRequestNotificationWidget extends StatelessWidget {
+  const CrewRequestNotificationWidget(
+    CrewRequestNotificationViewModel viewModel, {
+    super.key,
+  }) : _notificationViewModel = viewModel;
 
-  final CrewRequestNotification notification;
+  final CrewRequestNotificationViewModel _notificationViewModel;
 
-  @override
-  State<CrewRequestNotificationWidget> createState() =>
-      _CrewRequestNotificationStateWidgetCrewRequestNotificationWidget();
-}
-
-class _CrewRequestNotificationStateWidgetCrewRequestNotificationWidget
-    extends State<CrewRequestNotificationWidget> {
-  Future<void> _declineCrewRequest(CrewRequestNotification notification) async {
+  Future<void> _declineCrewRequest(
+      String notificationId, String requesterId) async {
     locate<UserService>().declineCrewRequest(
-      notification.id,
-      notification.requesterId,
+      notificationId,
+      requesterId,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future:
-          locate<PlayersService>().getPlayer(widget.notification.requesterId),
-      builder: (context, playerSnapshot) {
-        if (playerSnapshot.hasData && playerSnapshot.data != null) {
-          final player = playerSnapshot.data!;
-          return Card(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Colors.grey.shade800
-                : Colors.white,
-            child: ListTile(
-              leading: AsyncAvatar(player.id, PicSize.small),
-              title: Text(
-                '${player.name} wants to join crews',
-                style: Theme.of(context).textTheme.bodyLarge!,
+    return Card(
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.grey.shade800
+          : Colors.white,
+      child: ListTile(
+        leading: BytesAvatar(_notificationViewModel.picBytes),
+        title: Text(
+          '${_notificationViewModel.playerName} wants to join crews',
+          style: Theme.of(context).textTheme.bodyLarge!,
+        ),
+        subtitle: Row(
+          children: [
+            if (!_notificationViewModel.waiting) ...[
+              OutlinedButton(
+                onPressed: () {
+                  locate<UserService>().acceptCrewRequest(
+                    requesterId: _notificationViewModel.requesterId,
+                    requesteeId: _notificationViewModel.requesteeId,
+                    notificationId: _notificationViewModel.notification.id,
+                  );
+                },
+                child: Text(
+                  'Accept',
+                  style: Theme.of(context).textTheme.bodyMedium!,
+                ),
               ),
-              subtitle: Row(
-                children: [
-                  if (!widget.notification.waiting) ...[
-                    OutlinedButton(
-                      onPressed: () {
-                        locate<UserService>().acceptCrewRequest(
-                          requesterId: player.id,
-                          requesteeId: widget.notification.requesteeId,
-                          notificationId: widget.notification.id,
-                        );
-                      },
-                      child: Text(
-                        'Accept',
-                        style: Theme.of(context).textTheme.bodyMedium!,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    OutlinedButton(
-                      onPressed: () {
-                        _declineCrewRequest(widget.notification);
-                      },
-                      child: Text(
-                        'Decline',
-                        style: Theme.of(context).textTheme.bodyMedium!,
-                      ),
-                    ),
-                  ] else
-                    Text('Updating crew members...'),
-                ],
+              SizedBox(
+                width: 10,
               ),
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
+              OutlinedButton(
+                onPressed: () {
+                  _declineCrewRequest(_notificationViewModel.notification.id,
+                      _notificationViewModel.requesterId);
+                },
+                child: Text(
+                  'Decline',
+                  style: Theme.of(context).textTheme.bodyMedium!,
+                ),
+              ),
+            ] else
+              Text('Updating crew members...'),
+          ],
+        ),
+      ),
     );
   }
 }
