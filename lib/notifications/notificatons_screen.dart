@@ -20,8 +20,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.all(8.0),
-        child: StreamBuilder<List<NotificationViewModel>>(
-          stream: locate<NotificationsService>().notificationsStream(),
+        child: FutureBuilder(
+          future: locate<NotificationsService>().retrieveNotifications(),
           builder: (context, viewModelsSnapshot) {
             if (viewModelsSnapshot.hasData) {
               final viewModels = viewModelsSnapshot.data!;

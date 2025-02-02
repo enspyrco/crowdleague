@@ -15,6 +15,11 @@ sealed class Notification {
   final Timestamp timestamp;
   final String playerId;
 
+  factory Notification.fromJsonWithId(String id, Map<String, dynamic> json) {
+    json['id'] = id;
+    return Notification.fromJson(json);
+  }
+
   factory Notification.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
       case 'crew-request':
