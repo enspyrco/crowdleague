@@ -30,17 +30,21 @@ class NotificationsService {
   Stream<int> get numNotificationsViewedStream =>
       _numNotificationsViewedStreamController.stream;
 
-  Future<List<Notification>> retrieveNotifications() async {
+  Future<List<NotificationViewModel>> retrieveNotifications() async {
     final querySnapshot = await _firestore
         .collection('notifications')
         .where('playerId', isEqualTo: _auth.currentUser!.uid)
         .orderBy('timestamp', descending: true)
         .get();
-    return querySnapshot.docs.map<Notification>((snapshot) {
-      final json = snapshot.data();
-      json['id'] = snapshot.id;
-      return Notification.fromJson(json);
-    }).toList();
+
+    List<NotificationViewModel> viewModels = [];
+    for (final docSnaphot in querySnapshot.docs) {
+      final notification =
+          Notification.fromJsonWithId(docSnaphot.id, docSnaphot.data());
+      viewModels.add(await _convertToViewModel(notification));
+    }
+
+    return viewModels;
   }
 
   Stream<List<NotificationViewModel>> notificationsStream() {
@@ -49,14 +53,15 @@ class NotificationsService {
         .where('playerId', isEqualTo: _auth.currentUser!.uid)
         .orderBy('timestamp', descending: true)
         .snapshots()
-        .asyncMap<List<NotificationViewModel>>((querySnapshot) {
-      return Future.wait<NotificationViewModel>(
-          querySnapshot.docs.map((docSnapshot) async {
-        final json = docSnapshot.data();
-        json['id'] = docSnapshot.id;
-        final notification = Notification.fromJson(json);
-        return await _convertToViewModel(notification);
-      }));
+        .asyncMap<List<NotificationViewModel>>((querySnapshot) async {
+      List<NotificationViewModel> viewModels = [];
+      for (final docSnaphot in querySnapshot.docs) {
+        final notification =
+            Notification.fromJsonWithId(docSnaphot.id, docSnaphot.data());
+        viewModels.add(await _convertToViewModel(notification));
+      }
+
+      return viewModels;
     });
   }
 
@@ -88,22 +93,6 @@ class NotificationsService {
         .get();
 
     _numNotificationsViewedStreamController.add(aggregateQuery.count ?? 0);
-  }
-
-  Future<List<NotificationViewModel>> retrieveNotificationViewModels() async {
-    final collectionSnapshot =
-        await _firestore.collection('notifications').get();
-
-    List<NotificationViewModel> convertedList = await Future.wait(
-        collectionSnapshot.docs
-            .map<Future<NotificationViewModel>>((docSnapshot) async {
-      final json = docSnapshot.data();
-      json['id'] = docSnapshot.id;
-      final notification = Notification.fromJson(json);
-      return await _convertToViewModel(notification);
-    }));
-
-    return convertedList;
   }
 
   Future<NotificationViewModel> _convertToViewModel(
