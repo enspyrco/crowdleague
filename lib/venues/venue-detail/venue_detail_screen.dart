@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../services/user_auth_service.dart';
-import '../../services/venues_service.dart';
+import '../../auth/user_auth_service.dart';
+import '../venues_service.dart';
 import '../../utils/locator.dart';
 import '../models/venue.dart';
 

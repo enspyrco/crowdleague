@@ -1,7 +1,7 @@
 import 'package:crowdleague/conversations/conversations_screen.dart';
 import 'package:crowdleague/notifications/notificatons_screen.dart';
 import 'package:crowdleague/services/messaging_service.dart';
-import 'package:crowdleague/services/notifications_service.dart';
+import 'package:crowdleague/notifications/notifications_service.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:crowdleague/venues/venues_screen.dart';
 import 'package:crowdleague/you/you_screen.dart';

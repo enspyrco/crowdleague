@@ -7,7 +7,7 @@
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
-import 'package:crowdleague/services/venues_service.dart';
+import 'package:crowdleague/venues/venues_service.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:crowdleague/venues/add-venue/widgets/court_surface_dropdown.dart';
 import 'package:crowdleague/venues/models/local_venue.dart';

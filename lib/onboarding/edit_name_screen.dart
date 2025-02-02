@@ -1,5 +1,5 @@
-import 'package:crowdleague/services/players_service.dart';
-import 'package:crowdleague/services/user_auth_service.dart';
+import 'package:crowdleague/players/players_service.dart';
+import 'package:crowdleague/auth/user_auth_service.dart';
 import 'package:crowdleague/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/user_auth_service.dart';
+import 'user_auth_service.dart';
 import '../utils/icons/custom_icons.dart';
 import '../utils/locator.dart';
 

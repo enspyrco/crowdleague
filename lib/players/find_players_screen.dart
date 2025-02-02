@@ -2,8 +2,8 @@ import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/players_service.dart';
-import '../services/user_auth_service.dart';
+import 'players_service.dart';
+import '../auth/user_auth_service.dart';
 import '../utils/avatar/async_avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';

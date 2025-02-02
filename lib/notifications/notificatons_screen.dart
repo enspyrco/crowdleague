@@ -1,7 +1,7 @@
 import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart' hide Notification;
 
-import '../services/notifications_service.dart';
+import 'notifications_service.dart';
 import 'models/views/notification_view_model.dart';
 import 'widgets/crew_accepted_notification_widget.dart';
 import 'widgets/crew_request_notification_widget.dart';

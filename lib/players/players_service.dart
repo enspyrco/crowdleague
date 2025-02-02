@@ -6,7 +6,7 @@ import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/utils/cache/image_bytes_cache.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../players/models/player.dart';
+import 'models/player.dart';
 import '../utils/cache/player_cache.dart';
 
 class PlayersService {

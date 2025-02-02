@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../services/images_service.dart';
-import '../../../services/user_auth_service.dart';
-import '../../../services/venues_service.dart';
+import '../../../auth/user_auth_service.dart';
+import '../../venues_service.dart';
 import '../../../utils/locator.dart';
 import '../../models/local_venue.dart';
 import '../../models/upload_event.dart';

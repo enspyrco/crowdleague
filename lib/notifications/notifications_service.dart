@@ -6,8 +6,8 @@ import 'package:crowdleague/utils/cache/image_bytes_cache.dart';
 import 'package:crowdleague/utils/cache/player_cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../notifications/models/notification.dart';
-import '../notifications/models/views/notification_view_model.dart';
+import 'models/notification.dart';
+import 'models/views/notification_view_model.dart';
 import '../players/models/player.dart';
 
 class NotificationsService {

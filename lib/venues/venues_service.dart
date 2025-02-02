@@ -8,8 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:rxdart/subjects.dart';
 
 import '../utils/api_keys.dart';
-import '../venues/models/upload_event.dart';
-import '../venues/models/venue.dart';
+import 'models/upload_event.dart';
+import 'models/venue.dart';
 
 class VenuesService {
   VenuesService({

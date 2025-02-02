@@ -1,6 +1,6 @@
 import 'package:crowdleague/conversations/models/view/conversation_view_model.dart';
 import 'package:crowdleague/conversations/widgets/conversation_widget.dart';
-import 'package:crowdleague/services/conversations_service.dart';
+import 'package:crowdleague/conversations/conversations_service.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/locator.dart';

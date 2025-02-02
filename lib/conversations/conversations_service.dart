@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../conversations/models/message.dart';
+import 'models/message.dart';
 import '../players/models/player.dart';
 import '../utils/cache/image_bytes_cache.dart';
 import '../utils/globals.dart';

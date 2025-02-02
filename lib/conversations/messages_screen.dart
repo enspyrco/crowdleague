@@ -1,7 +1,7 @@
-import 'package:crowdleague/services/user_auth_service.dart';
+import 'package:crowdleague/auth/user_auth_service.dart';
 import 'package:flutter/material.dart';
 
-import '../services/conversations_service.dart';
+import 'conversations_service.dart';
 import '../utils/locator.dart';
 import 'models/message.dart';
 

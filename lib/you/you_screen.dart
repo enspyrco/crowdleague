@@ -3,7 +3,7 @@ import 'package:crowdleague/utils/avatar/async_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/user_auth_service.dart';
+import '../auth/user_auth_service.dart';
 import '../utils/locator.dart';
 
 class YouScreen extends StatefulWidget {
