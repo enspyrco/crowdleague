@@ -33,6 +33,7 @@ import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
 import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'venues/venue-detail/venue_detail_screen.dart';
 import 'utils/locator.dart';
+import 'you/check_in_screen.dart';
 
 final _router = GoRouter(
   initialLocation:
@@ -97,6 +98,11 @@ final _router = GoRouter(
       name: 'find-players',
       path: '/find-players',
       builder: (context, state) => const FindPlayersScreen(),
+    ),
+    GoRoute(
+      name: 'check-in',
+      path: '/check-in',
+      builder: (context, state) => const CheckInScreen(),
     ),
     GoRoute(
       name: 'player-profile',
