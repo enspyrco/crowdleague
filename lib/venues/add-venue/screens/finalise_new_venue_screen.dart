@@ -9,7 +9,7 @@ import '../../models/local_venue.dart';
 import '../../models/upload_event.dart';
 import '../widgets/court_environment_dropdown.dart';
 import '../widgets/court_surface_dropdown.dart';
-import '../widgets/divider_with_subheading.dart';
+import '../../../utils/widgets/divider_with_subheading.dart';
 import '../widgets/upload_venue_photo.dart';
 import '../widgets/venue_size_dropdown.dart';
 

@@ -1,4 +1,4 @@
-import 'package:crowdleague/utils/avatar/bytes_avatar.dart';
+import 'package:crowdleague/utils/widgets/avatar/bytes_avatar.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/user_service.dart';

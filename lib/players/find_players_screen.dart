@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'players_service.dart';
 import '../auth/user_auth_service.dart';
-import '../utils/avatar/async_avatar.dart';
+import '../utils/widgets/avatar/async_avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
 
