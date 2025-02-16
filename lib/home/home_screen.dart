@@ -86,8 +86,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
               }),
           NavigationDestination(
-            selectedIcon: Badge(label: Text('2'), child: Icon(Icons.message)),
-            icon: Badge(label: Text('2'), child: Icon(Icons.message_outlined)),
+            selectedIcon: Icon(Icons.message),
+            icon: Icon(Icons.message_outlined),
             label: NavigationDestinations.messages.description,
           ),
           NavigationDestination(

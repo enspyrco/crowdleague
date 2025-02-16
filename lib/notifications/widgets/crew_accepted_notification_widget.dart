@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../utils/avatar/bytes_avatar.dart';
+import '../../utils/widgets/avatar/bytes_avatar.dart';
 import '../models/views/notification_view_model.dart';
 
 class CrewAcceptedNotificationWidget extends StatelessWidget {
