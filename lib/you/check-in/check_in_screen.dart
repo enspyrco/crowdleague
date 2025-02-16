@@ -22,7 +22,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
   String? _selectedVenueId;
 
   // Slider state variables
-  double _startValue = 0;
+  double _initialStartValue = 0;
   RangeValues _currentRangeValues = RangeValues(0, kUpperRangeValue);
   RangeLabels _rangeLabels = RangeLabels('', '');
   String _roughStart = 'Now';
@@ -33,10 +33,10 @@ class _CheckInScreenState extends State<CheckInScreen> {
     super.initState();
 
     // Calculate the initial start value of the slider, ie. the minutes passed today
-    _startValue =
+    _initialStartValue =
         (DateTime.now().hour * kMinsInHour + DateTime.now().minute).toDouble();
     // Start at the nearest 5 min increment so the "In x minutes" text is a multiple of 5
-    _startValue = (_startValue / 5).round() * 5;
+    _initialStartValue = (_initialStartValue / 5).round() * 5;
 
     // Calculate the initial end value of the slider as a pre-set duration from the start
     double endValue = (DateTime.now().hour * kMinsInHour +
@@ -46,8 +46,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
     if (endValue > kUpperRangeValue) endValue = kUpperRangeValue;
 
     // Set the start and end values of the slider
-    _currentRangeValues =
-        RangeValues(_startValue.floorToDouble(), endValue.floorToDouble());
+    _currentRangeValues = RangeValues(
+        _initialStartValue.floorToDouble(), endValue.floorToDouble());
   }
 
   // A callback passed in to the VenuesSearch widget
@@ -104,13 +104,14 @@ class _CheckInScreenState extends State<CheckInScreen> {
             onChangeEnd: (values) {
               // if the slider slides backward past current time, reset to now
               setState(() {
-                if (values.start <= _startValue) {
+                if (values.start <= _initialStartValue) {
                   _currentRangeValues =
-                      RangeValues(_startValue.toDouble(), values.end);
+                      RangeValues(_initialStartValue.toDouble(), values.end);
 
                   // Calculate the rough duration string
                   _roughStart = 'Now';
-                  double durationMins = values.end - _startValue.toDouble();
+                  double durationMins =
+                      values.end - _initialStartValue.toDouble();
                   int durationHours = (durationMins / kMinsInHour).floor();
                   _roughDuration = 'for about $durationHours hours';
                 }
@@ -121,8 +122,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 _currentRangeValues = values;
 
                 // Calculate the rough duration string
+                final duration = Duration(
+                    minutes: (values.start - _initialStartValue).round());
+                String hoursString =
+                    duration.inHours == 0 ? '' : '${duration.inHours} hours ';
+                String minsString = duration.inMinutes == 0
+                    ? ''
+                    : '${duration.inMinutes.remainder(60)} mins';
+                _roughStart = 'In $hoursString$minsString';
                 double durationMins = values.end - values.start;
-                _roughStart = 'In ${(values.start - _startValue).round()} mins';
                 int durationHours = (durationMins / kMinsInHour).floor();
                 _roughDuration = 'for about $durationHours hours';
 
