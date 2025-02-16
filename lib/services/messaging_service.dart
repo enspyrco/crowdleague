@@ -67,7 +67,7 @@ class MessagingService {
     checkAndUpdateFcmTokenIfFresh();
   }
 
-  AuthorizationStatus getAuthorizatinStatus() {
+  AuthorizationStatus getAuthorizationStatus() {
     switch (_notificationSettings?.authorizationStatus) {
       case fbm.AuthorizationStatus.authorized:
         return AuthorizationStatus.authorized;

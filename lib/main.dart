@@ -3,6 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:crowdleague/conversations/messages_screen.dart';
 import 'package:crowdleague/conversations/conversations_service.dart';
 import 'package:crowdleague/utils/cache/player_cache.dart';
+import 'package:crowdleague/you/check-in/check_in_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -189,6 +190,10 @@ void main() async {
     storage: storage,
     playerCache: playerCache,
     imageBytesCache: imageBytesCache,
+  ));
+  Locator.add<CheckInService>(CheckInService(
+    auth: auth,
+    firestore: firestore,
   ));
   Locator.add<VenuesService>(
       VenuesService(firestore: firestore, storage: storage));

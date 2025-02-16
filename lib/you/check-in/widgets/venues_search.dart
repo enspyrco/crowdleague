@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import '../../../utils/locator.dart';
 
 class VenuesSearch extends StatefulWidget {
-  const VenuesSearch({super.key});
+  const VenuesSearch({required this.setVenueIdCallback, super.key});
+
+  final void Function(String) setVenueIdCallback;
 
   @override
   State<VenuesSearch> createState() => _VenuesSearchState();
@@ -39,6 +41,7 @@ class _VenuesSearchState extends State<VenuesSearch> {
             onTap: () {
               setState(() {
                 controller.closeView(venue.name);
+                widget.setVenueIdCallback(venue.id);
               });
             },
           );
