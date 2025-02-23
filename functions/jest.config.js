@@ -1,7 +1,4 @@
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  testMatch: ['**/*.test.ts'],
-  setupFiles: ['<rootDir>/jest.setup.js'],
-  testTimeout: 10000,
-};
+export const preset = 'ts-jest';
+export const testEnvironment = 'node';
+export const testMatch = ['**/*.test.ts'];
+export const testTimeout = 10000;
