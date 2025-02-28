@@ -1,17 +1,17 @@
 import * as admin from 'firebase-admin';
 import {getStorage} from 'firebase-admin/storage';
-import {getFirestore} from 'firebase-admin/firestore';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import sharp from 'sharp'; // Image processing library
 
 // Test configuration
-const TEST_BUCKET = 'demo-test-project.appspot.com';
-const PROJECT_ID = 'demo-test-project';
+const TEST_BUCKET = 'crowdleague-project.firebasestorage.app';
+const PROJECT_ID = 'crowdleague-project';
 const UPLOAD_PATH = 'test-uploads/test-image.png';
+const RESIZED_PATH = 'test-uploads/test-image_small.png';
 
 describe('Storage Upload Integration Test', () => {
   let storage: admin.storage.Storage;
-  let firestore: admin.firestore.Firestore;
 
   beforeAll(async () => {
     // Set up emulator env variables
@@ -27,7 +27,6 @@ describe('Storage Upload Integration Test', () => {
     });
 
     storage = getStorage();
-    firestore = getFirestore();
   });
 
   beforeEach(async () => {
@@ -53,12 +52,6 @@ describe('Storage Upload Integration Test', () => {
    * has been cleared.
    */
   async function clearTestData(): Promise<void> {
-    // Clear Firestore collection
-    const uploads = await firestore.collection('uploads').get();
-    for (const doc of uploads.docs) {
-      await doc.ref.delete();
-    }
-
     // Clear Storage
     try {
       await storage.bucket(TEST_BUCKET).file(UPLOAD_PATH).delete();
@@ -89,6 +82,21 @@ describe('Storage Upload Integration Test', () => {
       // Check file metadata
       const [metadata] = await file.getMetadata();
       expect(metadata.contentType).toBe('image/png');
+
+      // Wait for the function to trigger and process the document
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+
+      // Verify the resized image exists in Storage
+      const [resizedFileExists] = await storage.bucket(TEST_BUCKET)
+        .file(`${RESIZED_PATH}`).exists();
+      expect(resizedFileExists).toBe(true);
+
+      // (Optional) Verify the resized image dimensions using sharp
+      const [resizedImageBuffer] = await storage.bucket(TEST_BUCKET)
+        .file(`${RESIZED_PATH}`).download();
+      const resizedImageMetadata = await sharp(resizedImageBuffer).metadata();
+      expect(resizedImageMetadata.width).toBe(200);
+      expect(resizedImageMetadata.height).toBe(200);
     }); // Increase timeout for emulator operations
 
   test('should reject non-image files', async () => {
@@ -105,12 +113,9 @@ describe('Storage Upload Integration Test', () => {
     // Wait for potential processing
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // Verify no document was created
-    const snapshot = await firestore
-      .collection('uploads')
-      .where('path', '==', 'test-uploads/test.txt')
-      .get();
-
-    expect(snapshot.empty).toBe(true);
+    // Verify no resized file exists in Storage
+    const [resizedFileExists] = await storage.bucket(TEST_BUCKET)
+      .file('test-uploads/test_small.txt').exists();
+    expect(resizedFileExists).toBe(false);
   });
 });
