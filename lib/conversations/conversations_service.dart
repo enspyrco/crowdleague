@@ -95,7 +95,7 @@ class ConversationsService {
     final Player otherPlayer = await _playerCache.retrievePlayer(otherPlayerId);
 
     final picData = await _imageBytesCache
-        .retrieveImage('profilePics/${otherPlayer.id}_small');
+        .retrieveImage('profilePics/${otherPlayer.id}_small.jpg');
 
     String maybeYou = '';
     if (lastMessage.senderId == _auth.currentUser!.uid) {

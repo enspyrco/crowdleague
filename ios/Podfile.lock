@@ -1165,9 +1165,6 @@ PODS:
     - Firebase/Functions (= 11.6.0)
     - firebase_core
     - Flutter
-  - fc_native_image_resize (0.0.1):
-    - Flutter
-    - FlutterMacOS
   - Firebase/Analytics (11.6.0):
     - Firebase/Core
   - Firebase/Auth (11.6.0):
@@ -1520,7 +1517,6 @@ PODS:
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
-  - fc_native_image_resize (from `.symlinks/plugins/fc_native_image_resize/darwin`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -1583,8 +1579,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   cloud_functions:
     :path: ".symlinks/plugins/cloud_functions/ios"
-  fc_native_image_resize:
-    :path: ".symlinks/plugins/fc_native_image_resize/darwin"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_auth:
@@ -1622,7 +1616,6 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: ca6a8e5d04812fce8ffd6437810c2d46f925eaeb
   cloud_firestore: d1ec4183fa44c06b38ca55d8723abe930468ee0d
   cloud_functions: 3632394a4991ad45da7ddf97f7cb324bc896c0b7
-  fc_native_image_resize: c3f356a5c71ffecc679808a1bf4d1705b687703a
   Firebase: 374a441a91ead896215703a674d58cdb3e9d772b
   firebase_analytics: 13ea4ad8a42c5060bad7e6694304dabb8b02fe7e
   firebase_auth: 9927cecefe4daaf92b0fbe5d1d283e9329445177

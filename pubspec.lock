@@ -201,14 +201,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.3"
-  fc_native_image_resize:
-    dependency: "direct main"
-    description:
-      name: fc_native_image_resize
-      sha256: be9cf4173b3626a6a922a6a532e52814d8c3b6ef9349c0bec50cbc7ec4c015e7
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.14.2"
   ffi:
     dependency: transitive
     description:

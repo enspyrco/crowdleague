@@ -6,3 +6,4 @@ export * from './crew-request';
 export * from './accept-crew-request';
 export * from './split-crews';
 export * from './send-message-to-participants';
+export * from './resize-images';

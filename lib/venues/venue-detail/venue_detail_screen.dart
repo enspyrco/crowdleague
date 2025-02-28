@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -67,7 +68,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               children: [
                 FutureBuilder<Uint8List?>(
                     future: locate<VenuesService>()
-                        .downloadLargePhoto(widget.venueId),
+                        .downloadPhoto(widget.venueId, PicSize.medium),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData || snapshot.data == null) {
                         return AspectRatio(
@@ -85,23 +86,6 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                           }
                           return child;
                         },
-                        // loadingBuilder: (BuildContext context, Widget child,
-                        //     ImageChunkEvent? loadingProgress) {
-                        //   if (loadingProgress == null) {
-                        //     return child;
-                        //   }
-                        //   return AspectRatio(
-                        //     aspectRatio: 1.0,
-                        //     child: Center(
-                        //       child: CircularProgressIndicator(
-                        //         value: loadingProgress.expectedTotalBytes != null
-                        //             ? loadingProgress.cumulativeBytesLoaded /
-                        //                 loadingProgress.expectedTotalBytes!
-                        //             : null,
-                        //       ),
-                        //     ),
-                        //   );
-                        // },
                         errorBuilder: (context, exception, stackTrace) {
                           return Text(
                             exception.toString(),

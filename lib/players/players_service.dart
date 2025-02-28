@@ -53,9 +53,11 @@ class PlayersService {
       String playerId, PicSize picSize) async {
     final String picUriString;
     if (picSize == PicSize.small) {
-      picUriString = 'profilePics/${playerId}_small';
+      picUriString = 'profilePics/${playerId}_small.jpg';
+    } else if (picSize == PicSize.medium) {
+      picUriString = 'profilePics/${playerId}_medium.jpg';
     } else {
-      picUriString = 'profilePics/${playerId}_large';
+      picUriString = 'profilePics/${playerId}_large.jpg';
     }
     return await _imageBytesCache.retrieveImage(picUriString);
   }

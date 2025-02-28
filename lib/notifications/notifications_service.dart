@@ -107,7 +107,7 @@ class NotificationsService {
           await _playerCache.retrievePlayer(otherPlayerId);
 
       final Uint8List otherPicBytes = await _imageBytesCache
-          .retrieveImage('profilePics/${otherPlayer.id}_small');
+          .retrieveImage('profilePics/${otherPlayer.id}_small.jpg');
 
       return CrewAcceptedNotificationViewModel(
         notification: notification,
@@ -122,8 +122,8 @@ class NotificationsService {
 
       final Player player = await _playerCache.retrievePlayer(playerId);
 
-      final Uint8List playerPicBytes =
-          await _imageBytesCache.retrieveImage('profilePics/${playerId}_small');
+      final Uint8List playerPicBytes = await _imageBytesCache
+          .retrieveImage('profilePics/${playerId}_small.jpg');
 
       return CrewRequestNotificationViewModel(
         notification: notification,
@@ -140,7 +140,7 @@ class NotificationsService {
           await _playerCache.retrievePlayer(notification.requesteeId);
 
       final Uint8List playerPicBytes = await _imageBytesCache
-          .retrieveImage('profilePics/${player.id}_small');
+          .retrieveImage('profilePics/${player.id}_small.jpg');
 
       return SplitCrewsNotificationViewModel(
         notification: notification,

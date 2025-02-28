@@ -17,6 +17,49 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest: Current File",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
+      "args": [
+        "${fileBasename}",
+        "--runInBand",
+        "--config",
+        "${workspaceFolder}/functions/jest.config.js"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "FIRESTORE_EMULATOR_HOST": "localhost:8080",
+        "FIREBASE_STORAGE_EMULATOR_HOST": "localhost:9199",
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest: All Tests",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
+      "args": [
+        "--runInBand",
+        "--config",
+        "${workspaceFolder}/functions/jest.config.js"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "FIRESTORE_EMULATOR_HOST": "localhost:8080",
+        "FIREBASE_STORAGE_EMULATOR_HOST": "localhost:9199",
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Debug Emulated Firebase Functions",
+      "port": 9229
     }
   ]
 }
