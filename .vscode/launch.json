@@ -54,6 +54,12 @@
         "FIREBASE_STORAGE_EMULATOR_HOST": "localhost:9199",
         "NODE_ENV": "test"
       }
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Debug Emulated Firebase Functions",
+      "port": 9229
     }
   ]
 }
