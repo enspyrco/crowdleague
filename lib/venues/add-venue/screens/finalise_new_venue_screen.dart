@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../services/images_service.dart';
 import '../../../auth/user_auth_service.dart';
 import '../../venues_service.dart';
 import '../../../utils/locator.dart';
@@ -58,19 +57,7 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     // upload large photo
     await for (final UploadEvent _ in locate<VenuesService>().uploadFile(
       localPath: _localVenue.largePhotoPath!,
-      storagePath: 'venuePhotos/${venueId}_large',
-    )) {}
-
-    // resize large photo
-    final int smallSize = 50;
-    await locate<ImagesService>()
-        .resizeImage(filePath: _localVenue.largePhotoPath!, size: smallSize);
-    _localVenue.smallPhotoPath = '${_localVenue.largePhotoPath!}_$smallSize';
-
-    // upload small photo
-    await for (final UploadEvent _ in locate<VenuesService>().uploadFile(
-      localPath: '${_localVenue.largePhotoPath!}_$smallSize',
-      storagePath: 'venuePhotos/${venueId}_small',
+      storagePath: 'venuePhotos/$venueId.jpg',
     )) {}
 
     // Upload bytes for map icon and get a download Url

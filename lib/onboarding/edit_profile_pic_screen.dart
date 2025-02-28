@@ -53,14 +53,7 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
               _croppedFilePath = croppedFilePath;
             });
           }
-          locate<ImagesService>().saveLargeProfilePic(_croppedFilePath!);
-
-          final int smallSize = 100;
-          await locate<ImagesService>()
-              .resizeImage(filePath: _croppedFilePath!, size: smallSize);
-
-          locate<ImagesService>()
-              .saveSmallProfilePic(_croppedFilePath!, smallSize);
+          locate<ImagesService>().saveProfilePic(_croppedFilePath!);
 
           if (mounted) {
             context.push('/onboard-notifications');

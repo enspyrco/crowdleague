@@ -40,11 +40,10 @@ describe('Storage Upload Integration Test', () => {
   });
 
   /**
-   * Clears test data from Firestore and Storage.
+   * Clears test data from Storage.
    *
    * This function performs the following actions:
-   * 1. Deletes all documents in the 'uploads' collection in Firestore.
-   * 2. Deletes a specific file from the test storage bucket.
+   * 1. Deletes a specific file from the test storage bucket.
    *
    * @async
    * @function clearTestData
@@ -60,7 +59,7 @@ describe('Storage Upload Integration Test', () => {
     }
   }
 
-  test('should process uploaded image and create Firestore document',
+  test('should process uploaded image and save different sizes',
     async () => {
       // Load test image
       const testImagePath = path.join(__dirname,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:fc_native_image_resize/fc_native_image_resize.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/painting.dart';
@@ -17,7 +16,6 @@ class ImagesService {
   final FirebaseAuth _auth;
   final FirebaseStorage _storage;
   final ImagePicker _picker = ImagePicker();
-  final _resizePlugin = FcNativeImageResize();
 
   Future<XFile?> pickImage(ImageSource source) async {
     final XFile? pickedFile =
@@ -58,25 +56,9 @@ class ImagesService {
     return croppedFile?.path;
   }
 
-  Future<void> resizeImage({required String filePath, required int size}) {
-    return _resizePlugin.resizeFile(
-        srcFile: filePath,
-        destFile: '${filePath}_$size',
-        width: size,
-        height: size,
-        keepAspectRatio: true,
-        format: 'jpeg');
-  }
-
-  Future<void> saveLargeProfilePic(String filePath) async {
+  Future<void> saveProfilePic(String filePath) async {
     final storageRef =
-        _storage.ref('profilePics/${_auth.currentUser!.uid}_large');
+        _storage.ref('profilePics/${_auth.currentUser!.uid}.jpg');
     await storageRef.putFile(File(filePath));
-  }
-
-  Future<void> saveSmallProfilePic(String filePath, int smallSize) async {
-    final storageRef =
-        _storage.ref('profilePics/${_auth.currentUser!.uid}_small');
-    await storageRef.putFile(File('${filePath}_$smallSize'));
   }
 }

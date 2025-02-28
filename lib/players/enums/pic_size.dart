@@ -1,1 +1,1 @@
-enum PicSize { small, large }
+enum PicSize { small, medium, large }

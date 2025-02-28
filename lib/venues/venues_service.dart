@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/subjects.dart';
 
+import '../players/enums/pic_size.dart';
 import '../utils/api_keys.dart';
 import 'models/upload_event.dart';
 import 'models/venue.dart';
@@ -30,8 +31,17 @@ class VenuesService {
     return ref.id;
   }
 
-  Future<Uint8List?> downloadLargePhoto(String venueId) {
-    final storageRef = _storage.ref('venuePhotos/${venueId}_large');
+  Future<Uint8List?> downloadPhoto(String venueId, PicSize picSize) {
+    final String photoUriString;
+    if (picSize == PicSize.small) {
+      photoUriString = 'venuePhotos/${venueId}_small.jpg';
+    } else if (picSize == PicSize.medium) {
+      photoUriString = 'venuePhotos/${venueId}_medium.jpg';
+    } else {
+      photoUriString = 'venuePhotos/${venueId}_large.jpg';
+    }
+
+    final storageRef = _storage.ref(photoUriString);
     return storageRef.getData();
   }
 
