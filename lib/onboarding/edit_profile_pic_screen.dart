@@ -55,8 +55,11 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
           }
           locate<ImagesService>().saveProfilePic(_croppedFilePath!);
 
-          if (mounted) {
+          // navigate based on whether we are onboarding or not
+          if (mounted && _onboarding) {
             context.push('/onboard-notifications');
+          } else if (mounted && !_onboarding) {
+            context.pop();
           }
         }
       }
@@ -90,7 +93,9 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            if (_uploading) LinearProgressIndicator(),
             const SizedBox(height: 50),
             Stack(
               children: [
@@ -110,7 +115,6 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
                       );
                     },
                   ),
-                if (_uploading) LinearProgressIndicator(),
               ],
             ),
             const SizedBox(height: 50),
