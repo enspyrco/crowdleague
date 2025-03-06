@@ -30,7 +30,6 @@ import 'auth/user_auth_service.dart';
 import 'services/user_service.dart';
 import 'utils/globals.dart';
 import 'venues/venues_service.dart';
-import 'utils/cache/image_bytes_cache.dart';
 import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
 import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'venues/venue-detail/venue_detail_screen.dart';
@@ -149,7 +148,6 @@ void main() async {
       : FirebaseFunctions.instanceFor(region: 'us-central1');
 
   // Create caches for frequently retrieved objects
-  final imageBytesCache = ImageBytesCache(storage: storage);
   final playerCache = PlayerCache(firestore: firestore);
 
   // The services make up the repositories layer of the "data layer architecture"
@@ -183,7 +181,6 @@ void main() async {
     firestore: firestore,
     storage: storage,
     playerCache: playerCache,
-    imageBytesCache: imageBytesCache,
   ));
   Locator.add<CheckInService>(CheckInService(
     auth: auth,

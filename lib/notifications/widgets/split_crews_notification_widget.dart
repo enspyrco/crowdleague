@@ -1,6 +1,5 @@
 import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/utils/widgets/avatar/async_avatar.dart';
-import 'package:crowdleague/utils/widgets/avatar/bytes_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

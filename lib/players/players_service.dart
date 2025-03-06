@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/players/enums/pic_size.dart';
-import 'package:crowdleague/utils/cache/image_bytes_cache.dart';
 import 'package:crowdleague/utils/globals.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -14,7 +13,6 @@ class PlayersService {
     required FirebaseFirestore firestore,
     required FirebaseStorage storage,
     required PlayerCache playerCache,
-    required ImageBytesCache imageBytesCache,
   })  : _firestore = firestore,
         _playerCache = playerCache;
 
