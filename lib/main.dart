@@ -157,7 +157,6 @@ void main() async {
     firestore: firestore,
     auth: auth,
     cloudFunctions: cloudFunctions,
-    imageBytesCache: imageBytesCache,
     playerCache: playerCache,
     storage: storage,
   ));

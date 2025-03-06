@@ -1,3 +1,4 @@
+/// A Conversation has an id and a list of participant ids.
 class Conversation {
   Conversation({
     required this.id,
