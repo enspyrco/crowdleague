@@ -163,7 +163,6 @@ void main() async {
   Locator.add<NotificationsService>(NotificationsService(
     firestore: firestore,
     auth: auth,
-    imageBytesCache: imageBytesCache,
     playerCache: playerCache,
   ));
   Locator.add<MessagingService>(MessagingService(

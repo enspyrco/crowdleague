@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import '../notification.dart';
 
 sealed class NotificationViewModel {
@@ -14,15 +12,13 @@ class CrewRequestNotificationViewModel extends NotificationViewModel {
   const CrewRequestNotificationViewModel({
     required super.notification,
     required this.waiting,
-    required this.playerName,
-    required this.picBytes,
+    required this.requesterName,
     required this.requesteeId,
     required this.requesterId,
   });
 
   final bool waiting;
-  final String playerName;
-  final Uint8List picBytes;
+  final String requesterName;
   final String requesterId;
   final String requesteeId;
 }
@@ -32,12 +28,12 @@ class CrewAcceptedNotificationViewModel extends NotificationViewModel {
     required super.notification,
     required this.playerId,
     required this.otherName,
-    required this.otherPicBytes,
+    required this.otherPlayerId,
   });
 
   final String playerId;
   final String otherName;
-  final Uint8List otherPicBytes;
+  final String otherPlayerId;
 }
 
 class SplitCrewsNotificationViewModel extends NotificationViewModel {
@@ -45,10 +41,8 @@ class SplitCrewsNotificationViewModel extends NotificationViewModel {
     required super.notification,
     required this.playerName,
     required this.playerId,
-    required this.playerPicBytes,
   });
 
   final String playerName;
   final String playerId;
-  final Uint8List playerPicBytes;
 }
