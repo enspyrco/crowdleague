@@ -36,7 +36,7 @@ class UserService {
     await _cloudFunctions.httpsCallable('crewRequest').call({
       'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
-      'dbName': dbName,
+      'dbName': kDatabaseName,
     });
   }
 
@@ -53,7 +53,7 @@ class UserService {
       'requesterId': requesterId,
       'requesteeId': requesteeId,
       'notificationId': notificationId,
-      'dbName': dbName,
+      'dbName': kDatabaseName,
     });
   }
 
@@ -70,7 +70,7 @@ class UserService {
     await _cloudFunctions.httpsCallable('splitCrews').call({
       'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
-      'dbName': dbName,
+      'dbName': kDatabaseName,
     });
   }
 }

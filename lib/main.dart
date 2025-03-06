@@ -28,6 +28,7 @@ import 'notifications/notifications_service.dart';
 import 'players/players_service.dart';
 import 'auth/user_auth_service.dart';
 import 'services/user_service.dart';
+import 'utils/globals.dart';
 import 'venues/venues_service.dart';
 import 'utils/cache/image_bytes_cache.dart';
 import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
@@ -138,14 +139,9 @@ void main() async {
   };
 
   // Setup the data layer of the "data layer architecture"
-  final firestore = kReleaseMode
-      ? FirebaseFirestore.instanceFor(app: firebaseApp, databaseId: '(default)')
-      : FirebaseFirestore.instanceFor(
-          app: firebaseApp, databaseId: 'firestore-usa');
-  final storage = kReleaseMode
-      ? FirebaseStorage.instanceFor(bucket: 'gs://crowdleague-project-aus')
-      : FirebaseStorage.instanceFor(
-          bucket: 'gs://crowdleague-project.firebasestorage.app');
+  final firestore = FirebaseFirestore.instanceFor(
+      app: firebaseApp, databaseId: kDatabaseName);
+  final storage = FirebaseStorage.instanceFor(bucket: 'gs://$kBucketName');
   final auth = FirebaseAuth.instance;
   final messaging = FirebaseMessaging.instance;
   final cloudFunctions = (kReleaseMode)

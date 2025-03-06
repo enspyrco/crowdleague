@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crowdleague/utils/globals.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/subjects.dart';
@@ -31,7 +32,21 @@ class VenuesService {
     return ref.id;
   }
 
-  Future<Uint8List?> downloadPhoto(String venueId, PicSize picSize) {
+  // Future<Uint8List?> downloadPhoto(String venueId, PicSize picSize) {
+  //   final String photoUriString;
+  //   if (picSize == PicSize.small) {
+  //     photoUriString = 'venuePhotos/${venueId}_small.jpg';
+  //   } else if (picSize == PicSize.medium) {
+  //     photoUriString = 'venuePhotos/${venueId}_medium.jpg';
+  //   } else {
+  //     photoUriString = 'venuePhotos/${venueId}_large.jpg';
+  //   }
+
+  //   final storageRef = _storage.ref(photoUriString);
+  //   return storageRef.getData();
+  // }
+
+  String getPhotoUrl(String venueId, PicSize picSize) {
     final String photoUriString;
     if (picSize == PicSize.small) {
       photoUriString = 'venuePhotos/${venueId}_small.jpg';
@@ -41,8 +56,7 @@ class VenuesService {
       photoUriString = 'venuePhotos/${venueId}_large.jpg';
     }
 
-    final storageRef = _storage.ref(photoUriString);
-    return storageRef.getData();
+    return 'https://storage.googleapis.com/$kBucketName/$photoUriString';
   }
 
   Future<Uint8List?> downloadIcon(String venueId) {

@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/utils/cache/image_bytes_cache.dart';
+import 'package:crowdleague/utils/globals.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'models/player.dart';
@@ -16,12 +16,10 @@ class PlayersService {
     required PlayerCache playerCache,
     required ImageBytesCache imageBytesCache,
   })  : _firestore = firestore,
-        _playerCache = playerCache,
-        _imageBytesCache = imageBytesCache;
+        _playerCache = playerCache;
 
   final FirebaseFirestore _firestore;
   final PlayerCache _playerCache;
-  final ImageBytesCache _imageBytesCache;
 
   Future<List<Player>> retrievePlayers() async {
     final docsSnapshot = await _firestore.collection('profiles').get();
@@ -49,8 +47,7 @@ class PlayersService {
     });
   }
 
-  Future<Uint8List?> retrieveProfilePic(
-      String playerId, PicSize picSize) async {
+  String getProfilePicUrl(String playerId, PicSize picSize) {
     final String picUriString;
     if (picSize == PicSize.small) {
       picUriString = 'profilePics/${playerId}_small.jpg';
@@ -59,6 +56,6 @@ class PlayersService {
     } else {
       picUriString = 'profilePics/${playerId}_large.jpg';
     }
-    return await _imageBytesCache.retrieveImage(picUriString);
+    return 'https://storage.googleapis.com/$kBucketName/$picUriString';
   }
 }

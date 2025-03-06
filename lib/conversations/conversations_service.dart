@@ -115,7 +115,7 @@ class ConversationsService {
       'senderId': _auth.currentUser!.uid,
       'conversationId': conversationId,
       'message': value,
-      'dbName': dbName,
+      'dbName': kDatabaseName,
     });
   }
 
