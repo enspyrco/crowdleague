@@ -45,14 +45,17 @@ class PlayersService {
     });
   }
 
-  String getProfilePicUrl(String playerId, PicSize picSize) {
+  String getProfilePicUrl(Player player, PicSize picSize) {
     final String picUriString;
     if (picSize == PicSize.small) {
-      picUriString = 'profilePics/${playerId}_small.jpg';
+      picUriString =
+          'profilePics/${player.id}/${player.picTimestamp}_small.jpg';
     } else if (picSize == PicSize.medium) {
-      picUriString = 'profilePics/${playerId}_medium.jpg';
+      picUriString =
+          'profilePics/${player.id}/${player.picTimestamp}_medium.jpg';
     } else {
-      picUriString = 'profilePics/${playerId}_large.jpg';
+      picUriString =
+          'profilePics/${player.id}/${player.picTimestamp}_large.jpg';
     }
     return 'https://storage.googleapis.com/$kBucketName/$picUriString';
   }

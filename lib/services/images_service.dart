@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/painting.dart';
@@ -10,11 +11,14 @@ class ImagesService {
   ImagesService({
     required FirebaseStorage storage,
     required FirebaseAuth firebaseAuth,
+    required FirebaseFirestore firestore,
   })  : _storage = storage,
-        _auth = firebaseAuth;
+        _auth = firebaseAuth,
+        _firestore = firestore;
 
   final FirebaseAuth _auth;
   final FirebaseStorage _storage;
+  final FirebaseFirestore _firestore;
   final ImagePicker _picker = ImagePicker();
 
   Future<XFile?> pickImage(ImageSource source) async {
@@ -57,8 +61,14 @@ class ImagesService {
   }
 
   Future<void> saveProfilePic(String filePath) async {
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+
     final storageRef =
-        _storage.ref('profilePics/${_auth.currentUser!.uid}.jpg');
+        _storage.ref('profilePics/${_auth.currentUser!.uid}/$timestamp.jpg');
     await storageRef.putFile(File(filePath));
+
+    _firestore
+        .doc('profiles/${_auth.currentUser!.uid}')
+        .update({'picTimestamp': timestamp});
   }
 }

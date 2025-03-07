@@ -186,10 +186,15 @@ void main() async {
     auth: auth,
     firestore: firestore,
   ));
-  Locator.add<VenuesService>(
-      VenuesService(firestore: firestore, storage: storage));
-  Locator.add<ImagesService>(
-      ImagesService(storage: storage, firebaseAuth: auth));
+  Locator.add<VenuesService>(VenuesService(
+    firestore: firestore,
+    storage: storage,
+  ));
+  Locator.add<ImagesService>(ImagesService(
+    storage: storage,
+    firestore: firestore,
+    firebaseAuth: auth,
+  ));
 
   runApp(const CrowdLeagueApp());
 }
