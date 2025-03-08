@@ -4,6 +4,7 @@ import {Storage, Bucket, File} from '@google-cloud/storage';
 import * as logger from 'firebase-functions/logger';
 import sharp from 'sharp';
 import * as path from 'path';
+import {getFirestore, FieldValue} from 'firebase-admin/firestore';
 
 interface ImageSize {
   width: number;
@@ -14,7 +15,6 @@ interface ImageSize {
 interface ResizedImage {
   size: string;
   path: string;
-  url: string;
 }
 
 // Define the target image sizes
@@ -70,22 +70,16 @@ async function processImage(
       },
     });
 
-    // Get download URL
-    const [url] = await newFile.getSignedUrl({
-      action: 'read',
-      expires: '03-01-2500',
-    });
-
     return {
       size: suffix,
       path: newFilePath,
-      url,
     };
   });
 
   return Promise.all(resizePromises);
 }
 
+// The upload file is assumed to have form `bucketName/userId/timestamp.jpg`
 export const resizeImages = functions.storage.onObjectFinalized(
   // {
   //   bucket: 'myBucket',
@@ -96,6 +90,10 @@ export const resizeImages = functions.storage.onObjectFinalized(
     const filePath = event.data.name;
     const fileName = path.basename(filePath);
     const contentType = event.data.contentType;
+    const folders = path.dirname(filePath).split(path.sep);
+    const area = folders[0]; // venues or profiles
+    const areaId = folders[1]; // venueId or profileId
+    const timestamp = fileName.split('.')[0];
 
     // Exit if this is triggered by a resized image
     if (SIZES.some((size) => fileName.includes(`_${size.suffix}`))) {
@@ -110,6 +108,8 @@ export const resizeImages = functions.storage.onObjectFinalized(
     }
 
     try {
+      const firestore = getFirestore('firestore-usa');
+
       // Check if this is an update or new file
       const isUpdate = event.data.metageneration > 1;
       logger.log(`Processing ${isUpdate ? 'update to' : 'new'} image:`,
@@ -119,8 +119,27 @@ export const resizeImages = functions.storage.onObjectFinalized(
       const bucket = storage.bucket(bucketName);
       const file = bucket.file(filePath);
 
+      // Update the status of the profile pic processing
+      await firestore.collection(area).doc(areaId).set({
+        picStatus: 'processing'}, {merge: true}
+      );
+
       // Process the image
       const results = await processImage(bucket, file, filePath, contentType);
+
+      logger.log(`Saved image with name (timestamp): ${timestamp} ` +
+        `to ${area}/${areaId}/`);
+
+      // Set the picId and add update the status of the profile pic processing.
+      await firestore.collection(area).doc(areaId).set({
+        picId: +timestamp, picStatus: 'complete'}, {merge: true}
+      );
+      // Add the picId to the picIds array, which keeps track of uploaded
+      // profile pics.
+      await firestore.collection(area).doc(areaId).update({
+        picIds: FieldValue.arrayUnion(+timestamp),
+      });
+
       return results;
     } catch (error) {
       logger.error('Error processing image:',

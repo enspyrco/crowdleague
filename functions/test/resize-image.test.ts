@@ -7,8 +7,8 @@ import sharp from 'sharp'; // Image processing library
 // Test configuration
 const TEST_BUCKET = 'crowdleague-project.firebasestorage.app';
 const PROJECT_ID = 'crowdleague-project';
-const UPLOAD_PATH = 'test-uploads/test-image.png';
-const RESIZED_PATH = 'test-uploads/test-image_small.png';
+const UPLOAD_PATH = 'profiles/userId/timestamp.png';
+const RESIZED_PATH = 'profiles/userId/timestamp_small.png';
 
 describe('Storage Upload Integration Test', () => {
   let storage: admin.storage.Storage;
