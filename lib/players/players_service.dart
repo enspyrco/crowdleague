@@ -32,6 +32,10 @@ class PlayersService {
     return _playerCache.retrievePlayer(playerId);
   }
 
+  PlayerCacheItem? bustCache(String playerId) {
+    return _playerCache.bustPlayer(playerId);
+  }
+
   Stream<Player?> listenToPlayer(String playerId) {
     return _firestore
         .collection('profiles')
@@ -48,14 +52,11 @@ class PlayersService {
   String getProfilePicUrl(Player player, PicSize picSize) {
     final String picUriString;
     if (picSize == PicSize.small) {
-      picUriString =
-          'profilePics/${player.id}/${player.picTimestamp}_small.jpg';
+      picUriString = 'profiles/${player.id}/${player.picId}_small.jpg';
     } else if (picSize == PicSize.medium) {
-      picUriString =
-          'profilePics/${player.id}/${player.picTimestamp}_medium.jpg';
+      picUriString = 'profiles/${player.id}/${player.picId}_medium.jpg';
     } else {
-      picUriString =
-          'profilePics/${player.id}/${player.picTimestamp}_large.jpg';
+      picUriString = 'profiles/${player.id}/${player.picId}_large.jpg';
     }
     return 'https://storage.googleapis.com/$kBucketName/$picUriString';
   }

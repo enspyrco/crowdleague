@@ -29,7 +29,7 @@ class _YouScreenState extends State<YouScreen> {
           padding: const EdgeInsets.all(5),
           child: GestureDetector(
             child: AsyncAvatar(
-                locate<UserAuthService>().currentUserId!, PicSize.large),
+                locate<UserAuthService>().currentUserId!, PicSize.small),
             onTap: () {
               context.pushNamed('player-profile', pathParameters: {
                 'id': locate<UserAuthService>().currentUserId!

@@ -28,9 +28,11 @@ class AsyncAvatar extends StatelessWidget {
         child: FutureBuilder<Player?>(
             future: locate<PlayersService>().retrievePlayer(playerId),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
+              if (!snapshot.hasData ||
+                  snapshot.data!.picStatus == 'processing') {
                 return CircularProgressIndicator();
               }
+
               return CircleAvatar(
                 backgroundColor: backgroundColor,
                 backgroundImage: NetworkImage(locate<PlayersService>()

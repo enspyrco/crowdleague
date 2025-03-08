@@ -192,7 +192,6 @@ void main() async {
   ));
   Locator.add<ImagesService>(ImagesService(
     storage: storage,
-    firestore: firestore,
     firebaseAuth: auth,
   ));
 

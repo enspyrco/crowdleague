@@ -11,14 +11,11 @@ class ImagesService {
   ImagesService({
     required FirebaseStorage storage,
     required FirebaseAuth firebaseAuth,
-    required FirebaseFirestore firestore,
   })  : _storage = storage,
-        _auth = firebaseAuth,
-        _firestore = firestore;
+        _auth = firebaseAuth;
 
   final FirebaseAuth _auth;
   final FirebaseStorage _storage;
-  final FirebaseFirestore _firestore;
   final ImagePicker _picker = ImagePicker();
 
   Future<XFile?> pickImage(ImageSource source) async {
@@ -64,11 +61,7 @@ class ImagesService {
     int timestamp = DateTime.now().millisecondsSinceEpoch;
 
     final storageRef =
-        _storage.ref('profilePics/${_auth.currentUser!.uid}/$timestamp.jpg');
+        _storage.ref('profiles/${_auth.currentUser!.uid}/$timestamp.jpg');
     await storageRef.putFile(File(filePath));
-
-    _firestore
-        .doc('profiles/${_auth.currentUser!.uid}')
-        .update({'picTimestamp': timestamp});
   }
 }

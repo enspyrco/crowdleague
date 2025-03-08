@@ -53,7 +53,7 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
               _croppedFilePath = croppedFilePath;
             });
           }
-          locate<ImagesService>().saveProfilePic(_croppedFilePath!);
+          await locate<ImagesService>().saveProfilePic(_croppedFilePath!);
 
           // navigate based on whether we are onboarding or not
           if (mounted && _onboarding) {
@@ -110,7 +110,7 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
                     builder: (context, snapshot) {
                       return AsyncAvatar(
                         locate<UserAuthService>().currentUserId!,
-                        PicSize.large,
+                        PicSize.medium,
                         widgetSize: 100,
                       );
                     },

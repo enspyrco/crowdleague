@@ -27,6 +27,10 @@ class PlayerCache {
     }
     return _cache[playerId]!.player;
   }
+
+  PlayerCacheItem? bustPlayer(String playerId) {
+    return _cache.remove(playerId);
+  }
 }
 
 class PlayerCacheItem {
