@@ -11,7 +11,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'models/message.dart';
 import '../players/models/player.dart';
-import '../utils/cache/image_bytes_cache.dart';
 import '../utils/globals.dart';
 
 class ConversationsService {
@@ -20,12 +19,10 @@ class ConversationsService {
     required FirebaseStorage storage,
     required FirebaseFunctions cloudFunctions,
     required FirebaseFirestore firestore,
-    required ImageBytesCache imageBytesCache,
     required PlayerCache playerCache,
   })  : _firestore = firestore,
         _auth = auth,
         _cloudFunctions = cloudFunctions,
-        _imageBytesCache = imageBytesCache,
         _playerCache = playerCache {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
@@ -41,7 +38,6 @@ class ConversationsService {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
   final FirebaseFunctions _cloudFunctions;
-  final ImageBytesCache _imageBytesCache;
   final PlayerCache _playerCache;
 
   Future<String> findOrCreateConversation(String playerId) async {
@@ -77,7 +73,7 @@ class ConversationsService {
 
   Future<ConversationViewModel> _convertToViewModel(
       Conversation conversation) async {
-    QuerySnapshot<Map<String, Object?>> snapshot = await _firestore
+    QuerySnapshot<Map<String, Object?>> lastMessagesSnapshot = await _firestore
         .collection('conversations')
         .doc(conversation.id)
         .collection('messages')
@@ -86,16 +82,15 @@ class ConversationsService {
         .get();
 
     Message lastMessage = Message.fromJsonWithId(
-        snapshot.docs.first.id, snapshot.docs.first.data());
+        lastMessagesSnapshot.docs.first.id,
+        lastMessagesSnapshot.docs.first.data());
 
-    final String otherPlayerId =
+    final String lastMessagePlayerId =
         conversation.participantIds.first == _auth.currentUser!.uid
             ? conversation.participantIds.last
             : conversation.participantIds.first;
-    final Player otherPlayer = await _playerCache.retrievePlayer(otherPlayerId);
-
-    final picData = await _imageBytesCache
-        .retrieveImage('profilePics/${otherPlayer.id}_small.jpg');
+    final Player lastMessagePlayer =
+        await _playerCache.retrievePlayer(lastMessagePlayerId);
 
     String maybeYou = '';
     if (lastMessage.senderId == _auth.currentUser!.uid) {
@@ -104,9 +99,9 @@ class ConversationsService {
 
     return ConversationViewModel(
       conversation: conversation,
-      lastMessagePicData: picData,
-      lastMessageName: otherPlayer.name,
-      identifyingLastMessageValue: maybeYou + lastMessage.value,
+      lastMessagePlayerId: lastMessagePlayerId,
+      lastMessagePlayerName: lastMessagePlayer.name,
+      lastMessageText: maybeYou + lastMessage.value,
     );
   }
 
@@ -115,7 +110,7 @@ class ConversationsService {
       'senderId': _auth.currentUser!.uid,
       'conversationId': conversationId,
       'message': value,
-      'dbName': dbName,
+      'dbName': kDatabaseName,
     });
   }
 

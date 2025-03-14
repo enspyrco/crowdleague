@@ -1,4 +1,5 @@
-import 'package:crowdleague/utils/widgets/avatar/bytes_avatar.dart';
+import 'package:crowdleague/players/enums/pic_size.dart';
+import 'package:crowdleague/utils/widgets/avatar/async_avatar.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/user_service.dart';
@@ -28,9 +29,9 @@ class CrewRequestNotificationWidget extends StatelessWidget {
           ? Colors.grey.shade800
           : Colors.white,
       child: ListTile(
-        leading: BytesAvatar(_notificationViewModel.picBytes),
+        leading: AsyncAvatar(_notificationViewModel.requesterId, PicSize.small),
         title: Text(
-          '${_notificationViewModel.playerName} wants to join crews',
+          '${_notificationViewModel.requesterName} wants to join crews',
           style: Theme.of(context).textTheme.bodyLarge!,
         ),
         subtitle: Row(

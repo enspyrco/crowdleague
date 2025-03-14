@@ -1,34 +1,33 @@
-import 'dart:typed_data';
-
 import '../conversation.dart';
 
+/// A ConversationViewModel carries the original Conversation along with the
+/// objects required to display the Conversation item.
 class ConversationViewModel {
   ConversationViewModel({
     required this.conversation,
-    required this.lastMessagePicData,
-    required this.lastMessageName,
-    required this.identifyingLastMessageValue,
+    required this.lastMessagePlayerId,
+    required this.lastMessagePlayerName,
+    required this.lastMessageText,
   });
 
   final Conversation conversation;
-  final String identifyingLastMessageValue;
-  final String lastMessageName;
-  final Uint8List lastMessagePicData;
+  final String lastMessagePlayerId;
+  final String lastMessageText;
+  final String lastMessagePlayerName;
 
   factory ConversationViewModel.fromJson(Map<String, dynamic> json) {
     return ConversationViewModel(
-      identifyingLastMessageValue:
-          json['identifyingLastMessageValue'] as String,
       conversation: Conversation.fromJson(json['conversation']),
-      lastMessagePicData: Uint8List.fromList(List<int>.from(json['iconData'])),
-      lastMessageName: json['lastMessageName'] as String,
+      lastMessagePlayerId: json['lastMessagePlayerId'] as String,
+      lastMessagePlayerName: json['lastMessagePlayerName'] as String,
+      lastMessageText: json['lastMessageText'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'conversation': conversation.toJson(),
-      'iconData': lastMessagePicData.toList(),
+      'lastMessagePlayerId': lastMessagePlayerId,
     };
   }
 }

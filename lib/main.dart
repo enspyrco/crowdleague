@@ -28,8 +28,8 @@ import 'notifications/notifications_service.dart';
 import 'players/players_service.dart';
 import 'auth/user_auth_service.dart';
 import 'services/user_service.dart';
+import 'utils/globals.dart';
 import 'venues/venues_service.dart';
-import 'utils/cache/image_bytes_cache.dart';
 import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
 import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'venues/venue-detail/venue_detail_screen.dart';
@@ -138,14 +138,9 @@ void main() async {
   };
 
   // Setup the data layer of the "data layer architecture"
-  final firestore = kReleaseMode
-      ? FirebaseFirestore.instanceFor(app: firebaseApp, databaseId: '(default)')
-      : FirebaseFirestore.instanceFor(
-          app: firebaseApp, databaseId: 'firestore-usa');
-  final storage = kReleaseMode
-      ? FirebaseStorage.instanceFor(bucket: 'gs://crowdleague-project-aus')
-      : FirebaseStorage.instanceFor(
-          bucket: 'gs://crowdleague-project.firebasestorage.app');
+  final firestore = FirebaseFirestore.instanceFor(
+      app: firebaseApp, databaseId: kDatabaseName);
+  final storage = FirebaseStorage.instanceFor(bucket: 'gs://$kBucketName');
   final auth = FirebaseAuth.instance;
   final messaging = FirebaseMessaging.instance;
   final cloudFunctions = (kReleaseMode)
@@ -153,7 +148,6 @@ void main() async {
       : FirebaseFunctions.instanceFor(region: 'us-central1');
 
   // Create caches for frequently retrieved objects
-  final imageBytesCache = ImageBytesCache(storage: storage);
   final playerCache = PlayerCache(firestore: firestore);
 
   // The services make up the repositories layer of the "data layer architecture"
@@ -161,14 +155,12 @@ void main() async {
     firestore: firestore,
     auth: auth,
     cloudFunctions: cloudFunctions,
-    imageBytesCache: imageBytesCache,
     playerCache: playerCache,
     storage: storage,
   ));
   Locator.add<NotificationsService>(NotificationsService(
     firestore: firestore,
     auth: auth,
-    imageBytesCache: imageBytesCache,
     playerCache: playerCache,
   ));
   Locator.add<MessagingService>(MessagingService(
@@ -189,16 +181,19 @@ void main() async {
     firestore: firestore,
     storage: storage,
     playerCache: playerCache,
-    imageBytesCache: imageBytesCache,
   ));
   Locator.add<CheckInService>(CheckInService(
     auth: auth,
     firestore: firestore,
   ));
-  Locator.add<VenuesService>(
-      VenuesService(firestore: firestore, storage: storage));
-  Locator.add<ImagesService>(
-      ImagesService(storage: storage, firebaseAuth: auth));
+  Locator.add<VenuesService>(VenuesService(
+    firestore: firestore,
+    storage: storage,
+  ));
+  Locator.add<ImagesService>(ImagesService(
+    storage: storage,
+    firebaseAuth: auth,
+  ));
 
   runApp(const CrowdLeagueApp());
 }

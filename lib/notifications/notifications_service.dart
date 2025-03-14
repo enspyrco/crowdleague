@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crowdleague/utils/cache/image_bytes_cache.dart';
 import 'package:crowdleague/utils/cache/player_cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,16 +12,13 @@ class NotificationsService {
   NotificationsService({
     required FirebaseAuth auth,
     required FirebaseFirestore firestore,
-    required ImageBytesCache imageBytesCache,
     required PlayerCache playerCache,
   })  : _auth = auth,
         _firestore = firestore,
-        _imageBytesCache = imageBytesCache,
         _playerCache = playerCache;
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
-  final ImageBytesCache _imageBytesCache;
   final PlayerCache _playerCache;
 
   final _numNotificationsViewedStreamController = StreamController<int>();
@@ -106,29 +101,21 @@ class NotificationsService {
       final Player otherPlayer =
           await _playerCache.retrievePlayer(otherPlayerId);
 
-      final Uint8List otherPicBytes = await _imageBytesCache
-          .retrieveImage('profilePics/${otherPlayer.id}_small.jpg');
-
       return CrewAcceptedNotificationViewModel(
         notification: notification,
         playerId: notification.requesterId,
         otherName: otherPlayer.name,
-        otherPicBytes: otherPicBytes,
+        otherPlayerId: otherPlayer.id,
       );
     }
 
     if (notification is CrewRequestNotification) {
-      final String playerId = notification.requesterId;
-
-      final Player player = await _playerCache.retrievePlayer(playerId);
-
-      final Uint8List playerPicBytes = await _imageBytesCache
-          .retrieveImage('profilePics/${playerId}_small.jpg');
+      final Player requester =
+          await _playerCache.retrievePlayer(notification.requesterId);
 
       return CrewRequestNotificationViewModel(
         notification: notification,
-        playerName: player.name,
-        picBytes: playerPicBytes,
+        requesterName: requester.name,
         requesteeId: notification.requesteeId,
         requesterId: notification.requesterId,
         waiting: notification.waiting,
@@ -139,14 +126,10 @@ class NotificationsService {
       final Player player =
           await _playerCache.retrievePlayer(notification.requesteeId);
 
-      final Uint8List playerPicBytes = await _imageBytesCache
-          .retrieveImage('profilePics/${player.id}_small.jpg');
-
       return SplitCrewsNotificationViewModel(
         notification: notification,
         playerName: player.name,
         playerId: player.id,
-        playerPicBytes: playerPicBytes,
       );
     }
 

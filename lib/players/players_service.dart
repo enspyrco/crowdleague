@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/players/enums/pic_size.dart';
-import 'package:crowdleague/utils/cache/image_bytes_cache.dart';
+import 'package:crowdleague/utils/globals.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'models/player.dart';
@@ -14,14 +13,11 @@ class PlayersService {
     required FirebaseFirestore firestore,
     required FirebaseStorage storage,
     required PlayerCache playerCache,
-    required ImageBytesCache imageBytesCache,
   })  : _firestore = firestore,
-        _playerCache = playerCache,
-        _imageBytesCache = imageBytesCache;
+        _playerCache = playerCache;
 
   final FirebaseFirestore _firestore;
   final PlayerCache _playerCache;
-  final ImageBytesCache _imageBytesCache;
 
   Future<List<Player>> retrievePlayers() async {
     final docsSnapshot = await _firestore.collection('profiles').get();
@@ -34,6 +30,10 @@ class PlayersService {
 
   Future<Player?> retrievePlayer(String playerId) {
     return _playerCache.retrievePlayer(playerId);
+  }
+
+  PlayerCacheItem? bustCache(String playerId) {
+    return _playerCache.bustPlayer(playerId);
   }
 
   Stream<Player?> listenToPlayer(String playerId) {
@@ -49,16 +49,15 @@ class PlayersService {
     });
   }
 
-  Future<Uint8List?> retrieveProfilePic(
-      String playerId, PicSize picSize) async {
+  String getProfilePicUrl(Player player, PicSize picSize) {
     final String picUriString;
     if (picSize == PicSize.small) {
-      picUriString = 'profilePics/${playerId}_small.jpg';
+      picUriString = 'profiles/${player.id}/${player.picId}_small.jpg';
     } else if (picSize == PicSize.medium) {
-      picUriString = 'profilePics/${playerId}_medium.jpg';
+      picUriString = 'profiles/${player.id}/${player.picId}_medium.jpg';
     } else {
-      picUriString = 'profilePics/${playerId}_large.jpg';
+      picUriString = 'profiles/${player.id}/${player.picId}_large.jpg';
     }
-    return await _imageBytesCache.retrieveImage(picUriString);
+    return 'https://storage.googleapis.com/$kBucketName/$picUriString';
   }
 }

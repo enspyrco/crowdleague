@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -66,34 +64,25 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
           if (_venue != null && !_deleting) ...[
             Stack(
               children: [
-                FutureBuilder<Uint8List?>(
-                    future: locate<VenuesService>()
-                        .downloadPhoto(widget.venueId, PicSize.medium),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData || snapshot.data == null) {
-                        return AspectRatio(
-                            aspectRatio: 1.0,
-                            child: Center(child: CircularProgressIndicator()));
-                      }
-                      return Image.memory(
-                        snapshot.data!,
-                        frameBuilder: (context, child, frame, sync) {
-                          if (frame == null) {
-                            return const AspectRatio(
-                              aspectRatio: 1.0,
-                              child: Center(child: CircularProgressIndicator()),
-                            );
-                          }
-                          return child;
-                        },
-                        errorBuilder: (context, exception, stackTrace) {
-                          return Text(
-                            exception.toString(),
-                            style: const TextStyle(color: Colors.red),
-                          );
-                        },
+                Image.network(
+                  locate<VenuesService>()
+                      .getPhotoUrl(widget.venueId, PicSize.medium),
+                  frameBuilder: (context, child, frame, sync) {
+                    if (frame == null) {
+                      return const AspectRatio(
+                        aspectRatio: 1.0,
+                        child: Center(child: CircularProgressIndicator()),
                       );
-                    }),
+                    }
+                    return child;
+                  },
+                  errorBuilder: (context, exception, stackTrace) {
+                    return Text(
+                      exception.toString(),
+                      style: const TextStyle(color: Colors.red),
+                    );
+                  },
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(

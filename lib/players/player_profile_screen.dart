@@ -76,6 +76,10 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
             final bool crew = player.crewIds
                 .contains(locate<UserAuthService>().currentUserId!);
 
+            // Bust the cache so changes like `picStatus` will show up
+            locate<PlayersService>()
+                .bustCache(locate<UserAuthService>().currentUserId!);
+
             return Column(
               children: [
                 SizedBox(
@@ -91,7 +95,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                     children: [
                       AsyncAvatar(
                         widget._playerId,
-                        PicSize.large,
+                        PicSize.medium,
                         widgetSize: 100,
                       ),
                       if (_owner)

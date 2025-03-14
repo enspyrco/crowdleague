@@ -20,7 +20,7 @@ class UserService {
   final FirebaseFirestore _firestore;
   final FirebaseFunctions _cloudFunctions;
 
-  /// Check for a saved FCM token, which is the last part of onboarding.
+  /// Check shared prefs for onboarding status.
   Future<bool> get userHasOnboarded async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('onboarded') ?? false;
@@ -36,7 +36,7 @@ class UserService {
     await _cloudFunctions.httpsCallable('crewRequest').call({
       'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
-      'dbName': dbName,
+      'dbName': kDatabaseName,
     });
   }
 
@@ -53,7 +53,7 @@ class UserService {
       'requesterId': requesterId,
       'requesteeId': requesteeId,
       'notificationId': notificationId,
-      'dbName': dbName,
+      'dbName': kDatabaseName,
     });
   }
 
@@ -70,7 +70,7 @@ class UserService {
     await _cloudFunctions.httpsCallable('splitCrews').call({
       'requesterId': _auth.currentUser!.uid,
       'requesteeId': playerId,
-      'dbName': dbName,
+      'dbName': kDatabaseName,
     });
   }
 }

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../players/models/player.dart';
@@ -27,6 +26,10 @@ class PlayerCache {
           timestamp: DateTime.now());
     }
     return _cache[playerId]!.player;
+  }
+
+  PlayerCacheItem? bustPlayer(String playerId) {
+    return _cache.remove(playerId);
   }
 }
 

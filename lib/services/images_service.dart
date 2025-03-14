@@ -57,8 +57,10 @@ class ImagesService {
   }
 
   Future<void> saveProfilePic(String filePath) async {
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+
     final storageRef =
-        _storage.ref('profilePics/${_auth.currentUser!.uid}.jpg');
+        _storage.ref('profiles/${_auth.currentUser!.uid}/$timestamp.jpg');
     await storageRef.putFile(File(filePath));
   }
 }
