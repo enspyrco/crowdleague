@@ -32,21 +32,6 @@ class Player {
     };
   }
 
-  factory Player.fromJson(Map<String, dynamic> json) {
-    return Player(
-      id: json['id'],
-      name: json['name'],
-      picId: json['picId'] ?? 0,
-      picIds: json['picIds'] == null ? [] : List<int>.from(json['picIds']),
-      picStatus: json['picStatus'] ?? 'processing',
-      pendingCrewRequests: (json['pendingCrewRequests'] == null)
-          ? []
-          : List<String>.from(json['pendingCrewRequests']),
-      crewIds:
-          (json['crewIds'] == null) ? [] : List<String>.from(json['crewIds']),
-    );
-  }
-
   factory Player.fromJsonWithId(String id, Map<String, dynamic> json) {
     return Player(
       id: id,

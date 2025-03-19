@@ -20,9 +20,7 @@ class PlayersService {
   Future<List<Player>> retrievePlayers() async {
     final docsSnapshot = await _firestore.collection('profiles').get();
     return docsSnapshot.docs.map<Player>((snapshot) {
-      final json = snapshot.data();
-      json['id'] = snapshot.id;
-      return Player.fromJson(json);
+      return Player.fromJsonWithId(snapshot.id, snapshot.data());
     }).toList();
   }
 
@@ -41,9 +39,7 @@ class PlayersService {
         .snapshots()
         .map<Player?>((snapshot) {
       if (snapshot.data() == null) return null;
-      final json = Map<String, Object?>.from(snapshot.data()!);
-      json['id'] = snapshot.id;
-      return Player.fromJson(json);
+      return Player.fromJsonWithId(snapshot.id, snapshot.data()!);
     });
   }
 }

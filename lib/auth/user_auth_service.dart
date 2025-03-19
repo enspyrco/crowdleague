@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crowdleague/players/models/player.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rxdart/subjects.dart';
@@ -74,5 +75,10 @@ class UserAuthService {
   Future<void> signOut() async {
     await profileStreamSubscription?.cancel();
     return _auth.signOut();
+  }
+
+  Player? getUserPlayer() {
+    if (_auth.currentUser == null) return null;
+    return Player.fromJsonWithId(_auth.currentUser!.uid, _userSubject.value);
   }
 }

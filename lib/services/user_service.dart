@@ -32,6 +32,12 @@ class UserService {
         .set({'name': name}, SetOptions(merge: true));
   }
 
+  Future<void> updateProfilePic(int picId) {
+    return _firestore
+        .doc('profiles/${_auth.currentUser!.uid}')
+        .set({'picId': picId}, SetOptions(merge: true));
+  }
+
   Future<void> requestCrew({required String playerId}) async {
     await _cloudFunctions.httpsCallable('crewRequest').call({
       'requesterId': _auth.currentUser!.uid,
