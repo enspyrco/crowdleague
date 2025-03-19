@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crowdleague/players/enums/pic_size.dart';
-import 'package:crowdleague/utils/globals.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'models/player.dart';
@@ -47,17 +45,5 @@ class PlayersService {
       json['id'] = snapshot.id;
       return Player.fromJson(json);
     });
-  }
-
-  String getProfilePicUrl(Player player, PicSize picSize) {
-    final String picUriString;
-    if (picSize == PicSize.small) {
-      picUriString = 'profiles/${player.id}/${player.picId}_small.jpg';
-    } else if (picSize == PicSize.medium) {
-      picUriString = 'profiles/${player.id}/${player.picId}_medium.jpg';
-    } else {
-      picUriString = 'profiles/${player.id}/${player.picId}_large.jpg';
-    }
-    return 'https://storage.googleapis.com/$kBucketName/$picUriString';
   }
 }

@@ -33,10 +33,12 @@ class AsyncAvatar extends StatelessWidget {
                 return CircularProgressIndicator();
               }
 
+              final Player player = snapshot.data!;
+
               return CircleAvatar(
                 backgroundColor: backgroundColor,
-                backgroundImage: NetworkImage(locate<PlayersService>()
-                    .getProfilePicUrl(snapshot.data!, picSize)),
+                backgroundImage:
+                    NetworkImage(player.constructProfilePicUrl(picSize)),
               );
             }));
   }
