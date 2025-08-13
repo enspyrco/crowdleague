@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:crowdleague/players/enums/pic_size.dart';
+import 'package:crowdleague/utils/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/painting.dart';
@@ -62,5 +64,21 @@ class ImagesService {
     final storageRef =
         _storage.ref('profiles/${_auth.currentUser!.uid}/$timestamp.jpg');
     await storageRef.putFile(File(filePath));
+  }
+
+  String constructProfilePicUrl({
+    required String playerId,
+    required int picId,
+    required PicSize picSize,
+  }) {
+    final String picUriString;
+    if (picSize == PicSize.small) {
+      picUriString = 'profiles/$playerId/${picId}_small.jpg';
+    } else if (picSize == PicSize.medium) {
+      picUriString = 'profiles/$playerId/${picId}_medium.jpg';
+    } else {
+      picUriString = 'profiles/$playerId/${picId}_large.jpg';
+    }
+    return 'https://storage.googleapis.com/$kBucketName/$picUriString';
   }
 }

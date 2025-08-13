@@ -21,7 +21,8 @@ class NotificationsService {
   final FirebaseFirestore _firestore;
   final PlayerCache _playerCache;
 
-  final _numNotificationsViewedStreamController = StreamController<int>();
+  final _numNotificationsViewedStreamController =
+      StreamController<int>.broadcast();
   Stream<int> get numNotificationsViewedStream =>
       _numNotificationsViewedStreamController.stream;
 
@@ -80,6 +81,7 @@ class NotificationsService {
   }
 
   void readAndEmitNotificationsViewed() async {
+    if (_auth.currentUser == null) return;
     final aggregateQuery = await _firestore
         .collection('notifications')
         .where('playerId', isEqualTo: _auth.currentUser!.uid)
