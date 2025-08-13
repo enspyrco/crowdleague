@@ -81,7 +81,7 @@ class UserAuthService {
   Future<void> signInWithApple() async {
     final provider = AppleAuthProvider();
 
-    final _ = _auth.signInWithProvider(provider);
+    final _ = await _auth.signInWithProvider(provider);
   }
 
   Future<void> signOut() async {
