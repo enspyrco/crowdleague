@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "945991608888-q96ftvo7cskp4bd1ka8d8n28v6859243.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.enspyr.cl1",
+            "certificate_hash": "c823f17ffa51301466029b0afc4da42472ecb6bd"
+          }
+        },
+        {
           "client_id": "945991608888-qmcnr590cfpru340ud8vkhd1t0uu5g74.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
