@@ -1,6 +1,2 @@
-import 'package:flutter/foundation.dart';
-
-const String kDatabaseName = (kReleaseMode) ? '(default)' : 'firestore-usa';
-const String kBucketName = kReleaseMode
-    ? 'crowdleague-project-aus'
-    : 'crowdleague-project.firebasestorage.app';
+const String kDatabaseName = '(default)';
+const String kBucketName = 'crowdleague-project.firebasestorage.app';
