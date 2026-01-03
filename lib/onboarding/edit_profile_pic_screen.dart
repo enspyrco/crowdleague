@@ -201,7 +201,7 @@ class _OldProfilePicsListState extends State<OldProfilePicsList> {
   bool _deleteOnSelection = false;
 
   void deleteImage() {
-    print("Image deleted!");
+    log("Image deleted!");
     // Add your actual image deletion logic here
   }
 

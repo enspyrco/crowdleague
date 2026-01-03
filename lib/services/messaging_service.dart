@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,12 +24,11 @@ class MessagingService {
     });
 
     fbm.FirebaseMessaging.onMessage.listen((fbm.RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
+      log('Got a message whilst in the foreground!');
+      log('Message data: ${message.data}');
 
       if (message.notification != null) {
-        print(
-            'Message also contained a notification: ${jsonEncode(message.notification?.toMap())}');
+        log('Message also contained a notification: ${jsonEncode(message.notification?.toMap())}');
       }
     });
   }

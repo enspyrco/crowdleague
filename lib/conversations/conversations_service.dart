@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
@@ -25,12 +26,11 @@ class ConversationsService {
         _cloudFunctions = cloudFunctions,
         _playerCache = playerCache {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
+      log('Got a message whilst in the foreground!');
+      log('Message data: ${message.data}');
 
       if (message.notification != null) {
-        print(
-            'Message also contained a notification: ${jsonEncode(message.notification?.toMap())}');
+        log('Message also contained a notification: ${jsonEncode(message.notification?.toMap())}');
       }
     });
   }
