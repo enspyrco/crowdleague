@@ -8,7 +8,7 @@ import {HttpsError, onCall} from 'firebase-functions/v2/https';
 export const sendMessageToParticipants = onCall(
   {
     cors: true,
-    region: ['australia-southeast2', 'us-central1'],
+    region: 'us-central1',
   },
   async (request) => {
     try {

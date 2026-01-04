@@ -4,7 +4,7 @@ import {Storage, Bucket, File} from '@google-cloud/storage';
 import * as logger from 'firebase-functions/logger';
 import sharp from 'sharp';
 import * as path from 'path';
-import {getFirestore, FieldValue} from 'firebase-admin/firestore';
+import {getFirestore} from 'firebase-admin/firestore';
 
 interface ImageSize {
   width: number;
@@ -119,26 +119,16 @@ async function saveImages(event: StorageEvent, databaseName: string) {
     const bucket = storage.bucket(bucketName);
     const file = bucket.file(filePath);
 
-    // Update the status of the profile pic processing
-    await firestore.collection(area).doc(areaId).set({
-      picStatus: 'processing'}, {merge: true}
-    );
-
     // Process the image
     const results = await processImage(bucket, file, filePath, contentType);
 
     logger.log(`Saved image with name (timestamp): ${timestamp} ` +
       `to ${area}/${areaId}/`);
 
-    // Set the picId and add update the status of the profile pic processing.
+    // Set the picId
     await firestore.collection(area).doc(areaId).set({
-      picId: +timestamp, picStatus: 'complete'}, {merge: true}
+      picId: +timestamp}, {merge: true}
     );
-    // Add the picId to the picIds array, which keeps track of uploaded
-    // profile pics.
-    await firestore.collection(area).doc(areaId).update({
-      picIds: FieldValue.arrayUnion(+timestamp),
-    });
 
     return results;
   } catch (error) {
@@ -149,22 +139,12 @@ async function saveImages(event: StorageEvent, databaseName: string) {
 }
 
 // The upload file is assumed to have form `bucketName/userId/timestamp.jpg`
-export const resizeImagesAus = functions.storage.onObjectFinalized(
-  {
-    bucket: 'crowdleague-project-aus',
-    region: 'australia-southeast1',
-  },
-  async (event: StorageEvent) => {
-    saveImages(event, '(default)');
-  });
-
-// The upload file is assumed to have form `bucketName/userId/timestamp.jpg`
-export const resizeImagesUsa = functions.storage.onObjectFinalized(
+export const resizeImages = functions.storage.onObjectFinalized(
   {
     bucket: 'crowdleague-project.firebasestorage.app',
     region: 'us-central1',
   },
   async (event: StorageEvent) => {
-    saveImages(event, 'firestore-usa');
+    saveImages(event, '(default)');
   });
 

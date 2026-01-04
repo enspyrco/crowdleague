@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../auth/user_auth_service.dart';
+import '../../../services/user_service.dart';
 import '../../venues_service.dart';
 import '../../../utils/locator.dart';
 import '../../models/local_venue.dart';
@@ -38,7 +38,7 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     // Update the name & address of the LocalVenue stored in the VenuesService
     _localVenue.name = name;
     _localVenue.address = address;
-    _localVenue.createdBy = locate<UserAuthService>().currentUserId!;
+    _localVenue.createdBy = locate<UserService>().currentUserId!;
 
     if (mounted) {
       setState(() {

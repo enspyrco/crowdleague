@@ -5,8 +5,6 @@ class Player {
   final String id;
   final String name;
   final int picId;
-  final List<int> picIds;
-  final String picStatus;
   final List<String> pendingCrewRequests;
   final List<String> crewIds;
 
@@ -14,8 +12,6 @@ class Player {
     required this.id,
     required this.name,
     required this.picId,
-    required this.picIds,
-    required this.picStatus,
     required this.pendingCrewRequests,
     required this.crewIds,
   });
@@ -25,8 +21,6 @@ class Player {
       'id': id,
       'name': name,
       'picId': picId,
-      'picIds': picIds,
-      'picStatus': picStatus,
       'crewRequests': pendingCrewRequests,
       'crewIds': crewIds,
     };
@@ -35,10 +29,8 @@ class Player {
   factory Player.fromJsonWithId(String id, Map<String, dynamic> json) {
     return Player(
       id: id,
-      name: json['name'],
+      name: json['name'] ?? '',
       picId: json['picId'] ?? 0,
-      picIds: json['picIds'] == null ? [] : List<int>.from(json['picIds']),
-      picStatus: json['picStatus'] ?? 'processing',
       pendingCrewRequests: (json['pendingCrewRequests'] == null)
           ? []
           : List<String>.from(json['pendingCrewRequests']),
@@ -70,8 +62,6 @@ class EmptyPlayer extends Player {
     super.id = '',
     super.name = '?',
     super.picId = 0,
-    super.picIds = const [],
-    super.picStatus = '',
     super.pendingCrewRequests = const [],
     super.crewIds = const [],
   });

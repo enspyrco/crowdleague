@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/messaging_service.dart';
 import '../utils/locator.dart';
+import 'widgets/onboarding_progress_indicator.dart';
 
 class OnboardNotifications extends StatefulWidget {
   const OnboardNotifications({super.key});
@@ -28,21 +29,36 @@ class _OnboardNotificationsState extends State<OnboardNotifications> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-                'When players you follow want to have a run\nwe will to send you a notification'),
-            SizedBox(height: 50),
-            TextButton(
-              onPressed: () {
-                _getAToken(context);
-              },
-              child: Text('OK'),
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          const SizedBox(height: 16),
+          const OnboardingProgressIndicator(currentStep: 2),
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Stay in the loop',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'When players you follow want to have a run\nwe will send you a notification',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 50),
+                  TextButton(
+                    onPressed: () {
+                      _getAToken(context);
+                    },
+                    child: Text('OK'),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

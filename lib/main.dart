@@ -3,7 +3,6 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:crowdleague/conversations/messages_screen.dart';
 import 'package:crowdleague/conversations/conversations_service.dart';
 import 'package:crowdleague/utils/cache/player_cache.dart';
-import 'package:crowdleague/you/check-in/check_in_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -26,7 +25,6 @@ import 'services/images_service.dart';
 import 'services/messaging_service.dart';
 import 'notifications/notifications_service.dart';
 import 'players/players_service.dart';
-import 'auth/user_auth_service.dart';
 import 'services/user_service.dart';
 import 'utils/globals.dart';
 import 'venues/venues_service.dart';
@@ -34,11 +32,10 @@ import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
 import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'venues/venue-detail/venue_detail_screen.dart';
 import 'utils/locator.dart';
-import 'you/check-in/check_in_screen.dart';
 
 final _router = GoRouter(
   initialLocation:
-      locate<UserAuthService>().currentUserId == null ? '/signin' : '/',
+      locate<UserService>().currentUserId == null ? '/signin' : '/',
   routes: [
     GoRoute(
       name: 'home',
@@ -101,11 +98,6 @@ final _router = GoRouter(
       builder: (context, state) => const FindPlayersScreen(),
     ),
     GoRoute(
-      name: 'check-in',
-      path: '/check-in',
-      builder: (context, state) => const CheckInScreen(),
-    ),
-    GoRoute(
       name: 'player-profile',
       path: '/player-profile/:id',
       builder: (context, state) => PlayerProfileScreen(
@@ -143,9 +135,7 @@ void main() async {
   final storage = FirebaseStorage.instanceFor(bucket: 'gs://$kBucketName');
   final auth = FirebaseAuth.instance;
   final messaging = FirebaseMessaging.instance;
-  final cloudFunctions = (kReleaseMode)
-      ? FirebaseFunctions.instanceFor(region: 'australia-southeast2')
-      : FirebaseFunctions.instanceFor(region: 'us-central1');
+  final cloudFunctions = FirebaseFunctions.instanceFor(region: 'us-central1');
 
   // Create caches for frequently retrieved objects
   final playerCache = PlayerCache(firestore: firestore);
@@ -170,21 +160,14 @@ void main() async {
   ));
   Locator.add<GeoLocationService>(GeoLocationService());
   Locator.add<UserService>(UserService(
-      cloudFunctions: cloudFunctions,
-      firebaseAuth: auth,
-      firestore: firestore));
-  Locator.add<UserAuthService>(UserAuthService(
     firebaseAuth: auth,
     firestore: firestore,
+    cloudFunctions: cloudFunctions,
   ));
   Locator.add<PlayersService>(PlayersService(
     firestore: firestore,
     storage: storage,
     playerCache: playerCache,
-  ));
-  Locator.add<CheckInService>(CheckInService(
-    auth: auth,
-    firestore: firestore,
   ));
   Locator.add<VenuesService>(VenuesService(
     firestore: firestore,

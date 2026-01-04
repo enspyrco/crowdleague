@@ -58,8 +58,10 @@ class ConversationsService {
   }
 
   Future<List<ConversationViewModel>> retrieveConversationViewModels() async {
-    final collectionSnapshot =
-        await _firestore.collection('conversations').get();
+    final collectionSnapshot = await _firestore
+        .collection('conversations')
+        .where('participantIds', arrayContains: _auth.currentUser!.uid)
+        .get();
 
     List<ConversationViewModel> convertedList =
         await Future.wait(collectionSnapshot.docs.map((docSnapshot) async {

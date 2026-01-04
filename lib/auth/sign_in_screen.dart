@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'user_auth_service.dart';
+import '../services/user_service.dart';
 import '../utils/icons/custom_icons.dart';
 import '../utils/locator.dart';
 
@@ -21,7 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       isSigningIn = true;
     });
-    await locate<UserAuthService>().signInWithApple();
+    await locate<UserService>().signInWithApple();
     // We have just signed in so we check if we need to store a new token, in
     // case onTokenRefresh was called before the user signed in.
     await locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
@@ -32,7 +32,7 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       isSigningIn = true;
     });
-    await locate<UserAuthService>().signInWithGoogle();
+    await locate<UserService>().signInWithGoogle();
     // We have just signed in so we check if we need to store a new token, in
     // case onTokenRefresh was called before the user signed in.
     await locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
@@ -48,8 +48,9 @@ class _SignInScreenState extends State<SignInScreen> {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (defaultTargetPlatform == TargetPlatform.iOS ||
-                      defaultTargetPlatform == TargetPlatform.macOS)
+                  if (!kIsWeb &&
+                      (defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.macOS))
                     SizedBox(
                       width: 185,
                       child: TextButton.icon(

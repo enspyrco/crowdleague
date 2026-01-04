@@ -1,11 +1,10 @@
 import 'package:crowdleague/players/players_service.dart';
-import 'package:crowdleague/auth/user_auth_service.dart';
+import 'package:crowdleague/services/user_service.dart';
 import 'package:crowdleague/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../services/user_service.dart';
 import '../utils/locator.dart';
+import 'widgets/onboarding_progress_indicator.dart';
 
 class EditNameScreen extends StatefulWidget {
   const EditNameScreen({required this.onboarding, super.key});
@@ -22,7 +21,7 @@ class _EditNameScreenState extends State<EditNameScreen> {
 
   Future<void> _getCurrentName() async {
     final player = await locate<PlayersService>()
-        .retrievePlayer(locate<UserAuthService>().currentUserId!);
+        .retrievePlayer(locate<UserService>().currentUserId!);
     _textController.text = player?.name ?? '';
     _textController.selection = TextSelection(
       baseOffset: 0,
@@ -58,20 +57,37 @@ class _EditNameScreenState extends State<EditNameScreen> {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-              child: TextField(
-                controller: _textController,
-                autofocus: true,
+      body: Column(
+        children: [
+          if (_onboarding) ...[
+            const SizedBox(height: 16),
+            const OnboardingProgressIndicator(currentStep: 0),
+          ],
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "What's your name?",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+                    child: TextField(
+                      controller: _textController,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your name',
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Text('Name'),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

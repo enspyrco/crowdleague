@@ -1,4 +1,4 @@
-import 'package:crowdleague/auth/user_auth_service.dart';
+import 'package:crowdleague/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 import 'conversations_service.dart';
@@ -38,7 +38,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         final message = messages[index];
                         if (message.senderId ==
-                            locate<UserAuthService>().currentUserId) {
+                            locate<UserService>().currentUserId) {
                           return Align(
                             alignment: Alignment.centerRight,
                             child: Container(
