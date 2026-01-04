@@ -72,7 +72,7 @@ All services are registered in `main()` before `runApp()`. Services wrap Firebas
 
 ### Key Services
 
-- **UserAuthService**: Handles Google/Apple sign-in, exposes current user profile via `BehaviorSubject` stream
+- **UserService**: Unified service handling Google/Apple sign-in, user profile management, and crew operations. Exposes current user profile via `BehaviorSubject` stream
 - **PlayersService**: Player profiles with `PlayerCache` for frequently accessed data
 - **VenuesService**: Venue CRUD operations with Firebase Storage for images
 - **NotificationsService**: Push notification handling and badge counts
@@ -105,7 +105,7 @@ Models are in feature directories (e.g., `lib/players/models/player.dart`, `lib/
 ### Firebase Configuration
 
 - Project ID: `crowdleague-project`
-- Cloud Functions region: `australia-southeast2` (production), `us-central1` (debug)
+- Cloud Functions region: `us-central1`
 - Database and bucket names defined in `lib/utils/globals.dart`
 
 ## Testing
