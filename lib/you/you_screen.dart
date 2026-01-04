@@ -1,9 +1,9 @@
 import 'package:crowdleague/players/enums/pic_size.dart';
-import 'package:crowdleague/utils/widgets/avatar/async_avatar.dart';
+import 'package:crowdleague/utils/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../auth/user_auth_service.dart';
+import '../services/user_service.dart';
 import '../utils/locator.dart';
 
 class YouScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class _YouScreenState extends State<YouScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: StreamBuilder<Map<String, Object?>?>(
-            stream: locate<UserAuthService>().profileDocStream,
+            stream: locate<UserService>().profileDocStream,
             builder: (context, snapshot) {
               return Text(snapshot.data?['name'] as String? ?? '?',
                   style: Theme.of(context).textTheme.displayMedium!);
@@ -28,11 +28,12 @@ class _YouScreenState extends State<YouScreen> {
         leading: Padding(
           padding: const EdgeInsets.all(5),
           child: GestureDetector(
-            child: AsyncAvatar(
-                locate<UserAuthService>().currentUserId!, PicSize.small),
+            child: Avatar(
+                playerId: locate<UserService>().currentUserId!,
+                picSize: PicSize.small),
             onTap: () {
               context.pushNamed('player-profile', pathParameters: {
-                'id': locate<UserAuthService>().currentUserId!
+                'id': locate<UserService>().currentUserId!
               });
             },
           ),
@@ -42,14 +43,6 @@ class _YouScreenState extends State<YouScreen> {
         children: [
           SizedBox(
             height: 20,
-          ),
-          Card(
-            child: ListTile(
-              title: const Text('Check in'),
-              onTap: () {
-                context.push('/check-in');
-              },
-            ),
           ),
           Card(
             child: ListTile(
@@ -63,7 +56,7 @@ class _YouScreenState extends State<YouScreen> {
             child: ListTile(
               title: const Text('Sign Out'),
               onTap: () {
-                locate<UserAuthService>().signOut();
+                locate<UserService>().signOut();
                 context.replace('/signin');
               },
             ),

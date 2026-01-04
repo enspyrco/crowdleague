@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'players_service.dart';
-import '../auth/user_auth_service.dart';
-import '../utils/widgets/avatar/async_avatar.dart';
+import '../services/user_service.dart';
+import '../utils/widgets/avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
 
@@ -36,7 +36,7 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
                 }
                 final playersList = snapshot.data!.toList();
                 playersList.removeWhere((element) {
-                  return element.id == locate<UserAuthService>().currentUserId;
+                  return element.id == locate<UserService>().currentUserId;
                 });
                 return Expanded(
                   child: ListView.builder(
@@ -49,10 +49,10 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
                             context.pushNamed('player-profile',
                                 pathParameters: {'id': playerId});
                           },
-                          leading: AsyncAvatar(
-                            playerId,
-                            PicSize.small,
-                            widgetSize: 40,
+                          leading: Avatar(
+                            playerId: playerId,
+                            picSize: PicSize.small,
+                            size: 40,
                           ),
                           title: Text(playersList[index].name),
                         ));

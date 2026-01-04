@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'players_service.dart';
-import '../auth/user_auth_service.dart';
-import '../utils/widgets/avatar/async_avatar.dart';
+import '../utils/widgets/avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
 import 'widgets/crew_menu_button.dart';
@@ -30,7 +29,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   void initState() {
     super.initState();
     // Is the profile the user's profile?
-    _owner = widget._playerId == locate<UserAuthService>().currentUserId!;
+    _owner = widget._playerId == locate<UserService>().currentUserId!;
   }
 
   // Remove playerId from crew list and tokenId from followerTokens if there
@@ -72,13 +71,13 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
           builder: (context, snapshot) {
             final Player player = snapshot.data ?? EmptyPlayer();
             final bool pending = player.pendingCrewRequests
-                .contains(locate<UserAuthService>().currentUserId!);
+                .contains(locate<UserService>().currentUserId!);
             final bool crew = player.crewIds
-                .contains(locate<UserAuthService>().currentUserId!);
+                .contains(locate<UserService>().currentUserId!);
 
             // Bust the cache so changes like `picStatus` will show up
             locate<PlayersService>()
-                .bustCache(locate<UserAuthService>().currentUserId!);
+                .bustCache(locate<UserService>().currentUserId!);
 
             return Column(
               children: [
@@ -93,10 +92,10 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                       : null,
                   child: Stack(
                     children: [
-                      AsyncAvatar(
-                        widget._playerId,
-                        PicSize.medium,
-                        widgetSize: 100,
+                      Avatar(
+                        playerId: widget._playerId,
+                        picSize: PicSize.medium,
+                        size: 100,
                       ),
                       if (_owner)
                         Positioned(
@@ -187,9 +186,9 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.all(5.0),
-                                child: AsyncAvatar(
-                                  player.crewIds[index],
-                                  PicSize.small,
+                                child: Avatar(
+                                  playerId: player.crewIds[index],
+                                  picSize: PicSize.small,
                                 ),
                               );
                             }),

@@ -1,5 +1,5 @@
 import 'package:crowdleague/players/enums/pic_size.dart';
-import 'package:crowdleague/utils/widgets/avatar/async_avatar.dart';
+import 'package:crowdleague/utils/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +25,7 @@ class SplitCrewsNotificationWidget extends StatelessWidget {
             'id': _viewModel.playerId,
           });
         },
-        leading: AsyncAvatar(_viewModel.playerId, PicSize.small),
+        leading: Avatar(playerId: _viewModel.playerId, picSize: PicSize.small),
         title: Text('${_viewModel.playerName}\'s crew was split from yours',
             style: Theme.of(context).textTheme.bodyLarge!),
       ),

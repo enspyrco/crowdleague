@@ -1,5 +1,5 @@
 import 'package:crowdleague/players/enums/pic_size.dart';
-import 'package:crowdleague/utils/widgets/avatar/async_avatar.dart';
+import 'package:crowdleague/utils/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,7 +24,7 @@ class CrewAcceptedNotificationWidget extends StatelessWidget {
           context.pushNamed('player-profile',
               pathParameters: {'id': _notificationViewModel.playerId});
         },
-        leading: AsyncAvatar(_notificationViewModel.playerId, PicSize.small),
+        leading: Avatar(playerId: _notificationViewModel.playerId, picSize: PicSize.small),
         title: Text(
             '${_notificationViewModel.otherName} is in your crew and you are following each other',
             style: Theme.of(context).textTheme.bodyLarge!),

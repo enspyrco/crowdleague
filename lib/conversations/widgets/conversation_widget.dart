@@ -1,5 +1,5 @@
 import 'package:crowdleague/players/enums/pic_size.dart';
-import 'package:crowdleague/utils/widgets/avatar/async_avatar.dart';
+import 'package:crowdleague/utils/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,8 +21,9 @@ class ConversationWidget extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: AsyncAvatar(
-                conversationViewModel.lastMessagePlayerId, PicSize.small),
+            child: Avatar(
+                playerId: conversationViewModel.lastMessagePlayerId,
+                picSize: PicSize.small),
           ),
           Column(children: [
             Text(conversationViewModel.lastMessagePlayerName,
