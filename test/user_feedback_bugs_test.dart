@@ -9,7 +9,6 @@ import 'package:crowdleague/conversations/models/view/conversation_view_model.da
 import 'package:crowdleague/notifications/models/notification.dart';
 import 'package:crowdleague/notifications/models/views/notification_view_model.dart';
 import 'package:crowdleague/notifications/widgets/crew_request_notification_widget.dart';
-import 'package:crowdleague/onboarding/edit_profile_pic_screen.dart';
 import 'package:crowdleague/onboarding/onboard_notifications.dart';
 import 'package:crowdleague/players/models/player.dart';
 import 'package:crowdleague/players/players_service.dart';
@@ -30,7 +29,6 @@ import 'package:flutter_test/flutter_test.dart';
 /// - #201: Unread message count is inaccurate
 /// - #202: Conversation not appearing in Messages list
 void main() {
-
   group('Onboarding Bugs', () {
     // Bug #196: Infinite loading circle on add photo during onboarding
     // Bug #197: Can tap tick button immediately after adding photo
@@ -93,7 +91,8 @@ void main() {
         final viewModel = CrewRequestNotificationViewModel(
           notification: notification,
           waiting: false,
-          requesterName: 'Test Player With A Very Long Name That Might Overflow',
+          requesterName:
+              'Test Player With A Very Long Name That Might Overflow',
           requesterId: 'requester-id',
           requesteeId: 'requestee-id',
         );
@@ -124,13 +123,11 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // BUG CONFIRMED: Widget overflows when text is long
-        // This test documents that bug #199 exists
-        final exception = tester.takeException();
-        expect(exception, isA<FlutterError>(),
-            reason: 'BUG #199: Widget overflows with long names - needs fix');
+        // FIXED: Widget no longer overflows with long names
+        expect(tester.takeException(), isNull,
+            reason: 'Widget should not cause overflow errors');
 
-        // Verify the card is still rendered despite overflow
+        // Verify the card is rendered
         expect(find.byType(Card), findsOneWidget);
 
         // Verify buttons are visible
@@ -255,7 +252,8 @@ void main() {
 
         // Verify service was called with correct arguments
         expect(mockUserService.declineCrewRequestCalled, isTrue,
-            reason: 'declineCrewRequest should be called when Decline is tapped');
+            reason:
+                'declineCrewRequest should be called when Decline is tapped');
         expect(mockUserService.lastDeclinedNotificationId, equals('notif-abc'),
             reason: 'Should pass correct notification ID');
         expect(mockUserService.lastDeclinedRequesterId, equals('requester-def'),

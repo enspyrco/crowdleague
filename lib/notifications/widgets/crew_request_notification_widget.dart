@@ -33,8 +33,12 @@ class CrewRequestNotificationWidget extends StatelessWidget {
         title: Text(
           '${_notificationViewModel.requesterName} wants to join crews',
           style: Theme.of(context).textTheme.bodyLarge!,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
         ),
-        subtitle: Row(
+        subtitle: Wrap(
+          spacing: 10,
+          runSpacing: 8,
           children: [
             if (!_notificationViewModel.waiting) ...[
               OutlinedButton(
@@ -49,9 +53,6 @@ class CrewRequestNotificationWidget extends StatelessWidget {
                   'Accept',
                   style: Theme.of(context).textTheme.bodyMedium!,
                 ),
-              ),
-              SizedBox(
-                width: 10,
               ),
               OutlinedButton(
                 onPressed: () {
