@@ -31,6 +31,7 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
       setState(() {
         _uploading = true;
       });
+
       XFile? pickedFile = await locate<ImagesService>().pickImage(source);
       if (pickedFile == null) {
         if (mounted) {
@@ -38,34 +39,48 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
             _uploading = false;
           });
         }
-      } else {
-        final croppedFilePath =
-            await locate<ImagesService>().cropImage(pickedFile);
-        if (croppedFilePath == null) {
-          if (mounted) {
-            setState(() {
-              _uploading = false;
-            });
-          }
-        } else {
-          if (mounted) {
-            setState(() {
-              _croppedFilePath = croppedFilePath;
-            });
-          }
-          await locate<ImagesService>().saveProfilePic(_croppedFilePath!);
+        return;
+      }
 
-          // navigate based on whether we are onboarding or not
-          if (mounted && _onboarding) {
-            context.push('/onboard-notifications');
-          } else if (mounted && !_onboarding) {
-            context.pop();
-          }
+      final croppedFilePath =
+          await locate<ImagesService>().cropImage(pickedFile);
+      if (croppedFilePath == null) {
+        if (mounted) {
+          setState(() {
+            _uploading = false;
+          });
+        }
+        return;
+      }
+
+      if (mounted) {
+        setState(() {
+          _croppedFilePath = croppedFilePath;
+        });
+      }
+
+      await locate<ImagesService>().saveProfilePic(_croppedFilePath!);
+
+      if (mounted) {
+        setState(() {
+          _uploading = false;
+        });
+        // navigate based on whether we are onboarding or not
+        if (_onboarding) {
+          context.push('/onboard-notifications');
+        } else {
+          context.pop();
         }
       }
     } catch (e) {
+      log('Error uploading profile pic: $e');
       if (mounted) {
-        log(e.toString());
+        setState(() {
+          _uploading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to upload photo. Please try again.')),
+        );
       }
     }
   }
