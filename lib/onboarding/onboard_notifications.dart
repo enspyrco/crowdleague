@@ -43,9 +43,12 @@ class _OnboardNotificationsState extends State<OnboardNotifications> {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'When players you follow want to have a run\nwe will send you a notification',
-                    textAlign: TextAlign.center,
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      'When players you follow want to have a run, we will send you a notification.',
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const SizedBox(height: 50),
                   TextButton(
