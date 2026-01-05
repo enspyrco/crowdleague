@@ -97,11 +97,13 @@ class _EditProfilePicScreenState extends State<EditProfilePicScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {
-              (_onboarding)
-                  ? context.push('/onboard-notifications')
-                  : context.pop();
-            },
+            onPressed: _uploading
+                ? null
+                : () {
+                    (_onboarding)
+                        ? context.push('/onboard-notifications')
+                        : context.pop();
+                  },
             icon: const Icon(Icons.check),
           )
         ],
