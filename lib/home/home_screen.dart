@@ -1,4 +1,5 @@
 import 'package:crowdleague/conversations/conversations_screen.dart';
+import 'package:crowdleague/conversations/conversations_service.dart';
 import 'package:crowdleague/notifications/notificatons_screen.dart';
 import 'package:crowdleague/services/messaging_service.dart';
 import 'package:crowdleague/notifications/notifications_service.dart';
@@ -24,8 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // On resume, check for unviewed Notificaatios and store the latest FCM
-    // token.
+    // On resume, check for unviewed Notifications and unread Messages,
+    // and store the latest FCM token.
     _lifecycleListener = AppLifecycleListener(
       onResume: () async {
         locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
@@ -38,15 +39,22 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           locate<NotificationsService>().readAndEmitNotificationsViewed();
         }
+        // If the ConversationsScreen is open we rebuild the screen, in case
+        // there is a new Message.
+        if (_currentPageIndex == NavigationDestinations.messages.index) {
+          setState(() {});
+        } else {
+          locate<ConversationsService>().readAndEmitUnreadMessages();
+        }
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Each time the NotificationsScreen is built (ie. when the user taps
-    // "Notifications") we update the unviewed notifications count for the badge.
+    // Each time the HomeScreen is built we update the badge counts.
     locate<NotificationsService>().readAndEmitNotificationsViewed();
+    locate<ConversationsService>().readAndEmitUnreadMessages();
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(
@@ -85,11 +93,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         label: 'Notifications',
                       );
               }),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.message),
-            icon: Icon(Icons.message_outlined),
-            label: NavigationDestinations.messages.description,
-          ),
+          StreamBuilder<int>(
+              stream:
+                  locate<ConversationsService>().numUnreadMessagesStream,
+              builder: (context, snapshot) {
+                int numUnread = snapshot.data ?? 0;
+                return (numUnread == 0)
+                    ? NavigationDestination(
+                        selectedIcon: Icon(Icons.message),
+                        icon: Icon(Icons.message_outlined),
+                        label: NavigationDestinations.messages.description,
+                      )
+                    : NavigationDestination(
+                        selectedIcon: Badge(
+                            label: Text(numUnread.toString()),
+                            child: Icon(Icons.message)),
+                        icon: Badge(
+                            label: Text(numUnread.toString()),
+                            child: Icon(Icons.message_outlined)),
+                        label: NavigationDestinations.messages.description,
+                      );
+              }),
           NavigationDestination(
             selectedIcon: Icon(Icons.person),
             icon: Icon(Icons.person_2_outlined),
