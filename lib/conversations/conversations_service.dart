@@ -172,4 +172,38 @@ class ConversationsService {
       }).toList();
     });
   }
+
+  /// Marks all messages in a conversation as read by the current user.
+  /// Only marks messages that were sent by others (not the current user).
+  /// After marking, refreshes the unread count.
+  Future<void> markMessagesAsRead(String conversationId) async {
+    if (_auth.currentUser == null) return;
+
+    final userId = _auth.currentUser!.uid;
+
+    // Get all messages not sent by the current user
+    final messagesSnapshot = await _firestore
+        .collection('conversations')
+        .doc(conversationId)
+        .collection('messages')
+        .where('senderId', isNotEqualTo: userId)
+        .get();
+
+    // Use batch write for efficiency
+    final batch = _firestore.batch();
+
+    for (final messageDoc in messagesSnapshot.docs) {
+      final readBy = List<String>.from(messageDoc.data()['readBy'] ?? []);
+      if (!readBy.contains(userId)) {
+        batch.update(messageDoc.reference, {
+          'readBy': FieldValue.arrayUnion([userId]),
+        });
+      }
+    }
+
+    await batch.commit();
+
+    // Refresh the unread count
+    await readAndEmitUnreadMessages();
+  }
 }

@@ -18,6 +18,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
   final _controller = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    // Mark messages as read when opening the conversation
+    locate<ConversationsService>().markMessagesAsRead(widget.conversationId);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
