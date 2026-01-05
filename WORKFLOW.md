@@ -18,9 +18,33 @@ Sprint tasks from TENGPT Meeting 1 (January 3, 2025).
 - [x] Create ROADMAP.md
 
 ### Part 2: Social Side Research
-- [ ] Research social network features for referees and basketball players
-- [ ] Investigate ranking system requirements
-- [ ] Review competitor apps (targeting 12-19 year old demographic)
+- [x] Research social network features for referees and basketball players
+- [x] Investigate ranking system requirements
+- [x] Review competitor apps (targeting 12-19 year old demographic)
+
+#### Research Findings (6 Jan 2026)
+
+**Connection Models Reviewed:**
+- **Facebook**: Symmetric "friend" model — mutual consent, equal privileges
+- **Instagram**: Asymmetric "follow" model — one-way, no consent needed
+- **Snapchat**: Symmetric + engagement layers (Best Friends, streaks, solar system)
+- **LinkedIn**: Symmetric with degree visibility (1st/2nd/3rd connections)
+
+**Decision: Keep "Crew" as simple symmetric model**
+- Mutual consent required (request → accept)
+- No engagement tiers or gamification for now
+- Sports-themed terminology fits the app
+- Equivalent to Facebook's original friend model
+
+**Future Gamification Options (backlog):**
+- "Starting 5" — top crew members by interaction
+- Court position visualization
+- Relationship badges (Court Regulars, Day Ones, etc.)
+- Streak system for consistent interaction
+
+**Ranking System:**
+- Defer until core social features are stable
+- Consider LinkedIn-style trust chains for referees later
 
 ---
 
