@@ -18,9 +18,8 @@ import 'package:crowdleague/utils/cache/player_cache.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 
-/// Integration tests for user feedback bugs.
+/// Widget tests for user feedback bugs.
 ///
 /// These tests cover the bugs split from issue #181:
 /// - #196: Infinite loading circle on add photo
@@ -31,7 +30,6 @@ import 'package:integration_test/integration_test.dart';
 /// - #201: Unread message count is inaccurate
 /// - #202: Conversation not appearing in Messages list
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Onboarding Bugs', () {
     // Bug #196: Infinite loading circle on add photo during onboarding
@@ -392,11 +390,9 @@ void main() {
 
   group('Messages Screen Bugs', () {
     // Bug #201/#203: Messages badge - test unread count stream
-    // Skip: Pure stream test without widgets - tested in widget tests instead
-    testWidgets(
+    test(
       '#201/#203: ConversationsService emits unread message count',
-      skip: true, // Stream-only tests work better as regular tests in widget_test
-      (tester) async {
+      () async {
         final mockConversationsService = MockConversationsService();
 
         // Collect emitted values
