@@ -1,0 +1,54 @@
+# CrowdLeague Workflow
+
+Sprint tasks from TENGPT Meeting 1 (January 3, 2025).
+
+## Sprint Schedule
+
+- **Opening**: Sunday (50 minutes)
+- **Mid-check**: Saturday
+- **Retro**: Friday
+
+---
+
+## Week 1 (Due: Friday 9 Jan 2026, COB)
+
+### Part 1: Remove Complexity
+- [x] Simplify codebase (merged: f07e595a)
+- [x] Fix user feedback bugs (#196-#202)
+- [x] Create ROADMAP.md
+
+### Part 2: Social Side Research
+- [ ] Research social network features for referees and basketball players
+- [ ] Investigate ranking system requirements
+- [ ] Review competitor apps (targeting 12-19 year old demographic)
+
+---
+
+## Week 2 (Due: Friday 16 Jan 2026, COB)
+
+### Part 1: Add Payment Platform
+- [ ] Research payment integration options
+- [ ] Implement payment platform
+
+### Part 2: App Store Submission
+- [ ] Prepare Play Store listing
+- [ ] Prepare App Store listing
+- [ ] Submit to Play Store
+- [ ] Submit to App Store
+
+---
+
+## Key Milestone
+
+**App Store Submission** - Week 2, Part 2
+
+Context: Opportunity for equity-free funding targeting the 12-19 year old demographic for the Olympics.
+
+---
+
+## Recently Merged
+
+- PR #209: Fix onboarding notifications text formatting (bug #198)
+- PR #208: Fix Firebase config for iOS Crashlytics (bug #207)
+- PR #206: Fix profile pic upload spinner (bug #205)
+- PR #204: Add messages badge feature (issue #203)
