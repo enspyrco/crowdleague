@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -39,6 +40,46 @@ class ConversationsService {
   final FirebaseAuth _auth;
   final FirebaseFunctions _cloudFunctions;
   final PlayerCache _playerCache;
+
+  final _numUnreadMessagesStreamController = StreamController<int>.broadcast();
+  Stream<int> get numUnreadMessagesStream =>
+      _numUnreadMessagesStreamController.stream;
+
+  /// Counts unread messages across all conversations and emits the count.
+  /// A message is unread if the current user is not in the readBy list
+  /// and is not the sender.
+  Future<void> readAndEmitUnreadMessages() async {
+    if (_auth.currentUser == null) return;
+
+    final userId = _auth.currentUser!.uid;
+
+    // Get all conversations the user is part of
+    final conversationsSnapshot = await _firestore
+        .collection('conversations')
+        .where('participantIds', arrayContains: userId)
+        .get();
+
+    int unreadCount = 0;
+
+    // For each conversation, count unread messages
+    for (final conversationDoc in conversationsSnapshot.docs) {
+      final messagesSnapshot = await _firestore
+          .collection('conversations')
+          .doc(conversationDoc.id)
+          .collection('messages')
+          .where('senderId', isNotEqualTo: userId)
+          .get();
+
+      for (final messageDoc in messagesSnapshot.docs) {
+        final readBy = List<String>.from(messageDoc.data()['readBy'] ?? []);
+        if (!readBy.contains(userId)) {
+          unreadCount++;
+        }
+      }
+    }
+
+    _numUnreadMessagesStreamController.add(unreadCount);
+  }
 
   Future<String> findOrCreateConversation(String playerId) async {
     final String userId = _auth.currentUser!.uid;
@@ -130,5 +171,39 @@ class ConversationsService {
         return Message.fromJson(json);
       }).toList();
     });
+  }
+
+  /// Marks all messages in a conversation as read by the current user.
+  /// Only marks messages that were sent by others (not the current user).
+  /// After marking, refreshes the unread count.
+  Future<void> markMessagesAsRead(String conversationId) async {
+    if (_auth.currentUser == null) return;
+
+    final userId = _auth.currentUser!.uid;
+
+    // Get all messages not sent by the current user
+    final messagesSnapshot = await _firestore
+        .collection('conversations')
+        .doc(conversationId)
+        .collection('messages')
+        .where('senderId', isNotEqualTo: userId)
+        .get();
+
+    // Use batch write for efficiency
+    final batch = _firestore.batch();
+
+    for (final messageDoc in messagesSnapshot.docs) {
+      final readBy = List<String>.from(messageDoc.data()['readBy'] ?? []);
+      if (!readBy.contains(userId)) {
+        batch.update(messageDoc.reference, {
+          'readBy': FieldValue.arrayUnion([userId]),
+        });
+      }
+    }
+
+    await batch.commit();
+
+    // Refresh the unread count
+    await readAndEmitUnreadMessages();
   }
 }
