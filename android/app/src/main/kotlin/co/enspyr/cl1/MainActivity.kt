@@ -1,4 +1,4 @@
-package co.enspyr.crowdleague
+package co.enspyr.cl1
 
 import io.flutter.embedding.android.FlutterActivity
 

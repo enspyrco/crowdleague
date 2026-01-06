@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "co.enspyr.crowdleague"
+    namespace = "co.enspyr.cl1"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
