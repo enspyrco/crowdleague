@@ -78,6 +78,7 @@ Sprint tasks from TENGPT Meeting 1 (January 3, 2025).
   - 1 approval required
   - CI must pass
   - Conversations must be resolved
+- [x] Configure Claude agent PATs (stored in `.env`)
 
 ---
 
