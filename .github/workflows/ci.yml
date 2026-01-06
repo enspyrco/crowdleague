@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  analyze:
-    name: Flutter Analyze
+  ci:
+    name: Analyze & Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,20 +25,5 @@ jobs:
       - name: Analyze
         run: flutter analyze --no-fatal-infos
 
-  test:
-    name: Flutter Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.38.x'
-          channel: 'stable'
-          cache: true
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Run tests
+      - name: Test
         run: flutter test
