@@ -63,10 +63,12 @@ Sprint tasks from TENGPT Meeting 1 (January 3, 2025).
 
 ### Part 2: App Store Submission
 
-- [ ] Prepare Play Store listing
-- [ ] Prepare App Store listing
-- [ ] Submit to Play Store
-- [ ] Submit to App Store
+- [x] Prepare Play Store listing (icon, screenshots, description)
+- [x] Upload build to Play Store (v0.0.5+13)
+- [x] Upload build to App Store Connect (v0.0.5+13)
+- [ ] Prepare App Store listing (screenshots, description)
+- [ ] Submit to Play Store for review
+- [ ] Submit to App Store for review
 
 ---
 

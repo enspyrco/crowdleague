@@ -27,9 +27,9 @@ Priority fixes for existing functionality.
 
 ### High Priority
 
-- [ ] #196 #197: Fix photo upload loading state issues
-- [ ] #198: Fix onboarding notifications text formatting
-- [ ] #199: Fix CrewRequestNotification card overflow
+- [x] #196 #197: Fix photo upload loading state issues
+- [x] #198: Fix onboarding notifications text formatting
+- [x] #199: Fix CrewRequestNotification card overflow
 - [ ] #202: Fix conversation not appearing in Messages list
 
 ### Medium Priority
