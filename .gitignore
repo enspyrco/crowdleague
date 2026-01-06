@@ -47,3 +47,4 @@ app.*.map.json
 /android/app/release
 CLAUDE_REVIEWER_PAT
 .env
+android/.kotlin/

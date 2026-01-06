@@ -47,20 +47,27 @@ class MessagingService {
 
     if (defaultTargetPlatform == TargetPlatform.iOS) {
       // For apple platforms, ensure the APNS token is available before making any FCM plugin API calls
-      String? apnsToken = await fbm.FirebaseMessaging.instance.getAPNSToken();
+      // Note: APNS is not available on simulators, so we skip this check in that case
+      try {
+        String? apnsToken = await fbm.FirebaseMessaging.instance.getAPNSToken();
 
-      int counter;
-      final int maxTries = 20;
-      for (counter = 0; counter < maxTries; counter++) {
-        if (apnsToken == null) {
-          await Future.delayed(Duration(milliseconds: 100));
-          apnsToken = await fbm.FirebaseMessaging.instance.getAPNSToken();
-        } else {
-          break;
+        int counter;
+        final int maxTries = 20;
+        for (counter = 0; counter < maxTries; counter++) {
+          if (apnsToken == null) {
+            await Future.delayed(Duration(milliseconds: 100));
+            apnsToken = await fbm.FirebaseMessaging.instance.getAPNSToken();
+          } else {
+            break;
+          }
         }
-      }
-      if (counter == maxTries) {
-        throw 'The APNS token did not become available after waiting for 2 seconds';
+        if (counter == maxTries) {
+          debugPrint('APNS token not available (expected on simulator)');
+          return; // Skip FCM setup on simulator
+        }
+      } catch (e) {
+        debugPrint('APNS not supported (simulator): $e');
+        return; // Skip FCM setup on simulator
       }
     }
     // APNS token is available, we can make FCM plugin API requests...

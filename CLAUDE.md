@@ -109,6 +109,25 @@ Models are in feature directories (e.g., `lib/players/models/player.dart`, `lib/
 - Project ID: `crowdleague-project`
 - Cloud Functions region: `us-central1`
 - Database and bucket names defined in `lib/utils/globals.dart`
+- Storage bucket: `crowdleague-project.firebasestorage.app` (public read for venue photos via GCS IAM)
+
+### Firebase Deployment
+
+```bash
+# Deploy storage rules
+firebase deploy --only storage
+
+# Deploy firestore rules
+firebase deploy --only firestore
+
+# Deploy functions
+firebase deploy --only functions
+```
+
+## iOS Simulator Notes
+
+- Push notifications (APNS) are not available on iOS simulators - the app gracefully skips FCM setup
+- Google Maps works on simulators but may require API key configuration
 
 ## Testing
 
