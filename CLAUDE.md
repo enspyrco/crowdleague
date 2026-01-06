@@ -175,6 +175,20 @@ GitHub Actions runs on all PRs and pushes to main (`.github/workflows/ci.yml`):
 5. Request review (claude-reviewer-max available)
 6. Get approval + green CI → merge
 
+### Environment Variables
+
+PATs for Claude agents are stored in `.env` (gitignored):
+
+```bash
+CLAUDE_REVIEWER_PAT="ghp_..."  # For claude-reviewer-max
+CLAUDE_PM_PAT="ghp_..."        # For claude-pm-enspyr
+```
+
+Load before using `/review` or `/pm` commands:
+```bash
+source .env
+```
+
 ## Testing
 
 Widget tests use `fake_cloud_firestore` and `firebase_storage_mocks` to mock Firebase services. Register mocked services via `Locator.add<T>()` before running tests.
