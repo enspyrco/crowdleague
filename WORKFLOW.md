@@ -70,6 +70,15 @@ Sprint tasks from TENGPT Meeting 1 (January 3, 2025).
 - [ ] Submit to Play Store for review
 - [ ] Submit to App Store for review
 
+### Part 3: Infrastructure (6 Jan 2026)
+
+- [x] Set up CI pipeline (GitHub Actions: analyze + test)
+- [x] Configure branch protection for main
+  - PRs required
+  - 1 approval required
+  - CI must pass
+  - Conversations must be resolved
+
 ---
 
 ## Key Milestone

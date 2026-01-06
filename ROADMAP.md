@@ -79,6 +79,8 @@ Optimize for larger user base.
 
 Improve test coverage and reliability.
 
+- [x] Set up CI pipeline (GitHub Actions)
+- [x] Configure branch protection (PRs, approvals, CI checks)
 - [ ] #193: Write native tests for native UI elements
 - [ ] Add widget tests for core screens
 - [ ] Add integration tests for critical user flows

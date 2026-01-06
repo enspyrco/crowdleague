@@ -148,6 +148,33 @@ firebase deploy --only functions
 - Push notifications (APNS) are not available on iOS simulators - the app gracefully skips FCM setup
 - Google Maps works on simulators but may require API key configuration
 
+## Development Workflow
+
+### Branch Protection
+
+The `main` branch is protected with the following rules:
+
+- Pull request required before merging
+- 1 approval required
+- CI status checks must pass
+- Conversations must be resolved
+
+### CI Pipeline
+
+GitHub Actions runs on all PRs and pushes to main (`.github/workflows/ci.yml`):
+
+- `flutter analyze --no-fatal-infos`
+- `flutter test`
+
+### Making Changes
+
+1. Create a feature branch: `git checkout -b feature/my-feature`
+2. Make changes and commit
+3. Push and open a PR: `gh pr create`
+4. CI runs automatically
+5. Request review (claude-reviewer-max available)
+6. Get approval + green CI → merge
+
 ## Testing
 
 Widget tests use `fake_cloud_firestore` and `firebase_storage_mocks` to mock Firebase services. Register mocked services via `Locator.add<T>()` before running tests.
