@@ -104,14 +104,33 @@ TypeScript functions in `functions/src/`:
 
 Models are in feature directories (e.g., `lib/players/models/player.dart`, `lib/venues/models/venue.dart`). Most have `fromJsonWithId` factory constructors for Firestore document parsing.
 
+### Venue Photo/Icon Flow
+
+1. User picks photo → cropped locally via `image_cropper`
+2. `Screenshot` widget captures `VenueIcon` widget as PNG bytes (48x48)
+3. Both original photo and icon bytes uploaded to Storage (`venuePhotos/{id}.jpg`, `venuePhotos/{id}_icon`)
+4. `resize-images` Cloud Function triggers, creates `_large`, `_medium`, `_small` variants
+5. Map displays icon via `BitmapDescriptor.bytes()` from downloaded icon bytes
+
 ### Firebase Configuration
 
 - Project ID: `crowdleague-project`
 - Cloud Functions region: `us-central1`
 - Database and bucket names defined in `lib/utils/globals.dart`
-- Storage bucket: `crowdleague-project.firebasestorage.app` (public read for venue photos via GCS IAM)
+- Storage bucket: `crowdleague-project.firebasestorage.app`
+
+### Firebase Storage Access
+
+Two separate permission systems:
+
+1. **Firebase Storage Rules** (`storage.rules`) - applies to Firebase SDK access (`storageRef.getData()`, `storageRef.putFile()`)
+2. **GCS IAM** - applies to direct URL access (`https://storage.googleapis.com/bucket/path`)
+
+Venue photos need public URL access for `Image.network()`, so bucket has `allUsers:objectViewer` IAM role. Storage rules still require auth for writes.
 
 ### Firebase Deployment
+
+Note: `firebase.json` must include `"storage": {"rules": "storage.rules"}` for storage deployment to work.
 
 ```bash
 # Deploy storage rules
