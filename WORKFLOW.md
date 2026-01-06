@@ -13,11 +13,13 @@ Sprint tasks from TENGPT Meeting 1 (January 3, 2025).
 ## Week 1 (Due: Friday 9 Jan 2026, COB)
 
 ### Part 1: Remove Complexity
+
 - [x] Simplify codebase (merged: f07e595a)
 - [x] Fix user feedback bugs (#196-#202)
 - [x] Create ROADMAP.md
 
 ### Part 2: Social Side Research
+
 - [x] Research social network features for referees and basketball players
 - [x] Investigate ranking system requirements
 - [x] Review competitor apps (targeting 12-19 year old demographic)
@@ -25,24 +27,28 @@ Sprint tasks from TENGPT Meeting 1 (January 3, 2025).
 #### Research Findings (6 Jan 2026)
 
 **Connection Models Reviewed:**
+
 - **Facebook**: Symmetric "friend" model — mutual consent, equal privileges
 - **Instagram**: Asymmetric "follow" model — one-way, no consent needed
 - **Snapchat**: Symmetric + engagement layers (Best Friends, streaks, solar system)
 - **LinkedIn**: Symmetric with degree visibility (1st/2nd/3rd connections)
 
 **Decision: Keep "Crew" as simple symmetric model**
+
 - Mutual consent required (request → accept)
 - No engagement tiers or gamification for now
 - Sports-themed terminology fits the app
 - Equivalent to Facebook's original friend model
 
 **Future Gamification Options (backlog):**
+
 - "Starting 5" — top crew members by interaction
 - Court position visualization
 - Relationship badges (Court Regulars, Day Ones, etc.)
 - Streak system for consistent interaction
 
 **Ranking System:**
+
 - Defer until core social features are stable
 - Consider LinkedIn-style trust chains for referees later
 
@@ -51,10 +57,12 @@ Sprint tasks from TENGPT Meeting 1 (January 3, 2025).
 ## Week 2 (Due: Friday 16 Jan 2026, COB)
 
 ### Part 1: Add Payment Platform
+
 - [ ] Research payment integration options
 - [ ] Implement payment platform
 
 ### Part 2: App Store Submission
+
 - [ ] Prepare Play Store listing
 - [ ] Prepare App Store listing
 - [ ] Submit to Play Store

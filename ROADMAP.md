@@ -5,6 +5,7 @@ A Flutter mobile app for finding and connecting with sports players at local ven
 ## Current Features
 
 ### Core Functionality
+
 - **Venues** - Map view with venue locations, add new venues with photos
 - **Player Profiles** - User profiles with photos, crew relationships
 - **Crews** - Follow/connect with other players (request, accept, decline, split)
@@ -12,6 +13,7 @@ A Flutter mobile app for finding and connecting with sports players at local ven
 - **Notifications** - Crew requests, acceptances, and system alerts
 
 ### Platform Support
+
 - iOS
 - Android
 - macOS
@@ -24,16 +26,19 @@ A Flutter mobile app for finding and connecting with sports players at local ven
 Priority fixes for existing functionality.
 
 ### High Priority
+
 - [ ] #196 #197: Fix photo upload loading state issues
 - [ ] #198: Fix onboarding notifications text formatting
 - [ ] #199: Fix CrewRequestNotification card overflow
 - [ ] #202: Fix conversation not appearing in Messages list
 
 ### Medium Priority
+
 - [ ] #200: Add visual feedback to notification buttons
 - [ ] #150: Fix notification count accuracy
 
 ### Low Priority
+
 - [ ] #189: Update image_cropper version
 
 ---
@@ -95,6 +100,6 @@ Potential features for later consideration:
 
 ## Contributing
 
-See open issues at: https://github.com/enspyrco/crowdleague/issues
+See open issues at: <https://github.com/enspyrco/crowdleague/issues>
 
-Project board: https://github.com/orgs/enspyrco/projects/4
+Project board: <https://github.com/orgs/enspyrco/projects/4>

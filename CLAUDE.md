@@ -86,6 +86,7 @@ Uses `go_router` with named routes defined in `lib/main.dart`. Routes include on
 ### Main Screens
 
 The `HomeScreen` uses `NavigationBar` with four destinations:
+
 1. Venues (map view)
 2. Notifications (with badge count)
 3. Messages/Conversations
@@ -94,6 +95,7 @@ The `HomeScreen` uses `NavigationBar` with four destinations:
 ### Firebase Functions
 
 TypeScript functions in `functions/src/`:
+
 - `crew-request.ts` / `accept-crew-request.ts` / `split-crews.ts`: Player relationship management
 - `send-message-to-participants.ts`: Push notifications for messages
 - `resize-images.ts`: Image processing on upload
