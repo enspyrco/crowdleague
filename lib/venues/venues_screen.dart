@@ -62,10 +62,14 @@ class _VenuesScreenState extends State<VenuesScreen> {
     await Future.wait(
       venues.map(
         (venue) async {
-          final bytes = await locate<VenuesService>().downloadIcon(venue.id);
-          if (bytes != null) {
-            final descriptor = BitmapDescriptor.bytes(bytes);
-            descriptorMap[venue] = descriptor;
+          try {
+            final bytes = await locate<VenuesService>().downloadIcon(venue.id);
+            if (bytes != null) {
+              final descriptor = BitmapDescriptor.bytes(bytes);
+              descriptorMap[venue] = descriptor;
+            }
+          } catch (_) {
+            // Icon doesn't exist, will use default marker
           }
         },
       ),
@@ -75,7 +79,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
       final marker = Marker(
         markerId: MarkerId(venue.id),
         position: LatLng(venue.latitude, venue.longitude),
-        icon: descriptorMap[venue]!,
+        icon: descriptorMap[venue] ?? BitmapDescriptor.defaultMarker,
         onTap: () => _openVenueDetailScreen(venue.id),
       );
       _markers.add(marker);
