@@ -21,6 +21,7 @@ module.exports = {
   ignorePatterns: [
     '/lib/**/*', // Ignore built files.
     '/generated/**/*', // Ignore generated files.
+    '/coverage/**/*', // Ignore coverage reports.
   ],
   plugins: [
     '@typescript-eslint',
@@ -31,4 +32,12 @@ module.exports = {
     'import/no-unresolved': 0,
     'indent': ['error', 2],
   },
+  overrides: [
+    {
+      files: ['test/**/*.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+      },
+    },
+  ],
 };

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crowdleague/conversations/conversations_service.dart';
 import 'package:crowdleague/players/models/player.dart';
 import 'package:crowdleague/players/players_service.dart';
 import 'package:crowdleague/utils/cache/player_cache.dart';
