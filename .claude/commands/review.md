@@ -18,7 +18,30 @@ Review PR #$1 and post your review to GitHub.
    gh pr diff $1 --repo enspyrco/crowdleague
    ```
 
-2. **Analyze the changes for:**
+2. **Identify changed files:**
+   ```bash
+   gh pr view $1 --json files --jq '.files[].path'
+   ```
+
+3. **Generate coverage reports:**
+
+   **For Flutter/Dart changes:**
+   ```bash
+   flutter test --coverage
+   ```
+
+   **For Functions changes (if files in `functions/` were modified):**
+   ```bash
+   cd functions && npm run test:coverage && cd ..
+   ```
+
+4. **Analyze coverage for changed files:**
+   - Parse `coverage/lcov.info` (Flutter) and `functions/coverage/lcov.info` (Functions)
+   - Extract coverage percentages for files that were changed in the PR
+   - Flag any changed files with <80% line coverage
+   - Note any new code paths that lack test coverage
+
+5. **Analyze the changes for:**
    - Code quality and readability
    - Potential bugs or edge cases
    - Security concerns (input validation, auth checks)
@@ -26,8 +49,9 @@ Review PR #$1 and post your review to GitHub.
    - Adherence to project patterns (service locator, streams)
    - Flutter/Dart best practices
    - Firebase best practices
+   - **Test coverage for changed code**
 
-3. **Post review as claude-reviewer-max:**
+6. **Post review as claude-reviewer-max:**
    Use the GitHub API with `$CLAUDE_REVIEWER_PAT` to post your review:
    ```bash
    curl -X POST \
@@ -47,6 +71,11 @@ Review PR #$1 and post your review to GitHub.
 **Changes reviewed:**
 - [List each significant change with ✅ or ⚠️]
 
+**Coverage Analysis:**
+| File | Coverage | Status |
+|------|----------|--------|
+| [changed file] | [X%] | [✅ >80% / ⚠️ <80% / ❌ No tests] |
+
 **Issues found:** (if any)
 - [Specific issues with file:line references]
 
@@ -55,6 +84,14 @@ Review PR #$1 and post your review to GitHub.
 
 [APPROVE/REQUEST_CHANGES/COMMENT decision]
 ```
+
+## Coverage Guidelines
+
+- New features should have tests covering the main success path
+- Bug fixes should include regression tests
+- Changed files should maintain or improve existing coverage
+- Flag files <80% coverage for attention (not blocking)
+- Missing tests for critical paths (auth, payments, data writes) should REQUEST_CHANGES
 
 ## Project Context
 

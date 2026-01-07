@@ -163,8 +163,15 @@ The `main` branch is protected with the following rules:
 
 GitHub Actions runs on all PRs and pushes to main (`.github/workflows/ci.yml`):
 
+**Flutter job:**
 - `flutter analyze --no-fatal-infos`
-- `flutter test`
+- `flutter test --coverage`
+- Uploads `coverage/lcov.info` as artifact
+
+**Functions job:**
+- `npm run lint`
+- `npm run test:coverage`
+- Uploads `functions/coverage/lcov.info` as artifact
 
 ### Making Changes
 
@@ -192,3 +199,21 @@ source .env
 ## Testing
 
 Widget tests use `fake_cloud_firestore` and `firebase_storage_mocks` to mock Firebase services. Register mocked services via `Locator.add<T>()` before running tests.
+
+### Code Coverage
+
+Generate coverage reports locally:
+
+```bash
+# Flutter coverage (generates coverage/lcov.info)
+flutter test --coverage
+
+# Functions coverage (generates functions/coverage/lcov.info)
+cd functions && npm run test:coverage
+```
+
+The `/review` command (claude-reviewer-max) automatically:
+- Runs coverage for changed code areas
+- Analyzes coverage for files modified in the PR
+- Includes a coverage table in the review
+- Flags files with <80% coverage
