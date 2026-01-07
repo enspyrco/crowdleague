@@ -90,3 +90,18 @@ jobs:
         with:
           name: functions-coverage
           path: functions/coverage/lcov.info
+
+  # Summary job for branch protection (replaces old "Analyze & Test" job)
+  ci-status:
+    name: Analyze & Test
+    runs-on: ubuntu-latest
+    needs: [changes, flutter, functions]
+    if: always()
+    steps:
+      - name: Check CI status
+        run: |
+          if [[ "${{ needs.flutter.result }}" == "failure" || "${{ needs.functions.result }}" == "failure" ]]; then
+            echo "CI failed"
+            exit 1
+          fi
+          echo "CI passed"
