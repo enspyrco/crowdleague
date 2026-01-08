@@ -217,3 +217,17 @@ The `/review` command (claude-reviewer-max) automatically:
 - Analyzes coverage for files modified in the PR
 - Includes a coverage table in the review
 - Flags files with <80% coverage
+
+### Project Management
+
+The `/pm` command (claude-pm-enspyr) manages the project board at https://github.com/orgs/enspyrco/projects/4
+
+**Commands:**
+- `/pm list` - Show project board status and priorities
+- `/pm start <issue>` - Move issue to In Progress
+- `/pm done <issue>` - Mark issue complete and close it
+- `/pm create-issue <type> <title>` - Create new issue (types: bug, enhancement, task, research, performance)
+- `/pm prioritize <issue> <priority>` - Set priority (high, medium, low)
+- `/pm bugs` - List all open bugs
+- `/pm next` - Get recommended next task
+- `/pm plan <feature>` - Break down feature into issues
