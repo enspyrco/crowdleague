@@ -83,9 +83,23 @@ iOS/Android/macOS/Web
 Frontend/Backend/Infrastructure
 ```
 
+**Research:**
+```markdown
+## Context
+[Why this research is needed]
+
+## Research Areas
+- [ ] Area 1
+- [ ] Area 2
+- [ ] Area 3
+
+## Deliverable
+[What output is expected - document, recommendation, prototype, etc.]
+```
+
 ## Labels
 
-- `bug`, `enhancement`, `task`
+- `bug`, `enhancement`, `task`, `research`
 - `priority: high/medium/low`
 - `in progress`, `needs review`
 
