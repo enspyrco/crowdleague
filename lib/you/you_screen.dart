@@ -14,6 +14,58 @@ class YouScreen extends StatefulWidget {
 }
 
 class _YouScreenState extends State<YouScreen> {
+  bool _isDeleting = false;
+
+  Future<void> _showDeleteConfirmation() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Account?'),
+        content: const Text(
+          'This will permanently delete your account and all associated data including:\n\n'
+          '• Your profile\n'
+          '• Your profile photos\n'
+          '• Your notifications\n'
+          '• Your crew connections\n'
+          '• Your messages\n\n'
+          'This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      await _deleteAccount();
+    }
+  }
+
+  Future<void> _deleteAccount() async {
+    setState(() => _isDeleting = true);
+    try {
+      await locate<UserService>().deleteAccount();
+      if (mounted) {
+        context.replace('/signin');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to delete account: $e')),
+        );
+        setState(() => _isDeleting = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +112,26 @@ class _YouScreenState extends State<YouScreen> {
                 context.replace('/signin');
               },
             ),
-          )
+          ),
+          const SizedBox(height: 40),
+          Card(
+            color: Colors.red.shade50,
+            child: ListTile(
+              leading: _isDeleting
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.delete_forever, color: Colors.red),
+              title: Text(
+                _isDeleting ? 'Deleting...' : 'Delete Account',
+                style: const TextStyle(color: Colors.red),
+              ),
+              enabled: !_isDeleting,
+              onTap: _showDeleteConfirmation,
+            ),
+          ),
         ],
       ),
     );

@@ -153,4 +153,16 @@ class UserService {
       'dbName': kDatabaseName,
     });
   }
+
+  // ==================== Account Management ====================
+
+  /// Permanently deletes the user's account and all associated data.
+  /// This includes: profile, notifications, crew memberships, messages,
+  /// profile photos, and Firebase Auth account.
+  Future<void> deleteAccount() async {
+    await _profileStreamSubscription?.cancel();
+    await _cloudFunctions.httpsCallable('deleteAccount').call({
+      'dbName': kDatabaseName,
+    });
+  }
 }
