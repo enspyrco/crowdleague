@@ -30,19 +30,30 @@ class _SelectNewVenueLocationScreenState
     draggable: false,
   );
 
+  String? _locationError;
+
   Future<void> _goToCurrentLocation() async {
-    // wait for the google maps controller and the geolocation
-    final (latLngRecord, controller) = await (
-      locate<GeoLocationService>().determinePosition(),
-      _controllerCompleter.future
-    ).wait;
-    LatLng location = LatLng(latLngRecord.$1, latLngRecord.$2);
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: location, zoom: 15)));
+    try {
+      // wait for the google maps controller and the geolocation
+      final (latLngRecord, controller) = await (
+        locate<GeoLocationService>().determinePosition(),
+        _controllerCompleter.future
+      ).wait;
+      LatLng location = LatLng(latLngRecord.$1, latLngRecord.$2);
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: location, zoom: 15)));
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _locationError = e.toString();
+        });
+      }
     }
   }
 
@@ -80,18 +91,24 @@ class _SelectNewVenueLocationScreenState
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: _locationError != null
+                        ? Theme.of(context).colorScheme.errorContainer
+                        : Theme.of(context).colorScheme.primaryContainer,
                     child: Text(
-                      'We use your location to find nearby venues. Drag the map to set the venue location.',
+                      _locationError != null
+                          ? 'Location unavailable. Drag the map to set the venue location manually.'
+                          : 'We use your location to find nearby venues. Drag the map to set the venue location.',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        color: _locationError != null
+                            ? Theme.of(context).colorScheme.onErrorContainer
+                            : Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   Expanded(
                     child: GoogleMap(
-                      myLocationEnabled: true,
+                      myLocationEnabled: _locationError == null,
                       markers: {_marker},
                       initialCameraPosition:
                           CameraPosition(target: _currentLocation),
