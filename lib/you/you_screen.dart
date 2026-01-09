@@ -134,10 +134,32 @@ class _YouScreenState extends State<YouScreen> {
             ),
           ),
           Card(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'To build your crew: Find a player, tap "Join Crew", '
+                      'and wait for them to accept.',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
             child: ListTile(
               leading: const Icon(Icons.group_add),
               title: const Text('Find Players'),
-              subtitle: const Text('Connect with players to build your crew'),
+              subtitle: const Text('Search and connect with other players'),
               onTap: () {
                 context.push('/find-players');
               },
