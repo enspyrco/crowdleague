@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../services/geo_location_service.dart';
 import '../../../utils/locator.dart';
+import '../../venues_service.dart';
 
 class SelectNewVenueLocationScreen extends StatefulWidget {
   const SelectNewVenueLocationScreen({super.key});
@@ -31,6 +32,40 @@ class _SelectNewVenueLocationScreenState
   );
 
   String? _locationError;
+  final _searchController = TextEditingController();
+  bool _isSearching = false;
+
+  Future<void> _searchAddress() async {
+    final query = _searchController.text.trim();
+    if (query.isEmpty) return;
+
+    setState(() => _isSearching = true);
+
+    try {
+      final result = await locate<VenuesService>().searchAddress(query);
+      if (result != null && mounted) {
+        final controller = await _controllerCompleter.future;
+        final location = LatLng(result.$1, result.$2);
+        controller.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(target: location, zoom: 15),
+          ),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Address not found')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSearching = false);
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   Future<void> _goToCurrentLocation() async {
     try {
@@ -88,20 +123,49 @@ class _SelectNewVenueLocationScreenState
             children: [
               Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search by address',
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: _isSearching
+                            ? const Padding(
+                                padding: EdgeInsets.all(12),
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2),
+                                ),
+                              )
+                            : IconButton(
+                                icon: const Icon(Icons.arrow_forward),
+                                onPressed: _searchAddress,
+                              ),
+                        border: const OutlineInputBorder(),
+                      ),
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (_) => _searchAddress(),
+                    ),
+                  ),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
                     color: _locationError != null
                         ? Theme.of(context).colorScheme.errorContainer
                         : Theme.of(context).colorScheme.primaryContainer,
                     child: Text(
                       _locationError != null
-                          ? 'Location unavailable. Drag the map to set the venue location manually.'
-                          : 'We use your location to find nearby venues. Drag the map to set the venue location.',
+                          ? 'Location unavailable. Drag the map or search above.'
+                          : 'Drag the map or search above to set venue location.',
                       style: TextStyle(
                         color: _locationError != null
                             ? Theme.of(context).colorScheme.onErrorContainer
                             : Theme.of(context).colorScheme.onPrimaryContainer,
+                        fontSize: 13,
                       ),
                       textAlign: TextAlign.center,
                     ),
