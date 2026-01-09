@@ -33,7 +33,11 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+functions/coverage/
 ios/build/
+
+# Firebase
+.firebase/
 
 # Symbolication related
 app.*.symbols
