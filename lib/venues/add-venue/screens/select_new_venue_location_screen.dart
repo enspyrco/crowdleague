@@ -75,20 +75,39 @@ class _SelectNewVenueLocationScreenState
         body: LayoutBuilder(builder: (context, constraints) {
           return Stack(
             children: [
-              GoogleMap(
-                myLocationEnabled: true,
-                markers: {_marker},
-                initialCameraPosition: CameraPosition(target: _currentLocation),
-                onMapCreated: (GoogleMapController controller) {
-                  _controllerCompleter.complete(controller);
-                },
-                onCameraMove: (cameraPosition) {
-                  setState(() {
-                    _marker =
-                        _marker.copyWith(positionParam: cameraPosition.target);
-                  });
-                  _currentLocation = cameraPosition.target;
-                },
+              Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    child: Text(
+                      'We use your location to find nearby venues. Drag the map to set the venue location.',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: GoogleMap(
+                      myLocationEnabled: true,
+                      markers: {_marker},
+                      initialCameraPosition:
+                          CameraPosition(target: _currentLocation),
+                      onMapCreated: (GoogleMapController controller) {
+                        _controllerCompleter.complete(controller);
+                      },
+                      onCameraMove: (cameraPosition) {
+                        setState(() {
+                          _marker = _marker.copyWith(
+                              positionParam: cameraPosition.target);
+                        });
+                        _currentLocation = cameraPosition.target;
+                      },
+                    ),
+                  ),
+                ],
               ),
               if (_isLoading) const Center(child: CircularProgressIndicator()),
               Positioned(

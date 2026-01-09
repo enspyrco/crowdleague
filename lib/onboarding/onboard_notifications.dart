@@ -14,13 +14,20 @@ class OnboardNotifications extends StatefulWidget {
 }
 
 class _OnboardNotificationsState extends State<OnboardNotifications> {
-  Future<void> _getAToken(BuildContext context) async {
+  Future<void> _enableNotifications() async {
     // Asks for permission, stores a new token if the token is fresh
     await locate<MessagingService>().init();
+    await _completeOnboarding();
+  }
 
+  Future<void> _skipNotifications() async {
+    await _completeOnboarding();
+  }
+
+  Future<void> _completeOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarded', true);
-    if (context.mounted) {
+    if (mounted) {
       context.go('/');
     }
   }
@@ -51,11 +58,14 @@ class _OnboardNotificationsState extends State<OnboardNotifications> {
                     ),
                   ),
                   const SizedBox(height: 50),
+                  FilledButton(
+                    onPressed: _enableNotifications,
+                    child: const Text('Yes, notify me'),
+                  ),
+                  const SizedBox(height: 12),
                   TextButton(
-                    onPressed: () {
-                      _getAToken(context);
-                    },
-                    child: Text('OK'),
+                    onPressed: _skipNotifications,
+                    child: const Text('No thanks'),
                   )
                 ],
               ),
