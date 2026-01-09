@@ -23,6 +23,7 @@ import 'players/player_profile_screen.dart';
 import 'services/geo_location_service.dart';
 import 'services/images_service.dart';
 import 'services/messaging_service.dart';
+import 'services/tutorial_notifier.dart';
 import 'notifications/notifications_service.dart';
 import 'players/players_service.dart';
 import 'services/user_service.dart';
@@ -177,6 +178,7 @@ void main() async {
     storage: storage,
     firebaseAuth: auth,
   ));
+  Locator.add<TutorialNotifier>(TutorialNotifier());
 
   runApp(const CrowdLeagueApp());
 }

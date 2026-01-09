@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:crowdleague/services/tutorial_notifier.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:crowdleague/venues/venues_service.dart';
@@ -29,6 +30,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
 
   LatLng? _currentLocation;
   final Set<Marker> _markers = {};
+  bool _myLocationEnabled = false;
 
   Future _loadMapStyles() async {
     final styleString =
@@ -89,11 +91,33 @@ class _VenuesScreenState extends State<VenuesScreen> {
     }
   }
 
+  void _onTutorialComplete() {
+    if (mounted) {
+      setState(() {
+        _myLocationEnabled = true;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _loadMapStyles();
     _displayVenues();
+
+    // Enable location after tutorial completes (to avoid permission popup during tutorial)
+    final tutorialNotifier = locate<TutorialNotifier>();
+    if (tutorialNotifier.value) {
+      _myLocationEnabled = true;
+    } else {
+      tutorialNotifier.addListener(_onTutorialComplete);
+    }
+  }
+
+  @override
+  void dispose() {
+    locate<TutorialNotifier>().removeListener(_onTutorialComplete);
+    super.dispose();
   }
 
   @override
@@ -107,7 +131,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
           ? _darkMapStyle
           : null,
       markers: _markers,
-      myLocationEnabled: true,
+      myLocationEnabled: _myLocationEnabled,
       initialCameraPosition: (_currentLocation == null)
           ? VenuesScreen._kMelbourne
           : CameraPosition(target: _currentLocation!),
