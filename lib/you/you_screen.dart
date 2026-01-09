@@ -66,6 +66,33 @@ class _YouScreenState extends State<YouScreen> {
     }
   }
 
+  Future<void> _showSignOutConfirmation() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Sign Out?'),
+        content: const Text('Are you sure you want to sign out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Sign Out'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      await locate<UserService>().signOut();
+      if (mounted) {
+        context.replace('/signin');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,10 +134,7 @@ class _YouScreenState extends State<YouScreen> {
           Card(
             child: ListTile(
               title: const Text('Sign Out'),
-              onTap: () {
-                locate<UserService>().signOut();
-                context.replace('/signin');
-              },
+              onTap: _showSignOutConfirmation,
             ),
           ),
           const SizedBox(height: 40),

@@ -22,7 +22,9 @@ class _EditNameScreenState extends State<EditNameScreen> {
   Future<void> _getCurrentName() async {
     final player = await locate<PlayersService>()
         .retrievePlayer(locate<UserService>().currentUserId!);
-    _textController.text = player?.name ?? '';
+    // Use existing name, or fall back to auth display name (from Google/Apple)
+    _textController.text =
+        player?.name ?? locate<UserService>().authDisplayName ?? '';
     _textController.selection = TextSelection(
       baseOffset: 0,
       extentOffset: _textController.text.length,

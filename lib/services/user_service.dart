@@ -57,6 +57,10 @@ class UserService {
 
   String? get currentUserId => _auth.currentUser?.uid;
 
+  /// Returns the display name from the auth provider (Google/Apple).
+  /// Useful for pre-filling the name field during onboarding.
+  String? get authDisplayName => _auth.currentUser?.displayName;
+
   Stream<Map<String, Object?>?> get profileDocStream => _userSubject.stream;
 
   Future<void> signInWithGoogle() async {
