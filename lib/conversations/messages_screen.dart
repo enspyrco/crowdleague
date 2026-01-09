@@ -2,6 +2,8 @@ import 'package:crowdleague/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 import 'conversations_service.dart';
+import '../players/players_service.dart';
+import '../players/models/player.dart';
 import '../utils/locator.dart';
 import 'models/message.dart';
 
@@ -16,12 +18,29 @@ class MessagesScreen extends StatefulWidget {
 
 class _MessagesScreenState extends State<MessagesScreen> {
   final _controller = TextEditingController();
+  String? _otherPlayerName;
 
   @override
   void initState() {
     super.initState();
     // Mark messages as read when opening the conversation
     locate<ConversationsService>().markMessagesAsRead(widget.conversationId);
+    _loadOtherPlayerName();
+  }
+
+  Future<void> _loadOtherPlayerName() async {
+    // Conversation ID is in format "{id1}_{id2}" sorted alphabetically
+    final ids = widget.conversationId.split('_');
+    final currentUserId = locate<UserService>().currentUserId;
+    final otherPlayerId = ids.first == currentUserId ? ids.last : ids.first;
+
+    final Player? player =
+        await locate<PlayersService>().retrievePlayer(otherPlayerId);
+    if (mounted && player != null) {
+      setState(() {
+        _otherPlayerName = player.name;
+      });
+    }
   }
 
   @override
@@ -29,7 +48,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
     final ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(_otherPlayerName ?? ''),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -94,8 +115,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 Expanded(
                   child: TextField(
                     decoration: InputDecoration(
+                      hintText: _otherPlayerName != null
+                          ? 'Message ${_otherPlayerName!.split(' ').first}...'
+                          : 'Type a message...',
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: theme.colorScheme.primary, width: 1.0),
                       ),
                     ),
                     controller: _controller,

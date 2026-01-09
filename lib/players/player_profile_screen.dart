@@ -160,13 +160,17 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                           if (!_owner && crew)
                             CrewMenuButton(callback: _splitCrewsCallback),
                           if (!_owner)
-                            OutlinedButton(
-                              onPressed: (_findingConversation)
-                                  ? null
-                                  : () => _openConversation(),
-                              child: (_findingConversation)
-                                  ? Text('Finding conversation...')
-                                  : Text('Message'),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: OutlinedButton.icon(
+                                onPressed: (_findingConversation)
+                                    ? null
+                                    : () => _openConversation(),
+                                icon: const Icon(Icons.chat_bubble_outline),
+                                label: (_findingConversation)
+                                    ? const Text('Opening...')
+                                    : Text('Message ${player.name.split(' ').first}'),
+                              ),
                             ),
                         ],
                       ),
