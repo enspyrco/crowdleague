@@ -203,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Your Profile',
+                  'Your Profile & Crew',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -212,7 +212,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Manage your profile and crews',
+                  'Your "Crew" is your group of sports contacts.',
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Find players and tap "Join Crew" to connect. '
+                  'Once they accept, you can message each other '
+                  'and coordinate playing together.',
                   style: TextStyle(color: Colors.white),
                 ),
               ],
