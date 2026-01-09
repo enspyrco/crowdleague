@@ -146,4 +146,27 @@ class VenuesService {
       throw Exception('Failed to load geocoding data');
     }
   }
+
+  /// Convert an address string to lat/lng coordinates (forward geocoding)
+  Future<(double latitude, double longitude)?> searchAddress(
+      String address) async {
+    final encodedAddress = Uri.encodeComponent(address);
+    final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?address=$encodedAddress&key=$reverseGeocodingApiKey');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['status'] == 'OK' && jsonResponse['results'] != null) {
+        final firstResult = jsonResponse['results'][0];
+        final location = firstResult['geometry']['location'];
+        final lat = location['lat'] as double;
+        final lng = location['lng'] as double;
+        return (lat, lng);
+      }
+    }
+    return null;
+  }
 }
