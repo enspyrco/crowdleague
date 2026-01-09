@@ -120,11 +120,22 @@ class _YouScreenState extends State<YouScreen> {
       ),
       body: ListView(
         children: [
-          SizedBox(
-            height: 20,
+          const SizedBox(height: 20),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit Profile'),
+              subtitle: const Text('Change your name or photo'),
+              onTap: () {
+                context.pushNamed('edit-name', pathParameters: {
+                  'onboarding': 'false',
+                });
+              },
+            ),
           ),
           Card(
             child: ListTile(
+              leading: const Icon(Icons.group_add),
               title: const Text('Expand your crew'),
               onTap: () {
                 context.push('/find-players');
@@ -133,6 +144,7 @@ class _YouScreenState extends State<YouScreen> {
           ),
           Card(
             child: ListTile(
+              leading: const Icon(Icons.logout),
               title: const Text('Sign Out'),
               onTap: _showSignOutConfirmation,
             ),
