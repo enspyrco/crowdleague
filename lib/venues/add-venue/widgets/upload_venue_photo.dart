@@ -83,20 +83,8 @@ class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
+    return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton.outlined(
-                onPressed: () => _onPickPhotoButtonPressed(ImageSource.gallery),
-                icon: const Icon(Icons.photo)),
-            IconButton.outlined(
-                onPressed: () => _onPickPhotoButtonPressed(ImageSource.camera),
-                icon: const Icon(Icons.camera_alt)),
-          ],
-        ),
         if (_croppedFilePath != null)
           Stack(
             children: [
@@ -106,22 +94,65 @@ class _UploadVenuePhotoState extends State<UploadVenuePhoto> {
                   filePath: _croppedFilePath!,
                 ),
               ),
-              Image.file(File(_croppedFilePath!)),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.file(
+                  File(_croppedFilePath!),
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ],
           ),
         if (_croppedFilePath == null)
-          const AspectRatio(
-            aspectRatio: 1.0,
-            child: Center(
-              child: Text('pick a\nphoto'),
+          Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.add_a_photo, size: 48, color: Colors.grey[400]),
+                const SizedBox(height: 8),
+                Text(
+                  'Add a venue photo',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
+              ],
             ),
           ),
-        if (_loading) const CircularProgressIndicator(),
-        const SizedBox(height: 20),
-        if (_error != null) // display any errors in a Text widget
-          Text(
-            _error.toString(),
-            style: const TextStyle(color: Colors.red),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton.icon(
+              onPressed: () => _onPickPhotoButtonPressed(ImageSource.gallery),
+              icon: const Icon(Icons.photo),
+              label: const Text('Gallery'),
+            ),
+            const SizedBox(width: 16),
+            TextButton.icon(
+              onPressed: () => _onPickPhotoButtonPressed(ImageSource.camera),
+              icon: const Icon(Icons.camera_alt),
+              label: const Text('Camera'),
+            ),
+          ],
+        ),
+        if (_loading) ...[
+          const SizedBox(height: 16),
+          const CircularProgressIndicator(),
+        ],
+        if (_error != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Text(
+              _error.toString(),
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
       ],
     );
