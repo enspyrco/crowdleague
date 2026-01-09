@@ -21,12 +21,22 @@ class _FindPlayersScreenState extends State<FindPlayersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Find Players'),
+      ),
       body: Column(
         children: [
-          TextField(
-            controller: _nameTextController,
-            autofocus: true,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: _nameTextController,
+              autofocus: true,
+              decoration: const InputDecoration(
+                hintText: 'Search by name',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+            ),
           ),
           FutureBuilder<List<Player>>(
               future: locate<PlayersService>().retrievePlayers(),

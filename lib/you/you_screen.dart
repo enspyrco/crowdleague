@@ -136,7 +136,8 @@ class _YouScreenState extends State<YouScreen> {
           Card(
             child: ListTile(
               leading: const Icon(Icons.group_add),
-              title: const Text('Expand your crew'),
+              title: const Text('Find Players'),
+              subtitle: const Text('Connect with players to build your crew'),
               onTap: () {
                 context.push('/find-players');
               },
