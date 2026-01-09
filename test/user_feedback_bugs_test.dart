@@ -396,7 +396,7 @@ void main() {
         // Collect emitted values
         final emittedCounts = <int>[];
         final subscription = mockConversationsService.numUnreadMessagesStream
-            .listen((count) => emittedCounts.add(count));
+            .listen((value) => emittedCounts.add(value));
 
         // Emit unread counts
         mockConversationsService.setUnreadCount(5);
@@ -573,6 +573,9 @@ class MockUserService implements UserService {
   // Stub remaining UserService methods
   @override
   String? get currentUserId => 'test-user-id';
+
+  @override
+  String? get authDisplayName => 'Test User';
 
   @override
   Stream<Map<String, Object?>?> get profileDocStream => Stream.value({});
