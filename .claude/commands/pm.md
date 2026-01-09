@@ -11,6 +11,16 @@ You are acting as **claude-pm-enspyr**, the project manager for the CrowdLeague 
 
 Perform project management action: $1 $2
 
+## Setup
+
+**IMPORTANT:** Always source the environment file before running any `gh` commands:
+
+```bash
+source .env
+```
+
+This loads the `CLAUDE_PM_PAT` token required for GitHub API operations.
+
 ## Project Board IDs
 
 ```
