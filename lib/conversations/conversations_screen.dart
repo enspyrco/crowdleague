@@ -21,7 +21,10 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
           future:
               locate<ConversationsService>().retrieveConversationViewModels(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               final List<ConversationViewModel> conversationViewModels =
                   snapshot.data!;
               return ListView.builder(
@@ -31,7 +34,32 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                         conversationViewModel: conversationViewModels[index]);
                   });
             } else {
-              return Container();
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.chat_bubble_outline,
+                      size: 64,
+                      color: Colors.grey[400],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No messages yet',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: Colors.grey[600],
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Start a conversation from a player profile',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey[500],
+                          ),
+                    ),
+                  ],
+                ),
+              );
             }
           }),
     );
