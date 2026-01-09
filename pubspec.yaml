@@ -16,7 +16,7 @@ dependencies:
   google_sign_in: ^7.1.1
   google_maps_flutter: ^2.10.0
   image_picker: ^1.1.2
-  image_cropper: ^9.1.0
+  image_cropper: ^11.0.0
   rxdart: ^0.28.0
   geolocator: ^14.0.2
   screenshot: ^3.0.0
