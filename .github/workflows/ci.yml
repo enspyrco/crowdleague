@@ -58,6 +58,7 @@ jobs:
         with:
           name: flutter-coverage
           path: coverage/lcov.info
+          if-no-files-found: ignore
 
   functions:
     name: Functions Lint & Test
@@ -90,6 +91,7 @@ jobs:
         with:
           name: functions-coverage
           path: functions/coverage/lcov.info
+          if-no-files-found: ignore
 
   # Summary job for branch protection (replaces old "Analyze & Test" job)
   ci-status:
