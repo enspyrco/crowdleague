@@ -600,6 +600,9 @@ class MockUserService implements UserService {
 
   @override
   Future<void> splitCrews(String playerId) async {}
+
+  @override
+  Future<void> deleteAccount() async {}
 }
 
 /// Mock PlayersService for Avatar widget
