@@ -1,0 +1,101 @@
+# Fastfile for CrowdLeague iOS
+#
+# Usage:
+#   cd ios && bundle exec fastlane beta
+#
+# For more information about Fastlane, see:
+#   https://docs.fastlane.tools
+
+default_platform(:ios)
+
+# Load App Store Connect API key
+def load_api_key
+  app_store_connect_api_key(
+    key_id: "SGHA5JPN8S",
+    issuer_id: "69a6de7e-c42c-47e3-e053-5b8c7c11a4d1",
+    key_filepath: "/Users/nick/Library/CloudStorage/Dropbox/Work Files/crowdleague/certs_keys/apple/AuthKey_SGHA5JPN8S.p8"
+  )
+end
+
+platform :ios do
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    api_key = load_api_key
+    # Ensure we're on a clean git state (optional, can be disabled)
+    # ensure_git_status_clean
+
+    # Build Flutter app first
+    Dir.chdir("..") do
+      sh("flutter build ios --release --no-codesign")
+    end
+
+    # Build and sign the iOS app
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "CrowdLeague.ipa"
+    )
+
+    # Upload to TestFlight
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+    )
+
+    # Clean up build artifacts
+    clean_build_artifacts
+  end
+
+  desc "Build the app without uploading (for testing)"
+  lane :build do
+    # Build Flutter app
+    Dir.chdir("..") do
+      sh("flutter build ios --release --no-codesign")
+    end
+
+    # Build and sign
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "CrowdLeague.ipa"
+    )
+  end
+
+  desc "Increment build number and commit"
+  lane :bump do
+    api_key = load_api_key
+    # Get current build number from TestFlight and increment
+    latest_build = latest_testflight_build_number(
+      api_key: api_key,
+      app_identifier: "co.enspyr.cl1"
+    )
+    new_build = latest_build + 1
+
+    # Update the build number in pubspec.yaml (go up two levels: fastlane -> ios -> root)
+    Dir.chdir("../..") do
+      pubspec = File.read("pubspec.yaml")
+      # Match version line like: version: 0.0.5+16
+      updated = pubspec.gsub(/^(version:\s*\d+\.\d+\.\d+\+)\d+/, "\\1#{new_build}")
+      File.write("pubspec.yaml", updated)
+      sh("git add pubspec.yaml")
+      sh("git commit -m 'Bump build number to #{new_build}'")
+    end
+
+    UI.success("Build number bumped to #{new_build}")
+  end
+
+  desc "Full release: bump version, build, and upload to TestFlight"
+  lane :release do
+    bump
+    beta
+  end
+
+  # Error handling
+  error do |lane, exception|
+    UI.error("Error in lane #{lane}: #{exception.message}")
+  end
+end
