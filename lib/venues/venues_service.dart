@@ -46,21 +46,31 @@ class VenuesService {
   //   return storageRef.getData();
   // }
 
-  String getPhotoUrl(String venueId, PicSize picSize) {
-    final String photoUriString;
+  /// Get photo URL for a venue photo at a specific index
+  String getPhotoUrl(String venueId, PicSize picSize, {int photoIndex = 0}) {
+    final String suffix;
     if (picSize == PicSize.small) {
-      photoUriString = 'venuePhotos/${venueId}_small.jpg';
+      suffix = 'small';
     } else if (picSize == PicSize.medium) {
-      photoUriString = 'venuePhotos/${venueId}_medium.jpg';
+      suffix = 'medium';
     } else {
-      photoUriString = 'venuePhotos/${venueId}_large.jpg';
+      suffix = 'large';
     }
 
-    return 'https://storage.googleapis.com/$kBucketName/$photoUriString';
+    final photoUriString = '${venueId}_${photoIndex}_$suffix.jpg';
+    return 'https://storage.googleapis.com/$kVenuesBucket/$photoUriString';
+  }
+
+  /// Get all photo URLs for a venue
+  List<String> getAllPhotoUrls(String venueId, int photoCount, PicSize picSize) {
+    return List.generate(
+      photoCount,
+      (index) => getPhotoUrl(venueId, picSize, photoIndex: index),
+    );
   }
 
   Future<Uint8List?> downloadIcon(String venueId) {
-    final storageRef = _storage.ref('venuePhotos/${venueId}_icon');
+    final storageRef = _storage.ref('${venueId}_icon');
     return storageRef.getData();
   }
 
@@ -113,10 +123,26 @@ class VenuesService {
   }
 
   Future<void> deleteVenue({required Venue venue}) async {
-    await _storage.ref('venuePhotos').child('${venue.id}_large').delete();
-    await _storage.ref('venuePhotos').child('${venue.id}_small').delete();
-    await _storage.ref('venuePhotos').child('${venue.id}_icon').delete();
-    _firestore.collection('venues').doc(venue.id).delete();
+    // Delete all photos for each index
+    for (int i = 0; i < venue.photoCount; i++) {
+      try {
+        await _storage.ref('${venue.id}_${i}_large.jpg').delete();
+      } catch (_) {}
+      try {
+        await _storage.ref('${venue.id}_${i}_medium.jpg').delete();
+      } catch (_) {}
+      try {
+        await _storage.ref('${venue.id}_${i}_small.jpg').delete();
+      } catch (_) {}
+      try {
+        await _storage.ref('${venue.id}_$i.jpg').delete();
+      } catch (_) {}
+    }
+    // Delete icon
+    try {
+      await _storage.ref('${venue.id}_icon').delete();
+    } catch (_) {}
+    await _firestore.collection('venues').doc(venue.id).delete();
   }
 
   Future<String> retrieveAddress(String latitude, String longitude) async {

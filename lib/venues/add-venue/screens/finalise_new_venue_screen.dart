@@ -9,7 +9,7 @@ import '../../models/upload_event.dart';
 import '../widgets/court_environment_dropdown.dart';
 import '../widgets/court_surface_dropdown.dart';
 import '../../../utils/widgets/divider_with_subheading.dart';
-import '../widgets/upload_venue_photo.dart';
+import '../widgets/upload_venue_photos.dart';
 import '../widgets/venue_size_dropdown.dart';
 
 class FinaliseNewVenueScreen extends StatefulWidget {
@@ -48,19 +48,21 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     final venueId =
         await locate<VenuesService>().createNewVenue(_localVenue.toJson());
 
-    if (mounted) {
-      setState(() {
-        _progressMessage = 'Uploading venue photo...';
-      });
+    // Upload all photos with indexed naming
+    for (int i = 0; i < _localVenue.photoPaths.length; i++) {
+      if (mounted) {
+        setState(() {
+          _progressMessage =
+              'Uploading photo ${i + 1} of ${_localVenue.photoPaths.length}...';
+        });
+      }
+      await for (final UploadEvent _ in locate<VenuesService>().uploadFile(
+        localPath: _localVenue.photoPaths[i],
+        storagePath: '${venueId}_$i.jpg',
+      )) {}
     }
 
-    // upload large photo
-    await for (final UploadEvent _ in locate<VenuesService>().uploadFile(
-      localPath: _localVenue.largePhotoPath!,
-      storagePath: 'venuePhotos/$venueId.jpg',
-    )) {}
-
-    // Upload bytes for map icon and get a download Url
+    // Upload bytes for map icon
     if (mounted) {
       setState(() {
         _progressMessage = 'Creating and uploading map icon...';
@@ -68,7 +70,7 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     }
     await for (final _ in locate<VenuesService>().uploadBytes(
         bytes: _localVenue.iconBytes!,
-        storagePath: 'venuePhotos/${venueId}_icon')) {}
+        storagePath: '${venueId}_icon')) {}
 
     if (mounted) {
       setState(() {
@@ -88,10 +90,8 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     }
   }
 
-  void updatePickedPhotoState(String largePhotoPath) {
-    setState(() {
-      _localVenue.largePhotoPath = largePhotoPath;
-    });
+  void _onPhotosChanged() {
+    setState(() {});
   }
 
   void updateVenueSizeState(int size) {
@@ -113,8 +113,8 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            // only allow creating the venue when the user has picked a photo
-            if (_localVenue.largePhotoPath != null)
+            // only allow creating the venue when the user has picked at least one photo
+            if (_localVenue.photoPaths.isNotEmpty)
               IconButton(
                 onPressed: () {
                   _createVenue(_nameController.text, _addressController.text);
@@ -137,9 +137,9 @@ class _FinaliseNewVenueScreenState extends State<FinaliseNewVenueScreen> {
             : ListView(
                 children: [
                   if (!_uploading) ...[
-                    UploadVenuePhoto(
+                    UploadVenuePhotos(
                       localVenue: _localVenue,
-                      updateStateCallback: updatePickedPhotoState,
+                      onPhotosChanged: _onPhotosChanged,
                     ),
                     const DividerWithSubheading('Name'),
                     Padding(

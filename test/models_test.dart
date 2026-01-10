@@ -169,6 +169,7 @@ void main() {
         latitude: 40.7128,
         longitude: -74.0060,
         createdBy: 'user456',
+        photoCount: 3,
       );
 
       expect(venue.id, 'venue123');
@@ -180,6 +181,7 @@ void main() {
       expect(venue.latitude, 40.7128);
       expect(venue.longitude, -74.0060);
       expect(venue.createdBy, 'user456');
+      expect(venue.photoCount, 3);
     });
   });
 
@@ -475,8 +477,7 @@ void main() {
       expect(localVenue.latitude, 0);
       expect(localVenue.longitude, 0);
       expect(localVenue.createdBy, '');
-      expect(localVenue.largePhotoPath, isNull);
-      expect(localVenue.smallPhotoPath, isNull);
+      expect(localVenue.photoPaths, isEmpty);
       expect(localVenue.iconBytes, isNull);
     });
 
@@ -530,15 +531,29 @@ void main() {
       final localVenue = LocalVenue();
 
       localVenue.name = 'Updated Name';
-      localVenue.largePhotoPath = '/path/to/large.jpg';
-      localVenue.smallPhotoPath = '/path/to/small.jpg';
+      localVenue.photoPaths.add('/path/to/photo1.jpg');
+      localVenue.photoPaths.add('/path/to/photo2.jpg');
       localVenue.iconBytes = Uint8List.fromList([1, 2, 3]);
 
       expect(localVenue.name, 'Updated Name');
-      expect(localVenue.largePhotoPath, '/path/to/large.jpg');
-      expect(localVenue.smallPhotoPath, '/path/to/small.jpg');
+      expect(localVenue.photoPaths.length, 2);
+      expect(localVenue.photoPaths[0], '/path/to/photo1.jpg');
+      expect(localVenue.photoPaths[1], '/path/to/photo2.jpg');
       expect(localVenue.iconBytes, isNotNull);
       expect(localVenue.iconBytes!.length, 3);
+    });
+
+    test('toJson includes photoCount', () {
+      final localVenue = LocalVenue(
+        name: 'Test Venue',
+      );
+      localVenue.photoPaths.add('/path/to/photo1.jpg');
+      localVenue.photoPaths.add('/path/to/photo2.jpg');
+      localVenue.photoPaths.add('/path/to/photo3.jpg');
+
+      final json = localVenue.toJson();
+
+      expect(json['photoCount'], 3);
     });
   });
 

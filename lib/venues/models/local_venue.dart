@@ -18,13 +18,10 @@ class LocalVenue {
   String name;
   String address;
 
-  /// The local file path of the large venue image
-  String? largePhotoPath;
+  /// Local file paths for venue photos (max 5)
+  List<String> photoPaths = [];
 
-  /// The local file path of the small venue image
-  String? smallPhotoPath;
-
-  /// The bytes for the venue icon
+  /// The bytes for the venue icon (generated from first photo)
   Uint8List? iconBytes;
   double latitude;
   double longitude;
@@ -40,6 +37,7 @@ class LocalVenue {
       'latitude': latitude,
       'longitude': longitude,
       'createdBy': createdBy,
+      'photoCount': photoPaths.length,
     };
   }
 }

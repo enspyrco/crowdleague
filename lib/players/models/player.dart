@@ -47,13 +47,13 @@ class Player {
   String constructProfilePicUrl(PicSize picSize) {
     final String picUriString;
     if (picSize == PicSize.small) {
-      picUriString = 'profiles/$id/${picId}_small.jpg';
+      picUriString = '$id/${picId}_small.jpg';
     } else if (picSize == PicSize.medium) {
-      picUriString = 'profiles/$id/${picId}_medium.jpg';
+      picUriString = '$id/${picId}_medium.jpg';
     } else {
-      picUriString = 'profiles/$id/${picId}_large.jpg';
+      picUriString = '$id/${picId}_large.jpg';
     }
-    return 'https://storage.googleapis.com/$kBucketName/$picUriString';
+    return 'https://storage.googleapis.com/$kProfilesBucket/$picUriString';
   }
 }
 

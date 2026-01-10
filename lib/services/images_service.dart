@@ -62,7 +62,7 @@ class ImagesService {
     int timestamp = DateTime.now().millisecondsSinceEpoch;
 
     final storageRef =
-        _storage.ref('profiles/${_auth.currentUser!.uid}/$timestamp.jpg');
+        _storage.ref('${_auth.currentUser!.uid}/$timestamp.jpg');
     await storageRef.putFile(File(filePath));
   }
 
@@ -73,12 +73,12 @@ class ImagesService {
   }) {
     final String picUriString;
     if (picSize == PicSize.small) {
-      picUriString = 'profiles/$playerId/${picId}_small.jpg';
+      picUriString = '$playerId/${picId}_small.jpg';
     } else if (picSize == PicSize.medium) {
-      picUriString = 'profiles/$playerId/${picId}_medium.jpg';
+      picUriString = '$playerId/${picId}_medium.jpg';
     } else {
-      picUriString = 'profiles/$playerId/${picId}_large.jpg';
+      picUriString = '$playerId/${picId}_large.jpg';
     }
-    return 'https://storage.googleapis.com/$kBucketName/$picUriString';
+    return 'https://storage.googleapis.com/$kProfilesBucket/$picUriString';
   }
 }

@@ -7,9 +7,16 @@
       "**/node_modules/**"
     ]
   },
-  "storage": {
-    "rules": "storage.rules"
-  },
+  "storage": [
+    {
+      "bucket": "crowdleague-venues",
+      "rules": "storage.rules"
+    },
+    {
+      "bucket": "crowdleague-profiles",
+      "rules": "storage.rules"
+    }
+  ],
   "firestore": {
     "rules": "firestore.rules"
   },

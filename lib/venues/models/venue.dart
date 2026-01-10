@@ -9,6 +9,7 @@ class Venue {
     required this.latitude,
     required this.longitude,
     required this.createdBy,
+    required this.photoCount,
   });
 
   final String id;
@@ -20,6 +21,7 @@ class Venue {
   final double latitude;
   final double longitude;
   final String createdBy;
+  final int photoCount; // 1-5 photos per venue
 
   factory Venue.fromJson(Map<String, Object?> json) {
     return Venue(
@@ -32,6 +34,7 @@ class Venue {
       latitude: json['latitude'] as double,
       longitude: json['longitude'] as double,
       createdBy: json['createdBy'] as String,
+      photoCount: (json['photoCount'] as int?) ?? 1, // Default 1 for legacy
     );
   }
 }

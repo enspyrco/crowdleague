@@ -83,17 +83,12 @@ async function processImage(
  * Save resized images
  * @constructor
  * @param {StorageEvent} event - The event that triggered the function
- * @param {string} databaseName - The database the function accesses
  */
-async function saveImages(event: StorageEvent, databaseName: string) {
+async function saveImages(event: StorageEvent) {
   const bucketName = event.data.bucket;
   const filePath = event.data.name;
   const fileName = path.basename(filePath);
   const contentType = event.data.contentType;
-  const folders = path.dirname(filePath).split(path.sep);
-  const area = folders[0]; // venues or profiles
-  const areaId = folders[1]; // venueId or profileId
-  const timestamp = fileName.split('.')[0];
 
   // Exit if this is triggered by a resized image
   if (SIZES.some((size) => fileName.includes(`_${size.suffix}`))) {
@@ -107,9 +102,13 @@ async function saveImages(event: StorageEvent, databaseName: string) {
     return null;
   }
 
-  try {
-    const firestore = getFirestore(databaseName);
+  // Exit if this is an icon file
+  if (fileName.includes('_icon')) {
+    logger.log('Skipping icon file:', fileName);
+    return null;
+  }
 
+  try {
     // Check if this is an update or new file
     const isUpdate = event.data.metageneration > 1;
     logger.log(`Processing ${isUpdate ? 'update to' : 'new'} image:`,
@@ -122,14 +121,6 @@ async function saveImages(event: StorageEvent, databaseName: string) {
     // Process the image
     const results = await processImage(bucket, file, filePath, contentType);
 
-    logger.log(`Saved image with name (timestamp): ${timestamp} ` +
-      `to ${area}/${areaId}/`);
-
-    // Set the picId
-    await firestore.collection(area).doc(areaId).set({
-      picId: +timestamp}, {merge: true}
-    );
-
     return results;
   } catch (error) {
     logger.error('Error processing image:',
@@ -138,13 +129,98 @@ async function saveImages(event: StorageEvent, databaseName: string) {
   }
 }
 
-// The upload file is assumed to have form `bucketName/userId/timestamp.jpg`
-export const resizeImages = functions.storage.onObjectFinalized(
+/**
+ * Handle venue photo uploads: {venueId}_{photoIndex}.jpg
+ * Updates photoCount in Firestore when processing
+ * @param {StorageEvent} event - The event that triggered the function
+ * @param {string} databaseName - The database the function accesses
+ */
+async function handleVenuePhoto(event: StorageEvent, databaseName: string) {
+  const filePath = event.data.name;
+  const fileName = path.basename(filePath);
+
+  // First do the common image processing
+  const results = await saveImages(event);
+  if (!results) return null;
+
+  // Handle venue photos: {venueId}_{photoIndex}.jpg
+  // (no prefix needed in dedicated bucket)
+  const venuePhotoMatch = fileName.match(/^([^_]+)_(\d+)\.jpg$/);
+  if (venuePhotoMatch) {
+    const venueId = venuePhotoMatch[1];
+    const photoIndex = parseInt(venuePhotoMatch[2], 10);
+    logger.log(`Processing venue photo: venueId=${venueId}, ` +
+      `photoIndex=${photoIndex}`);
+
+    const firestore = getFirestore(databaseName);
+    // Update photoCount in Firestore if this is a new highest index
+    const venueRef = firestore.collection('venues').doc(venueId);
+    const venueDoc = await venueRef.get();
+    if (venueDoc.exists) {
+      const currentCount = venueDoc.data()?.photoCount || 0;
+      const newCount = photoIndex + 1;
+      if (newCount > currentCount) {
+        await venueRef.update({photoCount: newCount});
+        logger.log(`Updated venue photoCount to ${newCount}`);
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Handle profile photo uploads: {userId}/{timestamp}.jpg
+ * Updates picId in Firestore when processing
+ * @param {StorageEvent} event - The event that triggered the function
+ * @param {string} databaseName - The database the function accesses
+ */
+async function handleProfilePhoto(event: StorageEvent, databaseName: string) {
+  const filePath = event.data.name;
+  const fileName = path.basename(filePath);
+
+  // First do the common image processing
+  const results = await saveImages(event);
+  if (!results) return null;
+
+  // Handle profile photos: {userId}/{timestamp}.jpg
+  // (no prefix needed in dedicated bucket)
+  const folders = path.dirname(filePath).split(path.sep);
+  const userId = folders[0];
+  const timestamp = fileName.split('.')[0];
+
+  if (userId && timestamp) {
+    logger.log(`Processing profile photo: userId=${userId}, ` +
+      `timestamp=${timestamp}`);
+
+    const firestore = getFirestore(databaseName);
+    // Set the picId for profile photos
+    await firestore.collection('profiles').doc(userId).set({
+      picId: +timestamp}, {merge: true}
+    );
+    logger.log(`Updated profile picId to ${timestamp}`);
+  }
+
+  return results;
+}
+
+// Trigger for venue photos in crowdleague-venues bucket
+export const resizeVenueImages = functions.storage.onObjectFinalized(
   {
-    bucket: 'crowdleague-project.firebasestorage.app',
+    bucket: 'crowdleague-venues',
     region: 'us-central1',
   },
   async (event: StorageEvent) => {
-    saveImages(event, '(default)');
+    await handleVenuePhoto(event, '(default)');
+  });
+
+// Trigger for profile photos in crowdleague-profiles bucket
+export const resizeProfileImages = functions.storage.onObjectFinalized(
+  {
+    bucket: 'crowdleague-profiles',
+    region: 'us-central1',
+  },
+  async (event: StorageEvent) => {
+    await handleProfilePhoto(event, '(default)');
   });
 

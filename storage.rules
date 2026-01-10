@@ -1,15 +1,26 @@
 rules_version = '2';
 
 service firebase.storage {
-  match /b/{bucket}/o {
-    // Profile pictures: users can write to their own folder, everyone can read
-    match /profiles/{userId}/{fileName} {
+  // Rules for crowdleague-profiles bucket
+  match /b/crowdleague-profiles/o {
+    // Profile pictures: {userId}/{timestamp}.jpg
+    // Users can write to their own folder, authenticated users can read
+    match /{userId}/{fileName} {
       allow read: if request.auth != null;
       allow write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Venue photos: public read, authenticated write
-    match /venuePhotos/{fileName} {
+    // Deny all other paths by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+
+  // Rules for crowdleague-venues bucket
+  match /b/crowdleague-venues/o {
+    // Venue photos: {venueId}_{photoIndex}.jpg, {venueId}_icon, etc.
+    // Public read (for Image.network), authenticated write
+    match /{fileName} {
       allow read: if true;
       allow write: if request.auth != null;
     }
