@@ -40,6 +40,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.1
   fake_cloud_firestore: ^4.0.0
   firebase_storage_mocks: ^0.8.0+1
+  firebase_auth_mocks: ^0.15.1
   mocktail: ^1.0.4
 
 flutter:
