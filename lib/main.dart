@@ -133,7 +133,8 @@ void main() async {
   // Setup the data layer of the "data layer architecture"
   final firestore = FirebaseFirestore.instanceFor(
       app: firebaseApp, databaseId: kDatabaseName);
-  final storage = FirebaseStorage.instanceFor(bucket: 'gs://$kBucketName');
+  final venuesStorage = FirebaseStorage.instanceFor(bucket: 'gs://$kVenuesBucket');
+  final profilesStorage = FirebaseStorage.instanceFor(bucket: 'gs://$kProfilesBucket');
   final auth = FirebaseAuth.instance;
   final messaging = FirebaseMessaging.instance;
   final cloudFunctions = FirebaseFunctions.instanceFor(region: 'us-central1');
@@ -147,7 +148,7 @@ void main() async {
     auth: auth,
     cloudFunctions: cloudFunctions,
     playerCache: playerCache,
-    storage: storage,
+    storage: profilesStorage,
   ));
   Locator.add<NotificationsService>(NotificationsService(
     firestore: firestore,
@@ -167,15 +168,15 @@ void main() async {
   ));
   Locator.add<PlayersService>(PlayersService(
     firestore: firestore,
-    storage: storage,
+    storage: profilesStorage,
     playerCache: playerCache,
   ));
   Locator.add<VenuesService>(VenuesService(
     firestore: firestore,
-    storage: storage,
+    storage: venuesStorage,
   ));
   Locator.add<ImagesService>(ImagesService(
-    storage: storage,
+    storage: profilesStorage,
     firebaseAuth: auth,
   ));
   Locator.add<TutorialNotifier>(TutorialNotifier());

@@ -20,6 +20,8 @@ class VenueDetailScreen extends StatefulWidget {
 class _VenueDetailScreenState extends State<VenueDetailScreen> {
   Venue? _venue;
   bool _deleting = false;
+  int _currentPhotoIndex = 0;
+  final _pageController = PageController();
 
   Future<void> _retrieveVenue() async {
     final venue = await locate<VenuesService>().retrieveVenue(widget.venueId);
@@ -52,6 +54,12 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -64,25 +72,40 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
           if (_venue != null && !_deleting) ...[
             Stack(
               children: [
-                Image.network(
-                  locate<VenuesService>()
-                      .getPhotoUrl(widget.venueId, PicSize.medium),
-                  frameBuilder: (context, child, frame, sync) {
-                    if (frame == null) {
-                      return const AspectRatio(
-                        aspectRatio: 1.0,
-                        child: Center(child: CircularProgressIndicator()),
+                AspectRatio(
+                  aspectRatio: 1.0,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: _venue!.photoCount,
+                    onPageChanged: (index) {
+                      setState(() => _currentPhotoIndex = index);
+                    },
+                    itemBuilder: (context, index) {
+                      return Image.network(
+                        locate<VenuesService>().getPhotoUrl(
+                          widget.venueId,
+                          PicSize.medium,
+                          photoIndex: index,
+                        ),
+                        frameBuilder: (context, child, frame, sync) {
+                          if (frame == null) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          return child;
+                        },
+                        errorBuilder: (context, exception, stackTrace) {
+                          return Center(
+                            child: Icon(Icons.broken_image,
+                                size: 48, color: Colors.grey),
+                          );
+                        },
+                        fit: BoxFit.cover,
                       );
-                    }
-                    return child;
-                  },
-                  errorBuilder: (context, exception, stackTrace) {
-                    return Text(
-                      exception.toString(),
-                      style: const TextStyle(color: Colors.red),
-                    );
-                  },
+                    },
+                  ),
                 ),
+                // Back button
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
@@ -96,6 +119,30 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                         icon: const Icon(Icons.arrow_back_ios_new)),
                   ),
                 ),
+                // Page indicator dots
+                if (_venue!.photoCount > 1)
+                  Positioned(
+                    bottom: 16,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        _venue!.photoCount,
+                        (index) => Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: index == _currentPhotoIndex
+                                ? Colors.white
+                                : Colors.white.withValues(alpha: 0.5),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
             const SizedBox(height: 15),
