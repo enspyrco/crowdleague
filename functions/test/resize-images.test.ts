@@ -91,7 +91,9 @@ describe('resize-images', () => {
       ];
 
       for (const fileName of resizedFileNames) {
-        const isResized = sizes.some((size) => fileName.includes(`_${size.suffix}`));
+        const isResized = sizes.some(
+          (size) => fileName.includes(`_${size.suffix}`)
+        );
         expect(isResized).toBe(true);
       }
     });
@@ -110,7 +112,9 @@ describe('resize-images', () => {
       ];
 
       for (const fileName of originalFileNames) {
-        const isResized = sizes.some((size) => fileName.includes(`_${size.suffix}`));
+        const isResized = sizes.some(
+          (size) => fileName.includes(`_${size.suffix}`)
+        );
         expect(isResized).toBe(false);
       }
     });
@@ -218,7 +222,7 @@ describe('resize-images', () => {
   });
 
   describe('Firestore updates for venue photos', () => {
-    test('should update photoCount when new photo index is higher', async () => {
+    test('should update photoCount when new index is higher', async () => {
       // Mock venue doc exists with photoCount = 2
       mockGet.mockResolvedValueOnce({
         exists: true,
