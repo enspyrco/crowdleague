@@ -13,8 +13,8 @@ Brisbane 2032 is 6 years away. Today's teenagers are tomorrow's Olympic athletes
 
 ### Young Australians are dropping out of sport
 
-- 34% of young Australians want to stop participating in organized sports (Allianz 2024)
-- Teens stay in sport when it's **fun and social** - but too much focus on performance drives them away
+- 34% of young Australians have asked their parents if they can quit organized sports; 27% stop by age 15 ([Allianz/PureProfile 2024](https://www.allianz.com.au/about-us/media-hub/aussie-kids-drop-out-of-sport.html))
+- Teens stay in sport when it's **fun and social** - but time pressure, cost, and competitiveness drive them away ([Allianz 2024](https://www.allianz.com.au/about-us/media-hub/aussie-kids-drop-out-of-sport.html))
 - Finding pickup games, connecting with players at your level, and discovering local venues is fragmented
 
 **The gap:** No single platform connects grassroots players with venues and each other.
@@ -44,12 +44,11 @@ Brisbane 2032 is 6 years away. Today's teenagers are tomorrow's Olympic athletes
 
 ### Participation
 
-- **90%** of Australian adults participate in sports annually
-- **4.8 million** Australians aged 0-14
-- **3.4 million** Australians aged 15-24
-- **36%** of children participate in organized sport weekly
+- **84%** of Australian adults participate in sports annually ([AusPlay 2024](https://www.clearinghouseforsport.gov.au/research/ausplay/results))
+- **4.8 million** Australians aged 0-14 ([ABS 2024](https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release))
+- **36%** of children participate in organized sport weekly ([ASC Clearinghouse](https://www.ausport.gov.au/clearinghouse/evidence/children-and-youth-in-sport))
 
-*Sources: [Expert Market Research](https://www.expertmarketresearch.com.au/reports/australia-sports-technology-market), [Sport Australia AusPlay](https://www.ausport.gov.au/participation/participants/youth)*
+*Market data: [Expert Market Research](https://www.expertmarketresearch.com.au/reports/australia-sports-technology-market)*
 
 ---
 
@@ -69,7 +68,7 @@ The Brisbane 2032 Olympics creates unprecedented investment in grassroots sports
 
 CrowdLeague builds the grassroots communities that feed into Olympic pathways.
 
-*Sources: [QLD 2032 Delivery Plan](https://www.delivering2032.com.au/__data/assets/pdf_file/0013/105061/Queensland_Government-2032_Delivery_Plan.pdf), [Ministerial Statements](https://statements.qld.gov.au/statements/99913)*
+*Sources: [Games On!](https://statements.qld.gov.au/statements/102239), [Go for Gold](https://www.qld.gov.au/about/brisbane2032/go-for-gold), [Infrastructure](https://statements.qld.gov.au/statements/102978)*
 
 ---
 
@@ -195,13 +194,13 @@ Founder & Developer
 
 - **What:** Only organization where sports donations are tax-deductible
 - **Eligibility:** Athletes, coaches, clubs, schools, community groups
-- **Model:** 95% of donations distributed as grants
+- **Model:** 95% of online donations distributed as grants (5% retained for platform costs) ([ASF FAQ](https://asf.org.au/faq/does-the-sports-foundation-charge-any-fees))
 - **Programs:** Future Stars Grant ($100K equipment to grassroots clubs)
 - **Contact:** asf.org.au
 
 ### Sport Australia Grants
 
-- **Play Well Grants:** $10.3M allocated, up to $40K per project
+- **Play Well Grants:** $10.3M allocated, up to $40K per project ([Sport Australia](https://www.ausport.gov.au/playwell/news/entry/$10.3-million-for-projects-to-get-more-aussies-moving))
 - **Note:** Individual clubs not directly eligible - must go through state/national bodies
 - **Local Sporting Champions:** Individual athlete grants (Round 3 open until Jan 31, 2026)
 
