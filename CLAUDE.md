@@ -143,6 +143,26 @@ firebase deploy --only firestore
 firebase deploy --only functions
 ```
 
+## Deployment
+
+Deployments are automated via GitHub Actions. Push a version tag to trigger builds:
+
+```bash
+git tag v0.0.7
+git push origin v0.0.7
+```
+
+**iOS** → TestFlight (via `xcodebuild` + `xcrun altool`)
+**Android** → Play Store internal track (via `flutter build appbundle` + Play Store API)
+
+Both platforms build in parallel after CI checks pass. See `.github/workflows/ci.yml` for details.
+
+### Required Secrets (configured in GitHub)
+
+**iOS:** `IOS_CERTIFICATE_BASE64`, `IOS_CERTIFICATE_PASSWORD`, `IOS_PROVISIONING_PROFILE_BASE64`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_PRIVATE_KEY`
+
+**Android:** `ANDROID_KEYSTORE_BASE64`, `ANDROID_STORE_PASSWORD`, `ANDROID_KEY_PASSWORD`, `ANDROID_KEY_ALIAS`, `PLAYSTORE_SERVICE_ACCOUNT_JSON`
+
 ## iOS Simulator Notes
 
 - Push notifications (APNS) are not available on iOS simulators - the app gracefully skips FCM setup
