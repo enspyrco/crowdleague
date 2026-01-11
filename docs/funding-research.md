@@ -30,7 +30,7 @@
 
 CrowdLeague is positioned at the intersection of three major trends:
 1. **Sports technology growth** - Australian sports tech market projected to reach AUD $2.16B by 2034 (13.1% CAGR)
-2. **Youth sports participation crisis** - 34% of young Australians want to quit organized sports
+2. **Youth sports participation crisis** - 34% of young Australians have asked to quit organized sports; 27% stop by age 15
 3. **Brisbane 2032 Olympics investment** - $7.1B+ in infrastructure and grassroots programs
 
 ### Recommended Funding Strategy
@@ -652,7 +652,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 
 **Young Australians are dropping out of sport**
 
-- 34% of young Australians want to stop participating in organized sports (Allianz 2024)
+- 34% of young Australians have asked their parents if they can quit organized sports; 27% stop by age 15 ([Allianz/PureProfile 2024](https://www.allianz.com.au/about-us/media-hub/aussie-kids-drop-out-of-sport.html))
 - Finding pickup games and connecting with players is fragmented
 - Too much focus on performance, not enough on fun and social connection
 
@@ -689,7 +689,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 
 **Participation Numbers**
 
-- 90% of Australian adults participate in sports annually
+- 84% of Australian adults participate in sports annually
 - 4.8 million Australians aged 0-14
 - 3.4 million Australians aged 15-24
 - Brisbane 2032 Olympics driving $7.1B+ investment
