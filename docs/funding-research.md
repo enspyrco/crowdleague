@@ -29,6 +29,7 @@
 ### CrowdLeague Funding Overview
 
 CrowdLeague is positioned at the intersection of three major trends:
+
 1. **Sports technology growth** - Australian sports tech market projected to reach AUD $2.16B by 2034 (13.1% CAGR)
 2. **Youth sports participation crisis** - 34% of young Australians have asked to quit organized sports; 27% stop by age 15
 3. **Brisbane 2032 Olympics investment** - $7.1B+ in infrastructure and grassroots programs
@@ -44,12 +45,14 @@ CrowdLeague is positioned at the intersection of three major trends:
 ### Key Funding Targets
 
 **Immediate Opportunities (High Fit):**
+
 - Queensland Government Games On! Program
 - Australian Sports Foundation (tax-deductible donations)
 - River City Labs / Brisbane accelerators
 - Brisbane Angels network
 
 **Medium-Term Opportunities:**
+
 - Startmate accelerator
 - Sport Australia grants (via state body partnership)
 - Brisbane 2032 legacy programs
@@ -71,10 +74,12 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus Areas** | Community development, youth engagement, health & wellbeing |
 
 **Fit for CrowdLeague:**
+
 - Medium - Would need to partner with a community sports organization
 - Frame as: "Digital platform to increase youth sports participation"
 
 **Success Factors:**
+
 - Clear community benefit (quantifiable health/participation outcomes)
 - Partnership with local sports clubs
 - Alignment with Council's Active Brisbane strategy
@@ -90,6 +95,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus Areas** | Youth programs, community wellbeing |
 
 **Success Factors:**
+
 - Strong local impact story
 - Youth engagement focus
 - Innovation in community connection
@@ -110,11 +116,13 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus Areas** | Grassroots participation, club development, facility upgrades |
 
 **Fit for CrowdLeague:** HIGH
+
 - Directly aligned with grassroots participation goals
 - Brisbane 2032 legacy focus
 - Youth engagement priority
 
 **Success Factors:**
+
 - Clear link to Brisbane 2032 legacy
 - Measurable participation increase
 - Technology innovation angle
@@ -130,6 +138,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Streams** | Minor Infrastructure, Active Clubs, Game Development |
 
 **Approach for CrowdLeague:**
+
 - Partner with a State Sporting Organisation (e.g., Basketball Queensland, Tennis Queensland)
 - Position as a tool to help their clubs connect with players
 
@@ -143,6 +152,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus Areas** | Innovation, technology commercialization |
 
 **Fit for CrowdLeague:** Medium-Low
+
 - Would need university partnership
 - Research component required
 
@@ -156,6 +166,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Types** | Business Growth Fund, Digital Grants, Export Grants |
 
 **Success Factors:**
+
 - ABN and Queensland business registration
 - Clear growth plan
 - Job creation potential
@@ -175,11 +186,13 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Key Program** | Future Stars Grant (up to $100K for equipment) |
 
 **Fit for CrowdLeague:** HIGH
+
 - Can register project and receive tax-deductible donations
 - Grassroots focus aligned perfectly
 - No competitive grant process - based on fundraising
 
 **How to Use:**
+
 1. Register CrowdLeague as an ASF project
 2. Donors receive tax deductions for contributions
 3. ASF distributes 95% of donations to your project
@@ -196,10 +209,12 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus Areas** | Participation, inclusion, innovation |
 
 **Fit for CrowdLeague:** Medium
+
 - Requires partnership with state sporting body
 - Strong if positioned as participation tool for SSO
 
 **Approach:**
+
 1. Identify friendly State Sporting Organisation
 2. Propose CrowdLeague as their digital participation platform
 3. SSO applies for grant with CrowdLeague as delivery partner
@@ -214,6 +229,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Eligibility** | Australian businesses with growth potential |
 
 **Success Factors:**
+
 - Clear innovation/R&D component
 - Market opportunity evidence
 - Team capability
@@ -227,6 +243,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Eligibility** | Australian businesses expanding internationally |
 
 **Fit for CrowdLeague:** Future opportunity
+
 - Relevant when expanding beyond Australia
 - Cover costs of international market entry
 
@@ -239,6 +256,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Eligibility** | R&D activities registered with AusIndustry |
 
 **Fit for CrowdLeague:** Medium
+
 - Software development can qualify
 - Requires careful documentation
 - Worth exploring with accountant
@@ -260,11 +278,13 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Meeting Frequency** | Monthly pitch events |
 
 **Fit for CrowdLeague:** HIGH
+
 - Local network, Brisbane-based
 - Understand Queensland market
 - Sports and lifestyle sector interest
 
 **How to Approach:**
+
 1. Apply through Brisbane Angels website
 2. Prepare 5-minute pitch
 3. Attend screening session
@@ -280,6 +300,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus** | Tech-enabled businesses, scalable models |
 
 **Fit for CrowdLeague:** Medium
+
 - Larger checks but higher expectations
 - May prefer Sydney-based companies
 
@@ -302,6 +323,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus** | Tech startups, diverse founders |
 
 **Fit for CrowdLeague:** HIGH
+
 - Strong Queensland presence
 - Founder-friendly terms
 - Diverse investment thesis
@@ -321,6 +343,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Notable Investments** | Canva, Culture Amp, SafetyCulture |
 
 **Fit for CrowdLeague:** Future (Series A)
+
 - Too early for current stage
 - Develop relationship for future rounds
 
@@ -345,6 +368,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Queensland Presence** | Yes - Brisbane office |
 
 **Fit for CrowdLeague:** Medium-High
+
 - Brisbane presence is advantage
 - Consumer/community focus relevant
 
@@ -369,6 +393,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus** | Sports technology, fan engagement |
 
 **Fit for CrowdLeague:** HIGH
+
 - Sports industry expertise
 - Understand market dynamics
 - Can add strategic value
@@ -396,11 +421,13 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Network** | 800+ founders, major tech companies |
 
 **Fit for CrowdLeague:** HIGH
+
 - Premier Australian accelerator
 - Strong network and mentorship
 - Consumer/community companies welcome
 
 **Success Factors:**
+
 - Strong founder story
 - Clear market opportunity
 - Coachability
@@ -416,6 +443,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus** | Building companies from scratch |
 
 **Fit for CrowdLeague:** Medium
+
 - Better for pre-product founders
 - CrowdLeague already has product
 
@@ -438,6 +466,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus** | Queensland tech ecosystem |
 
 **Fit for CrowdLeague:** HIGH
+
 - Local Brisbane community
 - Networking opportunities
 - Affordable workspace
@@ -453,6 +482,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Focus** | Student and alumni founders |
 
 **Fit for CrowdLeague:** Medium
+
 - Good if founder has UQ connection
 - Strong mentorship network
 
@@ -465,6 +495,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Support** | Workspace, mentorship, connections |
 
 **Fit for CrowdLeague:** Low-Medium
+
 - Would need AI/ML angle to product
 
 ### Sports-Specific Accelerators
@@ -486,6 +517,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Notable** | Connections to major sports leagues |
 
 **Fit for CrowdLeague:** Medium-High
+
 - Sports-specific expertise
 - Industry connections
 - May require more traction
@@ -508,6 +540,7 @@ CrowdLeague is positioned at the intersection of three major trends:
 | **Fees** | 6% success fee + platform costs |
 
 **Fit for CrowdLeague:** Future opportunity
+
 - Good for community-focused businesses
 - Requires established traction
 - Can build brand advocates
@@ -556,6 +589,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 | **Alignment** | CrowdLeague directly addresses youth participation goals |
 
 **CrowdLeague Positioning:**
+
 - "Building the grassroots communities that create champions"
 - Today's teenagers are tomorrow's Olympic athletes
 - Digital infrastructure for community sports connection
@@ -569,6 +603,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 | **Streams** | Equipment, facilities, programs, technology |
 
 **Approach:**
+
 1. Position as technology partner for clubs receiving grants
 2. Apply directly for innovation/technology stream
 3. Partner with state sporting organizations
@@ -582,6 +617,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 | **Managed By** | Department of Education |
 
 **Approach:**
+
 - Partner with schools for sports discovery
 - Connect school facilities to community players
 - After-school and weekend venue utilization
@@ -595,6 +631,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 | **Upgrade Focus** | Existing community facilities |
 
 **Opportunity for CrowdLeague:**
+
 - Digital layer on top of new/upgraded venues
 - Venue discovery for new facilities
 - Community connection for new sports precincts
@@ -722,16 +759,19 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 ### Slide 6: Business Model
 
 **Phase 1: Community Building** (Current)
+
 - Free for players
 - Build user base and venue database
 - Focus on Brisbane/Queensland
 
 **Phase 2: Venue Partnerships**
+
 - Premium venue listings and booking integration
 - Commission on bookings
 - Event promotion
 
 **Phase 3: Scale & Monetize**
+
 - National expansion
 - B2B offerings for sports clubs
 - Sponsorship and targeted advertising
@@ -748,6 +788,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 | Facebook Groups | Community forums | Fragmented, not purpose-built |
 
 **CrowdLeague Differentiators:**
+
 - Venue-first discovery
 - Trusted crew network (not random strangers)
 - Australian-built for Australian sports culture
@@ -779,6 +820,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 | Contingency | [X]% | Iteration based on feedback |
 
 **This Enables:**
+
 - [Key milestone 1]
 - [Key milestone 2]
 - [Key milestone 3]
@@ -804,6 +846,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 ### For Government Grants
 
 **Emphasis:**
+
 - Community benefit and social impact
 - Health outcomes and youth participation
 - Alignment with policy objectives (Active Queensland, Brisbane 2032)
@@ -811,6 +854,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 - Accessibility and inclusion
 
 **Language to Use:**
+
 - "Community sports participation"
 - "Youth engagement"
 - "Health and wellbeing outcomes"
@@ -819,6 +863,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 - "Legacy infrastructure"
 
 **Metrics to Highlight:**
+
 - Expected participation increase
 - Number of venues/communities served
 - Youth engagement rates
@@ -840,6 +885,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 ### For Angel Investors
 
 **Emphasis:**
+
 - Market opportunity and size
 - Scalability and growth potential
 - Return on investment timeline
@@ -847,6 +893,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 - Team capability and coachability
 
 **Language to Use:**
+
 - "Total addressable market"
 - "User acquisition cost"
 - "Lifetime value"
@@ -855,6 +902,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 - "Capital efficiency"
 
 **Metrics to Highlight:**
+
 - Market size and growth rate
 - User growth projections
 - Revenue projections
@@ -877,6 +925,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 ### For Accelerators
 
 **Emphasis:**
+
 - Team coachability and founder story
 - Speed of execution
 - Learning and iteration capability
@@ -884,6 +933,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 - Ambitious vision
 
 **Language to Use:**
+
 - "Founder-market fit"
 - "Learning velocity"
 - "Iteration speed"
@@ -892,6 +942,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 - "Big vision"
 
 **Metrics to Highlight:**
+
 - Speed of product development
 - Iteration examples
 - Learning from user feedback
@@ -914,6 +965,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 ### Q1 2026 (January - March)
 
 **Priority Actions:**
+
 1. Register with Australian Sports Foundation
 2. Apply to Brisbane Angels for pitch slot
 3. Research Games On! application windows
@@ -921,6 +973,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 5. Apply to River City Labs programs
 
 **Grant Deadlines to Watch:**
+
 - Sport Australia Local Sporting Champions (if applicable)
 - Brisbane City Council Community Grants
 - Queensland Small Business Grants
@@ -928,6 +981,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 ### Q2 2026 (April - June)
 
 **Priority Actions:**
+
 1. Apply to Startmate (if intake open)
 2. Games On! application (if window open)
 3. Develop SSO partnerships for Sport Australia grants
@@ -936,6 +990,7 @@ The Brisbane 2032 Olympics represents a once-in-a-generation opportunity for spo
 ### Q3-Q4 2026
 
 **Priority Actions:**
+
 1. Follow up on grant applications
 2. Angel investor pitches
 3. Consider Birchal campaign if traction established
