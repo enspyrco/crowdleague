@@ -1,0 +1,16 @@
+{
+  "name": "crowdleague-notion-sync",
+  "version": "1.0.0",
+  "description": "Sync content from Notion wiki to local docs",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "sync": "node --env-file=.env index.js",
+    "fetch": "node --env-file=.env index.js --fetch",
+    "list": "node --env-file=.env index.js --list"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.0",
+    "dotenv": "^17.2.3"
+  }
+}
