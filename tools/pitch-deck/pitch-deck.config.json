@@ -1,0 +1,99 @@
+{
+  "title": "CrowdLeague Pitch Deck",
+  "theme": {
+    "colors": {
+      "darkBlue": { "red": 0.102, "green": 0.212, "blue": 0.365 },
+      "accentBlue": { "red": 0.193, "green": 0.510, "blue": 0.784 },
+      "white": { "red": 1.0, "green": 1.0, "blue": 1.0 },
+      "darkGray": { "red": 0.176, "green": 0.216, "blue": 0.282 }
+    }
+  },
+  "slides": [
+    {
+      "background": "darkBlue",
+      "elements": [
+        { "text": "CrowdLeague", "x": 50, "y": 150, "w": 620, "h": 80, "size": 48, "color": "white", "bold": true },
+        { "text": "Find players. Find venues. Play more.", "x": 50, "y": 240, "w": 620, "h": 40, "size": 24, "color": "accentBlue" },
+        { "text": "Building the grassroots sports communities\nthat create champions", "x": 50, "y": 320, "w": 620, "h": 60, "size": 18, "color": "white" }
+      ],
+      "notes": "TITLE SLIDE\n\nKey message: CrowdLeague solves the fragmentation problem in grassroots sports.\n\nTalking points:\n- We help people find places to play and people to play with\n- Focus on casual/recreational players, not elite athletes\n- Australian-built for Australian sports culture"
+    },
+    {
+      "elements": [
+        { "text": "The Problem", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "darkBlue", "bold": true },
+        { "text": "Young Australians are dropping out of sport", "x": 50, "y": 90, "w": 620, "h": 40, "size": 24, "color": "accentBlue", "bold": true },
+        { "text": "• 34% of young Australians have asked to quit organized sports\n  27% stop playing by age 15 (Allianz/PureProfile 2024)\n\n• Time pressure, cost, and competitiveness drive them away\n\n• Finding pickup games and connecting with players is fragmented\n\nThe Gap: No single platform connects grassroots basketball players\nwith courts and each other.", "x": 50, "y": 150, "w": 620, "h": 250, "size": 17, "color": "darkGray" }
+      ],
+      "notes": "THE PROBLEM - Sources\n\n\"34% of young Australians want to quit organized sports\"\nSource: Allianz Australia Youth Sports Research 2024\nhttps://ministryofsport.com/new-research-from-allianz-australia-highlights-drop-in-youth-sports-participation/\n\nKey findings:\n- Main reasons: too much pressure, not fun anymore, time constraints\n- Teens stay in sport when it's fun and social"
+    },
+    {
+      "elements": [
+        { "text": "The Solution", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "darkBlue", "bold": true },
+        { "text": "CrowdLeague connects players with venues and each other", "x": 50, "y": 90, "w": 620, "h": 40, "size": 20, "color": "accentBlue", "bold": true },
+        { "text": "🗺️  Discover Venues\n     Interactive map with photos and facility details\n\n👥  Build Your Crew\n     Connect with players who share your interests\n\n💬  Coordinate Play\n     Message your crew, get notified when friends are playing\n\n🏀  Grassroots-First\n     Designed for casual players, not elite athletes", "x": 50, "y": 150, "w": 620, "h": 250, "size": 16, "color": "darkGray" }
+      ],
+      "notes": "THE SOLUTION\n\nDemo flow (if showing app):\n1. Open map - show nearby venues with photos\n2. Tap venue - see details, who plays there\n3. Show crew list - your trusted network\n4. Show messaging - coordinate meetups\n\nDifferentiators:\n- Venue-FIRST (not event-first)\n- Crew model = trusted connections\n- No performance tracking"
+    },
+    {
+      "elements": [
+        { "text": "Market Opportunity", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "darkBlue", "bold": true },
+        { "text": "Australian Sports Tech Market\n\n  2024 Market Size:     $632 million AUD\n  2034 Projected:        $2.16 billion AUD\n  Growth Rate:            13.1% CAGR\n\nParticipation Numbers\n\n  • 84% of Australian adults participate in sports annually\n  • 4.8 million Australians aged 0-14\n  • 36% of children participate in organized sport weekly\n  • Brisbane 2032 driving $7.1B+ investment", "x": 50, "y": 100, "w": 620, "h": 300, "size": 16, "color": "darkGray" }
+      ],
+      "notes": "MARKET OPPORTUNITY - Sources\n\nSports Tech Market:\nSource: Expert Market Research\nhttps://www.expertmarketresearch.com.au/reports/australia-sports-technology-market\n- 2024: $632M AUD\n- 2034: $2.16B AUD (projected)\n- CAGR: 13.1%\n\nParticipation Stats:\nSource: Sport Australia AusPlay\nhttps://www.ausport.gov.au/participation/participants/youth"
+    },
+    {
+      "background": "darkBlue",
+      "elements": [
+        { "text": "Brisbane 2032 Olympics", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "white", "bold": true },
+        { "text": "\"Today's teenagers are tomorrow's Olympic athletes\"", "x": 50, "y": 90, "w": 620, "h": 40, "size": 20, "color": "accentBlue" },
+        { "text": "Unprecedented grassroots investment:\n\n  Games On! Program:     $250 million\n  Go for Gold Fund:         $100 million\n  Venue Infrastructure:    $7.1 billion\n\nCrowdLeague builds the grassroots communities\nthat feed into Olympic pathways.", "x": 50, "y": 160, "w": 620, "h": 220, "size": 18, "color": "white" }
+      ],
+      "notes": "WHY MELBOURNE FIRST - Sources\n\nMelbourne as sporting capital:\n- Australian Open, Melbourne Cup, F1 Grand Prix\n- Home of AFL (largest attendance globally)\n\nStartup ecosystem:\n- Melbourne Angels, Startmate, LaunchVic\n\nBrisbane 2032 (Phase 2):\nSource: QLD 2032 Delivery Plan\nhttps://www.delivering2032.com.au/__data/assets/pdf_file/0013/105061/Queensland_Government-2032_Delivery_Plan.pdf"
+    },
+    {
+      "elements": [
+        { "text": "Competitive Landscape", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "darkBlue", "bold": true },
+        { "text": "Competitor          Focus                        Gap\n─────────────────────────────────────────────────\nOpenSports         Event registration      No venue discovery, US-focused\nStrava                  Fitness tracking         Individual, not social play\nMeetup                General events          Not sports-specific\nFacebook            Community forums    Fragmented, not purpose-built\n\nCrowdLeague Differentiators:\n  ✓ Venue-first discovery\n  ✓ Trusted crew network (not random strangers)\n  ✓ Australian-built for Australian sports culture", "x": 50, "y": 100, "w": 620, "h": 280, "size": 14, "color": "darkGray" }
+      ],
+      "notes": "COMPETITIVE LANDSCAPE\n\nOpenSports: US-based, event registration, no venue discovery\nStrava: 100M+ users, individual tracking, not social\nMeetup: General events, not sports-specific\nFacebook: Fragmented groups, no venue database\n\nOur advantage:\n- Purpose-built for AU grassroots sports\n- Venue-first approach\n- Local Melbourne knowledge"
+    },
+    {
+      "elements": [
+        { "text": "Business Model", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "darkBlue", "bold": true },
+        { "text": "Phase 1: Community Building (Current)\n  • Free for all players\n  • Build user base and court database\n  • Focus on Melbourne basketball community\n\nPhase 2: Venue Partnerships\n  • Premium court listings ($50-200/month)\n  • Booking commission (10-15%)\n  • Event promotion and sponsored listings\n\nPhase 3: Scale & Monetize\n  • Expand to Brisbane, Sydney, Perth\n  • B2B offerings for basketball associations\n  • Sponsorship and targeted advertising", "x": 50, "y": 100, "w": 620, "h": 290, "size": 15, "color": "darkGray" }
+      ],
+      "notes": "BUSINESS MODEL\n\nPhase 2 Revenue:\n1. Premium venue listings: $50-200/month\n2. Booking commission: 10-15%\n3. Event promotion, sponsored listings\n\nComparable models:\n- ClassPass, OpenTable, Hipcamp"
+    },
+    {
+      "elements": [
+        { "text": "Current Status", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "darkBlue", "bold": true },
+        { "text": "Product Ready", "x": 50, "y": 85, "w": 620, "h": 35, "size": 22, "color": "accentBlue", "bold": true },
+        { "text": "✓ Fully functional iOS and Android app\n✓ Google & Apple Sign-In authentication\n✓ Interactive court map with photo uploads\n✓ Player profiles and crew connections\n✓ Real-time messaging between crew members\n✓ Push notifications\n\nStage: Pre-Launch — Seeking funding for user acquisition\n\nNext Milestones:\n  1. Seed 100+ Melbourne basketball courts\n  2. Beta launch with local basketball community\n  3. Partner with Basketball Victoria", "x": 50, "y": 130, "w": 620, "h": 250, "size": 14, "color": "darkGray" }
+      ],
+      "notes": "CURRENT STATUS\n\nTech stack: Flutter, Firebase, Google Maps\nDeployed to App Store + Play Store\n\nDevelopment: Solo founder + Claude Code AI\n\nNext milestones:\n1. Seed 100+ Melbourne venues\n2. Beta: 500+ users\n3. Partner with Basketball Victoria"
+    },
+    {
+      "elements": [
+        { "text": "The Ask", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "darkBlue", "bold": true },
+        { "text": "Seeking: $50,000 - $100,000", "x": 50, "y": 85, "w": 620, "h": 35, "size": 24, "color": "accentBlue", "bold": true },
+        { "text": "Use of Funds:\n\n  Marketing & User Acquisition     40%\n  Venue Database Seeding           30%\n  Operations (18 months)               20%\n  Contingency                                  10%\n\nThis Enables:\n  • Launch with 100+ courts, 500+ users in Melbourne\n  • Validate product-market fit\n  • Build foundation for Series Seed\n\nSuccess Metrics:\n  • 500+ MAU, 100+ venues, 30%+ retention", "x": 50, "y": 135, "w": 620, "h": 260, "size": 15, "color": "darkGray" }
+      ],
+      "notes": "THE ASK - Budget Breakdown\n\n$50K-$100K Pre-Seed\n\nMarketing (40%): Social ads, community outreach\nVenue Seeding (30%): Photography, data entry\nOperations (20%): Firebase, App Store fees\nContingency (10%)\n\nRunway: 18 months\nSuccess metrics: 500+ MAU, 100+ venues, 30%+ retention"
+    },
+    {
+      "elements": [
+        { "text": "Team", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "darkBlue", "bold": true },
+        { "text": "Nicholas Meinhold\nFounder & Developer\n\n• 20 years software development experience\n• Flutter & Firebase expertise\n• Passionate recreational basketball player\n• Based in Melbourne, Victoria\n\n\nDevelopment accelerated with Claude Code AI assistance\n• Rapid iteration and code review\n• 24/7 development capability", "x": 50, "y": 100, "w": 620, "h": 280, "size": 16, "color": "darkGray" }
+      ],
+      "notes": "TEAM\n\nKey points:\n- Local knowledge: You know Melbourne venues\n- Technical: Full-stack capability\n- Passion: You're the target user\n- Resourceful: Built MVP with AI assistance"
+    },
+    {
+      "background": "darkBlue",
+      "elements": [
+        { "text": "The Vision", "x": 50, "y": 30, "w": 620, "h": 50, "size": 36, "color": "white", "bold": true },
+        { "text": "Roadmap:\n\n  2026  Melbourne — Validate product-market fit\n  2027  Sydney — Prove multi-city model\n  2028  Brisbane — Ride the Olympics wave\n  2032  National — The platform young Australians\n            use to find courts and players\n\nBuilding the grassroots communities\nthat create champions.", "x": 50, "y": 100, "w": 620, "h": 230, "size": 18, "color": "white" }
+      ],
+      "notes": "THE VISION - Timeline\n\n2026 Melbourne: Validate PMF\n2027 Sydney: Prove multi-city model\n2028-32 Brisbane: Olympics wave ($7.1B investment)\n2032+ National\n\nExit opportunities:\n- Sports media acquisition\n- Fitness platform (ClassPass-style)\n- Growth equity"
+    }
+  ]
+}
