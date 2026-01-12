@@ -1,0 +1,11 @@
+# Environment variables (contains API credentials)
+.env
+
+# OAuth tokens (sensitive)
+.tokens.json
+
+# Local config (contains presentation ID)
+.config.json
+
+# Dependencies
+node_modules/

@@ -251,3 +251,61 @@ The `/pm` command (claude-pm-enspyr) manages the project board at https://github
 - `/pm bugs` - List all open bugs
 - `/pm next` - Get recommended next task
 - `/pm plan <feature>` - Break down feature into issues
+
+## Tools
+
+### Pitch Deck Generator (`tools/pitch-deck/`)
+
+Node.js tool that generates and updates a Google Slides pitch deck using the Google Slides API.
+
+```bash
+cd tools/pitch-deck
+
+# First time: authenticate with Google
+npm run auth
+
+# Generate/update the pitch deck
+npm run generate
+```
+
+**Features:**
+- Creates slides with custom styling (colors, fonts, positioning)
+- Adds speaker notes to all slides
+- Updates existing presentation in place (doesn't create duplicates)
+- Stores presentation ID in `.config.json` for reuse
+
+**Setup:**
+Create `.env` file with `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` (gitignored, auto-loaded).
+
+**Key files:**
+- `index.js` - Slide content and generation logic
+- `auth.js` - OAuth2 authentication
+- `.tokens.json` - Saved OAuth tokens (gitignored)
+- `.config.json` - Saved presentation ID (gitignored)
+
+### Notion Sync (`tools/notion-sync/`)
+
+Node.js tool that fetches Notion pages and converts them to markdown/JSON.
+
+```bash
+cd tools/notion-sync
+
+# List pages shared with your integration
+npm run list
+
+# Fetch a specific page
+npm run fetch -- --page=PAGE_ID
+
+# Sync configured pages
+npm run sync
+```
+
+**Setup:**
+1. Create integration at https://www.notion.so/my-integrations
+2. Share pages with the integration (Share → Invite → Select integration)
+3. Create `.env` file with `NOTION_API_KEY=secret_...` (gitignored, auto-loaded)
+
+**Key files:**
+- `index.js` - Fetch and convert logic
+- `.config.json` - Pages to auto-sync (gitignored)
+- `.cache/` - Output directory for fetched content
