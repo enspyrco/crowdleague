@@ -4,7 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-CrowdLeague is a Flutter mobile app for finding and connecting with sports players at local venues. The app uses Firebase for backend services (Auth, Firestore, Storage, Functions, Messaging, Crashlytics, Analytics).
+CrowdLeague is a Flutter mobile app for finding and connecting with sports players at local venues. Initially focused on the **Melbourne basketball community**, with plans to expand nationally for Brisbane 2032.
+
+**Founder:** Nicholas Meinhold (20 years software development experience, Melbourne-based)
+
+**Current Stage:** Pre-launch, seeking $50,000-$100,000 pre-seed funding
+
+**Tech Stack:** Flutter + Firebase (Auth, Firestore, Storage, Functions, Messaging, Crashlytics, Analytics)
 
 ## Common Commands
 

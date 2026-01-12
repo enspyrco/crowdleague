@@ -32,6 +32,14 @@ flutter test
 
 See [CLAUDE.md](CLAUDE.md) for detailed development documentation.
 
+## Current Status
+
+**Stage:** Pre-launch, seeking $50,000-$100,000 pre-seed funding
+
+**Founder:** Nicholas Meinhold - 20 years software development experience, Melbourne-based
+
+**Pitch Deck:** [Google Slides](https://docs.google.com/presentation/d/1ib4eygCfOAYN6icYkrhctgJ2oyKoE0doZUO0fMjW5p0/edit)
+
 ## Tools
 
 - **`tools/pitch-deck/`** - Google Slides pitch deck generator using the Slides API
