@@ -212,18 +212,14 @@ GitHub Actions runs on all PRs and pushes to main (`.github/workflows/ci.yml`):
 
 ### Environment Variables
 
-PATs for Claude agents are stored in `.env` (gitignored):
+PATs for Claude agents are centralized in `~/git/individuals/nickmeinhold/claude-skills/.env`:
 
 ```bash
 CLAUDE_REVIEWER_PAT="ghp_..."  # For claude-reviewer-max
 CLAUDE_PM_PAT="ghp_..."        # For claude-pm-enspyr
 ```
 
-Load before using `/review` or `/pm` commands:
-
-```bash
-source .env
-```
+The `/review` and `/pm` skills automatically source this file.
 
 ## Testing
 
