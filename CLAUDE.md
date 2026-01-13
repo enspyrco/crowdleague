@@ -182,7 +182,7 @@ The `main` branch is protected with the following rules:
 
 - Pull request required before merging
 - 1 approval required
-- CI status checks must pass
+- CI status checks must pass (`Analyze & Test`)
 - Conversations must be resolved
 
 ### CI Pipeline
@@ -190,11 +190,13 @@ The `main` branch is protected with the following rules:
 GitHub Actions runs on all PRs and pushes to main (`.github/workflows/ci.yml`):
 
 **Flutter job:**
+
 - `flutter analyze --no-fatal-infos`
 - `flutter test --coverage`
 - Uploads `coverage/lcov.info` as artifact
 
 **Functions job:**
+
 - `npm run lint`
 - `npm run test:coverage`
 - Uploads `functions/coverage/lcov.info` as artifact
@@ -218,6 +220,7 @@ CLAUDE_PM_PAT="ghp_..."        # For claude-pm-enspyr
 ```
 
 Load before using `/review` or `/pm` commands:
+
 ```bash
 source .env
 ```
@@ -239,6 +242,7 @@ cd functions && npm run test:coverage
 ```
 
 The `/review` command (claude-reviewer-max) automatically:
+
 - Runs coverage for changed code areas
 - Analyzes coverage for files modified in the PR
 - Includes a coverage table in the review
@@ -246,9 +250,10 @@ The `/review` command (claude-reviewer-max) automatically:
 
 ### Project Management
 
-The `/pm` command (claude-pm-enspyr) manages the project board at https://github.com/orgs/enspyrco/projects/4
+The `/pm` command (claude-pm-enspyr) manages the project board at <https://github.com/orgs/enspyrco/projects/4>
 
 **Commands:**
+
 - `/pm list` - Show project board status and priorities
 - `/pm start <issue>` - Move issue to In Progress
 - `/pm done <issue>` - Mark issue complete and close it
@@ -275,6 +280,7 @@ npm run generate
 ```
 
 **Features:**
+
 - Creates slides with custom styling (colors, fonts, positioning)
 - Adds speaker notes to all slides
 - Updates existing presentation in place (doesn't create duplicates)
@@ -284,6 +290,7 @@ npm run generate
 Create `.env` file with `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` (gitignored, auto-loaded).
 
 **Key files:**
+
 - `index.js` - Slide content and generation logic
 - `auth.js` - OAuth2 authentication
 - `.tokens.json` - Saved OAuth tokens (gitignored)
@@ -307,11 +314,13 @@ npm run sync
 ```
 
 **Setup:**
-1. Create integration at https://www.notion.so/my-integrations
+
+1. Create integration at <https://www.notion.so/my-integrations>
 2. Share pages with the integration (Share → Invite → Select integration)
 3. Create `.env` file with `NOTION_API_KEY=secret_...` (gitignored, auto-loaded)
 
 **Key files:**
+
 - `index.js` - Fetch and convert logic
 - `.config.json` - Pages to auto-sync (gitignored)
 - `.cache/` - Output directory for fetched content

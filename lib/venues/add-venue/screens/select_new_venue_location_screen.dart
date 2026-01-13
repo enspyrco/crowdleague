@@ -25,12 +25,6 @@ class _SelectNewVenueLocationScreenState
   LatLng _currentLocation = const LatLng(-37.840935, 144.946457);
   bool _isLoading = true;
 
-  Marker _marker = const Marker(
-    markerId: MarkerId('center'),
-    position: LatLng(-37.840935, 144.946457),
-    draggable: false,
-  );
-
   String? _locationError;
   final _searchController = TextEditingController();
   bool _isSearching = false;
@@ -118,90 +112,88 @@ class _SelectNewVenueLocationScreenState
               },
               icon: const Icon(Icons.check))
         ]),
-        body: LayoutBuilder(builder: (context, constraints) {
-          return Stack(
-            children: [
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search by address',
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: _isSearching
-                            ? const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                      strokeWidth: 2),
-                                ),
-                              )
-                            : IconButton(
-                                icon: const Icon(Icons.arrow_forward),
-                                onPressed: _searchAddress,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search by address',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _isSearching
+                          ? const Padding(
+                              padding: EdgeInsets.all(12),
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                    strokeWidth: 2),
                               ),
-                        border: const OutlineInputBorder(),
-                      ),
-                      textInputAction: TextInputAction.search,
-                      onSubmitted: (_) => _searchAddress(),
+                            )
+                          : IconButton(
+                              icon: const Icon(Icons.arrow_forward),
+                              onPressed: _searchAddress,
+                            ),
+                      border: const OutlineInputBorder(),
                     ),
+                    textInputAction: TextInputAction.search,
+                    onSubmitted: (_) => _searchAddress(),
                   ),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 8),
-                    color: _locationError != null
-                        ? Theme.of(context).colorScheme.errorContainer
-                        : Theme.of(context).colorScheme.primaryContainer,
-                    child: Text(
-                      _locationError != null
-                          ? 'Location unavailable. Drag the map or search above.'
-                          : 'Drag the map or search above to set venue location.',
-                      style: TextStyle(
-                        color: _locationError != null
-                            ? Theme.of(context).colorScheme.onErrorContainer
-                            : Theme.of(context).colorScheme.onPrimaryContainer,
-                        fontSize: 13,
-                      ),
-                      textAlign: TextAlign.center,
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 8),
+                  color: _locationError != null
+                      ? Theme.of(context).colorScheme.errorContainer
+                      : Theme.of(context).colorScheme.primaryContainer,
+                  child: Text(
+                    _locationError != null
+                        ? 'Location unavailable. Drag the map or search above.'
+                        : 'Drag the map or search above to set venue location.',
+                    style: TextStyle(
+                      color: _locationError != null
+                          ? Theme.of(context).colorScheme.onErrorContainer
+                          : Theme.of(context).colorScheme.onPrimaryContainer,
+                      fontSize: 13,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  Expanded(
-                    child: GoogleMap(
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      GoogleMap(
                       myLocationEnabled: _locationError == null,
-                      markers: {_marker},
                       initialCameraPosition:
                           CameraPosition(target: _currentLocation),
                       onMapCreated: (GoogleMapController controller) {
                         _controllerCompleter.complete(controller);
                       },
                       onCameraMove: (cameraPosition) {
-                        setState(() {
-                          _marker = _marker.copyWith(
-                              positionParam: cameraPosition.target);
-                        });
                         _currentLocation = cameraPosition.target;
                       },
                     ),
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 45),
+                          child: Icon(
+                            Icons.location_pin,
+                            size: 45,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              if (_isLoading) const Center(child: CircularProgressIndicator()),
-              Positioned(
-                height: constraints.maxHeight - 40,
-                width: constraints.maxWidth,
-                child: const Icon(
-                  Icons.location_pin,
-                  size: 45,
-                  color: Colors.red,
                 ),
-              ),
-            ],
-          );
-        }));
+              ],
+            ),
+            if (_isLoading) const Center(child: CircularProgressIndicator()),
+          ],
+        ));
   }
 }
