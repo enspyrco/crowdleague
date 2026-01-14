@@ -174,6 +174,24 @@ Both platforms build in parallel after CI checks pass. See `.github/workflows/ci
 - Push notifications (APNS) are not available on iOS simulators - the app gracefully skips FCM setup
 - Google Maps works on simulators but may require API key configuration
 
+## Platform-Specific Gotchas
+
+### Android ProGuard
+
+ProGuard rules are in `android/app/proguard-rules.pro`. The `flutter_stripe` package requires `-dontwarn` rules for React Native push provisioning classes that aren't used in Flutter:
+
+```
+-dontwarn com.stripe.android.pushProvisioning.**
+-dontwarn com.reactnativestripesdk.**
+```
+
+### iOS App Store Icon
+
+The 1024x1024 marketing icon (`ios/Runner/Assets.xcassets/AppIcon.appiconset/logo_1024x1024.png`) must have **no alpha channel** (transparency). Apple rejects icons with transparency.
+
+To check: `sips -g hasAlpha <file>`
+To fix: `convert <file> -background white -alpha remove -alpha off <file>`
+
 ## Development Workflow
 
 ### Branch Protection
@@ -182,7 +200,7 @@ The `main` branch is protected with the following rules:
 
 - Pull request required before merging
 - 1 approval required
-- CI status checks must pass (`Analyze & Test`)
+- CI status checks must pass (`Flutter` and `Functions`)
 - Conversations must be resolved
 
 ### CI Pipeline
