@@ -4,7 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-CrowdLeague is a Flutter mobile app for finding and connecting with sports players at local venues. The app uses Firebase for backend services (Auth, Firestore, Storage, Functions, Messaging, Crashlytics, Analytics).
+CrowdLeague is a Flutter mobile app for finding and connecting with sports players at local venues. Initially focused on the **Melbourne basketball community**, with plans to expand nationally for Brisbane 2032.
+
+**Founder:** Nicholas Meinhold (20 years software development experience, Melbourne-based)
+
+**Current Stage:** Pre-launch, seeking $50,000-$100,000 pre-seed funding
+
+**Tech Stack:** Flutter + Firebase (Auth, Firestore, Storage, Functions, Messaging, Crashlytics, Analytics)
 
 ## Common Commands
 
@@ -143,6 +149,26 @@ firebase deploy --only firestore
 firebase deploy --only functions
 ```
 
+## Deployment
+
+Deployments are automated via GitHub Actions. Push a version tag to trigger builds:
+
+```bash
+git tag v0.0.7
+git push origin v0.0.7
+```
+
+**iOS** → TestFlight (via `xcodebuild` + `xcrun altool`)
+**Android** → Play Store internal track (via `flutter build appbundle` + Play Store API)
+
+Both platforms build in parallel after CI checks pass. See `.github/workflows/ci.yml` for details.
+
+### Required Secrets (configured in GitHub)
+
+**iOS:** `IOS_CERTIFICATE_BASE64`, `IOS_CERTIFICATE_PASSWORD`, `IOS_PROVISIONING_PROFILE_BASE64`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_PRIVATE_KEY`
+
+**Android:** `ANDROID_KEYSTORE_BASE64`, `ANDROID_STORE_PASSWORD`, `ANDROID_KEY_PASSWORD`, `ANDROID_KEY_ALIAS`, `PLAYSTORE_SERVICE_ACCOUNT_JSON`
+
 ## iOS Simulator Notes
 
 - Push notifications (APNS) are not available on iOS simulators - the app gracefully skips FCM setup
@@ -156,7 +182,7 @@ The `main` branch is protected with the following rules:
 
 - Pull request required before merging
 - 1 approval required
-- CI status checks must pass
+- CI status checks must pass (`Analyze & Test`)
 - Conversations must be resolved
 
 ### CI Pipeline
@@ -164,11 +190,13 @@ The `main` branch is protected with the following rules:
 GitHub Actions runs on all PRs and pushes to main (`.github/workflows/ci.yml`):
 
 **Flutter job:**
+
 - `flutter analyze --no-fatal-infos`
 - `flutter test --coverage`
 - Uploads `coverage/lcov.info` as artifact
 
 **Functions job:**
+
 - `npm run lint`
 - `npm run test:coverage`
 - Uploads `functions/coverage/lcov.info` as artifact
@@ -184,17 +212,14 @@ GitHub Actions runs on all PRs and pushes to main (`.github/workflows/ci.yml`):
 
 ### Environment Variables
 
-PATs for Claude agents are stored in `.env` (gitignored):
+PATs for Claude agents are centralized in `~/git/individuals/nickmeinhold/claude-skills/.env`:
 
 ```bash
 CLAUDE_REVIEWER_PAT="ghp_..."  # For claude-reviewer-max
 CLAUDE_PM_PAT="ghp_..."        # For claude-pm-enspyr
 ```
 
-Load before using `/review` or `/pm` commands:
-```bash
-source .env
-```
+The `/review` and `/pm` skills automatically source this file.
 
 ## Testing
 
@@ -213,6 +238,7 @@ cd functions && npm run test:coverage
 ```
 
 The `/review` command (claude-reviewer-max) automatically:
+
 - Runs coverage for changed code areas
 - Analyzes coverage for files modified in the PR
 - Includes a coverage table in the review
@@ -220,9 +246,10 @@ The `/review` command (claude-reviewer-max) automatically:
 
 ### Project Management
 
-The `/pm` command (claude-pm-enspyr) manages the project board at https://github.com/orgs/enspyrco/projects/4
+The `/pm` command (claude-pm-enspyr) manages the project board at <https://github.com/orgs/enspyrco/projects/4>
 
 **Commands:**
+
 - `/pm list` - Show project board status and priorities
 - `/pm start <issue>` - Move issue to In Progress
 - `/pm done <issue>` - Mark issue complete and close it
@@ -231,3 +258,65 @@ The `/pm` command (claude-pm-enspyr) manages the project board at https://github
 - `/pm bugs` - List all open bugs
 - `/pm next` - Get recommended next task
 - `/pm plan <feature>` - Break down feature into issues
+
+## Tools
+
+### Pitch Deck Generator (`tools/pitch-deck/`)
+
+Node.js tool that generates and updates a Google Slides pitch deck using the Google Slides API.
+
+```bash
+cd tools/pitch-deck
+
+# First time: authenticate with Google
+npm run auth
+
+# Generate/update the pitch deck
+npm run generate
+```
+
+**Features:**
+
+- Creates slides with custom styling (colors, fonts, positioning)
+- Adds speaker notes to all slides
+- Updates existing presentation in place (doesn't create duplicates)
+- Stores presentation ID in `.config.json` for reuse
+
+**Setup:**
+Create `.env` file with `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` (gitignored, auto-loaded).
+
+**Key files:**
+
+- `index.js` - Slide content and generation logic
+- `auth.js` - OAuth2 authentication
+- `.tokens.json` - Saved OAuth tokens (gitignored)
+- `.config.json` - Saved presentation ID (gitignored)
+
+### Notion Sync (`tools/notion-sync/`)
+
+Node.js tool that fetches Notion pages and converts them to markdown/JSON.
+
+```bash
+cd tools/notion-sync
+
+# List pages shared with your integration
+npm run list
+
+# Fetch a specific page
+npm run fetch -- --page=PAGE_ID
+
+# Sync configured pages
+npm run sync
+```
+
+**Setup:**
+
+1. Create integration at <https://www.notion.so/my-integrations>
+2. Share pages with the integration (Share → Invite → Select integration)
+3. Create `.env` file with `NOTION_API_KEY=secret_...` (gitignored, auto-loaded)
+
+**Key files:**
+
+- `index.js` - Fetch and convert logic
+- `.config.json` - Pages to auto-sync (gitignored)
+- `.cache/` - Output directory for fetched content

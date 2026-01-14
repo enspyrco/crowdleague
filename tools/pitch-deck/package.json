@@ -1,0 +1,15 @@
+{
+  "name": "crowdleague-pitch-deck",
+  "version": "1.0.0",
+  "description": "Generate Google Slides pitch deck from markdown",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "generate": "node --env-file=.env index.js",
+    "auth": "node --env-file=.env auth.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "open": "^10.0.0"
+  }
+}

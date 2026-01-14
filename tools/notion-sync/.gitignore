@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contains API key)
+.env
+
+# Local config
+.config.json
+
+# Output cache
+.cache/
