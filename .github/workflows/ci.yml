@@ -9,34 +9,9 @@ on:
       - "v*"
 
 jobs:
-  changes:
-    name: Detect Changes
-    runs-on: ubuntu-latest
-    outputs:
-      flutter: ${{ steps.filter.outputs.flutter }}
-      functions: ${{ steps.filter.outputs.functions }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            flutter:
-              - 'lib/**'
-              - 'test/**'
-              - 'pubspec.yaml'
-              - 'pubspec.lock'
-            functions:
-              - 'functions/src/**'
-              - 'functions/test/**'
-              - 'functions/package.json'
-              - 'functions/package-lock.json'
-
   flutter:
-    name: Flutter Analyze & Test
+    name: Flutter
     runs-on: ubuntu-latest
-    needs: changes
-    if: ${{ needs.changes.outputs.flutter == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -63,10 +38,8 @@ jobs:
           if-no-files-found: ignore
 
   functions:
-    name: Functions Lint & Test
+    name: Functions
     runs-on: ubuntu-latest
-    needs: changes
-    if: ${{ needs.changes.outputs.functions == 'true' }}
     defaults:
       run:
         working-directory: functions
@@ -95,26 +68,11 @@ jobs:
           path: functions/coverage/lcov.info
           if-no-files-found: ignore
 
-  # Summary job for branch protection (replaces old "Analyze & Test" job)
-  ci-status:
-    name: Analyze & Test
-    runs-on: ubuntu-latest
-    needs: [changes, flutter, functions]
-    if: always()
-    steps:
-      - name: Check CI status
-        run: |
-          if [[ "${{ needs.flutter.result }}" == "failure" || "${{ needs.functions.result }}" == "failure" ]]; then
-            echo "CI failed"
-            exit 1
-          fi
-          echo "CI passed"
-
   build-android:
     name: Build Android & Deploy to Play Store
     runs-on: ubuntu-latest
-    needs: ci-status
-    if: always() && needs.ci-status.result != 'failure' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: [flutter, functions]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
 
     steps:
       - name: Checkout code
@@ -160,14 +118,14 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_JSON }}
           packageName: co.enspyr.cl1
           releaseFiles: build/app/outputs/bundle/release/app-release.aab
-          track: beta
+          track: alpha
           status: completed
 
   build-ios:
     name: Build iOS & Deploy to TestFlight
     runs-on: macos-latest
-    needs: ci-status
-    if: always() && needs.ci-status.result != 'failure' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: [flutter, functions]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
 
     steps:
       - name: Checkout code
