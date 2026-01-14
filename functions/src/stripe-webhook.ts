@@ -55,18 +55,18 @@ export const stripeWebhook = onRequest(
 
     try {
       switch (event.type) {
-        case "payment_intent.succeeded": {
-          const paymentIntent = event.data.object as Stripe.PaymentIntent;
-          await handlePaymentIntentSucceeded(paymentIntent);
-          break;
-        }
-        case "payment_intent.payment_failed": {
-          const paymentIntent = event.data.object as Stripe.PaymentIntent;
-          await handlePaymentIntentFailed(paymentIntent);
-          break;
-        }
-        default:
-          logger.info(`Unhandled event type: ${event.type}`);
+      case "payment_intent.succeeded": {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        await handlePaymentIntentSucceeded(paymentIntent);
+        break;
+      }
+      case "payment_intent.payment_failed": {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        await handlePaymentIntentFailed(paymentIntent);
+        break;
+      }
+      default:
+        logger.info(`Unhandled event type: ${event.type}`);
       }
 
       // Mark event as processed
