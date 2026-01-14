@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:crowdleague/services/messaging_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../services/user_service.dart';
@@ -17,26 +20,64 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   bool isSigningIn = false;
 
+  String _getErrorMessage(Object error) {
+    if (error is PlatformException) {
+      if (error.code == 'network_error') {
+        return 'No internet connection. Please check your connection and try again.';
+      }
+      // User cancelled sign-in (code: sign_in_canceled)
+      if (error.code == 'sign_in_canceled') {
+        return 'Sign in was cancelled.';
+      }
+    }
+    // Generic fallback for other errors
+    return 'Sign in failed. Please try again.';
+  }
+
   Future<void> _signInWithApple(BuildContext context) async {
     setState(() {
       isSigningIn = true;
     });
-    await locate<UserService>().signInWithApple();
-    // We have just signed in so we check if we need to store a new token, in
-    // case onTokenRefresh was called before the user signed in.
-    await locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
-    if (context.mounted) context.pushReplacement('/');
+    try {
+      await locate<UserService>().signInWithApple();
+      // We have just signed in so we check if we need to store a new token, in
+      // case onTokenRefresh was called before the user signed in.
+      await locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
+      if (context.mounted) context.pushReplacement('/');
+    } catch (e) {
+      log('Error signing in with Apple: $e');
+      if (context.mounted) {
+        setState(() {
+          isSigningIn = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_getErrorMessage(e))),
+        );
+      }
+    }
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     setState(() {
       isSigningIn = true;
     });
-    await locate<UserService>().signInWithGoogle();
-    // We have just signed in so we check if we need to store a new token, in
-    // case onTokenRefresh was called before the user signed in.
-    await locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
-    if (context.mounted) context.pushReplacement('/');
+    try {
+      await locate<UserService>().signInWithGoogle();
+      // We have just signed in so we check if we need to store a new token, in
+      // case onTokenRefresh was called before the user signed in.
+      await locate<MessagingService>().checkAndUpdateFcmTokenIfFresh();
+      if (context.mounted) context.pushReplacement('/');
+    } catch (e) {
+      log('Error signing in with Google: $e');
+      if (context.mounted) {
+        setState(() {
+          isSigningIn = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_getErrorMessage(e))),
+        );
+      }
+    }
   }
 
   @override
