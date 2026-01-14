@@ -6,7 +6,7 @@ on:
   push:
     branches: [main]
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   changes:
@@ -42,8 +42,8 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.38.x'
-          channel: 'stable'
+          flutter-version: "3.38.x"
+          channel: "stable"
           cache: true
 
       - name: Get dependencies
@@ -75,8 +75,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'npm'
+          node-version: "22"
+          cache: "npm"
           cache-dependency-path: functions/package-lock.json
 
       - name: Install dependencies
@@ -123,8 +123,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: '21'
+          distribution: "zulu"
+          java-version: "21"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -132,8 +132,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.38.x'
-          channel: 'stable'
+          flutter-version: "3.38.x"
+          channel: "stable"
           cache: true
 
       - name: Install dependencies
@@ -160,7 +160,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_JSON }}
           packageName: co.enspyr.cl1
           releaseFiles: build/app/outputs/bundle/release/app-release.aab
-          track: internal
+          track: beta
           status: completed
 
   build-ios:
@@ -176,8 +176,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.38.x'
-          channel: 'stable'
+          flutter-version: "3.38.x"
+          channel: "stable"
           cache: true
 
       - name: Install dependencies
