@@ -28,6 +28,7 @@ import 'notifications/notifications_service.dart';
 import 'players/players_service.dart';
 import 'services/user_service.dart';
 import 'utils/globals.dart';
+import 'services/payment_service.dart';
 import 'venues/venues_service.dart';
 import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
 import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
@@ -180,6 +181,7 @@ void main() async {
     firebaseAuth: auth,
   ));
   Locator.add<TutorialNotifier>(TutorialNotifier());
+  Locator.add<PaymentService>(PaymentService(cloudFunctions));
 
   runApp(const CrowdLeagueApp());
 }
