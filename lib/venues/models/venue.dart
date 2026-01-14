@@ -10,6 +10,7 @@ class Venue {
     required this.longitude,
     required this.createdBy,
     required this.photoCount,
+    this.bookingPrice,
   });
 
   final String id;
@@ -22,6 +23,7 @@ class Venue {
   final double longitude;
   final String createdBy;
   final int photoCount; // 1-5 photos per venue
+  final int? bookingPrice; // Price in cents (e.g., 2000 = $20.00)
 
   factory Venue.fromJson(Map<String, Object?> json) {
     return Venue(
@@ -35,6 +37,7 @@ class Venue {
       longitude: json['longitude'] as double,
       createdBy: json['createdBy'] as String,
       photoCount: (json['photoCount'] as int?) ?? 1, // Default 1 for legacy
+      bookingPrice: json['bookingPrice'] as int?,
     );
   }
 }

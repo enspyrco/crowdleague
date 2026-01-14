@@ -2,6 +2,7 @@ import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:crowdleague/services/payment_service.dart';
 
 import '../../services/user_service.dart';
 import '../venues_service.dart';
@@ -20,8 +21,17 @@ class VenueDetailScreen extends StatefulWidget {
 class _VenueDetailScreenState extends State<VenueDetailScreen> {
   Venue? _venue;
   bool _deleting = false;
+  bool _processingPayment = false;
   int _currentPhotoIndex = 0;
   final _pageController = PageController();
+
+  // Booking price in cents - could be fetched from venue data or pricing service
+  int get _bookingPriceInCents => _venue?.bookingPrice ?? 2000; // Default $20.00
+
+  String get _formattedPrice {
+    final dollars = _bookingPriceInCents / 100;
+    return '\$${dollars.toStringAsFixed(2)}';
+  }
 
   Future<void> _retrieveVenue() async {
     final venue = await locate<VenuesService>().retrieveVenue(widget.venueId);
@@ -44,6 +54,50 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
         _deleting = false;
       });
       context.pop(_venue!.id);
+    }
+  }
+
+  Future<void> _payToBook() async {
+    setState(() => _processingPayment = true);
+
+    try {
+      await locate<PaymentService>().initPaymentSheet(
+        amount: _bookingPriceInCents,
+        currency: 'aud',
+        venueId: widget.venueId,
+        description: 'Venue booking: ${_venue?.name ?? widget.venueId}',
+      );
+
+      final success = await locate<PaymentService>().presentPaymentSheet();
+
+      if (success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Booking successful!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } on PaymentException catch (e) {
+      if (mounted && e.code != 'cancelled') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Payment failed: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _processingPayment = false);
     }
   }
 
@@ -171,6 +225,21 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               ),
             ),
             const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: ElevatedButton.icon(
+                onPressed: _processingPayment ? null : _payToBook,
+                icon: _processingPayment
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2))
+                    : const Icon(Icons.payment),
+                label: Text(_processingPayment
+                    ? 'Processing...'
+                    : 'Book Venue ($_formattedPrice)'),
+              ),
+            ),
             if (_venue != null &&
                 _venue!.createdBy == locate<UserService>().currentUserId!)
               TextButton(
