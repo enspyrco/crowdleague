@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -21,6 +22,7 @@ class _SelectNewVenueLocationScreenState
     extends State<SelectNewVenueLocationScreen> {
   final Completer<GoogleMapController> _controllerCompleter =
       Completer<GoogleMapController>();
+  String _darkMapStyle = '';
 
   LatLng _currentLocation = const LatLng(-37.840935, 144.946457);
   bool _isLoading = true;
@@ -28,6 +30,14 @@ class _SelectNewVenueLocationScreenState
   String? _locationError;
   final _searchController = TextEditingController();
   bool _isSearching = false;
+
+  Future _loadMapStyles() async {
+    final styleString =
+        await rootBundle.loadString('assets/json/dark_mode_style.json');
+    setState(() {
+      _darkMapStyle = styleString;
+    });
+  }
 
   Future<void> _searchAddress() async {
     final query = _searchController.text.trim();
@@ -89,6 +99,7 @@ class _SelectNewVenueLocationScreenState
   @override
   void initState() {
     super.initState();
+    _loadMapStyles();
     _goToCurrentLocation();
   }
 
@@ -129,8 +140,8 @@ class _SelectNewVenueLocationScreenState
                               child: SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(
-                                    strokeWidth: 2),
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
                               ),
                             )
                           : IconButton(
@@ -145,8 +156,8 @@ class _SelectNewVenueLocationScreenState
                 ),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   color: _locationError != null
                       ? Theme.of(context).colorScheme.errorContainer
                       : Theme.of(context).colorScheme.primaryContainer,
@@ -167,16 +178,19 @@ class _SelectNewVenueLocationScreenState
                   child: Stack(
                     children: [
                       GoogleMap(
-                      myLocationEnabled: _locationError == null,
-                      initialCameraPosition:
-                          CameraPosition(target: _currentLocation),
-                      onMapCreated: (GoogleMapController controller) {
-                        _controllerCompleter.complete(controller);
-                      },
-                      onCameraMove: (cameraPosition) {
-                        _currentLocation = cameraPosition.target;
-                      },
-                    ),
+                        style: Theme.of(context).brightness == Brightness.dark
+                            ? _darkMapStyle
+                            : null,
+                        myLocationEnabled: _locationError == null,
+                        initialCameraPosition:
+                            CameraPosition(target: _currentLocation),
+                        onMapCreated: (GoogleMapController controller) {
+                          _controllerCompleter.complete(controller);
+                        },
+                        onCameraMove: (cameraPosition) {
+                          _currentLocation = cameraPosition.target;
+                        },
+                      ),
                       const Center(
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 45),
