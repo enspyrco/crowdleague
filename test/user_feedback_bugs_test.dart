@@ -1,18 +1,13 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdleague/conversations/conversations_screen.dart';
 import 'package:crowdleague/conversations/conversations_service.dart';
 import 'package:crowdleague/conversations/models/conversation.dart';
 import 'package:crowdleague/conversations/models/message.dart';
 import 'package:crowdleague/conversations/models/view/conversation_view_model.dart';
-import 'package:crowdleague/notifications/models/notification.dart';
-import 'package:crowdleague/notifications/models/views/notification_view_model.dart';
-import 'package:crowdleague/notifications/widgets/crew_request_notification_widget.dart';
 import 'package:crowdleague/onboarding/onboard_notifications.dart';
 import 'package:crowdleague/players/models/player.dart';
 import 'package:crowdleague/players/players_service.dart';
-import 'package:crowdleague/services/user_service.dart';
 import 'package:crowdleague/utils/cache/player_cache.dart';
 import 'package:crowdleague/utils/locator.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +19,6 @@ import 'package:flutter_test/flutter_test.dart';
 /// - #196: Infinite loading circle on add photo
 /// - #197: Can tap tick button immediately after adding photo
 /// - #198: Notifications onboarding screen text has incorrect formatting
-/// - #199: AcceptCrewNotification extends beyond card bounds
-/// - #200: Notification buttons lack instant visual feedback
 /// - #201: Unread message count is inaccurate
 /// - #202: Conversation not appearing in Messages list
 void main() {
@@ -71,328 +64,10 @@ void main() {
     );
   });
 
-  group('Notifications Screen Bugs', () {
-    // Bug #199: AcceptCrewNotification extends beyond card bounds
-    testWidgets(
-      '#199: CrewRequestNotificationWidget should fit within card bounds',
-      (tester) async {
-        // Create test notification data
-        final notification = CrewRequestNotification(
-          id: 'test-notification-id',
-          playerId: 'test-player-id',
-          requesterId: 'requester-id',
-          requesteeId: 'requestee-id',
-          waiting: false,
-          viewed: false,
-          opened: false,
-          timestamp: Timestamp.now(),
-        );
-
-        final viewModel = CrewRequestNotificationViewModel(
-          notification: notification,
-          waiting: false,
-          requesterName:
-              'Test Player With A Very Long Name That Might Overflow',
-          requesterId: 'requester-id',
-          requesteeId: 'requestee-id',
-        );
-
-        // Set up mock services
-        final mockUserService = MockUserService();
-        final mockPlayersService = MockPlayersService();
-        mockPlayersService.addPlayer(Player(
-          id: 'requester-id',
-          name: 'Test Player With A Very Long Name That Might Overflow',
-          picId: 0,
-          pendingCrewRequests: [],
-          crewIds: [],
-        ));
-        Locator.add<UserService>(mockUserService);
-        Locator.add<PlayersService>(mockPlayersService);
-
-        // Render the widget in a constrained container (simulating card bounds)
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 300, // Narrow width to trigger potential overflow
-                child: CrewRequestNotificationWidget(viewModel),
-              ),
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        // FIXED: Widget no longer overflows with long names
-        expect(tester.takeException(), isNull,
-            reason: 'Widget should not cause overflow errors');
-
-        // Verify the card is rendered
-        expect(find.byType(Card), findsOneWidget);
-
-        // Verify buttons are visible
-        expect(find.text('Accept'), findsOneWidget);
-        expect(find.text('Decline'), findsOneWidget);
-      },
-    );
-
-    // Test Accept button calls UserService.acceptCrewRequest
-    testWidgets(
-      'Accept button calls acceptCrewRequest with correct arguments',
-      (tester) async {
-        final notification = CrewRequestNotification(
-          id: 'notif-123',
-          playerId: 'player-id',
-          requesterId: 'requester-456',
-          requesteeId: 'requestee-789',
-          waiting: false,
-          viewed: false,
-          opened: false,
-          timestamp: Timestamp.now(),
-        );
-
-        final viewModel = CrewRequestNotificationViewModel(
-          notification: notification,
-          waiting: false,
-          requesterName: 'John Doe',
-          requesterId: 'requester-456',
-          requesteeId: 'requestee-789',
-        );
-
-        final mockUserService = MockUserService();
-        final mockPlayersService = MockPlayersService();
-        mockPlayersService.addPlayer(Player(
-          id: 'requester-456',
-          name: 'John Doe',
-          picId: 0, // Use 0 to avoid network image requests in tests
-          pendingCrewRequests: [],
-          crewIds: [],
-        ));
-        Locator.add<UserService>(mockUserService);
-        Locator.add<PlayersService>(mockPlayersService);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: CrewRequestNotificationWidget(viewModel),
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        // Verify initial state - service not called yet
-        expect(mockUserService.acceptCrewRequestCalled, isFalse);
-
-        // Tap Accept button
-        await tester.tap(find.widgetWithText(OutlinedButton, 'Accept'));
-        // Use pump() instead of pumpAndSettle() because CircularProgressIndicator never settles
-        await tester.pump();
-
-        // Verify service was called with correct arguments
-        expect(mockUserService.acceptCrewRequestCalled, isTrue,
-            reason: 'acceptCrewRequest should be called when Accept is tapped');
-        expect(mockUserService.lastAcceptedNotificationId, equals('notif-123'),
-            reason: 'Should pass correct notification ID');
-        expect(mockUserService.lastAcceptedRequesterId, equals('requester-456'),
-            reason: 'Should pass correct requester ID');
-        expect(mockUserService.lastAcceptedRequesteeId, equals('requestee-789'),
-            reason: 'Should pass correct requestee ID');
-      },
-    );
-
-    // Test Decline button calls UserService.declineCrewRequest
-    testWidgets(
-      'Decline button calls declineCrewRequest with correct arguments',
-      (tester) async {
-        final notification = CrewRequestNotification(
-          id: 'notif-abc',
-          playerId: 'player-id',
-          requesterId: 'requester-def',
-          requesteeId: 'requestee-ghi',
-          waiting: false,
-          viewed: false,
-          opened: false,
-          timestamp: Timestamp.now(),
-        );
-
-        final viewModel = CrewRequestNotificationViewModel(
-          notification: notification,
-          waiting: false,
-          requesterName: 'Jane Smith',
-          requesterId: 'requester-def',
-          requesteeId: 'requestee-ghi',
-        );
-
-        final mockUserService = MockUserService();
-        final mockPlayersService = MockPlayersService();
-        mockPlayersService.addPlayer(Player(
-          id: 'requester-def',
-          name: 'Jane Smith',
-          picId: 0, // Use 0 to avoid network image requests in tests
-          pendingCrewRequests: [],
-          crewIds: [],
-        ));
-        Locator.add<UserService>(mockUserService);
-        Locator.add<PlayersService>(mockPlayersService);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: CrewRequestNotificationWidget(viewModel),
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        // Verify initial state
-        expect(mockUserService.declineCrewRequestCalled, isFalse);
-
-        // Tap Decline button
-        await tester.tap(find.widgetWithText(OutlinedButton, 'Decline'));
-        // Use pump() instead of pumpAndSettle() because CircularProgressIndicator never settles
-        await tester.pump();
-
-        // Verify service was called with correct arguments
-        expect(mockUserService.declineCrewRequestCalled, isTrue,
-            reason:
-                'declineCrewRequest should be called when Decline is tapped');
-        expect(mockUserService.lastDeclinedNotificationId, equals('notif-abc'),
-            reason: 'Should pass correct notification ID');
-        expect(mockUserService.lastDeclinedRequesterId, equals('requester-def'),
-            reason: 'Should pass correct requester ID');
-      },
-    );
-
-    // Test waiting state hides buttons and shows loading text
-    testWidgets(
-      'Widget shows loading state when waiting is true',
-      (tester) async {
-        final notification = CrewRequestNotification(
-          id: 'notif-waiting',
-          playerId: 'player-id',
-          requesterId: 'requester-id',
-          requesteeId: 'requestee-id',
-          waiting: true, // Waiting state
-          viewed: false,
-          opened: false,
-          timestamp: Timestamp.now(),
-        );
-
-        final viewModel = CrewRequestNotificationViewModel(
-          notification: notification,
-          waiting: true, // Waiting state
-          requesterName: 'Waiting Player',
-          requesterId: 'requester-id',
-          requesteeId: 'requestee-id',
-        );
-
-        final mockUserService = MockUserService();
-        final mockPlayersService = MockPlayersService();
-        mockPlayersService.addPlayer(Player(
-          id: 'requester-id',
-          name: 'Waiting Player',
-          picId: 0,
-          pendingCrewRequests: [],
-          crewIds: [],
-        ));
-        Locator.add<UserService>(mockUserService);
-        Locator.add<PlayersService>(mockPlayersService);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: CrewRequestNotificationWidget(viewModel),
-            ),
-          ),
-        );
-        // Use pump() instead of pumpAndSettle() because CircularProgressIndicator never settles
-        await tester.pump();
-
-        // Buttons should not be visible when waiting
-        expect(find.text('Accept'), findsNothing,
-            reason: 'Accept button should be hidden when waiting');
-        expect(find.text('Decline'), findsNothing,
-            reason: 'Decline button should be hidden when waiting');
-
-        // Loading text should be visible
-        expect(find.text('Updating crew members...'), findsOneWidget,
-            reason: 'Loading text should be shown when waiting');
-      },
-    );
-
-    // Bug #200: Notification buttons lack instant visual feedback
-    testWidgets(
-      '#200: Notification buttons should have proper Material feedback',
-      (tester) async {
-        final notification = CrewRequestNotification(
-          id: 'test-notification-id',
-          playerId: 'test-player-id',
-          requesterId: 'requester-id',
-          requesteeId: 'requestee-id',
-          waiting: false,
-          viewed: false,
-          opened: false,
-          timestamp: Timestamp.now(),
-        );
-
-        final viewModel = CrewRequestNotificationViewModel(
-          notification: notification,
-          waiting: false,
-          requesterName: 'Test Player',
-          requesterId: 'requester-id',
-          requesteeId: 'requestee-id',
-        );
-
-        final mockUserService = MockUserService();
-        final mockPlayersService = MockPlayersService();
-        mockPlayersService.addPlayer(Player(
-          id: 'requester-id',
-          name: 'Test Player',
-          picId: 0,
-          pendingCrewRequests: [],
-          crewIds: [],
-        ));
-        Locator.add<UserService>(mockUserService);
-        Locator.add<PlayersService>(mockPlayersService);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: CrewRequestNotificationWidget(viewModel),
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        // Verify buttons are OutlinedButtons (which have built-in ink feedback)
-        final acceptButton = find.widgetWithText(OutlinedButton, 'Accept');
-        final declineButton = find.widgetWithText(OutlinedButton, 'Decline');
-
-        expect(acceptButton, findsOneWidget);
-        expect(declineButton, findsOneWidget);
-
-        // OutlinedButton has InkWell internally for visual feedback
-        final acceptInkWell = find.ancestor(
-          of: find.text('Accept'),
-          matching: find.byType(InkWell),
-        );
-        expect(acceptInkWell, findsWidgets,
-            reason: 'Accept button should have InkWell for visual feedback');
-
-        final declineInkWell = find.ancestor(
-          of: find.text('Decline'),
-          matching: find.byType(InkWell),
-        );
-        expect(declineInkWell, findsWidgets,
-            reason: 'Decline button should have InkWell for visual feedback');
-      },
-    );
-  });
-
-  group('Messages Screen Bugs', () {
-    // Bug #201/#203: Messages badge - test unread count stream
+  group('Messages Bugs', () {
+    // Bug #201: Unread message count is inaccurate
     test(
-      '#201/#203: ConversationsService emits unread message count',
+      '#201: Unread count stream should emit accurate counts',
       () async {
         final mockConversationsService = MockConversationsService();
 
@@ -414,6 +89,7 @@ void main() {
             reason: 'Stream should emit all unread count updates');
 
         await subscription.cancel();
+        mockConversationsService.dispose();
       },
     );
 
@@ -426,26 +102,23 @@ void main() {
         final mockPlayersService = MockPlayersService();
 
         // Add test players for the avatars (picId: 0 to avoid network requests)
-        mockPlayersService.addPlayer(Player(
+        mockPlayersService.addPlayer(const Player(
           id: 'player-alice',
           name: 'Alice Johnson',
           picId: 0,
-          pendingCrewRequests: [],
-          crewIds: [],
+          venueCrewIds: [],
         ));
-        mockPlayersService.addPlayer(Player(
+        mockPlayersService.addPlayer(const Player(
           id: 'player-bob',
           name: 'Bob Smith',
           picId: 0,
-          pendingCrewRequests: [],
-          crewIds: [],
+          venueCrewIds: [],
         ));
-        mockPlayersService.addPlayer(Player(
+        mockPlayersService.addPlayer(const Player(
           id: 'player-charlie',
           name: 'Charlie Brown',
           picId: 0,
-          pendingCrewRequests: [],
-          crewIds: [],
+          venueCrewIds: [],
         ));
 
         // Add test conversations
@@ -543,74 +216,6 @@ void main() {
   });
 }
 
-/// Mock UserService for testing notification widgets
-class MockUserService implements UserService {
-  bool acceptCrewRequestCalled = false;
-  bool declineCrewRequestCalled = false;
-  String? lastAcceptedNotificationId;
-  String? lastAcceptedRequesterId;
-  String? lastAcceptedRequesteeId;
-  String? lastDeclinedNotificationId;
-  String? lastDeclinedRequesterId;
-
-  @override
-  Future<void> acceptCrewRequest({
-    required String requesterId,
-    required String requesteeId,
-    required String notificationId,
-  }) async {
-    acceptCrewRequestCalled = true;
-    lastAcceptedNotificationId = notificationId;
-    lastAcceptedRequesterId = requesterId;
-    lastAcceptedRequesteeId = requesteeId;
-  }
-
-  @override
-  Future<void> declineCrewRequest(
-      String notificationId, String requesterId) async {
-    declineCrewRequestCalled = true;
-    lastDeclinedNotificationId = notificationId;
-    lastDeclinedRequesterId = requesterId;
-  }
-
-  // Stub remaining UserService methods
-  @override
-  String? get currentUserId => 'test-user-id';
-
-  @override
-  String? get authDisplayName => 'Test User';
-
-  @override
-  Stream<Map<String, Object?>?> get profileDocStream => Stream.value({});
-
-  @override
-  Future<void> signInWithGoogle() async {}
-
-  @override
-  Future<void> signInWithApple() async {}
-
-  @override
-  Future<void> signOut() async {}
-
-  @override
-  Player? getUserPlayer() => null;
-
-  @override
-  Future<bool> get userHasOnboarded async => true;
-
-  @override
-  Future<void> updateProfileName(String name) async {}
-
-  @override
-  Future<void> requestCrew({required String playerId}) async {}
-
-  @override
-  Future<void> splitCrews(String playerId) async {}
-
-  @override
-  Future<void> deleteAccount() async {}
-}
-
 /// Mock PlayersService for Avatar widget
 class MockPlayersService implements PlayersService {
   final Map<String, Player> _players = {};
@@ -655,6 +260,10 @@ class MockConversationsService implements ConversationsService {
 
   void setUnreadCount(int count) {
     _unreadCountController.add(count);
+  }
+
+  void dispose() {
+    _unreadCountController.close();
   }
 
   @override

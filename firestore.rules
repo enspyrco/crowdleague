@@ -33,6 +33,7 @@ service cloud.firestore {
     // All authenticated users can read venues
     // All authenticated users can create venues
     // Only the creator can update or delete their venue
+    // Note: Crew operations (join/leave) go through Cloud Functions which use Admin SDK
     match /venues/{venueId} {
       allow read: if isAuthenticated();
       allow create: if isAuthenticated();

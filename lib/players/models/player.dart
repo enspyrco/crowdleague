@@ -5,15 +5,13 @@ class Player {
   final String id;
   final String name;
   final int picId;
-  final List<String> pendingCrewRequests;
-  final List<String> crewIds;
+  final List<String> venueCrewIds;
 
   const Player({
     required this.id,
     required this.name,
     required this.picId,
-    required this.pendingCrewRequests,
-    required this.crewIds,
+    required this.venueCrewIds,
   });
 
   Map<String, dynamic> toJson() {
@@ -21,8 +19,7 @@ class Player {
       'id': id,
       'name': name,
       'picId': picId,
-      'crewRequests': pendingCrewRequests,
-      'crewIds': crewIds,
+      'venueCrewIds': venueCrewIds,
     };
   }
 
@@ -31,17 +28,15 @@ class Player {
       id: id,
       name: json['name'] ?? '',
       picId: json['picId'] ?? 0,
-      pendingCrewRequests: (json['pendingCrewRequests'] == null)
+      venueCrewIds: (json['venueCrewIds'] == null)
           ? []
-          : List<String>.from(json['pendingCrewRequests']),
-      crewIds:
-          (json['crewIds'] == null) ? [] : List<String>.from(json['crewIds']),
+          : List<String>.from(json['venueCrewIds']),
     );
   }
 
   @override
   String toString() {
-    return 'Player{id: $id, name: $name, picId: $picId, pendingCrewRequests: $pendingCrewRequests}';
+    return 'Player{id: $id, name: $name, picId: $picId, venueCrewIds: $venueCrewIds}';
   }
 
   String constructProfilePicUrl(PicSize picSize) {
@@ -62,7 +57,6 @@ class EmptyPlayer extends Player {
     super.id = '',
     super.name = '?',
     super.picId = 0,
-    super.pendingCrewRequests = const [],
-    super.crewIds = const [],
+    super.venueCrewIds = const [],
   });
 }

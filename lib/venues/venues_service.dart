@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:crowdleague/utils/globals.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/subjects.dart';
 
 import '../players/enums/pic_size.dart';
+import '../players/models/player.dart';
 import '../utils/api_keys.dart';
 import 'models/upload_event.dart';
 import 'models/venue.dart';
@@ -17,11 +20,17 @@ class VenuesService {
   VenuesService({
     required FirebaseFirestore firestore,
     required FirebaseStorage storage,
+    required FirebaseFunctions cloudFunctions,
+    required FirebaseAuth auth,
   })  : _firestore = firestore,
-        _storage = storage;
+        _storage = storage,
+        _cloudFunctions = cloudFunctions,
+        _auth = auth;
 
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
+  final FirebaseFunctions _cloudFunctions;
+  final FirebaseAuth _auth;
 
   final _uploadProgressSubject = BehaviorSubject<int>.seeded(0);
   Stream<int> get uploadProgressStream => _uploadProgressSubject.stream;
@@ -62,7 +71,8 @@ class VenuesService {
   }
 
   /// Get all photo URLs for a venue
-  List<String> getAllPhotoUrls(String venueId, int photoCount, PicSize picSize) {
+  List<String> getAllPhotoUrls(
+      String venueId, int photoCount, PicSize picSize) {
     return List.generate(
       photoCount,
       (index) => getPhotoUrl(venueId, picSize, photoIndex: index),
@@ -194,5 +204,48 @@ class VenuesService {
       }
     }
     return null;
+  }
+
+  // ==================== Crew Operations ====================
+
+  /// Join the crew at a venue
+  Future<void> joinVenueCrew(String venueId) async {
+    await _cloudFunctions.httpsCallable('joinVenueCrew').call({
+      'venueId': venueId,
+      'dbName': kDatabaseName,
+    });
+  }
+
+  /// Leave the crew at a venue
+  Future<void> leaveVenueCrew(String venueId) async {
+    await _cloudFunctions.httpsCallable('leaveVenueCrew').call({
+      'venueId': venueId,
+      'dbName': kDatabaseName,
+    });
+  }
+
+  /// Get the crew members for a venue
+  Future<List<Player>> getVenueCrewMembers(String venueId) async {
+    final venue = await retrieveVenue(venueId);
+    if (venue == null) return [];
+
+    if (venue.crewMemberIds.isEmpty) return [];
+
+    final players = <Player>[];
+    for (final memberId in venue.crewMemberIds) {
+      final doc = await _firestore.collection('profiles').doc(memberId).get();
+      final data = doc.data();
+      if (data != null) {
+        players.add(Player.fromJsonWithId(memberId, data));
+      }
+    }
+    return players;
+  }
+
+  /// Check if the current user is in a venue's crew
+  bool isUserInVenueCrew(Venue venue) {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) return false;
+    return venue.crewMemberIds.contains(userId);
   }
 }

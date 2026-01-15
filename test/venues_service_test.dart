@@ -1,7 +1,9 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/venues/models/venue.dart';
 import 'package:crowdleague/venues/venues_service.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -9,12 +11,21 @@ void main() {
   group('VenuesService', () {
     late FakeFirebaseFirestore fakeFirestore;
     late MockFirebaseStorage fakeStorage;
+    late MockFirebaseAuth mockAuth;
+    late MockFirebaseFunctions mockFunctions;
     late VenuesService service;
 
     setUp(() {
       fakeFirestore = FakeFirebaseFirestore();
       fakeStorage = MockFirebaseStorage();
-      service = VenuesService(firestore: fakeFirestore, storage: fakeStorage);
+      mockAuth = MockFirebaseAuth();
+      mockFunctions = MockFirebaseFunctions();
+      service = VenuesService(
+        firestore: fakeFirestore,
+        storage: fakeStorage,
+        cloudFunctions: mockFunctions,
+        auth: mockAuth,
+      );
     });
 
     group('createNewVenue', () {
@@ -45,20 +56,23 @@ void main() {
 
     group('getPhotoUrl', () {
       test('returns correct URL for small size at index 0', () {
-        final url = service.getPhotoUrl('venue123', PicSize.small, photoIndex: 0);
+        final url =
+            service.getPhotoUrl('venue123', PicSize.small, photoIndex: 0);
 
         expect(url, contains('venue123_0_small.jpg'));
         expect(url, contains('crowdleague-venues'));
       });
 
       test('returns correct URL for medium size at index 1', () {
-        final url = service.getPhotoUrl('venue123', PicSize.medium, photoIndex: 1);
+        final url =
+            service.getPhotoUrl('venue123', PicSize.medium, photoIndex: 1);
 
         expect(url, contains('venue123_1_medium.jpg'));
       });
 
       test('returns correct URL for large size at index 2', () {
-        final url = service.getPhotoUrl('venue123', PicSize.large, photoIndex: 2);
+        final url =
+            service.getPhotoUrl('venue123', PicSize.large, photoIndex: 2);
 
         expect(url, contains('venue123_2_large.jpg'));
       });
@@ -205,7 +219,8 @@ void main() {
           data: {'name': 'Updated Name', 'photoCount': 3},
         );
 
-        final doc = await fakeFirestore.collection('venues').doc('venue123').get();
+        final doc =
+            await fakeFirestore.collection('venues').doc('venue123').get();
         expect(doc.data()!['name'], 'Updated Name');
         expect(doc.data()!['photoCount'], 3);
       });
@@ -236,11 +251,13 @@ void main() {
           environment: 1,
           createdBy: 'user123',
           photoCount: 2,
+          crewMemberIds: [],
         );
 
         await service.deleteVenue(venue: venue);
 
-        final doc = await fakeFirestore.collection('venues').doc('venue123').get();
+        final doc =
+            await fakeFirestore.collection('venues').doc('venue123').get();
         expect(doc.exists, false);
       });
 
@@ -268,12 +285,14 @@ void main() {
           environment: 1,
           createdBy: 'user123',
           photoCount: 5,
+          crewMemberIds: [],
         );
 
         // Should not throw even when files don't exist
         await service.deleteVenue(venue: venue);
 
-        final doc = await fakeFirestore.collection('venues').doc('venue456').get();
+        final doc =
+            await fakeFirestore.collection('venues').doc('venue456').get();
         expect(doc.exists, false);
       });
     });
@@ -292,6 +311,7 @@ void main() {
         'environment': 1,
         'createdBy': 'user123',
         'photoCount': 4,
+        'crewMemberIds': ['user1', 'user2'],
       };
 
       final venue = Venue.fromJson(json);
@@ -306,6 +326,7 @@ void main() {
       expect(venue.environment, 1);
       expect(venue.createdBy, 'user123');
       expect(venue.photoCount, 4);
+      expect(venue.crewMemberIds, ['user1', 'user2']);
     });
 
     test('fromJson defaults photoCount to 1 when missing', () {
@@ -345,5 +366,64 @@ void main() {
 
       expect(venue.photoCount, 1);
     });
+
+    test('fromJson defaults crewMemberIds to empty list when missing', () {
+      final json = {
+        'id': 'nocrew',
+        'name': 'No Crew Court',
+        'address': '123 No St',
+        'latitude': 37.0,
+        'longitude': -122.0,
+        'size': 1,
+        'surface': 1,
+        'environment': 1,
+        'createdBy': 'user123',
+      };
+
+      final venue = Venue.fromJson(json);
+
+      expect(venue.crewMemberIds, isEmpty);
+    });
   });
+}
+
+/// Mock FirebaseFunctions for testing
+class MockFirebaseFunctions implements FirebaseFunctions {
+  @override
+  HttpsCallable httpsCallable(String name, {HttpsCallableOptions? options}) {
+    return MockHttpsCallable();
+  }
+
+  @override
+  HttpsCallable httpsCallableFromUri(Uri uri, {HttpsCallableOptions? options}) {
+    return MockHttpsCallable();
+  }
+
+  @override
+  HttpsCallable httpsCallableFromUrl(String url,
+      {HttpsCallableOptions? options}) {
+    return MockHttpsCallable();
+  }
+
+  @override
+  void useFunctionsEmulator(String host, int port,
+      {bool automaticHostMapping = true}) {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class MockHttpsCallable implements HttpsCallable {
+  @override
+  Future<HttpsCallableResult<T>> call<T>([dynamic parameters]) async {
+    return MockHttpsCallableResult<T>();
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class MockHttpsCallableResult<T> implements HttpsCallableResult<T> {
+  @override
+  T get data => {} as T;
 }
