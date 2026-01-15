@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:crowdleague/utils/cache/player_cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -34,10 +35,15 @@ class NotificationsService {
         .get();
 
     List<NotificationViewModel> viewModels = [];
-    for (final docSnaphot in querySnapshot.docs) {
-      final notification =
-          Notification.fromJsonWithId(docSnaphot.id, docSnaphot.data());
-      viewModels.add(await _convertToViewModel(notification));
+    for (final docSnapshot in querySnapshot.docs) {
+      try {
+        final notification =
+            Notification.fromJsonWithId(docSnapshot.id, docSnapshot.data());
+        viewModels.add(await _convertToViewModel(notification));
+      } catch (e) {
+        // Skip notifications with unknown types or parsing errors
+        debugPrint('Error parsing notification ${docSnapshot.id}: $e');
+      }
     }
 
     return viewModels;
@@ -51,10 +57,15 @@ class NotificationsService {
         .snapshots()
         .asyncMap<List<NotificationViewModel>>((querySnapshot) async {
       List<NotificationViewModel> viewModels = [];
-      for (final docSnaphot in querySnapshot.docs) {
-        final notification =
-            Notification.fromJsonWithId(docSnaphot.id, docSnaphot.data());
-        viewModels.add(await _convertToViewModel(notification));
+      for (final docSnapshot in querySnapshot.docs) {
+        try {
+          final notification =
+              Notification.fromJsonWithId(docSnapshot.id, docSnapshot.data());
+          viewModels.add(await _convertToViewModel(notification));
+        } catch (e) {
+          // Skip notifications with unknown types or parsing errors
+          debugPrint('Error parsing notification ${docSnapshot.id}: $e');
+        }
       }
 
       return viewModels;
@@ -70,6 +81,7 @@ class NotificationsService {
 
       final aggregateQuery = await _firestore
           .collection('notifications')
+          .where('playerId', isEqualTo: _auth.currentUser!.uid)
           .where('viewed', isEqualTo: false)
           .count()
           .get();
