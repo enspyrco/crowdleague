@@ -6,7 +6,7 @@ import '../../services/user_service.dart';
 import '../../utils/locator.dart';
 import '../models/views/notification_view_model.dart';
 
-class CrewRequestNotificationWidget extends StatelessWidget {
+class CrewRequestNotificationWidget extends StatefulWidget {
   const CrewRequestNotificationWidget(
     CrewRequestNotificationViewModel viewModel, {
     super.key,
@@ -14,24 +14,48 @@ class CrewRequestNotificationWidget extends StatelessWidget {
 
   final CrewRequestNotificationViewModel _notificationViewModel;
 
-  Future<void> _declineCrewRequest(
-      String notificationId, String requesterId) async {
-    locate<UserService>().declineCrewRequest(
-      notificationId,
-      requesterId,
+  @override
+  State<CrewRequestNotificationWidget> createState() =>
+      _CrewRequestNotificationWidgetState();
+}
+
+class _CrewRequestNotificationWidgetState
+    extends State<CrewRequestNotificationWidget> {
+  bool _isAccepting = false;
+  bool _isDeclining = false;
+
+  Future<void> _acceptCrewRequest() async {
+    setState(() => _isAccepting = true);
+    await locate<UserService>().acceptCrewRequest(
+      requesterId: widget._notificationViewModel.requesterId,
+      requesteeId: widget._notificationViewModel.requesteeId,
+      notificationId: widget._notificationViewModel.notification.id,
+    );
+  }
+
+  Future<void> _declineCrewRequest() async {
+    setState(() => _isDeclining = true);
+    await locate<UserService>().declineCrewRequest(
+      widget._notificationViewModel.notification.id,
+      widget._notificationViewModel.requesterId,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = _isAccepting || _isDeclining;
+    final showWaiting = widget._notificationViewModel.waiting || _isAccepting;
+
     return Card(
       color: Theme.of(context).brightness == Brightness.dark
           ? Colors.grey.shade800
           : Colors.white,
       child: ListTile(
-        leading: Avatar(playerId: _notificationViewModel.requesterId, picSize: PicSize.small),
+        leading: Avatar(
+            playerId: widget._notificationViewModel.requesterId,
+            picSize: PicSize.small),
         title: Text(
-          '${_notificationViewModel.requesterName} wants to join crews',
+          '${widget._notificationViewModel.requesterName} wants to join crews',
           style: Theme.of(context).textTheme.bodyLarge!,
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
@@ -40,32 +64,47 @@ class CrewRequestNotificationWidget extends StatelessWidget {
           spacing: 10,
           runSpacing: 8,
           children: [
-            if (!_notificationViewModel.waiting) ...[
+            if (!showWaiting && !_isDeclining) ...[
               OutlinedButton(
-                onPressed: () {
-                  locate<UserService>().acceptCrewRequest(
-                    requesterId: _notificationViewModel.requesterId,
-                    requesteeId: _notificationViewModel.requesteeId,
-                    notificationId: _notificationViewModel.notification.id,
-                  );
-                },
+                onPressed: isLoading ? null : _acceptCrewRequest,
                 child: Text(
                   'Accept',
                   style: Theme.of(context).textTheme.bodyMedium!,
                 ),
               ),
               OutlinedButton(
-                onPressed: () {
-                  _declineCrewRequest(_notificationViewModel.notification.id,
-                      _notificationViewModel.requesterId);
-                },
+                onPressed: isLoading ? null : _declineCrewRequest,
                 child: Text(
                   'Decline',
                   style: Theme.of(context).textTheme.bodyMedium!,
                 ),
               ),
-            ] else
-              Text('Updating crew members...'),
+            ] else if (_isDeclining)
+              const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  SizedBox(width: 8),
+                  Text('Declining...'),
+                ],
+              )
+            else
+              const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  SizedBox(width: 8),
+                  Text('Updating crew members...'),
+                ],
+              ),
           ],
         ),
       ),

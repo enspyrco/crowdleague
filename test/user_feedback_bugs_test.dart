@@ -185,7 +185,8 @@ void main() {
 
         // Tap Accept button
         await tester.tap(find.widgetWithText(OutlinedButton, 'Accept'));
-        await tester.pumpAndSettle();
+        // Use pump() instead of pumpAndSettle() because CircularProgressIndicator never settles
+        await tester.pump();
 
         // Verify service was called with correct arguments
         expect(mockUserService.acceptCrewRequestCalled, isTrue,
@@ -248,7 +249,8 @@ void main() {
 
         // Tap Decline button
         await tester.tap(find.widgetWithText(OutlinedButton, 'Decline'));
-        await tester.pumpAndSettle();
+        // Use pump() instead of pumpAndSettle() because CircularProgressIndicator never settles
+        await tester.pump();
 
         // Verify service was called with correct arguments
         expect(mockUserService.declineCrewRequestCalled, isTrue,
@@ -303,7 +305,8 @@ void main() {
             ),
           ),
         );
-        await tester.pumpAndSettle();
+        // Use pump() instead of pumpAndSettle() because CircularProgressIndicator never settles
+        await tester.pump();
 
         // Buttons should not be visible when waiting
         expect(find.text('Accept'), findsNothing,
