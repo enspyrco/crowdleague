@@ -29,14 +29,14 @@ class _CrewMenuButtonState extends State<CrewMenuButton> {
           },
           child: Text(
             'Split your crews',
-            style: Theme.of(context).textTheme.displaySmall!,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
         MenuItemButton(
           onPressed: () {},
           child: Text(
             'Unfollow',
-            style: Theme.of(context).textTheme.displaySmall!,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
       ],
