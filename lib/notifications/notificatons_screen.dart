@@ -19,16 +19,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: FutureBuilder(
-          future: locate<NotificationsService>().retrieveNotifications(),
+        padding: const EdgeInsets.all(8.0),
+        child: StreamBuilder<List<NotificationViewModel>>(
+          stream: locate<NotificationsService>().notificationsStream(),
           builder: (context, viewModelsSnapshot) {
             if (viewModelsSnapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
 
             if (viewModelsSnapshot.hasError) {
-              return Center(
+              return const Center(
                 child: Text('Error loading notifications'),
               );
             }
