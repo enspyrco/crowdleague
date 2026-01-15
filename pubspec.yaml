@@ -2,7 +2,7 @@ name: crowdleague
 description: "Be in a league of your own..."
 publish_to: "none"
 
-version: 0.0.11+25
+version: 0.0.12+26
 
 environment:
   sdk: ^3.5.4
