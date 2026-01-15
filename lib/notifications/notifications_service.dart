@@ -34,10 +34,15 @@ class NotificationsService {
         .get();
 
     List<NotificationViewModel> viewModels = [];
-    for (final docSnaphot in querySnapshot.docs) {
-      final notification =
-          Notification.fromJsonWithId(docSnaphot.id, docSnaphot.data());
-      viewModels.add(await _convertToViewModel(notification));
+    for (final docSnapshot in querySnapshot.docs) {
+      try {
+        final notification =
+            Notification.fromJsonWithId(docSnapshot.id, docSnapshot.data());
+        viewModels.add(await _convertToViewModel(notification));
+      } catch (e) {
+        // Skip notifications with unknown types or parsing errors
+        print('Error parsing notification ${docSnapshot.id}: $e');
+      }
     }
 
     return viewModels;
@@ -70,6 +75,7 @@ class NotificationsService {
 
       final aggregateQuery = await _firestore
           .collection('notifications')
+          .where('playerId', isEqualTo: _auth.currentUser!.uid)
           .where('viewed', isEqualTo: false)
           .count()
           .get();

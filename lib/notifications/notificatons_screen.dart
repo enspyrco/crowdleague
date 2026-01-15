@@ -23,8 +23,25 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         child: FutureBuilder(
           future: locate<NotificationsService>().retrieveNotifications(),
           builder: (context, viewModelsSnapshot) {
+            if (viewModelsSnapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (viewModelsSnapshot.hasError) {
+              return Center(
+                child: Text('Error loading notifications'),
+              );
+            }
+
             if (viewModelsSnapshot.hasData) {
               final viewModels = viewModelsSnapshot.data!;
+
+              if (viewModels.isEmpty) {
+                return const Center(
+                  child: Text('No notifications yet'),
+                );
+              }
+
               return ListView.builder(
                 itemCount: viewModels.length,
                 itemBuilder: (context, index) {
@@ -48,9 +65,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   return Container();
                 },
               );
-            } else {
-              return Container();
             }
+
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),
