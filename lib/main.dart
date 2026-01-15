@@ -33,6 +33,7 @@ import 'venues/venues_service.dart';
 import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
 import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
 import 'venues/venue-detail/venue_detail_screen.dart';
+import 'venues/screens/venue_crew_screen.dart';
 import 'utils/locator.dart';
 
 final _router = GoRouter(
@@ -95,6 +96,13 @@ final _router = GoRouter(
       ),
     ),
     GoRoute(
+      name: 'venue-crew',
+      path: '/venue-crew/:id',
+      builder: (context, state) => VenueCrewScreen(
+        venueId: state.pathParameters['id']!,
+      ),
+    ),
+    GoRoute(
       name: 'find-players',
       path: '/find-players',
       builder: (context, state) => const FindPlayersScreen(),
@@ -134,8 +142,10 @@ void main() async {
   // Setup the data layer of the "data layer architecture"
   final firestore = FirebaseFirestore.instanceFor(
       app: firebaseApp, databaseId: kDatabaseName);
-  final venuesStorage = FirebaseStorage.instanceFor(bucket: 'gs://$kVenuesBucket');
-  final profilesStorage = FirebaseStorage.instanceFor(bucket: 'gs://$kProfilesBucket');
+  final venuesStorage =
+      FirebaseStorage.instanceFor(bucket: 'gs://$kVenuesBucket');
+  final profilesStorage =
+      FirebaseStorage.instanceFor(bucket: 'gs://$kProfilesBucket');
   final auth = FirebaseAuth.instance;
   final messaging = FirebaseMessaging.instance;
   final cloudFunctions = FirebaseFunctions.instanceFor(region: 'us-central1');
@@ -175,6 +185,8 @@ void main() async {
   Locator.add<VenuesService>(VenuesService(
     firestore: firestore,
     storage: venuesStorage,
+    cloudFunctions: cloudFunctions,
+    auth: auth,
   ));
   Locator.add<ImagesService>(ImagesService(
     storage: profilesStorage,

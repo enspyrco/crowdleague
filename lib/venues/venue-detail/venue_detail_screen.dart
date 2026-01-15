@@ -22,16 +22,21 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   Venue? _venue;
   bool _deleting = false;
   bool _processingPayment = false;
+  bool _processingCrew = false;
   int _currentPhotoIndex = 0;
   final _pageController = PageController();
 
   // Booking price in cents - could be fetched from venue data or pricing service
-  int get _bookingPriceInCents => _venue?.bookingPrice ?? 2000; // Default $20.00
+  int get _bookingPriceInCents =>
+      _venue?.bookingPrice ?? 2000; // Default $20.00
 
   String get _formattedPrice {
     final dollars = _bookingPriceInCents / 100;
     return '\$${dollars.toStringAsFixed(2)}';
   }
+
+  bool get _isInCrew =>
+      _venue != null && locate<VenuesService>().isUserInVenueCrew(_venue!);
 
   Future<void> _retrieveVenue() async {
     final venue = await locate<VenuesService>().retrieveVenue(widget.venueId);
@@ -98,6 +103,59 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
       }
     } finally {
       if (mounted) setState(() => _processingPayment = false);
+    }
+  }
+
+  Future<void> _joinCrew() async {
+    setState(() => _processingCrew = true);
+    try {
+      await locate<VenuesService>().joinVenueCrew(widget.venueId);
+      await _retrieveVenue();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Joined the crew!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to join: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _processingCrew = false);
+    }
+  }
+
+  Future<void> _leaveCrew() async {
+    setState(() => _processingCrew = true);
+    try {
+      await locate<VenuesService>().leaveVenueCrew(widget.venueId);
+      await _retrieveVenue();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Left the crew'),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to leave: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _processingCrew = false);
     }
   }
 
@@ -225,6 +283,9 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               ),
             ),
             const SizedBox(height: 15),
+            // Crew section
+            _buildCrewSection(),
+            const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: ElevatedButton.icon(
@@ -252,6 +313,83 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                   )),
           ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildCrewSection() {
+    final crewCount = _venue!.crewMemberIds.length;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.group, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Crew',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Spacer(),
+                  Text(
+                    '$crewCount ${crewCount == 1 ? 'member' : 'members'}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey,
+                        ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              if (_isInCrew)
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: crewCount > 0
+                            ? () =>
+                                context.push('/venue-crew/${widget.venueId}')
+                            : null,
+                        icon: const Icon(Icons.people),
+                        label: const Text('View Members'),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    OutlinedButton(
+                      onPressed: _processingCrew ? null : _leaveCrew,
+                      child: _processingCrew
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text('Leave'),
+                    ),
+                  ],
+                )
+              else
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _processingCrew ? null : _joinCrew,
+                    icon: _processingCrew
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.group_add),
+                    label: Text(_processingCrew ? 'Joining...' : 'Join Crew'),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

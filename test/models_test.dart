@@ -19,8 +19,7 @@ void main() {
       final json = {
         'name': 'John Doe',
         'picId': 123,
-        'pendingCrewRequests': ['req1', 'req2'],
-        'crewIds': ['crew1', 'crew2'],
+        'venueCrewIds': ['venue1', 'venue2'],
       };
 
       final player = Player.fromJsonWithId('player123', json);
@@ -28,8 +27,7 @@ void main() {
       expect(player.id, 'player123');
       expect(player.name, 'John Doe');
       expect(player.picId, 123);
-      expect(player.pendingCrewRequests, ['req1', 'req2']);
-      expect(player.crewIds, ['crew1', 'crew2']);
+      expect(player.venueCrewIds, ['venue1', 'venue2']);
     });
 
     test('fromJsonWithId handles null values with defaults', () {
@@ -40,8 +38,7 @@ void main() {
       expect(player.id, 'player123');
       expect(player.name, '');
       expect(player.picId, 0);
-      expect(player.pendingCrewRequests, isEmpty);
-      expect(player.crewIds, isEmpty);
+      expect(player.venueCrewIds, isEmpty);
     });
 
     test('toJson returns correct map', () {
@@ -49,8 +46,7 @@ void main() {
         id: 'player123',
         name: 'John Doe',
         picId: 123,
-        pendingCrewRequests: ['req1'],
-        crewIds: ['crew1'],
+        venueCrewIds: ['venue1'],
       );
 
       final json = player.toJson();
@@ -58,8 +54,7 @@ void main() {
       expect(json['id'], 'player123');
       expect(json['name'], 'John Doe');
       expect(json['picId'], 123);
-      expect(json['crewRequests'], ['req1']);
-      expect(json['crewIds'], ['crew1']);
+      expect(json['venueCrewIds'], ['venue1']);
     });
 
     test('toString returns formatted string', () {
@@ -67,8 +62,7 @@ void main() {
         id: 'player123',
         name: 'John Doe',
         picId: 123,
-        pendingCrewRequests: ['req1'],
-        crewIds: ['crew1'],
+        venueCrewIds: ['venue1'],
       );
 
       expect(player.toString(), contains('player123'));
@@ -80,8 +74,7 @@ void main() {
         id: 'player123',
         name: 'John',
         picId: 456,
-        pendingCrewRequests: [],
-        crewIds: [],
+        venueCrewIds: [],
       );
 
       final url = player.constructProfilePicUrl(PicSize.small);
@@ -95,8 +88,7 @@ void main() {
         id: 'player123',
         name: 'John',
         picId: 456,
-        pendingCrewRequests: [],
-        crewIds: [],
+        venueCrewIds: [],
       );
 
       final url = player.constructProfilePicUrl(PicSize.medium);
@@ -109,8 +101,7 @@ void main() {
         id: 'player123',
         name: 'John',
         picId: 456,
-        pendingCrewRequests: [],
-        crewIds: [],
+        venueCrewIds: [],
       );
 
       final url = player.constructProfilePicUrl(PicSize.large);
@@ -126,8 +117,7 @@ void main() {
       expect(emptyPlayer.id, '');
       expect(emptyPlayer.name, '?');
       expect(emptyPlayer.picId, 0);
-      expect(emptyPlayer.pendingCrewRequests, isEmpty);
-      expect(emptyPlayer.crewIds, isEmpty);
+      expect(emptyPlayer.venueCrewIds, isEmpty);
     });
   });
 
@@ -143,6 +133,7 @@ void main() {
         'latitude': 37.7749,
         'longitude': -122.4194,
         'createdBy': 'user123',
+        'crewMemberIds': ['user1', 'user2'],
       };
 
       final venue = Venue.fromJson(json);
@@ -156,6 +147,25 @@ void main() {
       expect(venue.latitude, 37.7749);
       expect(venue.longitude, -122.4194);
       expect(venue.createdBy, 'user123');
+      expect(venue.crewMemberIds, ['user1', 'user2']);
+    });
+
+    test('fromJson handles null crewMemberIds', () {
+      final json = {
+        'id': 'venue123',
+        'size': 2,
+        'surface': 1,
+        'environment': 1,
+        'name': 'Test Court',
+        'address': '123 Main St',
+        'latitude': 37.7749,
+        'longitude': -122.4194,
+        'createdBy': 'user123',
+      };
+
+      final venue = Venue.fromJson(json);
+
+      expect(venue.crewMemberIds, isEmpty);
     });
 
     test('constructor creates Venue correctly', () {
@@ -170,6 +180,7 @@ void main() {
         longitude: -74.0060,
         createdBy: 'user456',
         photoCount: 3,
+        crewMemberIds: ['user1'],
       );
 
       expect(venue.id, 'venue123');
@@ -182,6 +193,7 @@ void main() {
       expect(venue.longitude, -74.0060);
       expect(venue.createdBy, 'user456');
       expect(venue.photoCount, 3);
+      expect(venue.crewMemberIds, ['user1']);
     });
   });
 
@@ -281,187 +293,93 @@ void main() {
   group('Notification', () {
     final timestamp = Timestamp.fromMillisecondsSinceEpoch(1704067200000);
 
-    group('CrewRequestNotification', () {
-      test('fromJson creates CrewRequestNotification correctly', () {
-        final json = {
-          'type': 'crew-request',
-          'id': 'notif123',
-          'playerId': 'player123',
-          'viewed': true,
-          'opened': false,
-          'waiting': true,
-          'requesterId': 'requester123',
-          'requesteeId': 'requestee123',
-          'timestamp': timestamp,
-        };
-
-        final notification = Notification.fromJson(json);
-
-        expect(notification, isA<CrewRequestNotification>());
-        final crewRequest = notification as CrewRequestNotification;
-        expect(crewRequest.id, 'notif123');
-        expect(crewRequest.playerId, 'player123');
-        expect(crewRequest.viewed, true);
-        expect(crewRequest.opened, false);
-        expect(crewRequest.waiting, true);
-        expect(crewRequest.requesterId, 'requester123');
-        expect(crewRequest.requesteeId, 'requestee123');
-      });
-
-      test('fromJsonWithId creates CrewRequestNotification correctly', () {
-        final json = {
-          'type': 'crew-request',
-          'playerId': 'player123',
-          'viewed': false,
-          'opened': false,
-          'waiting': false,
-          'requesterId': 'requester123',
-          'requesteeId': 'requestee123',
-          'timestamp': timestamp,
-        };
-
-        final notification = Notification.fromJsonWithId('notif456', json);
-
-        expect(notification, isA<CrewRequestNotification>());
-        expect(notification.id, 'notif456');
-      });
-
-      test('toJson returns correct map', () {
-        final notification = CrewRequestNotification(
-          id: 'notif789',
-          playerId: 'player789',
-          viewed: true,
-          opened: true,
-          waiting: false,
-          requesterId: 'requester789',
-          requesteeId: 'requestee789',
-          timestamp: timestamp,
-        );
-
-        final json = notification.toJson();
-
-        expect(json['id'], 'notif789');
-        expect(json['playerId'], 'player789');
-        expect(json['type'], 'follow-request');
-        expect(json['viewed'], true);
-        expect(json['opened'], true);
-        expect(json['waiting'], false);
-        expect(json['requesterId'], 'requester789');
-        expect(json['requesteeId'], 'requestee789');
-      });
-
-      test('handles null values with defaults', () {
-        final json = {
-          'type': 'crew-request',
-          'requesterId': 'requester123',
-          'requesteeId': 'requestee123',
-          'timestamp': timestamp,
-        };
-
-        final notification =
-            Notification.fromJson(json) as CrewRequestNotification;
-
-        expect(notification.id, '');
-        expect(notification.playerId, '');
-        expect(notification.viewed, false);
-        expect(notification.opened, false);
-        expect(notification.waiting, false);
-      });
-    });
-
-    group('CrewAcceptedNotification', () {
-      test('fromJson creates CrewAcceptedNotification correctly', () {
-        final json = {
-          'type': 'crew-accepted',
-          'id': 'notif123',
-          'playerId': 'player123',
-          'viewed': true,
-          'opened': true,
-          'waiting': false,
-          'requesterId': 'requester123',
-          'requesteeId': 'requestee123',
-          'timestamp': timestamp,
-        };
-
-        final notification = Notification.fromJson(json);
-
-        expect(notification, isA<CrewAcceptedNotification>());
-        final crewAccepted = notification as CrewAcceptedNotification;
-        expect(crewAccepted.id, 'notif123');
-        expect(crewAccepted.requesterId, 'requester123');
-        expect(crewAccepted.requesteeId, 'requestee123');
-      });
-
-      test('toJson returns correct map', () {
-        final notification = CrewAcceptedNotification(
-          id: 'notif789',
-          playerId: 'player789',
-          viewed: false,
-          opened: false,
-          waiting: true,
-          requesterId: 'requester789',
-          requesteeId: 'requestee789',
-          timestamp: timestamp,
-        );
-
-        final json = notification.toJson();
-
-        expect(json['type'], 'crew-accepted');
-        expect(json['waiting'], true);
-      });
-    });
-
-    group('SplitCrewsNotification', () {
-      test('fromJson creates SplitCrewsNotification correctly', () {
-        final json = {
-          'type': 'split-crew',
-          'id': 'notif123',
-          'playerId': 'player123',
-          'viewed': false,
-          'opened': false,
-          'requesterId': 'requester123',
-          'requesteeId': 'requestee123',
-          'timestamp': timestamp,
-        };
-
-        final notification = Notification.fromJson(json);
-
-        expect(notification, isA<SplitCrewsNotification>());
-        final splitCrew = notification as SplitCrewsNotification;
-        expect(splitCrew.id, 'notif123');
-        expect(splitCrew.requesterId, 'requester123');
-        expect(splitCrew.requesteeId, 'requestee123');
-      });
-
-      test('toJson returns correct map', () {
-        final notification = SplitCrewsNotification(
-          id: 'notif789',
-          playerId: 'player789',
-          viewed: true,
-          opened: false,
-          requesterId: 'requester789',
-          requesteeId: 'requestee789',
-          timestamp: timestamp,
-        );
-
-        final json = notification.toJson();
-
-        expect(json['type'], 'split-crew');
-        expect(json['viewed'], true);
-        expect(json['opened'], false);
-      });
-    });
-
-    test('fromJson throws on unknown type', () {
+    test('fromJson creates UnknownNotification for legacy crew-request type',
+        () {
       final json = {
-        'type': 'unknown-type',
+        'type': 'crew-request',
+        'id': 'notif123',
+        'playerId': 'player123',
+        'viewed': true,
+        'opened': false,
         'timestamp': timestamp,
       };
 
-      expect(
-        () => Notification.fromJson(json),
-        throwsException,
+      final notification = Notification.fromJson(json);
+
+      expect(notification, isA<UnknownNotification>());
+      final unknown = notification as UnknownNotification;
+      expect(unknown.type, 'crew-request');
+    });
+
+    test('fromJson creates UnknownNotification for legacy crew-accepted type',
+        () {
+      final json = {
+        'type': 'crew-accepted',
+        'id': 'notif123',
+        'playerId': 'player123',
+        'viewed': true,
+        'opened': false,
+        'timestamp': timestamp,
+      };
+
+      final notification = Notification.fromJson(json);
+
+      expect(notification, isA<UnknownNotification>());
+      final unknown = notification as UnknownNotification;
+      expect(unknown.type, 'crew-accepted');
+    });
+
+    test('fromJson creates UnknownNotification for legacy split-crew type', () {
+      final json = {
+        'type': 'split-crew',
+        'id': 'notif123',
+        'playerId': 'player123',
+        'viewed': true,
+        'opened': false,
+        'timestamp': timestamp,
+      };
+
+      final notification = Notification.fromJson(json);
+
+      expect(notification, isA<UnknownNotification>());
+      final unknown = notification as UnknownNotification;
+      expect(unknown.type, 'split-crew');
+    });
+
+    test('fromJson creates UnknownNotification for truly unknown type', () {
+      final json = {
+        'type': 'unknown-type',
+        'id': 'notif123',
+        'playerId': 'player123',
+        'viewed': false,
+        'opened': false,
+        'timestamp': timestamp,
+      };
+
+      final notification = Notification.fromJson(json);
+
+      expect(notification, isA<UnknownNotification>());
+      final unknown = notification as UnknownNotification;
+      expect(unknown.type, 'unknown-type');
+    });
+
+    test('UnknownNotification toJson returns correct map', () {
+      final notification = UnknownNotification(
+        id: 'notif789',
+        playerId: 'player789',
+        viewed: true,
+        opened: false,
+        type: 'test-type',
+        timestamp: timestamp,
       );
+
+      final json = notification.toJson();
+
+      expect(json['id'], 'notif789');
+      expect(json['playerId'], 'player789');
+      expect(json['type'], 'test-type');
+      expect(json['viewed'], true);
+      expect(json['opened'], false);
     });
   });
 
@@ -635,84 +553,23 @@ void main() {
   group('NotificationViewModel', () {
     final timestamp = Timestamp.fromMillisecondsSinceEpoch(1704067200000);
 
-    group('CrewRequestNotificationViewModel', () {
-      test('creates correctly with all fields', () {
-        final notification = CrewRequestNotification(
-          id: 'notif123',
-          playerId: 'player123',
-          viewed: false,
-          opened: false,
-          waiting: false,
-          requesterId: 'requester123',
-          requesteeId: 'requestee123',
-          timestamp: timestamp,
-        );
+    test('UnknownNotificationViewModel creates correctly', () {
+      final notification = UnknownNotification(
+        id: 'notif123',
+        playerId: 'player123',
+        viewed: false,
+        opened: false,
+        type: 'test-type',
+        timestamp: timestamp,
+      );
 
-        final viewModel = CrewRequestNotificationViewModel(
-          notification: notification,
-          waiting: false,
-          requesterName: 'John Doe',
-          requesterId: 'requester123',
-          requesteeId: 'requestee123',
-        );
+      final viewModel = UnknownNotificationViewModel(
+        notification: notification,
+        type: 'test-type',
+      );
 
-        expect(viewModel.notification, notification);
-        expect(viewModel.waiting, false);
-        expect(viewModel.requesterName, 'John Doe');
-        expect(viewModel.requesterId, 'requester123');
-        expect(viewModel.requesteeId, 'requestee123');
-      });
-    });
-
-    group('CrewAcceptedNotificationViewModel', () {
-      test('creates correctly with all fields', () {
-        final notification = CrewAcceptedNotification(
-          id: 'notif456',
-          playerId: 'player456',
-          viewed: true,
-          opened: true,
-          waiting: false,
-          requesterId: 'requester456',
-          requesteeId: 'requestee456',
-          timestamp: timestamp,
-        );
-
-        final viewModel = CrewAcceptedNotificationViewModel(
-          notification: notification,
-          playerId: 'player456',
-          otherName: 'Jane Smith',
-          otherPlayerId: 'other456',
-        );
-
-        expect(viewModel.notification, notification);
-        expect(viewModel.playerId, 'player456');
-        expect(viewModel.otherName, 'Jane Smith');
-        expect(viewModel.otherPlayerId, 'other456');
-      });
-    });
-
-    group('SplitCrewsNotificationViewModel', () {
-      test('creates correctly with all fields', () {
-        final notification = SplitCrewsNotification(
-          id: 'notif789',
-          playerId: 'player789',
-          viewed: false,
-          opened: false,
-          requesterId: 'requester789',
-          requesteeId: 'requestee789',
-          timestamp: timestamp,
-        );
-
-        final viewModel = SplitCrewsNotificationViewModel(
-          notification: notification,
-          playerName: 'Bob Wilson',
-          playerId: 'player789',
-        );
-
-        expect(viewModel.notification, notification);
-        expect(viewModel.playerName, 'Bob Wilson');
-        expect(viewModel.playerId, 'player789');
-      });
+      expect(viewModel.notification, notification);
+      expect(viewModel.type, 'test-type');
     });
   });
 }

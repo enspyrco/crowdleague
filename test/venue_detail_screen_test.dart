@@ -1,6 +1,8 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/venues/venues_service.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,19 +13,31 @@ void main() {
   group('VenuesService URL generation for VenueDetailScreen', () {
     late FakeFirebaseFirestore fakeFirestore;
     late MockFirebaseStorage fakeStorage;
+    late MockFirebaseAuth mockAuth;
+    late MockFirebaseFunctions mockFunctions;
     late VenuesService service;
 
     setUp(() {
       fakeFirestore = FakeFirebaseFirestore();
       fakeStorage = MockFirebaseStorage();
-      service = VenuesService(firestore: fakeFirestore, storage: fakeStorage);
+      mockAuth = MockFirebaseAuth();
+      mockFunctions = MockFirebaseFunctions();
+      service = VenuesService(
+        firestore: fakeFirestore,
+        storage: fakeStorage,
+        cloudFunctions: mockFunctions,
+        auth: mockAuth,
+      );
     });
 
     test('generates correct URL format for PageView display', () {
       // When displaying photos in PageView, we use medium size
-      final url0 = service.getPhotoUrl('venue123', PicSize.medium, photoIndex: 0);
-      final url1 = service.getPhotoUrl('venue123', PicSize.medium, photoIndex: 1);
-      final url2 = service.getPhotoUrl('venue123', PicSize.medium, photoIndex: 2);
+      final url0 =
+          service.getPhotoUrl('venue123', PicSize.medium, photoIndex: 0);
+      final url1 =
+          service.getPhotoUrl('venue123', PicSize.medium, photoIndex: 1);
+      final url2 =
+          service.getPhotoUrl('venue123', PicSize.medium, photoIndex: 2);
 
       expect(url0, contains('venue123_0_medium.jpg'));
       expect(url1, contains('venue123_1_medium.jpg'));
@@ -128,4 +142,45 @@ void main() {
       expect(deleted, isNull);
     });
   });
+}
+
+/// Mock FirebaseFunctions for testing
+class MockFirebaseFunctions implements FirebaseFunctions {
+  @override
+  HttpsCallable httpsCallable(String name, {HttpsCallableOptions? options}) {
+    return MockHttpsCallable();
+  }
+
+  @override
+  HttpsCallable httpsCallableFromUri(Uri uri, {HttpsCallableOptions? options}) {
+    return MockHttpsCallable();
+  }
+
+  @override
+  HttpsCallable httpsCallableFromUrl(String url,
+      {HttpsCallableOptions? options}) {
+    return MockHttpsCallable();
+  }
+
+  @override
+  void useFunctionsEmulator(String host, int port,
+      {bool automaticHostMapping = true}) {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class MockHttpsCallable implements HttpsCallable {
+  @override
+  Future<HttpsCallableResult<T>> call<T>([dynamic parameters]) async {
+    return MockHttpsCallableResult<T>();
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class MockHttpsCallableResult<T> implements HttpsCallableResult<T> {
+  @override
+  T get data => {} as T;
 }

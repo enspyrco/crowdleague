@@ -22,55 +22,39 @@ sealed class Notification {
 
   factory Notification.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
+      // Old crew notification types - return UnknownNotification for migration
       case 'crew-request':
-        return CrewRequestNotification(
-          id: json['id'] ?? '',
-          playerId: json['playerId'] ?? '',
-          viewed: json['viewed'] ?? false,
-          opened: json['opened'] ?? false,
-          waiting: json['waiting'] ?? false,
-          requesterId: json['requesterId'],
-          requesteeId: json['requesteeId'],
-          timestamp: json['timestamp'],
-        );
       case 'crew-accepted':
-        return CrewAcceptedNotification(
-          id: json['id'] ?? '',
-          playerId: json['playerId'] ?? '',
-          viewed: json['viewed'] ?? false,
-          opened: json['opened'] ?? false,
-          waiting: json['waiting'] ?? false,
-          requesterId: json['requesterId'],
-          requesteeId: json['requesteeId'],
-          timestamp: json['timestamp'],
-        );
       case 'split-crew':
-        return SplitCrewsNotification(
+        return UnknownNotification(
           id: json['id'] ?? '',
           playerId: json['playerId'] ?? '',
           viewed: json['viewed'] ?? false,
           opened: json['opened'] ?? false,
-          requesterId: json['requesterId'],
-          requesteeId: json['requesteeId'],
           timestamp: json['timestamp'],
+          type: json['type'],
         );
       default:
-        throw Exception('Unknown notification type');
+        return UnknownNotification(
+          id: json['id'] ?? '',
+          playerId: json['playerId'] ?? '',
+          viewed: json['viewed'] ?? false,
+          opened: json['opened'] ?? false,
+          timestamp: json['timestamp'],
+          type: json['type'] ?? 'unknown',
+        );
     }
   }
 
   Map<String, Object?> toJson();
 }
 
-class CrewRequestNotification extends Notification {
-  final String requesterId;
-  final String requesteeId;
-  final bool waiting;
+/// Placeholder for unknown or deprecated notification types
+class UnknownNotification extends Notification {
+  final String type;
 
-  const CrewRequestNotification({
-    required this.requesteeId,
-    required this.requesterId,
-    required this.waiting,
+  const UnknownNotification({
+    required this.type,
     required super.id,
     required super.playerId,
     required super.timestamp,
@@ -83,71 +67,7 @@ class CrewRequestNotification extends Notification {
     return {
       'id': id,
       'playerId': playerId,
-      'type': 'follow-request',
-      'requesterId': requesterId,
-      'requesteeId': requesteeId,
-      'waiting': waiting,
-      'viewed': viewed,
-      'opened': opened,
-      'timestamp': timestamp,
-    };
-  }
-}
-
-class CrewAcceptedNotification extends Notification {
-  final String requesterId;
-  final String requesteeId;
-  final bool waiting;
-
-  const CrewAcceptedNotification({
-    required this.requesteeId,
-    required this.requesterId,
-    required this.waiting,
-    required super.id,
-    required super.playerId,
-    required super.timestamp,
-    required super.opened,
-    required super.viewed,
-  });
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'playerId': playerId,
-      'type': 'crew-accepted',
-      'requesterId': requesterId,
-      'requesteeId': requesteeId,
-      'waiting': waiting,
-      'viewed': viewed,
-      'opened': opened,
-      'timestamp': timestamp,
-    };
-  }
-}
-
-class SplitCrewsNotification extends Notification {
-  final String requesterId;
-  final String requesteeId;
-
-  const SplitCrewsNotification({
-    required this.requesteeId,
-    required this.requesterId,
-    required super.id,
-    required super.playerId,
-    required super.timestamp,
-    required super.opened,
-    required super.viewed,
-  });
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'playerId': playerId,
-      'type': 'split-crew',
-      'requesterId': requesterId,
-      'requesteeId': requesteeId,
+      'type': type,
       'viewed': viewed,
       'opened': opened,
       'timestamp': timestamp,

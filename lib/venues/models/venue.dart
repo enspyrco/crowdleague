@@ -10,6 +10,7 @@ class Venue {
     required this.longitude,
     required this.createdBy,
     required this.photoCount,
+    required this.crewMemberIds,
     this.bookingPrice,
   });
 
@@ -24,6 +25,7 @@ class Venue {
   final String createdBy;
   final int photoCount; // 1-5 photos per venue
   final int? bookingPrice; // Price in cents (e.g., 2000 = $20.00)
+  final List<String> crewMemberIds; // Player IDs in this venue's crew
 
   factory Venue.fromJson(Map<String, Object?> json) {
     return Venue(
@@ -38,6 +40,9 @@ class Venue {
       createdBy: json['createdBy'] as String,
       photoCount: (json['photoCount'] as int?) ?? 1, // Default 1 for legacy
       bookingPrice: json['bookingPrice'] as int?,
+      crewMemberIds: (json['crewMemberIds'] == null)
+          ? []
+          : List<String>.from(json['crewMemberIds'] as List),
     );
   }
 }

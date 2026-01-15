@@ -3,9 +3,6 @@ import 'package:flutter/material.dart' hide Notification;
 
 import 'notifications_service.dart';
 import 'models/views/notification_view_model.dart';
-import 'widgets/crew_accepted_notification_widget.dart';
-import 'widgets/crew_request_notification_widget.dart';
-import 'widgets/split_crews_notification_widget.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -52,14 +49,15 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         viewed: true);
                   }
 
-                  if (viewModel is CrewRequestNotificationViewModel) {
-                    return CrewRequestNotificationWidget(viewModel);
-                  }
-                  if (viewModel is CrewAcceptedNotificationViewModel) {
-                    return CrewAcceptedNotificationWidget(viewModel);
-                  }
-                  if (viewModel is SplitCrewsNotificationViewModel) {
-                    return SplitCrewsNotificationWidget(viewModel);
+                  // For now, show a simple card for unknown/legacy notifications
+                  if (viewModel is UnknownNotificationViewModel) {
+                    return Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.notifications),
+                        title: Text('Notification'),
+                        subtitle: Text('Type: ${viewModel.type}'),
+                      ),
+                    );
                   }
 
                   return Container();

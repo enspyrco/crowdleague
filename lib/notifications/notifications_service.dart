@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'models/notification.dart';
 import 'models/views/notification_view_model.dart';
-import '../players/models/player.dart';
 
 class NotificationsService {
   NotificationsService({
@@ -20,6 +19,7 @@ class NotificationsService {
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
+  // ignore: unused_field - will be used when new notification types are added
   final PlayerCache _playerCache;
 
   final _numNotificationsViewedStreamController =
@@ -39,7 +39,7 @@ class NotificationsService {
       try {
         final notification =
             Notification.fromJsonWithId(docSnapshot.id, docSnapshot.data());
-        viewModels.add(await _convertToViewModel(notification));
+        viewModels.add(_convertToViewModel(notification));
       } catch (e) {
         // Skip notifications with unknown types or parsing errors
         debugPrint('Error parsing notification ${docSnapshot.id}: $e');
@@ -61,7 +61,7 @@ class NotificationsService {
         try {
           final notification =
               Notification.fromJsonWithId(docSnapshot.id, docSnapshot.data());
-          viewModels.add(await _convertToViewModel(notification));
+          viewModels.add(_convertToViewModel(notification));
         } catch (e) {
           // Skip notifications with unknown types or parsing errors
           debugPrint('Error parsing notification ${docSnapshot.id}: $e');
@@ -104,46 +104,11 @@ class NotificationsService {
     _numNotificationsViewedStreamController.add(aggregateQuery.count ?? 0);
   }
 
-  Future<NotificationViewModel> _convertToViewModel(
-      Notification notification) async {
-    if (notification is CrewAcceptedNotification) {
-      final String otherPlayerId =
-          notification.requesterId == _auth.currentUser!.uid
-              ? notification.requesteeId
-              : notification.requesterId;
-
-      final Player otherPlayer =
-          await _playerCache.retrievePlayer(otherPlayerId);
-
-      return CrewAcceptedNotificationViewModel(
+  NotificationViewModel _convertToViewModel(Notification notification) {
+    if (notification is UnknownNotification) {
+      return UnknownNotificationViewModel(
         notification: notification,
-        playerId: notification.requesterId,
-        otherName: otherPlayer.name,
-        otherPlayerId: otherPlayer.id,
-      );
-    }
-
-    if (notification is CrewRequestNotification) {
-      final Player requester =
-          await _playerCache.retrievePlayer(notification.requesterId);
-
-      return CrewRequestNotificationViewModel(
-        notification: notification,
-        requesterName: requester.name,
-        requesteeId: notification.requesteeId,
-        requesterId: notification.requesterId,
-        waiting: notification.waiting,
-      );
-    }
-
-    if (notification is SplitCrewsNotification) {
-      final Player player =
-          await _playerCache.retrievePlayer(notification.requesteeId);
-
-      return SplitCrewsNotificationViewModel(
-        notification: notification,
-        playerName: player.name,
-        playerId: player.id,
+        type: notification.type,
       );
     }
 

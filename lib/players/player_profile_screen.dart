@@ -1,6 +1,8 @@
 import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/conversations/conversations_service.dart';
 import 'package:crowdleague/services/user_service.dart';
+import 'package:crowdleague/venues/venues_service.dart';
+import 'package:crowdleague/venues/models/venue.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,7 +10,6 @@ import 'players_service.dart';
 import '../utils/widgets/avatar.dart';
 import '../utils/locator.dart';
 import 'models/player.dart';
-import 'widgets/crew_menu_button.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   const PlayerProfileScreen({required String playerId, super.key})
@@ -22,8 +23,9 @@ class PlayerProfileScreen extends StatefulWidget {
 
 class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   bool _owner = false; // if the profile is the user's profile
-  bool _localPending = false; // so we can change pending UI locally on tap
   bool _findingConversation = false;
+  List<Venue> _venueCrews = [];
+  bool _loadingVenues = true;
 
   @override
   void initState() {
@@ -32,17 +34,29 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     _owner = widget._playerId == locate<UserService>().currentUserId!;
   }
 
-  // Remove playerId from crew list and tokenId from followerTokens if there
-  Future<void> _splitCrewsCallback() async {
-    if (mounted) {
-      setState(() {
-        _localPending = true;
-      });
+  Future<void> _loadVenueCrews(List<String> venueCrewIds) async {
+    if (venueCrewIds.isEmpty) {
+      if (mounted) {
+        setState(() {
+          _venueCrews = [];
+          _loadingVenues = false;
+        });
+      }
+      return;
     }
-    await locate<UserService>().splitCrews(widget._playerId);
+
+    final venues = <Venue>[];
+    for (final venueId in venueCrewIds) {
+      final venue = await locate<VenuesService>().retrieveVenue(venueId);
+      if (venue != null) {
+        venues.add(venue);
+      }
+    }
+
     if (mounted) {
       setState(() {
-        _localPending = false;
+        _venueCrews = venues;
+        _loadingVenues = false;
       });
     }
   }
@@ -70,10 +84,11 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
           stream: locate<PlayersService>().listenToPlayer(widget._playerId),
           builder: (context, snapshot) {
             final Player player = snapshot.data ?? EmptyPlayer();
-            final bool pending = player.pendingCrewRequests
-                .contains(locate<UserService>().currentUserId!);
-            final bool crew = player.crewIds
-                .contains(locate<UserService>().currentUserId!);
+
+            // Load venue crews when player data changes
+            if (snapshot.hasData && _loadingVenues) {
+              _loadVenueCrews(player.venueCrewIds);
+            }
 
             // Bust the cache so changes like `picStatus` will show up
             locate<PlayersService>()
@@ -81,9 +96,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
             return Column(
               children: [
-                SizedBox(
-                  height: 50,
-                ),
+                const SizedBox(height: 50),
                 GestureDetector(
                   onTap: () => (_owner)
                       ? context.pushNamed('edit-profile-pic', pathParameters: {
@@ -98,14 +111,12 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                         size: 100,
                       ),
                       if (_owner)
-                        Positioned(
+                        const Positioned(
                             bottom: 0.0, right: 0.0, child: Icon(Icons.edit))
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 50,
-                ),
+                const SizedBox(height: 50),
                 GestureDetector(
                   onTap: () {
                     context.pushNamed('edit-name',
@@ -116,87 +127,71 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                     children: [
                       Text(player.name,
                           style: Theme.of(context).textTheme.displayMedium!),
-                      if (_owner) Icon(Icons.edit)
+                      if (_owner) const Icon(Icons.edit)
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Expanded(
                   child: ListView(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          if (!_owner && !crew)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: OutlinedButton(
-                                onPressed: pending || _localPending
-                                    ? null
-                                    : () {
-                                        setState(() {
-                                          _localPending = true;
-                                        });
-                                        locate<UserService>().requestCrew(
-                                            playerId: widget._playerId);
-                                      },
-                                child: pending || _localPending
-                                    ? Text(
-                                        'Pending...',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!,
-                                      )
-                                    : Text(
-                                        'Join Crew',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!,
-                                      ),
-                              ),
-                            ),
-                          if (!_owner && crew)
-                            CrewMenuButton(callback: _splitCrewsCallback),
-                          if (!_owner)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: OutlinedButton.icon(
-                                onPressed: (_findingConversation)
-                                    ? null
-                                    : () => _openConversation(),
-                                icon: const Icon(Icons.chat_bubble_outline),
-                                label: (_findingConversation)
-                                    ? const Text('Opening...')
-                                    : Text('Message ${player.name.split(' ').first}'),
-                              ),
-                            ),
-                        ],
-                      ),
+                      if (!_owner)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: OutlinedButton.icon(
+                            onPressed: (_findingConversation)
+                                ? null
+                                : () => _openConversation(),
+                            icon: const Icon(Icons.chat_bubble_outline),
+                            label: (_findingConversation)
+                                ? const Text('Opening...')
+                                : Text(
+                                    'Message ${player.name.split(' ').first}'),
+                          ),
+                        ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 8.0, top: 20, bottom: 20),
-                        child: Text(
-                          'Crew Members',
-                          style: Theme.of(context).textTheme.displaySmall!,
+                            left: 8.0, top: 20, bottom: 10),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.location_on, size: 20),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Venue Crews',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(
-                        height: 60,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: player.crewIds.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Avatar(
-                                  playerId: player.crewIds[index],
-                                  picSize: PicSize.small,
-                                ),
-                              );
-                            }),
-                      ),
+                      if (_loadingVenues)
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      else if (_venueCrews.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            _owner
+                                ? 'You haven\'t joined any venue crews yet'
+                                : 'Not a member of any venue crews',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(color: Colors.grey),
+                          ),
+                        )
+                      else
+                        ..._venueCrews.map((venue) => ListTile(
+                              leading: const CircleAvatar(
+                                child: Icon(Icons.location_on),
+                              ),
+                              title: Text(venue.name),
+                              subtitle: Text(
+                                  '${venue.crewMemberIds.length} ${venue.crewMemberIds.length == 1 ? 'member' : 'members'}'),
+                              onTap: () =>
+                                  context.push('/venue-detail/${venue.id}'),
+                            )),
                     ],
                   ),
                 ),

@@ -22,6 +22,7 @@ void main() {
         environment: 1,
         createdBy: 'user123',
         photoCount: 1,
+        crewMemberIds: [],
         bookingPrice: 2500, // $25.00
       );
 
@@ -40,6 +41,7 @@ void main() {
         environment: 1,
         createdBy: 'user123',
         photoCount: 1,
+        crewMemberIds: [],
         bookingPrice: null,
       );
 
@@ -127,6 +129,7 @@ void main() {
         environment: 1,
         createdBy: 'u1',
         photoCount: 1,
+        crewMemberIds: [],
         bookingPrice: 3500,
       );
 
@@ -141,6 +144,7 @@ void main() {
         environment: 1,
         createdBy: 'u1',
         photoCount: 1,
+        crewMemberIds: [],
         bookingPrice: null,
       );
 
