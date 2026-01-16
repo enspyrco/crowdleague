@@ -29,6 +29,11 @@ import 'players/players_service.dart';
 import 'services/user_service.dart';
 import 'utils/globals.dart';
 import 'services/payment_service.dart';
+import 'teams/teams_service.dart';
+import 'teams/screens/teams_list_screen.dart';
+import 'teams/screens/create_team_screen.dart';
+import 'teams/screens/team_detail_screen.dart';
+import 'teams/screens/invite_to_team_screen.dart';
 import 'venues/venues_service.dart';
 import 'venues/add-venue/screens/finalise_new_venue_screen.dart';
 import 'venues/add-venue/screens/select_new_venue_location_screen.dart';
@@ -121,6 +126,30 @@ final _router = GoRouter(
         conversationId: state.pathParameters['id']!,
       ),
     ),
+    GoRoute(
+      name: 'teams',
+      path: '/teams',
+      builder: (context, state) => const TeamsListScreen(),
+    ),
+    GoRoute(
+      name: 'create-team',
+      path: '/create-team',
+      builder: (context, state) => const CreateTeamScreen(),
+    ),
+    GoRoute(
+      name: 'team-detail',
+      path: '/team/:id',
+      builder: (context, state) => TeamDetailScreen(
+        teamId: state.pathParameters['id']!,
+      ),
+    ),
+    GoRoute(
+      name: 'invite-to-team',
+      path: '/team/:id/invite',
+      builder: (context, state) => InviteToTeamScreen(
+        teamId: state.pathParameters['id']!,
+      ),
+    ),
   ],
 );
 
@@ -194,6 +223,11 @@ void main() async {
   ));
   Locator.add<TutorialNotifier>(TutorialNotifier());
   Locator.add<PaymentService>(PaymentService(cloudFunctions));
+  Locator.add<TeamsService>(TeamsService(
+    firestore: firestore,
+    auth: auth,
+    cloudFunctions: cloudFunctions,
+  ));
 
   runApp(const CrowdLeagueApp());
 }

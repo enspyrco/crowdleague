@@ -39,7 +39,7 @@ class NotificationsService {
       try {
         final notification =
             Notification.fromJsonWithId(docSnapshot.id, docSnapshot.data());
-        viewModels.add(_convertToViewModel(notification));
+        viewModels.add(await _convertToViewModel(notification));
       } catch (e) {
         // Skip notifications with unknown types or parsing errors
         debugPrint('Error parsing notification ${docSnapshot.id}: $e');
@@ -61,7 +61,7 @@ class NotificationsService {
         try {
           final notification =
               Notification.fromJsonWithId(docSnapshot.id, docSnapshot.data());
-          viewModels.add(_convertToViewModel(notification));
+          viewModels.add(await _convertToViewModel(notification));
         } catch (e) {
           // Skip notifications with unknown types or parsing errors
           debugPrint('Error parsing notification ${docSnapshot.id}: $e');
@@ -104,7 +104,8 @@ class NotificationsService {
     _numNotificationsViewedStreamController.add(aggregateQuery.count ?? 0);
   }
 
-  NotificationViewModel _convertToViewModel(Notification notification) {
+  Future<NotificationViewModel> _convertToViewModel(
+      Notification notification) async {
     if (notification is UnknownNotification) {
       return UnknownNotificationViewModel(
         notification: notification,
@@ -112,6 +113,41 @@ class NotificationsService {
       );
     }
 
-    throw 'No view model for notification type: ${notification.runtimeType}';
+    if (notification is TeamInviteNotification) {
+      final inviter = await _playerCache.retrievePlayer(notification.inviterId);
+      return TeamInviteNotificationViewModel(
+        notification: notification,
+        inviterName: inviter.name,
+      );
+    }
+
+    if (notification is TeamInviteAcceptedNotification) {
+      final invitee = await _playerCache.retrievePlayer(notification.inviteeId);
+      return TeamInviteAcceptedNotificationViewModel(
+        notification: notification,
+        inviteeName: invitee.name,
+      );
+    }
+
+    if (notification is TeamRemovedNotification) {
+      return TeamRemovedNotificationViewModel(
+        notification: notification,
+      );
+    }
+
+    if (notification is TeamCaptaincyReceivedNotification) {
+      final previousCaptain =
+          await _playerCache.retrievePlayer(notification.previousCaptainId);
+      return TeamCaptaincyReceivedNotificationViewModel(
+        notification: notification,
+        previousCaptainName: previousCaptain.name,
+      );
+    }
+
+    // Fallback for any unhandled types
+    return UnknownNotificationViewModel(
+      notification: notification as UnknownNotification,
+      type: 'unknown',
+    );
   }
 }

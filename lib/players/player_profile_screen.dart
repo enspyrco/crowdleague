@@ -1,6 +1,8 @@
 import 'package:crowdleague/players/enums/pic_size.dart';
 import 'package:crowdleague/conversations/conversations_service.dart';
 import 'package:crowdleague/services/user_service.dart';
+import 'package:crowdleague/teams/models/team.dart';
+import 'package:crowdleague/teams/teams_service.dart';
 import 'package:crowdleague/venues/venues_service.dart';
 import 'package:crowdleague/venues/models/venue.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,8 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   bool _findingConversation = false;
   List<Venue> _venueCrews = [];
   bool _loadingVenues = true;
+  List<Team> _teams = [];
+  bool _loadingTeams = true;
 
   @override
   void initState() {
@@ -61,6 +65,33 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     }
   }
 
+  Future<void> _loadTeams(List<String> teamIds) async {
+    if (teamIds.isEmpty) {
+      if (mounted) {
+        setState(() {
+          _teams = [];
+          _loadingTeams = false;
+        });
+      }
+      return;
+    }
+
+    final teams = <Team>[];
+    for (final teamId in teamIds) {
+      final team = await locate<TeamsService>().getTeam(teamId);
+      if (team != null) {
+        teams.add(team);
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        _teams = teams;
+        _loadingTeams = false;
+      });
+    }
+  }
+
   Future<void> _openConversation() async {
     setState(() {
       _findingConversation = true;
@@ -88,6 +119,11 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
             // Load venue crews when player data changes
             if (snapshot.hasData && _loadingVenues) {
               _loadVenueCrews(player.venueCrewIds);
+            }
+
+            // Load teams when player data changes
+            if (snapshot.hasData && _loadingTeams) {
+              _loadTeams(player.teamIds);
             }
 
             // Bust the cache so changes like `picStatus` will show up
@@ -191,6 +227,84 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                                   '${venue.crewMemberIds.length} ${venue.crewMemberIds.length == 1 ? 'member' : 'members'}'),
                               onTap: () =>
                                   context.push('/venue-detail/${venue.id}'),
+                            )),
+                      // Teams section
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, top: 20, bottom: 10),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.groups, size: 20),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Teams',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const Spacer(),
+                            if (_owner)
+                              TextButton(
+                                onPressed: () => context.pushNamed('teams'),
+                                child: const Text('View All'),
+                              ),
+                          ],
+                        ),
+                      ),
+                      if (_loadingTeams)
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      else if (_teams.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _owner
+                                    ? 'You haven\'t joined any teams yet'
+                                    : 'Not a member of any teams',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(color: Colors.grey),
+                              ),
+                              if (_owner) ...[
+                                const SizedBox(height: 12),
+                                OutlinedButton.icon(
+                                  onPressed: () =>
+                                      context.pushNamed('create-team'),
+                                  icon: const Icon(Icons.add),
+                                  label: const Text('Create a Team'),
+                                ),
+                              ],
+                            ],
+                          ),
+                        )
+                      else
+                        ..._teams.map((team) => ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
+                                child: Text(
+                                  team.name.isNotEmpty
+                                      ? team.name[0].toUpperCase()
+                                      : 'T',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimaryContainer,
+                                  ),
+                                ),
+                              ),
+                              title: Text(team.name),
+                              subtitle: Text(
+                                  '${team.memberIds.length} ${team.memberIds.length == 1 ? 'member' : 'members'}'),
+                              onTap: () => context.pushNamed(
+                                'team-detail',
+                                pathParameters: {'id': team.id},
+                              ),
                             )),
                     ],
                   ),

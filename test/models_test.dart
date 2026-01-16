@@ -47,6 +47,7 @@ void main() {
         name: 'John Doe',
         picId: 123,
         venueCrewIds: ['venue1'],
+        teamIds: ['team1'],
       );
 
       final json = player.toJson();
@@ -55,6 +56,7 @@ void main() {
       expect(json['name'], 'John Doe');
       expect(json['picId'], 123);
       expect(json['venueCrewIds'], ['venue1']);
+      expect(json['teamIds'], ['team1']);
     });
 
     test('toString returns formatted string', () {
@@ -63,6 +65,7 @@ void main() {
         name: 'John Doe',
         picId: 123,
         venueCrewIds: ['venue1'],
+        teamIds: [],
       );
 
       expect(player.toString(), contains('player123'));
@@ -75,6 +78,7 @@ void main() {
         name: 'John',
         picId: 456,
         venueCrewIds: [],
+        teamIds: [],
       );
 
       final url = player.constructProfilePicUrl(PicSize.small);
@@ -89,6 +93,7 @@ void main() {
         name: 'John',
         picId: 456,
         venueCrewIds: [],
+        teamIds: [],
       );
 
       final url = player.constructProfilePicUrl(PicSize.medium);
@@ -102,6 +107,7 @@ void main() {
         name: 'John',
         picId: 456,
         venueCrewIds: [],
+        teamIds: [],
       );
 
       final url = player.constructProfilePicUrl(PicSize.large);
