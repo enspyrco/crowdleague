@@ -138,7 +138,13 @@ class _TeamDetailScreenState extends State<TeamDetailScreen> {
 
     if (_team == null) {
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () =>
+                context.canPop() ? context.pop() : context.go('/teams'),
+          ),
+        ),
         body: const Center(child: Text('Team not found')),
       );
     }
