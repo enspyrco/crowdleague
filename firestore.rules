@@ -54,6 +54,26 @@ service cloud.firestore {
       allow create: if false;
     }
 
+    // ==================== TEAMS ====================
+    // All authenticated users can read teams (for viewing team profiles)
+    // Team mutations go through Cloud Functions (which use Admin SDK)
+    match /teams/{teamId} {
+      allow read: if isAuthenticated();
+      // All write operations go through Cloud Functions
+      allow create, update, delete: if false;
+    }
+
+    // ==================== TEAM INVITES ====================
+    // Users can only read invites they sent or received
+    // All write operations go through Cloud Functions
+    match /teamInvites/{inviteId} {
+      allow read: if isAuthenticated()
+        && (resource.data.inviterId == request.auth.uid
+            || resource.data.inviteeId == request.auth.uid);
+      // All write operations go through Cloud Functions
+      allow create, update, delete: if false;
+    }
+
     // ==================== CONVERSATIONS ====================
     // Users can only access conversations they are a participant in
     match /conversations/{conversationId} {

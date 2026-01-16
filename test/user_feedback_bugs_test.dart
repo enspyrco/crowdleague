@@ -107,18 +107,21 @@ void main() {
           name: 'Alice Johnson',
           picId: 0,
           venueCrewIds: [],
+          teamIds: [],
         ));
         mockPlayersService.addPlayer(const Player(
           id: 'player-bob',
           name: 'Bob Smith',
           picId: 0,
           venueCrewIds: [],
+          teamIds: [],
         ));
         mockPlayersService.addPlayer(const Player(
           id: 'player-charlie',
           name: 'Charlie Brown',
           picId: 0,
           venueCrewIds: [],
+          teamIds: [],
         ));
 
         // Add test conversations
