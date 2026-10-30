@@ -216,7 +216,7 @@ PATs for Claude agents are centralized in `~/git/individuals/nickmeinhold/claude
 
 ```bash
 CLAUDE_REVIEWER_PAT="ghp_..."  # For claude-reviewer-max
-CLAUDE_PM_PAT="ghp_..."        # For claude-pm-enspyr
+CLAUDE_PM_PAT="ghp_..."        # For enspyr-pm
 ```
 
 The `/review` and `/pm` skills automatically source this file.
@@ -246,7 +246,7 @@ The `/review` command (claude-reviewer-max) automatically:
 
 ### Project Management
 
-The `/pm` command (claude-pm-enspyr) manages the project board at <https://github.com/orgs/enspyrco/projects/4>
+The `/pm` command (enspyr-pm) manages the project board at <https://github.com/orgs/enspyrco/projects/4>
 
 **Commands:**
 
