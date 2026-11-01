@@ -216,7 +216,7 @@ PATs for Claude agents are centralized in `~/git/individuals/nickmeinhold/claude
 
 ```bash
 CLAUDE_REVIEWER_PAT="ghp_..."  # For claude-reviewer-max
-CLAUDE_PM_PAT="ghp_..."        # For enspyr-pm
+ENSPYR_PM_TOKEN="ghp_..."        # For enspyr-pm
 ```
 
 The `/review` and `/pm` skills automatically source this file.
